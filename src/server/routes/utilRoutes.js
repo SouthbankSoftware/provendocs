@@ -43,8 +43,8 @@ module.exports = (app: any) => {
   app.get('/api/checkStatus', (req, res) => {
     const reqId = uuidv4();
     logger.log({
-      level: LOG_LEVELS.INFO,
-      severity: STACKDRIVER_SEVERITY.INFO,
+      level: LOG_LEVELS.DEBUG,
+      severity: STACKDRIVER_SEVERITY.DEBUG,
       message: '[REQUEST] -> Checking status of ProvenDB connection.',
       reqId,
     });
