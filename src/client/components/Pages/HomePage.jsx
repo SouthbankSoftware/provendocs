@@ -180,15 +180,6 @@ class HomePage extends React.Component<Props, State> {
                   </div>
                 </a>
               </div>
-              {/* <div className="poweredByIcon">
-                <a
-                  href="http://provendb.com"
-                  className="link provenDBLink"
-                  style={{ textDecoration: 'none' }}
-                >
-                  <ProvenDBLogo className="provenDBLogo" />
-                </a>
-              </div> */}
               <div className="mouseIcon">
                 <MouseIcon />
               </div>

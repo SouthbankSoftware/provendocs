@@ -3,8 +3,8 @@
  * Contains all the Express Routes for requests related to files.
  * @Author: Michael Harrison
  * @Date:   2018-10-29T20:03:41+11:00
- * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-02-20T09:47:50+11:00
+ * @Last modified by:   wahaj
+ * @Last modified time: 2019-03-29T09:54:32+11:00
  */
 
 import winston from 'winston';
@@ -146,6 +146,8 @@ module.exports = (app: any) => {
             const resultPreview = {
               content: '',
               styles: '',
+              fileName: '',
+              status: '',
             };
             getFileThumbnail(fileId, user._id)
               .then((result) => {
@@ -182,7 +184,7 @@ module.exports = (app: any) => {
                 });
                 // Request to generate new thumbnail for this file
                 fetch(
-                  `http://${DOMAINS.THUMBS_MODULE_URL}/api/filePreview?userId=${
+                  `${DOMAINS.THUMBS_MODULE_URL}/api/filePreview?userId=${
                     user._id
                   }&fileId=${fileId}`,
                   {
@@ -242,121 +244,6 @@ module.exports = (app: any) => {
                     _getDocProofForFile(fileInfo, user, resultPreview);
                   });
               });
-
-            /* decodeFile(fileInfo[0])
-              .then((filePath) => {
-                convertFileToHTML(filePath, fileInfo[0])
-                  .then((result) => {
-                    logger.log({
-                      level: LOG_LEVELS.INFO,
-                      severity: STACKDRIVER_SEVERITY.INFO,
-                      message: 'Converted file to HTML:',
-                      fileName: fileInfo[0].name,
-                      reqId,
-                    });
-                    reduceFileToPreview(result, fileInfo[0].mimetype)
-                      .then((reducedResult) => {
-                        logger.log({
-                          level: LOG_LEVELS.DEBUG,
-                          severity: STACKDRIVER_SEVERITY.DEBUG,
-                          message: 'Result of file preview reduction',
-                          file: fileInfo[0].name,
-                          metadata: fileInfo[0]._provendb_metadata.minVersion,
-                          reqId,
-                        });
-                        getDocumentProofForFile(fileInfo[0], user._id)
-                          .then((documentProofs: Object) => {
-                            logger.log({
-                              level: LOG_LEVELS.DEBUG,
-                              severity: STACKDRIVER_SEVERITY.DEBUG,
-                              message: 'Result of checking proof status:',
-                              documentProofs,
-                              reqId,
-                            });
-                            if (documentProofs.proofs[0].status) {
-                              reducedResult.status = documentProofs.proofs[0].status;
-                            } else {
-                              reducedResult.status = 'Pending';
-                            }
-                            res.status(200).send(reducedResult);
-                          })
-                          .catch((getDocumentProofsError) => {
-                            const returnObject = {
-                              level: LOG_LEVELS.ERROR,
-                              severity: STACKDRIVER_SEVERITY.ERROR,
-                              message: 'Error checking document proof status.',
-                              getDocumentProofsError,
-                              reqId,
-                            };
-                            logger.log(returnObject);
-
-                            createNewProof()
-                              .then((createNewProofResult) => {
-                                logger.log({
-                                  code: 1,
-                                  level: LOG_LEVELS.INFO,
-                                  severity: STACKDRIVER_SEVERITY.INFO,
-                                  message: 'Submitted new proof for unproven document.',
-                                  createNewProofResult,
-                                  user,
-                                  fileName: fileInfo[0].name,
-                                  reqId,
-                                });
-                                reducedResult.status = 'Pending';
-                                res.status(200).send(reducedResult);
-                              })
-                              .catch((err) => {
-                                logger.log({
-                                  code: ERROR_CODES.FAILED_TO_SUBMIT_PROOF,
-                                  level: LOG_LEVELS.ERROR,
-                                  severity: STACKDRIVER_SEVERITY.ERROR,
-                                  message: 'Failed to submit new proof for unproven document.',
-                                  err,
-                                  user,
-                                  fileName: fileInfo[0].name,
-                                  reqId,
-                                });
-                                reducedResult.status = 'Unproven';
-                                res.status(200).send(returnObject);
-                              });
-                          });
-                      })
-                      .catch((err) => {
-                        const returnObject = {
-                          level: LOG_LEVELS.ERROR,
-                          severity: STACKDRIVER_SEVERITY.ERROR,
-                          message: 'Failed to reduce file to preview',
-                          fileName: fileInfo[0].name,
-                          err,
-                          reqId,
-                        };
-                        logger.log(returnObject);
-                        res.status(400).send(returnObject);
-                      });
-                  })
-                  .catch((err) => {
-                    const returnObject = {
-                      level: LOG_LEVELS.ERROR,
-                      severity: STACKDRIVER_SEVERITY.ERROR,
-                      message: 'Failed to convert file to HTML',
-                      err,
-                      reqId,
-                    };
-                    logger.log(returnObject);
-                    res.status(400).send(returnObject);
-                  });
-              })
-              .catch((err) => {
-                const returnObject = {
-                  level: LOG_LEVELS.ERROR,
-                  severity: STACKDRIVER_SEVERITY.ERROR,
-                  message: 'Failed to decode file:',
-                  err,
-                  reqId,
-                };
-                logger.log(returnObject);
-                res.status(400).send(returnObject);
-              }); */
           })
           .catch((err) => {
             const returnObject = {
@@ -411,7 +298,7 @@ module.exports = (app: any) => {
           userId: user._id,
           reqId,
         });
-        getFileInformation(fileId, user._id, false).then((fileInfo) => {
+        getFileInformation(fileId, user._id, false, false).then((fileInfo) => {
           logger.log({
             level: LOG_LEVELS.DEBUG,
             severity: STACKDRIVER_SEVERITY.DEBUG,
@@ -500,7 +387,7 @@ module.exports = (app: any) => {
           userId: user._id,
           reqId,
         });
-        getFileInformation(fileId, user._id, false).then((fileInfo) => {
+        getFileInformation(fileId, user._id, false, false).then((fileInfo) => {
           decodeFile(fileInfo[0])
             .then((filePath) => {
               const file = fs.createReadStream(filePath);

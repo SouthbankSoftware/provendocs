@@ -3,7 +3,7 @@
  * @Date:   2018-12-31T17:24:37+11:00
  * @Email:  wahaj@southbanksoftware.com
  * @Last modified by:   wahaj
- * @Last modified time: 2019-03-28T15:53:06+11:00
+ * @Last modified time: 2019-03-29T13:02:23+11:00
  *
  *
  */
@@ -11,7 +11,7 @@
 import { DOMAINS } from '../common/constants';
 
 // Change the url to the domain of your app
-exports.url = `http://${DOMAINS.PROVENDOCS}`;
+exports.url = `${DOMAINS.PROVENDOCS}`;
 
 exports.senderEmail = 'admin@southbanksoftware.com';
 exports.senderName = 'Provendb Admin';

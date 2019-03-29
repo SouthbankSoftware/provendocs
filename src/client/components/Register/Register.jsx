@@ -60,7 +60,7 @@ export default class Login extends React.Component<Props, State> {
 
   render() {
     const { eulaIsOpen, securityIsOpen } = this.state;
-    const apiLoginURL = `http://${DOMAINS.API}/auth/signup?redirectURL=http://${
+    const apiLoginURL = `${DOMAINS.API}/auth/signup?redirectURL=${
       DOMAINS.PROVENDOCS
     }/api/signup&provider=`;
     return (

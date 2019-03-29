@@ -1,8 +1,8 @@
 /*
  * @Author: Michael Harrison
  * @Date:   2019-03-25T15:52:10+11:00
- * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-03-25T15:54:34+11:00
+ * @Last modified by:   wahaj
+ * @Last modified time: 2019-03-29T12:58:36+11:00
  */
 export const PAGES = {
   HOME: 'home',
@@ -63,9 +63,10 @@ export const MIMETYPES = {
 };
 
 export const DOMAINS = {
-  ID: 'id.provendb.com',
-  PROVENDOCS: 'provendocs.com',
-  API: 'api.provendb.com',
+  ID: 'https://id.provendb.com',
+  PROVENDOCS: 'https://provendocs.com',
+  API: 'https://api.provendb.com',
+  PROVENDB: 'https://provendb.com',
 };
 
 export const PROOF_STATUS = {

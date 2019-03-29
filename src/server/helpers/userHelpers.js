@@ -98,7 +98,7 @@ export const getUserDetails = (req: any, res: any, secret: Object) => new Promis
   getUserFromToken(req, res, secret)
     .then((user) => {
       const userID = user._id;
-      const endpoint = `http://${DOMAINS.INTERNAL_API}/query`;
+      const endpoint = `${DOMAINS.INTERNAL_API}/query`;
       const graphQLClient = new GraphQLClient(endpoint, {
         headers: {
           Authorization: `Bearer ${user.auth_token}`,
@@ -139,10 +139,10 @@ export const getUserFromEmail = (fromEmail: string) => new Promise<any>((resolve
       severity: STACKDRIVER_SEVERITY.DEBUG,
       message: 'Request to get user from email:',
       fromEmail,
-      endpoint: `http://${DOMAINS.INTERNAL_API}/api/getuser?email=${fromEmail}`,
+      endpoint: `${DOMAINS.INTERNAL_API}/api/getuser?email=${fromEmail}`,
       secret: process.env.PROVENDOCS_SECRET,
     });
-    const endpoint = `http://${DOMAINS.INTERNAL_API}/api/getuser?email=${fromEmail}`;
+    const endpoint = `${DOMAINS.INTERNAL_API}/api/getuser?email=${fromEmail}`;
     /*  axios
     // $FlowFixMe
       .get(endpoint, { headers: { Authorization: `Bearer ${process.env.PROVENDOCS_SECRET}` } }) */
@@ -171,7 +171,7 @@ export const getUserFromEmail = (fromEmail: string) => new Promise<any>((resolve
 });
 
 export const createUser = (user: Object) => new Promise<any>((resolve, reject) => {
-  const endpoint = `http://${DOMAINS.INTERNAL_API}/query`;
+  const endpoint = `${DOMAINS.INTERNAL_API}/query`;
   const graphQLClient = new GraphQLClient(endpoint);
   const query = `
           mutation{
@@ -203,7 +203,7 @@ export const createUser = (user: Object) => new Promise<any>((resolve, reject) =
 });
 
 export const validateUser = (user: Object) => new Promise<any>((resolve, reject) => {
-  const endpoint = `http://${DOMAINS.INTERNAL_API}/query`;
+  const endpoint = `${DOMAINS.INTERNAL_API}/query`;
   const graphQLClient = new GraphQLClient(endpoint);
   const query = `
           query{

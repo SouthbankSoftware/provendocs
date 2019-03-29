@@ -1531,7 +1531,7 @@ export const getFileInformation = (
   }
 });
 
-export const getFileThumbnail = (fileId: string, userId: string) => new Promise<Array<Object>>((resolve, reject) => {
+export const getFileThumbnail = (fileId: string, userId: string) => new Promise<Object>((resolve, reject) => {
   logger.log({
     level: LOG_LEVELS.DEBUG,
     severity: STACKDRIVER_SEVERITY.DEBUG,
@@ -1780,6 +1780,41 @@ export const forgetFile = (fileId: string, userId: string) => new Promise<void>(
     message: 'Driver Client Status:',
     isConnected: dbObject.serverConfig.isConnected(),
   });
+  const _deleteThumbnail = () => {
+    logger.log({
+      level: LOG_LEVELS.DEBUG,
+      severity: STACKDRIVER_SEVERITY.DEBUG,
+      message: 'Deleting Thumbnails generated for file',
+      userId,
+      fileId,
+    });
+
+    const thumbCollection = dbObject.collection(`thumbs_${userId}_pdbignore`);
+    const queryFilter = { _id: new mongo.ObjectId(fileId) };
+
+    thumbCollection.deleteMany(
+      queryFilter,
+      { promoteLongs: false },
+      (deleteError, deleteResult) => {
+        if (deleteError) {
+          logger.log({
+            level: LOG_LEVELS.ERROR,
+            severity: STACKDRIVER_SEVERITY.ERROR,
+            message: 'Error Deleting Thumbnail',
+            deleteError,
+          });
+          reject(deleteError);
+        } else {
+          logger.log({
+            level: LOG_LEVELS.DEBUG,
+            severity: STACKDRIVER_SEVERITY.DEBUG,
+            message: 'Result of deleting Thumbnail',
+            deleteResult,
+          });
+        }
+      },
+    );
+  };
   const collection = dbObject.collection(`files_${userId}`);
   const filter = { _id: new mongo.ObjectId(fileId) };
   logger.log({
@@ -1811,6 +1846,7 @@ export const forgetFile = (fileId: string, userId: string) => new Promise<void>(
           message: 'Result of deleting document (for forget)',
           deleteResult,
         });
+        _deleteThumbnail();
         // Secondly, prepare a forget for the document ( to get the forget password).
         dbObject.command(
           {

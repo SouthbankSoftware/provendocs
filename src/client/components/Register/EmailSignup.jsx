@@ -3,8 +3,8 @@
  * @Author: Wahaj Shamim <wahaj>
  * @Date:   2018-11-21T14:26:20+11:00
  * @Email:  wahaj@southbanksoftware.com
- * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-03-25T16:00:55+11:00
+ * @Last modified by:   wahaj
+ * @Last modified time: 2019-03-29T12:53:19+11:00
  */
 import React from 'react';
 import { withRouter } from 'react-router';
@@ -75,7 +75,7 @@ class EmailSignup extends React.Component<Props, State> {
               window.location.assign(url);
             } else {
               const b64userID = Buffer.from(userID).toString('base64');
-              const verifyLink = `http://${DOMAINS.PROVENDOCS}/api/verifyUser?userID=${b64userID}`;
+              const verifyLink = `${DOMAINS.PROVENDOCS}/api/verifyUser?userID=${b64userID}`;
               api.sendVerificationEmail(values.email, verifyLink).then((resVerifyEmail) => {
                 if (resVerifyEmail) {
                   history.push('/signup/emailSuccess');

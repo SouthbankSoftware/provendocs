@@ -17,7 +17,7 @@ import InfoIcon from '../../style/icons/pages/dashboard/info-icon.svg'; // @TODO
 import LogoutIcon from '../../style/icons/pages/top-nav-bar/log-out-icon.svg';
 import LogoIcon from '../../style/icons/pages/top-nav-bar/proven-docs-logo.svg';
 import ProvendbIcon from '../../style/icons/pages/top-nav-bar/powered-by-provendb.svg';
-import { PAGES, OAUTH_PROVIDERS } from '../../common/constants';
+import { PAGES, OAUTH_PROVIDERS, DOMAINS } from '../../common/constants';
 import { openNotificationWithIcon } from '../../common/util';
 import { Log } from '../../common';
 // $FlowFixMe
@@ -163,7 +163,7 @@ export default class TopNavBar extends React.Component<Props, State> {
         <div className="leftButtons">
           <div className="appLogo">
             <a
-              href="http://provendocs.com"
+              href={DOMAINS.PROVENDOCS}
               target="_blank"
               rel="noopener noreferrer"
               className="link homeLink docsLogo"
@@ -172,7 +172,7 @@ export default class TopNavBar extends React.Component<Props, State> {
               <LogoIcon />
             </a>
             <a
-              href="http://provendb.com"
+              href={DOMAINS.PROVENDB}
               target="_blank"
               rel="noopener noreferrer"
               className="link homeLink provendbLogo"

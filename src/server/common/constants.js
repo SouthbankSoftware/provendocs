@@ -25,11 +25,11 @@ export const COLLECTION_NAMES = {
 };
 
 export const DOMAINS = {
-  ID: process.env.USER_MODULE_URL || 'localhost:8000',
-  PROVENDOCS: process.env.DOCS_URL || 'localhost:8888',
-  API: process.env.API_URL || 'localhost:8080',
-  INTERNAL_API: process.env.INTERNAL_API_URL || 'localhost:8080', // TODO: this is just added for the local kubernetes deployment
-  THUMBS_MODULE_URL: process.env.THUMBS_MODULE_URL || 'localhost:8889',
+  ID: process.env.USER_MODULE_URL || 'http://localhost:8000',
+  PROVENDOCS: process.env.DOCS_URL || 'http://localhost:8888',
+  API: process.env.API_URL || 'http://localhost:8080',
+  INTERNAL_API: process.env.INTERNAL_API_URL || 'http://localhost:8080', // TODO: this is just added for the local kubernetes deployment
+  THUMBS_MODULE_URL: process.env.THUMBS_MODULE_URL || 'http://localhost:8889',
 };
 
 export const MIMETYPES = {

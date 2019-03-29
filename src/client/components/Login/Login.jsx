@@ -24,7 +24,7 @@ export default class Login extends React.Component<Props, State> {
   componentDidMount() {}
 
   render() {
-    const apiLoginURL = `http://${DOMAINS.API}/auth/login?redirectURL=http://${
+    const apiLoginURL = `${DOMAINS.API}/auth/login?redirectURL=${
       DOMAINS.PROVENDOCS
     }/api/login&provider=`;
 

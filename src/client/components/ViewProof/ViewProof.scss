@@ -6,6 +6,7 @@
  */
 
 @import "../../style/global_colors.scss";
+
 .viewProof {
   background-color: $dashboard_panel_background;
   flex-grow: 1;
@@ -15,6 +16,7 @@
   padding-left: 25px;
   padding-right: 25px;
   padding-top: 25px;
+
   .contentWrapper {
     width: 100%;
     height: 100%;
@@ -22,9 +24,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    overflow-y: scroll;
+    overflow-y: auto;
+
     .header {
       align-self: flex-start;
+
       .documentTitle {
         font-size: 24px;
         font-weight: bold;
@@ -36,6 +40,7 @@
         color: #ffffff;
       }
     }
+
     .body {
       width: 100%;
       display: flex;
@@ -46,14 +51,17 @@
       border-top-left-radius: 0;
       margin-bottom: 0px;
       justify-content: center;
+
       span.header {
         width: 100%;
         word-wrap: break-word;
       }
+
       span.rawProof {
         width: 100%;
         flex-grow: 1;
       }
+
       .finishedProofWrapper {
         display: flex;
         align-items: center;
@@ -67,20 +75,26 @@
         padding-left: 20px;
         padding-right: 20px;
         padding-bottom: 20px;
+
         .pdf {
           height: 100%;
           width: 100%;
           padding-top: 0px;
           overflow-y: scroll;
+
           #sidebar {
             display: none;
           }
+
           #page-container {
             position: relative;
+
             .pf {
               margin-top: 0px;
+
               .pc {
                 padding: 0px;
+
                 .bi {
                   margin-bottom: 8px;
                 }
@@ -88,6 +102,7 @@
             }
           }
         }
+
         .default {
           padding-top: 0px;
           overflow-y: scroll;
@@ -95,30 +110,36 @@
           width: 100%;
           height: 100%;
           padding-bottom: 80px;
+
           div {
             height: 100%;
+
             pre {
               height: 100%;
             }
           }
         }
+
         .html {
           width: 100%;
           height: 100%;
           background-color: rgba(255, 255, 255, 0.5);
           overflow: scroll;
         }
+
         .png {
           img {
             object-fit: scale-down;
             max-width: 100%;
           }
         }
+
         .svg {
           width: 75%;
           height: 75%;
         }
       }
+
       .smallProofDiagramWrapper {
         display: flex;
         flex-direction: column;
@@ -126,16 +147,19 @@
         height: 100%;
         width: 100%;
         margin-top: 23px;
+
         .header {
           margin-bottom: 18px;
           font-size: 12px;
         }
+
         .subheader {
           margin-bottom: 21px;
           font-size: 12px;
           font-style: italic;
           display: flex;
           flex-direction: row;
+
           .infoIcon {
             margin-left: 10px;
             fill: white;
@@ -143,13 +167,16 @@
             height: 10px;
             opacity: 0.5;
           }
+
           .infoIcon:hover {
             opacity: 1;
           }
         }
+
         .diagram {
           margin-left: 14px;
           margin-right: 14px;
+
           .steps {
             padding-left: 30px;
             padding-right: 30px;
@@ -160,6 +187,7 @@
             justify-content: space-between;
             font-size: 12px;
           }
+
           .line {
             display: flex;
             flex-direction: row;
@@ -167,16 +195,19 @@
             margin-bottom: 25px;
             padding-left: 40px;
             padding-right: 40px;
+
             svg {
               width: 20px;
               height: 20px;
               flex-grow: 1;
             }
+
             .hr {
               flex-grow: 10;
               border-bottom: 1px solid white;
               margin-bottom: 10px;
             }
+
             .emptyCircle {
               width: 18px;
               height: 18px;
@@ -185,23 +216,28 @@
               margin-left: 5px;
             }
           }
+
           .icons {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+
             .faded {
               opacity: 0.1;
             }
+
             span {
               font-size: 10px;
               width: 75%;
               text-align: center;
             }
+
             .document {
               display: flex;
               flex-direction: column;
               align-items: center;
               width: 140px;
+
               svg {
                 width: 29.1px;
                 height: 36.8px;
@@ -209,11 +245,13 @@
                 margin-bottom: 17px;
               }
             }
+
             .hash {
               width: 140px;
               display: flex;
               flex-direction: column;
               align-items: center;
+
               svg {
                 width: 29.1px;
                 height: 36.8px;
@@ -221,11 +259,13 @@
                 margin-bottom: 17px;
               }
             }
+
             .blockchain {
               width: 140px;
               display: flex;
               flex-direction: column;
               align-items: center;
+
               svg {
                 width: 29.1px;
                 height: 36.8px;

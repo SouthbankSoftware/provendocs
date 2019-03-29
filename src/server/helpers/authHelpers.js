@@ -80,9 +80,9 @@ export const verifyTokenFromUserModule = (req: Object, res: Object, jwtSecret: O
         logger.log({
           level: LOG_LEVELS.INFO,
           severity: STACKDRIVER_SEVERITY.INFO,
-          message: `INTERNAL_API: http://${DOMAINS.INTERNAL_API}/auth/verifytoken`,
+          message: `INTERNAL_API: ${DOMAINS.INTERNAL_API}/auth/verifytoken`,
         });
-        fetch(`http://${DOMAINS.INTERNAL_API}/auth/verifytoken`, {
+        fetch(`${DOMAINS.INTERNAL_API}/auth/verifytoken`, {
           method: 'post',
           body: JSON.stringify(postBody),
           headers: { 'Content-Type': 'application/json' },
@@ -150,7 +150,7 @@ export const verifyTokenFromUserModule = (req: Object, res: Object, jwtSecret: O
 });
 
 export const confirmUserViaEmail = (userID: string) => new Promise<any>((resolve, reject) => {
-  const endpoint = `http://${DOMAINS.INTERNAL_API}/query`;
+  const endpoint = `${DOMAINS.INTERNAL_API}/query`;
   const graphQLClient = new GraphQLClient(endpoint);
   const query = `
   mutation{
@@ -176,7 +176,7 @@ export const confirmUserViaEmail = (userID: string) => new Promise<any>((resolve
 });
 
 export const resetPassword = (user: Object) => new Promise<string>((resolve, reject) => {
-  const endpoint = `http://${DOMAINS.INTERNAL_API}/query`;
+  const endpoint = `${DOMAINS.INTERNAL_API}/query`;
   const graphQLClient = new GraphQLClient(endpoint);
   const query = `
           mutation{

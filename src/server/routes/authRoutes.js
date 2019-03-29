@@ -42,11 +42,11 @@ module.exports = (app) => {
 
   app.get('/api/serviceUrls', (req, res) => {
     const urls = {};
-    urls.ID = process.env.USER_MODULE_URL || 'localhost:8000';
+    urls.ID = process.env.USER_MODULE_URL || 'http://localhost:8000';
     urls.PROVENDOCS = process.env.DOCS_URL
-      || (process.env.NODE_ENV === 'development' ? 'localhost:3000' : 'localhost:8888');
-    urls.API = process.env.API_URL || 'localhost:8080';
-    urls.INTERNAL_API = process.env.INTERNAL_API_URL || 'localhost:8080';
+      || (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://localhost:8888');
+    urls.API = process.env.API_URL || 'http://localhost:8080';
+    urls.INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:8080';
 
     res.status(200).send(JSON.stringify(urls));
   });
@@ -59,7 +59,7 @@ module.exports = (app) => {
       expires: new Date(),
       httpOnly: true,
     });
-    res.redirect(`http://${DOMAINS.API}/auth/logout?redirectURL=http://${DOMAINS.PROVENDOCS}`);
+    res.redirect(`${DOMAINS.API}/auth/logout?redirectURL=${DOMAINS.PROVENDOCS}`);
   });
   app.get('/api/loginSucceeded', (req, res) => {
     const { authToken, refreshToken } = req.query;
@@ -260,7 +260,7 @@ module.exports = (app) => {
       message: '[REQUEST] -> Re-Sending Verification Email',
       toEmail: req.body.toEmail,
     });
-    const endpoint = `http://${DOMAINS.INTERNAL_API}/api/getuser?email=${req.body.toEmail}`;
+    const endpoint = `${DOMAINS.INTERNAL_API}/api/getuser?email=${req.body.toEmail}`;
     rp({
       uri: endpoint,
       headers: {
@@ -273,7 +273,7 @@ module.exports = (app) => {
           res.status(400).send({ message: 'User already activated. Try Log in.' });
         } else {
           const b64userID = Buffer.from(resUser.user_id).toString('base64');
-          const verifyLink = `http://${DOMAINS.PROVENDOCS}/api/verifyUser?userID=${b64userID}`;
+          const verifyLink = `${DOMAINS.PROVENDOCS}/api/verifyUser?userID=${b64userID}`;
           sendVerificationEmail(req.body.toEmail, verifyLink)
             .then((response) => {
               res.status(200).send(response);
