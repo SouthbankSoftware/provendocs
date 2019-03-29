@@ -1,0 +1,17 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 86.671 86.64">
+    <defs>
+        <style>.a{fill:#b5885b;}.b{fill:#fff;}.c{fill:#e7eced;}.d{fill:#c7cac7;}.e{fill:#f7b563;}.f{fill:#32ba7c;}</style>
+    </defs>
+    <g transform="translate(5.701 0)">
+        <path class="a" d="M75.266,29.932V8.267a1.049,1.049,0,0,0-1.14-1.14h-43.9a1.076,1.076,0,0,1-1-.57L25.522.428c0-.285-.428-.428-.713-.428H5.14A1.049,1.049,0,0,0,4,1.14V29.932Z" transform="translate(-4 0)"/>
+    </g>
+    <rect class="b" width="62.714" height="5.701" transform="translate(9.977 24.231)"/>
+    <rect class="c" width="59.864" height="4.276" transform="translate(11.403 19.955)"/>
+    <rect class="d" width="57.013" height="4.276" transform="translate(12.828 15.679)"/>
+    <path class="e" d="M75.115,68.036H7.412c-.143,0-.285-.143-.428-.285L0,21.428A.378.378,0,0,1,.428,21H82.241a.378.378,0,0,1,.428.428L75.542,67.751C75.542,67.893,75.4,68.036,75.115,68.036Z" transform="translate(0 8.932)"/>
+    <circle class="b" cx="16.672" cy="16.672" r="16.672" transform="translate(53.328 53.296)"/>
+    <circle class="f" cx="15.005" cy="15.005" r="15.005" transform="translate(54.995 54.963)"/>
+    <path class="b" d="M90.981,203.264a.99.99,0,0,1,0,1.376l-.767.767a.991.991,0,0,1-1.376,0l-3.36-3.386a.99.99,0,0,1,0-1.376l.767-.767a.991.991,0,0,1,1.376,0Z" transform="translate(-20.323 -131.739)"/>
+    <path class="b" d="M170.5,125.478a.991.991,0,0,1,1.376,0l.767.767a.991.991,0,0,1,0,1.376l-5.821,5.794a.99.99,0,0,1-1.376,0l-.767-.767a.991.991,0,0,1,0-1.376Z" transform="translate(-96.905 -59.8)"/>
+</svg>

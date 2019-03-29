@@ -1,0 +1,177 @@
+/*
+ * @Author: Michael Harrison
+ * @Date:   2019-03-22T13:19:54+11:00
+ * @Last modified by:   Michael Harrison
+ * @Last modified time: 2019-03-25T15:59:31+11:00
+ */
+
+@import "../../style/global_colors.scss";
+.privacyModal {
+  height: 70% !important;
+  width: 70% !important;
+  background-color: white;
+  border-radius: 9px;
+  padding-bottom: 0px;
+  .ant-modal-content {
+    height: 100%;
+    .ant-modal-body {
+      height: 100%;
+      .content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        .contentTop {
+          display: flex;
+          flex-direction: row;
+          border-top: 1px solid rgba(112, 112, 112, 0.15);
+          margin-top: 42px;
+          padding-top: 42px;
+          min-height: 260px;
+          padding-left: 35px;
+          padding-right: 35px;
+          .left {
+            width: 66%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-right: 1px solid rgba(112, 112, 112, 0.15);
+            overflow: scroll;
+            span {
+              font-family: Roboto;
+              font-size: 12px;
+              color: $steel-grey;
+              text-align: left;
+              font-style: normal;
+              font-stretch: normal;
+              line-height: 1.17;
+              letter-spacing: 0.1px;
+            }
+            .title {
+              width: 240px;
+              height: 20px;
+              font-weight: bold;
+              font-size: 14px;
+            }
+            .subtitle {
+              width: 559px;
+              height: 20px;
+              opacity: 0.7;
+              font-weight: bold;
+              line-height: 1.67;
+            }
+            .text {
+              width: 100%;
+              padding-right: 30px;
+              opacity: 0.7;
+              font-family: Roboto;
+              line-height: 1.67;
+            }
+          }
+          .right {
+            padding-left: 35px;
+            display: flex;
+            flex-direction: column;
+            span {
+              font-family: Roboto;
+              font-size: 12px;
+              font-weight: bold;
+              font-style: normal;
+              font-stretch: normal;
+              line-height: 1.17;
+              letter-spacing: 0.1px;
+              text-align: left;
+              color: $steel-grey
+            }
+            .title {
+              margin-top: 11px;
+              margin-bottom: 11px;
+            }
+            .text {
+              margin-bottom: 18px;
+              font-weight: normal;
+              opacity: 0.7;
+            }
+            .grid {
+              display: flex;
+              flex-direction: column;
+              font-weight: normal;
+              opacity: 0.7;
+              margin-left: 14px;
+              .row {
+                display: flex;
+                flex-direction: row;
+                svg {
+                  width: 15px;
+                  height: 15px;
+                  fill: $steel-grey;
+                  margin-right: 14px;
+                }
+              }
+            }
+            width: 33%;
+          }
+        }
+        .contentBottom {
+          background-color: $very-light-pink;
+          flex-grow: 1;
+          padding-left: 35px;
+          padding-right: 35px;
+          overflow-y: scroll;
+          margin-top: 30px;
+          p {
+            color: $steel-grey;
+            font-family: Roboto;
+            font-weight: normal;
+            opacity: 0.7;
+            font-size: 12px;
+          }
+          a {
+            color: $dusk-blue;
+            font-family: Roboto;
+            font-weight: bold;
+            font-size: 12px;
+          }
+          h1 {
+            color: $steel-grey;
+            font-weight: bold;
+            color: $steel-grey;
+            font-family: Roboto;
+            font-size: 18px;
+          }
+          h2 {
+            color: $steel-grey;
+            font-weight: bold;
+            color: $steel-grey;
+            font-family: Roboto;
+            opacity: 1;
+            font-size: 16px;
+          }
+          h3 {
+            color: $steel-grey;
+            font-family: Roboto;
+            font-weight: normal;
+            opacity: 1;
+            font-size: 14px;
+          }
+          h4 {
+            color: $steel-grey;
+            font-family: Roboto;
+            font-weight: normal;
+            opacity: 1;
+            font-size: 12px;
+          }
+          ol,
+          ul {
+            li {
+              color: $steel-grey;
+              font-family: Roboto;
+              font-weight: normal;
+              opacity: 0.7;
+              font-size: 12px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

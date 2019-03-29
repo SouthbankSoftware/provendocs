@@ -1,0 +1,218 @@
+/*
+ * Created Date: Saturday September 29th 2018
+ * Author: Michael Harrison
+ * Last Modified: Wednesday October 3rd 2018 8:26:18 am
+ * Modified By: Michael Harrison at <Mike@Southbanksoftware.com>
+ */
+
+@import "../../style/global_colors.scss";
+.proofDiagramWrapper {
+  background-color: $flat-blue;
+  width: 100%;
+  height: 100%;
+  flex-grow: 4;
+  overflow-y: scroll;
+  min-height: 500px;
+  min-width: 1180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-left: 195px;
+  padding-right: 195px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  .row {
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .column {
+      width: 25%;
+    }
+  }
+  .rowOne {
+    text-align: center;
+  }
+  .rowTwo {
+    flex-grow: 1;
+    min-height: 260px;
+    .selector {
+      width: 100%;
+      overflow: overlay;
+    }
+  }
+  .rowThree {
+    justify-content: flex-start;
+    svg {
+      width: 20px;
+      height: 20px;
+      margin-left: 7px;
+      margin-right: 7px;
+    }
+    .first {
+      margin-left: 95px;
+    }
+    .hr {
+      border-bottom: 1px solid white;
+      margin-bottom: 10px;
+    }
+    .hrOne {
+      width: 170px;
+    }
+    .hrTwo {
+      width: 171px;
+    }
+    .hrThree {
+      width: 170px;
+    }
+    .hrHide {
+      opacity: 0.2;
+    }
+    .pendingIcon {
+      opacity: 0.2;
+    }
+  }
+  .rowFour {
+    .column {
+      margin-right: 15wpx;
+      .cardArrow {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 20px 20px 20px;
+        border-color: transparent transparent #ffffff transparent;
+        margin-left: 41%;
+      }
+      .card {
+        height: 190px;
+        background-color: white;
+        border-radius: 10px;
+        color: $dusk_blue_two;
+        display: flex;
+        flex-direction: column;
+        color: $dusk_blue_two;
+        padding-top: 21px;
+        padding-bottom: 10px;
+        padding-left: 18px;
+        padding-right: 16px;
+        margin-right: 8px;
+        .cardRow {
+          display: flex;
+          flex-direction: row;
+          margin-bottom: 20px;
+          justify-content: flex-start;
+          margin-left: 0px;
+          .cardIcon {
+            width: 35px;
+            height: 35px;
+            object-fit: contain;
+            margin-right: 8px;
+            svg {
+              fill: $dusk_blue_two !important;
+            }
+          }
+          .cardInfo {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            .cardTitle {
+              font-size: 10px;
+              color: $dusk_blue_two;
+            }
+            .cardValue {
+              color: $dusk_blue_two;
+              font-size: 22px;
+              font-weight: bold;
+              word-break: break-all;
+              overflow-y: visible;
+            }
+            .hash {
+              font-size: 16px;
+            }
+            .overflow {
+              overflow-y: visible;
+            }
+          }
+        }
+        .finalRow {
+          margin-bottom: 0px;
+        }
+        .infoRow {
+          display: flex;
+          justify-content: flex-end;
+          margin-top: auto;
+          z-index: 100;
+          .infoButton {
+            .infoIcon {
+              opacity: 0.5;
+              height: 12px;
+              width: 12px;
+              .cls-1 {
+                opacity: .5;
+              }
+              .cls-2 {
+                fill: #81858a;
+              }
+            }
+            .infoIcon:hover {
+              opacity: 1;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  }
+  .selector {
+    .node {
+      stroke: rgba(256, 256, 256, 0.5);
+      fill: $flat-blue;
+    }
+    .nodeInner {
+      opacity: 0;
+    }
+    .whiteNode {
+      opacity: 1;
+      fill: $flat-blue;
+    }
+    .whiteStroke {
+      opacity: 1;
+      stroke: rgba(256, 256, 256, 0.5);
+      fill: $flat-blue;
+    }
+    .blueNode {
+      opacity: 1;
+      fill: $dusk_blue_two;
+    }
+    .blueStroke {
+      opacity: 1;
+      stroke: $dusk_blue_two;
+      fill: $flat-blue;
+      stroke-width: 2;
+    }
+    .redNode {
+      opacity: 1;
+      fill: $purple_brown;
+    }
+    .redStroke {
+      opacity: 1;
+      stroke-width: 2;
+      stroke: $purple_brown;
+      fill: $flat-blue;
+    }
+    .hidden_true {
+      opacity: 0 !important;
+    }
+  }
+  .linkV1,
+  .linkV3,
+  .linkH3,
+  .linkH1,
+  .rowLink1,
+  .rowLink2,
+  .rowLink3,
+  .rowLinkV2,
+  .rowLinkH2 {
+    stroke: rgba(256, 256, 256, 0.5);
+  }
+}

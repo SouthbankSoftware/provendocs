@@ -1,0 +1,636 @@
+/*
+ * @Author: Wahaj Shamim <wahaj>
+ * @Date:   2019-03-13T14:56:22+11:00
+ * @Email:  wahaj@southbanksoftware.com
+ * @Last modified by:   wahaj
+ * @Last modified time: 2019-03-27T14:46:26+11:00
+ * 
+ */
+
+@import "../../style/global_colors.scss";
+@import "../../style/global_mixins.scss";
+.landingPage {
+  scroll-snap-type: mandatory;
+  scroll-snap-points-y: repeat(3rem);
+  scroll-snap-type: y mandatory;
+  background-color: $dusk-blue;
+  .snap {
+    scroll-snap-align: start;
+  }
+  .section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 724px;
+    padding-left: 7%;
+    padding-right: 7%;
+    padding-top: 6%;
+    padding-bottom: 6%;
+    color: white;
+    @media screen and (min-height: 1080px) {
+      padding-top: 8%;
+      padding-bottom: 8%;
+    }
+    .sectionTitle {
+      font-size: 30px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .sectionBody {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      .sectionColumn {
+        display: flex;
+        flex-direction: column;
+        max-width: 25%;
+        .columnIcon {
+          //   width: 100.9px; //   height: 100.9px;
+          align-self: center;
+          text-align: center;
+          margin-bottom: 35px;
+          display: flex;
+          flex-direction: column;
+          svg {
+            width: 100.9px;
+            height: 100.9px;
+          }
+          .iconWrapper {
+            width: 100%;
+            height: 100%;
+            border-radius: 5em;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            svg {
+              width: 50%;
+              height: 50%;
+            }
+          }
+        }
+        .circleIcon {
+          margin-bottom: 32px;
+          width: 142.9px;
+          height: 142.9px;
+        }
+        .columnTitle {
+          height: 40px;
+          align-self: center;
+          width: 250px;
+          margin-bottom: 50px;
+          font-size: 16px;
+          font-weight: normal;
+          text-align: center;
+          color: $white;
+          b {
+            font-weight: bold;
+          }
+        }
+        .columnBody {
+          width: 100%;
+          padding-left: 7%;
+          padding-right: 7%;
+          font-size: 16px;
+          font-weight: normal;
+          letter-spacing: 0.2px;
+          line-height: 1.56;
+          margin-bottom: 21px;
+          text-align: center;
+          color: $white;
+          opacity: 0.7;
+        }
+      }
+    }
+    .sectionButtons {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      .button {
+        width: 126px;
+        height: 44px;
+        border-radius: 4px;
+        margin-right: 14px;
+        font-size: 12px;
+      }
+    }
+    .leftAlign {
+      justify-content: flex-start;
+      .button {
+        margin-left: 0px;
+      }
+    }
+  }
+  .heroSection {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-self: center;
+    padding-bottom: 100px;
+    min-height: 724px;
+    background-color: $flat-blue;
+    .particles {
+      opacity: 0.5;
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      canvas {
+        height: 724px;
+      }
+    }
+    .heroText {
+      user-select: none;
+      display: flex;
+      align-self: center;
+      justify-content: center;
+      width: 715px;
+      height: 133px;
+      font-size: 60px;
+      font-weight: bold;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1;
+      letter-spacing: 1.8px;
+      text-align: center;
+      color: #ffffff;
+      margin-bottom: 13px;
+    }
+    .heroSubtitle {
+      user-select: none;
+      display: flex;
+      align-self: center;
+      justify-content: center;
+      width: 580px;
+      height: 42px;
+      opacity: 0.7;
+      font-size: 16px;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.19;
+      letter-spacing: normal;
+      text-align: center;
+      color: #ffffff;
+      margin-bottom: 40px;
+    }
+    .heroButtons {
+      z-index: 10;
+      display: flex;
+      flex-direction: row;
+      align-self: center;
+      justify-content: center;
+      width: 440px;
+      height: 38px;
+      margin-bottom: 62px;
+      .button {
+        border-radius: 0.4em;
+        width: 126px;
+        height: 37px;
+        font-size: 12px;
+        font-weight: bold;
+      }
+      .watchVideoButton {
+        margin-right: 11px;
+        width: 125.2px;
+        height: 44px;
+        border-radius: 4px;
+      }
+      .findOutMoreButton {
+        color: white;
+        background-color: $blue_button_background;
+        border: 1px solid $blue_button_background;
+      }
+      .findOutMoreButton:hover {
+        background-color: $blue_button_background_hover;
+      }
+      .button-text {
+        span {
+          user-select: none;
+        }
+      }
+    }
+    .poweredByIcon {
+      color: white;
+      display: flex;
+      flex-direction: column;
+      height: 38px;
+      width: 98px;
+      opacity: 0.5;
+      align-self: center;
+      text-align: center;
+      svg {
+        fill: white;
+      }
+    }
+    .mouseIcon {
+      width: 24.4px;
+      height: 34.6px;
+      object-fit: contain;
+      opacity: 0.5;
+      align-self: center;
+      position: absolute;
+      bottom: 50px;
+      svg {
+        fill: white;
+      }
+    }
+  }
+  .white {
+    background-color: white !important;
+    color: $blue_button_background !important;
+    width: 126px;
+    height: 36px;
+    div {
+      span {
+        color: $blue_button_background !important;
+        font-family: Roboto;
+        font-size: 12px;
+        font-weight: bold;
+      }
+    }
+  }
+  .dark {
+    border: 1px solid $blue_button_background !important;
+    background-color: $blue_button_background !important;
+    color: white !important;
+  }
+  .tealish {
+    border: 1px solid $tealish !important;
+    background-color: $tealish !important;
+    color: white !important;
+  }
+  .whiteBorder {
+    border: 1px solid $white !important;
+  }
+  .howSection {
+    background-color: $dusk-blue;
+  }
+  .antdButton {
+    @include Text-Style;
+    width: 125.2px;
+    height: 44px;
+    border-radius: 4px;
+    border: solid 1px $tealish;
+    background-color: $tealish;
+  }
+  .howDoesItWorkSection {
+    padding-left: 10%;
+    padding-right: 10%;
+    z-index: 10;
+    background-color: $tealish;
+    .sectionBody {
+      align-items: center;
+      justify-content: space-evenly;
+      .image {
+        display: flex;
+        height: 500px;
+      }
+      .imageBody {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        @media screen and (min-width: 1440px) {
+          width: 700px;
+        }
+        .top {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          .copy {
+            min-width: 500px;
+            height: 350px;
+            margin-right: 26px;
+            margin-left: 26px;
+            .ant-steps {
+              .ant-steps-item-process,
+              .ant-steps-item-finish {
+                .ant-steps-item-icon {
+                  border: none;
+                  background-color: white;
+                  .ant-steps-icon {
+                    opacity: 0;
+                  }
+                }
+                .ant-steps-item-content {
+                  .ant-steps-item-title::after {
+                    background-color: white;
+                  }
+                }
+              }
+              .ant-steps-item-wait {
+                opacity: 0.5;
+                .ant-steps-item-icon {
+                  border: none;
+                  background-color: white;
+                  .ant-steps-icon {
+                    opacity: 0;
+                  }
+                }
+                .ant-steps-item-content {
+                  .ant-steps-item-title::after {
+                    background-color: white;
+                    opacity: 0.5;
+                  }
+                }
+              }
+              .ant-steps-item-process {
+                .ant-steps-item-content {
+                  .ant-steps-item-title::after {
+                    background-color: white;
+                    opacity: 0.5;
+                  }
+                }
+              }
+            }
+            .steps-content {
+              margin-top: 50px;
+              margin-bottom: 40px;
+              opacity: 0.7;
+              font-family: Roboto;
+              font-size: 16px;
+              font-weight: normal;
+              font-style: normal;
+              font-stretch: normal;
+              line-height: 1.56;
+              letter-spacing: 0.2px;
+              text-align: left;
+              color: #ffffff;
+              color: var(--white);
+            }
+          }
+          .steps-button {
+            width: 37px;
+            height: 37px;
+            margin-top: 45px;
+            background-color: $white_three;
+            color: $tealish;
+            border: none;
+            border-radius: 5px;
+            opacity: 0.75;
+            box-shadow: none;
+            span {
+              text-shadow: none;
+            }
+            &:disabled {
+              opacity: 0;
+              &:hover {
+                opacity: 0.25;
+              }
+            }
+            &:hover {
+              opacity: 1;
+            }
+          }
+        }
+        .bottom {
+          width: 100%;
+          display: flex;
+          justify-content: flex-start;
+          .sectionButtons {
+            margin-left: 63px;
+          }
+        }
+      }
+    }
+  }
+  .whatSection {
+    background-color: $flat-blue;
+    .sectionBody {
+      padding-top: 50px;
+      .sectionColumn {
+        .columnIcon {
+          height: 86px;
+          .will-icon {
+            width: 123.4px;
+            height: 84.8px;
+            object-fit: contain;
+          }
+          .clipboard-icon {
+            width: 62.2px;
+            height: 85.1px;
+            object-fit: contain;
+          }
+          .property-icon {
+            width: 74.4px;
+            height: 76.9px;
+            object-fit: contain;
+          }
+          .calculator-icon {
+            width: 58.8px;
+            height: 79.9px;
+            object-fit: contain;
+          }
+        }
+      }
+    }
+  }
+  .aboutSection {
+    background-color: $dusk-blue;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding-left: 7%;
+    padding-right: 7%;
+    padding-top: 8%;
+    width: 100%;
+    padding-bottom: 5%;
+    min-height: calc(100% - 150px);
+    .aboutContent {
+      display: flex;
+      flex-direction: column;
+      width: 633px;
+      margin-right: 42px;
+      .aboutHeader {
+        font-family: Roboto;
+        font-size: 30px;
+        font-weight: bold;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 2;
+        letter-spacing: 0.9px;
+        text-align: left;
+        color: $white;
+        margin-top: 0px;
+        margin-bottom: 45px;
+      }
+      .bodyText {
+        opacity: 0.7;
+        font-family: Roboto;
+        font-size: 16px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.56;
+        letter-spacing: 0.2px;
+        text-align: left;
+        color: $white;
+      }
+    }
+    .vr {
+      border-right: 1px solid white;
+      margin-right: 36px;
+      height: calc(100% - 30px);
+      opacity: 0.5;
+    }
+    .contactContent {
+      display: flex;
+      flex-direction: column;
+      color: white;
+      margin-top: 60px;
+      .contactHeading {
+        font-family: Roboto;
+        font-size: 16px;
+        font-weight: bold;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.56;
+        letter-spacing: 0.2px;
+        text-align: left;
+        color: $white;
+      }
+      .bodyText {
+        opacity: 0.7;
+        font-family: Roboto;
+        font-size: 16px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.56;
+        letter-spacing: 0.2px;
+        text-align: left;
+        color: $white;
+      }
+      .subscribe {
+        font-family: Roboto;
+        font-size: 16px;
+        font-weight: bold;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.56;
+        letter-spacing: 0.2px;
+        text-align: left;
+        color: $white;
+        width: unset;
+        margin-bottom: 18px;
+      }
+      .subscribeButton {
+        background-color: white !important;
+        span {
+          color: $navbar_background_blue;
+        }
+      }
+    }
+  }
+}
+
+.subscribeModal {
+  width: 450px;
+  height: 318px;
+  border-radius: 11px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  background-color: $white;
+  .ant-modal-content {
+    border-radius: 11px;
+    .ant-modal-close {
+      top: 10px;
+      right: 10px;
+      .ant-modal-close-x {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 24px;
+        background-color: $white-two;
+      }
+    }
+    .ant-modal-header {
+      border-radius: 11px;
+      background-color: $white;
+      border: unset;
+      .ant-modal-title {
+        font-family: Roboto;
+        font-size: 20px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 2;
+        letter-spacing: normal;
+        text-align: center; // color: $steel;
+        margin-top: 35px;
+      }
+    }
+    .ant-modal-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 0px;
+      .dlgText {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.15;
+        letter-spacing: normal;
+        text-align: center;
+        color: $blue-grey;
+        margin-bottom: 27px;
+      }
+      .ant-input {
+        width: 260px;
+        height: 40px;
+        border-radius: 20px;
+        background-color: $white;
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1;
+        letter-spacing: normal;
+        text-align: left;
+        color: $blue-grey;
+      }
+      .primaryButton {
+        width: 260px;
+        height: 40px;
+        border: unset;
+        border-radius: 20px;
+        background-color: $tealish;
+        &:visited {
+          background-color: $tealish;
+        }
+        &:hover,
+        &:focus {
+          background-color: lighten($color: $tealish, $amount: 10)
+        }
+        &:active {
+          background-color: darken($color: $tealish, $amount: 10)
+        }
+      }
+    }
+  }
+}
+
+.successModal {
+  height: 250px;
+  .ant-modal-body {
+    padding-top: 24px;
+    .successIcon {
+      width: 70px;
+      height: 70px;
+      align-self: center;
+      margin-top: 30px;
+      margin-bottom: 35px;
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}

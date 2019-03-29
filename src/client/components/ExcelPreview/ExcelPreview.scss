@@ -1,0 +1,101 @@
+/*
+ * @Author: Michael Harrison
+ * @Date:   2019-01-11T12:10:33+11:00
+ * @Last modified by:   Michael Harrison
+ * @Last modified time: 2019-01-14T13:20:19+11:00
+ */
+
+@import "../../style/global_colors.scss";
+.excelPreviewWrapper {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 10px;
+  flex-direction: column;
+  padding-top: 5%;
+  flex: 1;
+  min-width: 0;
+  overflow-x: scroll;
+  max-width: 100%;
+  .excelPreviewControls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 3.5%;
+    .selectSheet {
+      width: 200px;
+      .ant-select-selection-selected-value {
+        opacity: 0.4 !important;
+      }
+    }
+    .sheetButtons {
+      display: flex;
+      flex-direction: row;
+      .sheetButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        border: 1px solid $blue-grey;
+        width: 32px;
+        height: 32px;
+        opacity: 0.4;
+        .sheetLabel {
+          color: $blue-grey;
+          user-select: none;
+        }
+      }
+      .sheetButton:hover {
+        opacity: 1;
+        cursor: pointer;
+      }
+      .prevSheetButton {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+      .nextSheetButton {
+        border-left: none;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+    }
+  }
+  .excelPreviewData {
+    flex-grow: 1;
+    overflow: scroll;
+    .data-grid-container {
+      .data-grid {
+        tr {
+          min-height: 12px;
+          max-height: 32px;
+          display: flex;
+          padding-top: 5px;
+          border: none;
+          border-bottom: 1px solid rgba(128, 132, 149, 0.2);
+          .cell:hover {
+            font-weight: 500;
+          }
+        }
+        tr:hover {
+          background-color: #f4f4f4;
+        }
+        .cell {
+          overflow-x: hidden;
+          border: none;
+          color: $blue-grey;
+          font-size: 12px;
+          border-left: none;
+          border-right: none;
+          vertical-align: middle;
+          text-align: left;
+          padding-left: 20px;
+          width: 90px;
+          min-width: 90px;
+          max-width: 90px; //border: none;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "presets": [
+    ["@babel/preset-env"],
+    "@babel/preset-react",
+    "@babel/preset-flow"
+  ],
+  "plugins": [
+    [
+    "@babel/plugin-proposal-decorators", { "legacy": true }],
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-regenerator",
+    "react-hot-loader/babel",
+    [
+      "module-resolver",
+      {
+        "root": ["./src"]
+      }
+    ],
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "libraryDirectory": "es",
+        "style": "css"
+      }
+    ]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        "@babel/preset-env",
+        "@babel/preset-react",
+        "@babel/preset-flow"
+      ],
+      "plugins": ["transform-es2015-modules-commonjs"]
+    }
+  }
+}

@@ -1,0 +1,26 @@
+/*
+ * Created Date: Monday August 6th 2018
+ * Author: Michael Harrison
+ * -----
+ * Last Modified: Monday August 6th 2018 1:42:43 pm
+ * Modified By: Michael Harrison at <Mike@Southbanksoftware.com>
+ * -----
+ *
+ */
+
+// Use IntelliSense to learn about possible attributes.
+// Hover to view descriptions of existing attributes.
+// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch via NPM",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "start", "WDS"],
+      "port": 8000
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.534 36.918">
+    <defs>
+        <style>
+            .cls-1{fill:#1e557b}
+        </style>
+    </defs>
+    <g id="documnets-icon" transform="translate(-265.051 -497.88)">
+        <path id="Path_158" d="M29 25H13.615a.615.615 0 0 0 0 1.231H29A.615.615 0 0 0 29 25z" class="cls-1" data-name="Path 158" transform="translate(260.05 488.262)"/>
+        <path id="Path_159" d="M13.615 18.231h6.153a.615.615 0 1 0 0-1.231h-6.153a.615.615 0 0 0 0 1.231z" class="cls-1" data-name="Path 159" transform="translate(260.05 491.34)"/>
+        <path id="Path_160" d="M29 33H13.615a.615.615 0 1 0 0 1.231H29A.615.615 0 1 0 29 33z" class="cls-1" data-name="Path 160" transform="translate(260.05 485.185)"/>
+        <path id="Path_161" d="M29 41H13.615a.615.615 0 1 0 0 1.231H29A.615.615 0 1 0 29 41z" class="cls-1" data-name="Path 161" transform="translate(260.05 482.107)"/>
+        <path id="Path_162" d="M29 49H13.615a.615.615 0 0 0 0 1.231H29A.615.615 0 0 0 29 49z" class="cls-1" data-name="Path 162" transform="translate(260.05 479.029)"/>
+        <path id="Path_163" d="M26.458 8.983V0H0v33.841h3.076v3.076h26.458V12.06zM20.92 5.168l5.538 5.538.984.984H20.92zM1.231 32.611V1.231h24v6.522l-4.68-4.677H3.076v29.535zm3.076 3.076V4.307H19.69v8.614h8.61v22.766z" class="cls-1" data-name="Path 163" transform="translate(265.051 497.88)"/>
+    </g>
+</svg>

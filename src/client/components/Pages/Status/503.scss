@@ -1,0 +1,51 @@
+/*
+ * Users/mike/SouthbankSoftware/provendocs/code/provendocs
+ * Created Date: Friday August 10th 2018
+ * Author: Michael Harrison
+ * -----
+ * Last Modified: Friday October 5th 2018 12:20:56 pm
+ * Modified By: Michael Harrison at <Mike@Southbanksoftware.com>
+ * -----
+ *
+ */
+
+@import "../../../style/global_colors.scss";
+.serverDown {
+  height: auto !important;
+  .heroSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    padding-bottom: 100px;
+    .heroText {
+      display: flex;
+      align-self: center;
+      justify-content: center;
+      width: 715px;
+      font-size: 60px;
+      font-weight: bold;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1;
+      letter-spacing: 1.8px;
+      text-align: center;
+      color: #ffffff;
+    }
+    .heroSubtitle {
+      display: flex;
+      align-self: center;
+      justify-content: center;
+      width: 427px;
+      opacity: 0.7;
+      font-size: 16px;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.19;
+      letter-spacing: normal;
+      text-align: center;
+      color: #ffffff;
+    }
+  }
+}

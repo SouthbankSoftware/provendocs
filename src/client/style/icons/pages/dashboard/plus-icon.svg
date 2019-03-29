@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 47.41 47.411">
+    <defs>
+        <style>
+            .cls-1{fill:#fff}
+        </style>
+    </defs>
+    <g id="upload-icon" transform="translate(-383.367 -536.63)">
+        <path id="Path_2169" d="M23.705 0a23.705 23.705 0 1 0 23.706 23.705A23.727 23.727 0 0 0 23.705 0zm0 43.734a20.029 20.029 0 1 1 20.029-20.029 20.048 20.048 0 0 1-20.029 20.029z" class="cls-1" data-name="Path 2169" transform="translate(383.368 536.63)"/>
+        <path id="Path_2170" d="M157.287 144.477h-7.343v-7.343a1.833 1.833 0 0 0-3.667 0v7.343h-7.343a1.833 1.833 0 0 0 0 3.667h7.343v7.343a1.833 1.833 0 0 0 3.667 0v-7.343h7.343a1.833 1.833 0 1 0 0-3.667z" class="cls-1" data-name="Path 2170" transform="translate(258.964 413.858)"/>
+    </g>
+</svg>

@@ -1,0 +1,34 @@
+/*
+ * Users/mike/SouthbankSoftware/provendocs/code/provendocs
+ * Created Date: Thursday August 23rd 2018
+ * Author: Michael Harrison
+ * -----
+ * Last Modified: Thursday August 23rd 2018 12:14:33 pm
+ * Modified By: Michael Harrison at <Mike@Southbanksoftware.com>
+ * -----
+ *
+ */
+
+.loadingWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .loadingSpinner {
+        margin-bottom: 16px;
+    }
+    .loadingMessage {
+        opacity: 0.5;
+        color: white;
+        margin-top: 10px;
+    }
+}
+
+.isFullScreen_true {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

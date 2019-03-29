@@ -1,0 +1,613 @@
+/*
+ * Created Date: Monday August 6th 2018
+ * Author: Michael Harrison
+ * Last Modified: Monday August 6th 2018 2:20:48 pm
+ * Modified By: Michael Harrison at <Mike@Southbanksoftware.com>
+ */
+
+@import "../../style/global_colors.scss";
+@import "../../style//global_mixins.scss";
+
+.loginSignupRoot {
+  width: 100%;
+  height: 100%;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  .pageCenter {
+    display: flex;
+    flex-direction: column;
+
+    .pageIcon {
+      width: 70px;
+      height: 70px;
+      align-self: center;
+      margin-bottom: 30px;
+    }
+
+    .pageMessage {
+      height: 70px;
+      display: flex;
+      flex-direction: column;
+
+      .sectionTitle {
+        margin-bottom: 20px;
+        font-family: Roboto;
+        font-size: 20px;
+        font-weight: bold;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.2;
+        letter-spacing: normal;
+        color: $white;
+      }
+
+      .sectionText {
+        opacity: 0.7;
+        @include text_default;
+      }
+    }
+
+    .antForm {
+      width: 270px;
+      align-self: center;
+      padding-top: 20px;
+
+      .ant-input {
+        @include text_default;
+        height: 46px;
+        border: solid 1px $white;
+        border-radius: 0px;
+        padding: 4px 24px;
+        background-color: rgba(256, 256, 256, 0)
+      }
+
+      .ant-form-explain {
+        padding: 5px 18px;
+        font-size: 12px;
+        color: $pale-gold;
+      }
+
+      .antFormItem {
+        .ant-form-item-children {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .antCheckBox {
+          width: 150px;
+          font-family: Roboto;
+          font-size: 15px;
+          font-weight: normal;
+          font-style: normal;
+          font-stretch: normal;
+          line-height: 1.67;
+          letter-spacing: normal;
+          text-align: left;
+          color: $gunmetal;
+        }
+
+        .linkRight {
+          margin-left: 5px;
+          width: 150px;
+          font-family: Roboto;
+          font-size: 15px;
+          font-weight: normal;
+          font-style: normal;
+          font-stretch: normal;
+          line-height: 1.67;
+          letter-spacing: normal;
+          text-align: right;
+          color: $gunmetal;
+        }
+
+        .linkLeft {
+          margin-left: 5px;
+          width: 150px;
+          font-family: Roboto;
+          font-size: 15px;
+          font-weight: normal;
+          font-style: normal;
+          font-stretch: normal;
+          line-height: 1.67;
+          letter-spacing: normal;
+          text-align: left;
+          color: $gunmetal;
+        }
+      }
+    }
+  }
+
+  .antBtn {
+    @include Text-Style;
+    height: 50px;
+    width: 185px;
+    text-align: center;
+    border: unset;
+  }
+
+  .linkBtn {
+    @include Text-Style;
+    border-radius: 5px;
+    height: 50px;
+    width: 185px;
+    line-height: 4.0;
+    text-align: center;
+    text-decoration: none;
+    color: $white;
+  }
+
+  .oAuthButton {
+    width: 263px;
+    height: 44px;
+    border: unset;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+
+    .button-text {
+      height: 100%;
+      font-size: 12px;
+      font-weight: 500;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.17;
+      letter-spacing: normal;
+      text-align: center;
+      flex-grow: 1;
+      align-self: center;
+      display: flex;
+      flex-direction: row;
+      margin-left: 12px;
+
+      .icon {
+        order: 1;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+
+        svg {
+          width: 24px;
+          height: 24px;
+          margin-top: 10px;
+        }
+      }
+
+      .vr {
+        margin-top: 10px;
+        margin-right: 30px;
+        margin-left: 5px;
+        border-right: 1px solid rgba(256, 256, 256, 0.5);
+        height: 20px;
+        order: 2;
+      }
+
+      span {
+        order: 3;
+        align-self: center;
+        font-size: 12px;
+        color: white;
+      }
+    }
+  }
+
+  // Specific Button Styling
+  .googleButton {
+    background-color: $google_button_background;
+    margin-top: 30px;
+    padding-left: 0px;
+  }
+
+  .githubButton {
+    background-color: $github_button_background;
+  }
+
+  .microsoftButton {
+    background-color: $microsoft_button_background;
+    opacity: 0.5;
+  }
+
+  .facebookButton {
+    background-color: $facebook_button_background;
+    opacity: 0.5;
+  }
+
+  .defaultButton {
+    background: $tealish;
+    margin-top: 30px;
+    color: $white;
+
+    .button-text {
+      justify-content: center;
+
+      span {
+        height: 14px;
+        font-size: 12px;
+        font-weight: bold;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.17;
+        letter-spacing: normal;
+        text-align: left;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .emailButton {
+    background-color: $email_button_background;
+
+    .button-text {
+      justify-content: center;
+    }
+
+    .emailLabel {
+      height: 80%;
+      margin-left: unset !important;
+    }
+  }
+
+  .secondaryButton {
+    width: 130px;
+    background-color: $dusk-blue;
+
+    &:visited {
+      background-color: $dusk-blue;
+    }
+
+    &:hover,
+    &:focus {
+      background-color: lighten($color: $dusk-blue, $amount: 10)
+    }
+
+    &:active {
+      background-color: darken($color: $dusk-blue, $amount: 10)
+    }
+  }
+
+  .primaryButton {
+    width: 130px;
+    background-color: $tealish;
+
+    &:visited {
+      background-color: $tealish;
+    }
+
+    &:hover,
+    &:focus {
+      background-color: lighten($color: $tealish, $amount: 10)
+    }
+
+    &:active {
+      background-color: darken($color: $tealish, $amount: 10)
+    }
+  }
+
+  // Footer Styling
+  .footerLinks {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+
+    .footerText {
+      @include text_default;
+    }
+
+    .linkSpan {
+      margin-left: 5px;
+      width: 37px;
+      height: 13px;
+      font-size: 11px;
+      font-weight: bold;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.18;
+      letter-spacing: normal;
+      color: #ffffff;
+    }
+
+    .vr {
+      border-right: 1px solid white;
+      height: 20px;
+      margin-left: 5px;
+    }
+  }
+
+  .footerLinkSingleButton {
+    margin-top: 30px;
+    justify-content: center;
+  }
+
+  .successIcon {
+    width: 80px;
+    align-self: center;
+    margin-bottom: 30px;
+
+    .a {
+      fill: #32ba7c !important;
+    }
+
+    .b {
+      fill: #0aa06e !important;
+    }
+
+    .c {
+      fill: #fff !important;
+    }
+  }
+
+  .failIcon {
+    width: 80px;
+    align-self: center;
+    margin-bottom: 30px;
+
+    .a {
+      fill: #be6b66 !important;
+    }
+
+    .b {
+      fill: #b75858 !important;
+    }
+
+    .c {
+      fill: #fff !important;
+    }
+
+    .d {
+      fill: #d6d6d6 !important;
+    }
+  }
+
+  #pen-icon {
+    .cls-1 {
+      fill: #bab8b9
+    }
+
+    .cls-2 {
+      fill: #85cdea
+    }
+
+    .cls-3 {
+      fill: #78b7d2
+    }
+
+    .cls-4 {
+      fill: #596674
+    }
+
+    .cls-5 {
+      fill: #565c62
+    }
+
+    .cls-6 {
+      fill: #d9d7d8
+    }
+
+    .cls-7 {
+      fill: #1e557b
+    }
+  }
+
+  #link-icon {
+    .cls-1 {
+      fill: #fcc54e
+    }
+
+    .cls-2 {
+      fill: #2c6245;
+      opacity: .2
+    }
+
+    .cls-3 {
+      fill: #3cb7c6
+    }
+
+    .cls-4 {
+      fill: #1e557b
+    }
+  }
+
+  #error-icon {
+    .cls-1 {
+      fill: #e5646e
+    }
+
+    .cls-2 {
+      fill: #ff8086
+    }
+
+    .cls-3 {
+      fill: #fff
+    }
+
+    .cls-4 {
+      fill: #db4655
+    }
+
+    .cls-5 {
+      fill: #1e557b
+    }
+  }
+
+  #email-tick-icon {
+    .cls-1 {
+      fill: #fdba6d
+    }
+
+    .cls-2 {
+      opacity: .1
+    }
+
+    .cls-3 {
+      opacity: .15
+    }
+
+    .cls-4 {
+      opacity: .05
+    }
+
+    .cls-5 {
+      fill: #b2e59c
+    }
+
+    .cls-6 {
+      fill: #1e557b
+    }
+
+    .cls-7 {
+      fill: #fff
+    }
+
+    .cls-8 {
+      fill: #ccf8ff
+    }
+  }
+
+  #tick-icon {
+    .cls-1 {
+      fill: #b2e59c
+    }
+
+    .cls-2 {
+      fill: #9ad880
+    }
+
+    .cls-3 {
+      fill: #fff
+    }
+
+    .cls-4 {
+      fill: #ccf8ff
+    }
+
+    .cls-5 {
+      fill: #1e557b
+    }
+  }
+
+  #lock-icon {
+    .cls-1 {
+      fill: #d8d7da
+    }
+
+    .cls-2 {
+      fill: #c6c5ca
+    }
+
+    .cls-3 {
+      fill: #ffeb99
+    }
+
+    .cls-4 {
+      fill: #acabb1
+    }
+
+    .cls-5 {
+      fill: #ffde55
+    }
+
+    .cls-6 {
+      fill: #898890
+    }
+
+    .cls-7 {
+      fill: #1e557b
+    }
+  }
+
+  #key-icon {
+    .cls-1 {
+      fill: #e5b965
+    }
+
+    .cls-2 {
+      fill: #cea65b
+    }
+
+    .cls-3 {
+      fill: #ffce71
+    }
+
+    .cls-4 {
+      fill: #1e557b
+    }
+  }
+
+  #welcome-icon {
+    .cls-1 {
+      fill: #79c6e4
+    }
+
+    .cls-2 {
+      opacity: .1
+    }
+
+    .cls-3 {
+      fill: #fda75f
+    }
+
+    .cls-4 {
+      fill: #fbe096
+    }
+
+    .cls-5 {
+      fill: #fff
+    }
+
+    .cls-6 {
+      fill: #1e557b
+    }
+  }
+
+  #clock-icon {
+    .cls-1 {
+      fill: #c86d5c
+    }
+
+    .cls-2 {
+      fill: #efedee
+    }
+
+    .cls-3 {
+      fill: #d2d2d2
+    }
+
+    .cls-4 {
+      fill: #fff
+    }
+
+    .cls-5 {
+      fill: #f2c42c
+    }
+
+    .cls-6 {
+      fill: #1e557b
+    }
+  }
+
+  #paper-plane-icon {
+    .cls-1 {
+      fill: #bab8b9
+    }
+
+    .cls-2 {
+      fill: #efedee
+    }
+
+    .cls-3 {
+      fill: #d4d2d3
+    }
+
+    .cls-4 {
+      fill: #1e557b
+    }
+  }
+}

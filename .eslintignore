@@ -1,0 +1,4 @@
+*.test.js
+*.md
+/dist
+/node_modules

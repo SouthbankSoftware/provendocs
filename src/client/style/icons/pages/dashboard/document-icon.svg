@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41.174 52.153">
+    <defs>
+        <style>
+            .cls-1{fill:#ebe9d9}.cls-2{fill:none}.cls-3{fill:#cdc7ac}
+        </style>
+    </defs>
+    <g id="document-icon" transform="translate(-176.898 -51.958)">
+        <path id="Path_1854" d="M89-190v52.152h41.173v-39.564L117.364-190z" class="cls-1" data-name="Path 1854" transform="translate(87.899 241.959)"/>
+        <path id="Path_1855" d="M89-137.847h41.173V-190H89z" class="cls-2" data-name="Path 1855" transform="translate(87.899 241.958)"/>
+        <path id="Path_1856" d="M95.915-174.443h22.874a.907.907 0 0 0 .915-.9.907.907 0 0 0-.915-.9H95.915a.907.907 0 0 0-.915.9.907.907 0 0 0 .915.9" class="cls-3" data-name="Path 1856" transform="translate(90.133 247.083)"/>
+        <path id="Path_1857" d="M95.915-179.684h9.149a.907.907 0 0 0 .916-.9.907.907 0 0 0-.916-.9h-9.149a.907.907 0 0 0-.915.9.907.907 0 0 0 .915.9" class="cls-3" data-name="Path 1857" transform="translate(90.133 245.131)"/>
+        <path id="Path_1858" d="M118.789-171H95.915a.907.907 0 0 0-.915.9.907.907 0 0 0 .915.9h22.874a.907.907 0 0 0 .915-.9.907.907 0 0 0-.915-.9" class="cls-3" data-name="Path 1858" transform="translate(90.133 249.035)"/>
+        <path id="Path_1859" d="M118.789-165.758H95.915a.907.907 0 0 0-.915.9.907.907 0 0 0 .915.9h22.874a.907.907 0 0 0 .915-.9.907.907 0 0 0-.915-.9" class="cls-3" data-name="Path 1859" transform="translate(90.133 250.987)"/>
+        <path id="Path_1860" d="M118.789-160.517H95.915a.907.907 0 0 0-.915.9.907.907 0 0 0 .915.9h22.874a.907.907 0 0 0 .915-.9.907.907 0 0 0-.915-.9" class="cls-3" data-name="Path 1860" transform="translate(90.133 252.939)"/>
+        <path id="Path_1861" d="M109.667-190v12.588h12.809z" class="cls-3" data-name="Path 1861" transform="translate(95.596 241.958)"/>
+    </g>
+</svg>

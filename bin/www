@@ -1,0 +1,23 @@
+var app = require('../dist/server');
+var port = process.env.PROVENDOCS_PORT || 8888
+app.listen(port, function() {
+    console.log('__________________________________________________')
+    console.log('\n\n ___                        ___');
+    console.log('| _ \\_ _ _____ _____ _ _   |   \\ ___  __ ___   ');
+    console.log('|  _/ \'_/ _ \\ V / -_\) \' \\  | |\) / _ \\/ _\(_-<   ');
+    console.log('|_| |_| \\___/\\_/\\___|_||_| |___/\\___/\\__/__/__ ');
+    console.log('| |__ _  _  | _ \\_ _ _____ _____ _ _ |   \\| _ \)');
+    console.log('| \'_ \\ || | |  _/ \'_/ _ \\ V / -_\) \' \\| |\) | _ \\');
+    console.log('|_.__/\\_, | |_| |_| \\___/\\_/\\___|_||_|___/|___/');
+    console.log('      |__/                                     \n\n');
+    console.log('__________________________________________________')
+    console.log('');
+    console.log('Provendocs Server now Running at localhost:' + port);
+    console.log('');
+    console.log('       \"You can\'t argue with the Blockchain.\"       ');
+    console.log('');
+    console.log('Version 0.1                     Southbank Software');
+    console.log('');
+    console.log('__________________________________________________')
+    console.log('\n\n');
+});

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.248 19.248">
+    <defs>
+        <style>
+            .cls-1{fill:#fff}.cls-2{fill:#32ba7c}
+        </style>
+    </defs>
+    <g id="tick-icon" transform="translate(-756.376 -403.376)">
+        <circle id="white-circle" cx="9.624" cy="9.624" r="9.624" class="cls-1" transform="translate(756.376 403.376)"/>
+        <circle id="green-circle" cx="8.662" cy="8.662" r="8.662" class="cls-2" transform="translate(757.338 404.338)"/>
+        <path id="Path_131" d="M88.537 201.715a.572.572 0 0 1 0 .794l-.443.443a.572.572 0 0 1-.794 0L85.36 201a.572.572 0 0 1 0-.794l.443-.443a.572.572 0 0 1 .794 0z" class="cls-1" data-name="Path 131" transform="translate(677.842 212.184)"/>
+        <path id="Path_132" d="M167.92 125.36a.572.572 0 0 1 .794 0l.443.443a.572.572 0 0 1 0 .794l-3.36 3.345a.572.572 0 0 1-.794 0l-.443-.443a.572.572 0 0 1 0-.794z" class="cls-1" data-name="Path 132" transform="translate(600.154 285.164)"/>
+    </g>
+</svg>

@@ -1,0 +1,89 @@
+/*
+ * Users/mike/SouthbankSoftware/provendocs/code/provendocs
+ * Created Date: Tuesday August 14th 2018
+ * Author: Michael Harrison
+ * -----
+ * Last Modified: Friday August 31st 2018 3:24:14 pm
+ * Modified By: Michael Harrison at <Mike@Southbanksoftware.com>
+ * -----
+ *
+ */
+
+@import "../../style/global_colors.scss";
+
+.tabbedPanelWrapper {
+  .tabbedPanel {
+    color: white;
+
+    .bp3-tab-list {
+      width: 100%;
+
+      .bp3-popover-target {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .bp3-tab {
+        display: flex;
+        flex-direction: column;
+        color: white;
+        background-color: $dashboard_panel_background !important;
+        opacity: 0.5;
+        width: 38px;
+        height: 38px;
+        margin-right: 0px !important;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        text-align: center;
+
+        svg {
+          width: 15px;
+          height: 15px;
+          fill: white !important;
+        }
+      }
+
+      .bp3-tab:focus {
+        outline: none;
+      }
+
+      .bp3-tab[aria-selected="true"] {
+        opacity: 1;
+      }
+
+      .extraTabContent {
+        opacity: 0.5;
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 10px;
+
+        div {
+          display: flex;
+          flex-direction: row;
+        }
+      }
+    }
+
+    .bp3-tab-panel {
+      background-color: $dashboard_panel_background;
+      border-radius: 3.5%;
+      border-top-left-radius: 0px;
+      margin-top: 0px;
+
+      .wrapper {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-grow: 1;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    .bp3-tab-indicator-wrapper {
+      display: none;
+    }
+  }
+}

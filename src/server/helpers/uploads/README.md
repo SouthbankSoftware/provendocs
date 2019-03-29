@@ -1,0 +1,1 @@
+This folder will contain temporary upload files before they are added to MongoDB.

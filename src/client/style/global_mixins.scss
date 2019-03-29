@@ -1,0 +1,56 @@
+/*
+ * @Author: Wahaj Shamim <wahaj>
+ * @Date:   2019-03-05T12:50:28+11:00
+ * @Email:  wahaj@southbanksoftware.com
+ * @Last modified by:   wahaj
+ * @Last modified time: 2019-03-05T12:55:07+11:00
+ * 
+ *
+ */
+
+@mixin hero_text {
+  font-family: Roboto;
+  font-size: 60px;
+  font-weight: bold;
+  line-height: 1;
+  letter-spacing: 1.8px;
+  text-align: center;
+  color: $white;
+}
+
+@mixin subtitle {
+  font-family: Roboto;
+  font-size: 16px;
+  line-height: 1.19;
+  text-align: center;
+  color: $white;
+}
+
+@mixin body_text {
+  font-family: Roboto;
+  font-size: 16px;
+  line-height: 1.56;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: $white;
+}
+
+@mixin Text-Style {
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1.17;
+  text-align: left;
+  color: $white;
+}
+
+@mixin text_default {
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.17;
+  letter-spacing: normal;
+  color: $white;
+}

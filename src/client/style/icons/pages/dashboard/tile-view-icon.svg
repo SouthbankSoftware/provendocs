@@ -1,0 +1,19 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.255 9.077">
+    <defs>
+        <style>
+            .cls-1{}
+        </style>
+    </defs>
+    <g id="tile-view-icon" transform="translate(-548.745 -268)">
+        <path id="Path_517" d="M2.243 0H.356A.336.336 0 0 0 0 .356v1.887a.357.357 0 0 0 .356.357h1.887a.357.357 0 0 0 .357-.357V.356A.336.336 0 0 0 2.243 0z" class="cls-1" data-name="Path 517" transform="translate(548.745 268)"/>
+        <path id="Path_518" d="M11.443 0H9.556A.357.357 0 0 0 9.2.356v1.887a.357.357 0 0 0 .356.356h1.887a.357.357 0 0 0 .356-.356V.356A.336.336 0 0 0 11.443 0z" class="cls-1" data-name="Path 518" transform="translate(542.82 268)"/>
+        <path id="Path_519" d="M20.943 0h-1.887a.357.357 0 0 0-.356.356v1.887a.357.357 0 0 0 .356.356h1.887a.357.357 0 0 0 .356-.356V.356A.381.381 0 0 0 20.943 0z" class="cls-1" data-name="Path 519" transform="translate(536.701 268)"/>
+        <path id="Path_520" d="M2.243 9H.356A.357.357 0 0 0 0 9.356v1.887a.357.357 0 0 0 .356.356h1.887a.357.357 0 0 0 .356-.356V9.356A.336.336 0 0 0 2.243 9z" class="cls-1" data-name="Path 520" transform="translate(548.745 262.204)"/>
+        <path id="Path_521" d="M11.443 9H9.556a.357.357 0 0 0-.356.356v1.887a.357.357 0 0 0 .356.356h1.887a.357.357 0 0 0 .356-.356V9.356A.336.336 0 0 0 11.443 9z" class="cls-1" data-name="Path 521" transform="translate(542.82 262.204)"/>
+        <path id="Path_522" d="M20.943 9h-1.887a.357.357 0 0 0-.356.356v1.887a.357.357 0 0 0 .356.356h1.887a.357.357 0 0 0 .356-.356V9.356A.381.381 0 0 0 20.943 9z" class="cls-1" data-name="Path 522" transform="translate(536.701 262.204)"/>
+        <path id="Path_523" d="M2.243 18.2H.356a.357.357 0 0 0-.356.356v1.887a.357.357 0 0 0 .356.356h1.887a.357.357 0 0 0 .356-.356v-1.887a.336.336 0 0 0-.356-.356z" class="cls-1" data-name="Path 523" transform="translate(548.745 256.279)"/>
+        <path id="Path_524" d="M11.443 18.2H9.556a.357.357 0 0 0-.356.356v1.887a.357.357 0 0 0 .356.356h1.887a.357.357 0 0 0 .356-.356v-1.887a.336.336 0 0 0-.356-.356z" class="cls-1" data-name="Path 524" transform="translate(542.82 256.279)"/>
+        <path id="Path_525" d="M20.943 18.2h-1.887a.357.357 0 0 0-.356.356v1.887a.357.357 0 0 0 .356.356h1.887a.357.357 0 0 0 .356-.356v-1.887a.381.381 0 0 0-.356-.356z" class="cls-1" data-name="Path 525" transform="translate(536.701 256.279)"/>
+    </g>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24.368 34.599">
+    <defs>
+        <style>
+            .cls-1{opacity:.5}.cls-2{fill:#fff}
+        </style>
+    </defs>
+    <g id="mouse-icon" class="cls-1" transform="translate(-628 -675)">
+        <path id="Path_232" d="M12.184 0A12.293 12.293 0 0 0 0 12.373v9.853A12.293 12.293 0 0 0 12.184 34.6a12.275 12.275 0 0 0 12.184-12.334v-9.893A12.3 12.3 0 0 0 12.184 0zm9.886 22.266a9.978 9.978 0 0 1-9.893 10.042 10 10 0 0 1-9.893-10.082v-9.853a10 10 0 0 1 9.893-10.082 10 10 0 0 1 9.893 10.082z" class="cls-2" data-name="Path 232" transform="translate(628 675)"/>
+        <path id="Path_233" d="M164.449 140.1a1.148 1.148 0 0 0-1.149 1.149v4.007a1.149 1.149 0 1 0 2.3 0v-4.007a1.157 1.157 0 0 0-1.151-1.149z" class="cls-2" data-name="Path 233" transform="translate(475.735 544.367)"/>
+    </g>
+</svg>

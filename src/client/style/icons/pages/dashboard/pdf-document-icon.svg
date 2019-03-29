@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.255 52.111">
+    <defs>
+        <style>
+            .cls-1{fill:#ece9d9}.cls-2{fill:#cdc8ad}.cls-3{fill:#ef582f;opacity:.7}.cls-4{fill:#fff}
+        </style>
+    </defs>
+    <g id="pdf-document-icon" transform="translate(-362 -52)">
+        <path id="Path_2572" d="M40.278 12.461L27.742 0H.1v51.734h40.178z" class="cls-1" data-name="Path 2572" transform="translate(361.976 52)"/>
+        <path id="Path_2573" d="M11.606 26.613h22.28a.906.906 0 1 0 0-1.813h-22.28a.873.873 0 0 0-.906.906.918.918 0 0 0 .906.907z" class="cls-2" data-name="Path 2573" transform="translate(359.381 45.93)"/>
+        <path id="Path_2574" d="M11.606 17.113h8.912a.906.906 0 1 0 0-1.813h-8.912a.873.873 0 0 0-.906.906.918.918 0 0 0 .906.907z" class="cls-2" data-name="Path 2574" transform="translate(359.381 48.255)"/>
+        <path id="Path_2575" d="M33.961 34.3H11.606a.906.906 0 0 0 0 1.813h22.28a.873.873 0 0 0 .906-.906.857.857 0 0 0-.831-.907z" class="cls-2" data-name="Path 2575" transform="translate(359.381 43.605)"/>
+        <path id="Rectangle_174" d="M0 0h40.178v19.561H0z" class="cls-3" data-name="Rectangle 174" transform="translate(362 84.551)"/>
+        <path id="Path_2576" d="M36.7 0v12.461h12.537z" class="cls-2" data-name="Path 2576" transform="translate(353.017 52)"/>
+        <path id="Path_2577" d="M12.364 56.293v3.4H10.4V50.1h3.776a4.664 4.664 0 0 1 1.888.378 2.666 2.666 0 0 1 1.284 1.133 3.045 3.045 0 0 1 .453 1.662 2.623 2.623 0 0 1-.982 2.19 4.1 4.1 0 0 1-2.643.831zm0-1.586H14.1a1.922 1.922 0 0 0 1.208-.378 1.227 1.227 0 0 0 .378-1.057 1.855 1.855 0 0 0-.378-1.133 1.537 1.537 0 0 0-1.133-.453h-1.811z" class="cls-4" data-name="Path 2577" transform="translate(359.454 39.737)"/>
+        <path id="Path_2578" d="M21.9 59.691V50.1h2.945a4.614 4.614 0 0 1 2.266.6 4.005 4.005 0 0 1 1.589 1.59 4.958 4.958 0 0 1 .529 2.417v.453a4.661 4.661 0 0 1-.529 2.34 4.005 4.005 0 0 1-1.586 1.586 4.614 4.614 0 0 1-2.266.6H21.9zm1.964-8.005v6.419h.982a2 2 0 0 0 1.737-.755 3.6 3.6 0 0 0 .6-2.19v-.529a3.446 3.446 0 0 0-.6-2.19 2 2 0 0 0-1.737-.755h-.982z" class="cls-4" data-name="Path 2578" transform="translate(356.64 39.737)"/>
+        <path id="Path_2579" d="M39.24 55.764h-3.776v3.927H33.5V50.1h6.268v1.586h-4.3v2.492h3.772z" class="cls-4" data-name="Path 2579" transform="translate(353.8 39.737)"/>
+    </g>
+</svg>

@@ -1,0 +1,28 @@
+{
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "legacyDecorators": true
+    }
+  },
+  "rules": {
+    "react/prefer-stateless-function": "warn",
+    "react/jsx-one-expression-per-line": "warn",
+    "react/destructuring-assignment": "warn",
+    "react/no-array-index-key": "warn",
+    "import/no-extraneous-dependencies": "off",
+    "no-underscore-dangle": "off",
+    "no-return-assign": "warn",
+    "max-len": [1, 180, 2, {"ignoreUrls": true}],
+    "no-param-reassign": "off",
+    "jsx-a11y/click-events-have-key-events": "warn",
+    "no-case-declarations": "warn",
+    "class-methods-use-this": "warn",
+    "consistent-return": "warn"
+  }
+}

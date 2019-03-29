@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44.195 50.18">
+    <defs>
+        <style>
+            .cls-1{fill:#fff}
+        </style>
+    </defs>
+    <g id="view-documents-icon" transform="translate(-62.289 -342.897)">
+        <path id="Path_502" d="M30.02 85.4H4.363A4.181 4.181 0 0 0 0 89.367v33.471a4.181 4.181 0 0 0 4.363 3.962H30.02a4.181 4.181 0 0 0 4.363-3.967V89.367A4.2 4.2 0 0 0 30.02 85.4zm1.3 37.427a1.257 1.257 0 0 1-1.311 1.192H4.352a1.257 1.257 0 0 1-1.311-1.192v-33.46a1.257 1.257 0 0 1 1.311-1.192h25.657a1.257 1.257 0 0 1 1.311 1.192z" class="cls-1" data-name="Path 502" transform="translate(62.29 266.273)"/>
+        <path id="Path_503" d="M116.82 0H91.163A4.181 4.181 0 0 0 86.8 3.967a1.533 1.533 0 0 0 3.052 0 1.257 1.257 0 0 1 1.311-1.192h25.657a1.257 1.257 0 0 1 1.311 1.192v33.47a1.257 1.257 0 0 1-1.311 1.192 1.394 1.394 0 1 0 0 2.775 4.182 4.182 0 0 0 4.363-3.967V3.967A4.182 4.182 0 0 0 116.82 0z" class="cls-1" data-name="Path 503" transform="translate(-14.699 342.897)"/>
+        <path id="Rectangle_819" d="M0 0h19.146v3.191H0z" class="cls-1" data-name="Rectangle 819" transform="translate(70.28 361.953)"/>
+        <path id="Rectangle_820" d="M0 0h19.146v3.191H0z" class="cls-1" data-name="Rectangle 820" transform="translate(70.28 367.686)"/>
+        <path id="Path_504" d="M0 0h5.273v3.191H0z" class="cls-1" data-name="Path 504" transform="translate(70.28 373.235)"/>
+    </g>
+</svg>

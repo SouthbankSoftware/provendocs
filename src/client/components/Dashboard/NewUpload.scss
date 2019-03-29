@@ -1,0 +1,222 @@
+/*
+ * Users/mike/SouthbankSoftware/provendocs/code/provendocs
+ * Created Date: Tuesday August 14th 2018
+ * Author: Michael Harrison
+ * -----
+ * Last Modified: Friday August 31st 2018 3:24:14 pm
+ * Modified By: Michael Harrison at <Mike@Southbanksoftware.com>
+ * -----
+ *
+ */
+
+@import "../../style/global_colors.scss";
+.newFileUpload {
+  .contentWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    background-color: $dashboard_panel_background;
+    border-radius: 0.5em;
+    border-top-left-radius: 0;
+    justify-content: center;
+    padding: 5%;
+    overflow-y: scroll;
+    .continueButton {
+      background-color: $tealish;
+      color: white;
+      border: none;
+    }
+    .continueButton:hover {
+      background-color: $flat_blue;
+      border: 1px solid white;
+    }
+    .dropZone {
+      border-radius: 0.5em;
+      width: 100%;
+      height: 100%;
+    }
+    .activeDropZone {
+      .chooseFilesWrapper {
+        background-color: $dusk-blue;
+        border-radius: 0.5em;
+        opacity: 0.5;
+      }
+    }
+    .acceptDropZone {
+      .chooseFilesWrapper {
+        border: 2px dashed $greeny-blue;
+        border-radius: 0.5em;
+      }
+    }
+    .rejectDropZone {
+      .chooseFilesWrapper {
+        border: 2px dashed $dull-red;
+        border-radius: 0.5em;
+      }
+    }
+  }
+  .full {
+    padding: 0px;
+    background-color: none;
+  }
+  .chooseFilesWrapper {
+    padding: 10px;
+    border: 1px dashed white;
+    border-radius: 1em;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    svg {
+      width: 80px;
+      height: 80px;
+      .a {
+        fill: #b5885b !important;
+      }
+      .b {
+        fill: #fff !important;
+      }
+      .c {
+        fill: #e7eced !important;
+      }
+      .d {
+        fill: #c7cac7 !important;
+      }
+      .e {
+        fill: #f7b563 !important;
+      }
+      .f {
+        fill: #32ba7c !important;
+      }
+    }
+    .sectionTitle {
+      margin-top: 40px;
+    }
+    .sectionMessage {
+      text-align: center;
+    }
+    .messageWrapper {
+      margin: 20px;
+      .messageHeader {
+        margin-bottom: 12px;
+      }
+    }
+    .fileSizeMessage {
+      opacity: 0.7;
+    }
+    .inputWrapper {
+      width: 256px;
+      border-radius: 0.5em;
+      height: 38px;
+      margin-bottom: 38px;
+      margin-top: 38px;
+      background-color: white;
+      input {
+        opacity: 0;
+        height: 100%;
+        width: 100%;
+      }
+      .inputLabel {
+        color: $blue_font_color;
+        position: relative;
+        top: -30px;
+        left: 80px;
+        cursor: default;
+        pointer-events: none;
+      }
+    }
+  }
+  .fileSummaryListWrapper {
+    background-color: $dashboard_panel_background;
+    flex-grow: 1;
+    width: 100%;
+    border-radius: 3.5%;
+    border-top-left-radius: 0px;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 25px;
+    overflow-y: scroll;
+    .row {
+      margin: 0px;
+      height: 22px;
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 18px;
+      .fileSize {
+        opacity: 0.5;
+        margin-left: auto;
+      }
+      .oversize {
+        opacity: 1;
+      }
+      .removeButton {
+        opacity: 0.5;
+        margin-left: 20px;
+        width: 10px;
+        height: 10px;
+        fill: white;
+        align-self: center;
+      }
+      .removeButton:hover {
+        opacity: 1;
+      }
+    }
+    .invalid {
+      color: $pale-gold;
+    }
+    .header {
+      border-bottom: 1px solid rgba(256, 256, 256, 0.1);
+      height: 36px;
+      .headerLabel {
+        font-weight: bold;
+      }
+      .totalLabel {
+        margin-left: auto;
+        opacity: 0.5;
+      }
+    }
+  }
+  .footerButtons {
+    align-self: flex-end;
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-end;
+    .buttons {
+      .bp3-button {
+        background: unset;
+        box-shadow: none;
+        font-family: 'Roboto', sans-serif;
+        width: 126px;
+        height: 37.2px;
+        margin-right: 12px;
+        font-weight: bold;
+        font-size: 12px;
+      }
+      .cancelButton {
+        background-color: $blue_font_color;
+        color: white;
+      }
+      .uploadButton {
+        background-color: white;
+        color: $blue_font_color;
+      }
+    }
+    .bp3-disabled {
+      opacity: 0.3;
+    }
+  }
+  .errorWrapper {
+    svg {
+      min-width: 250px;
+      min-height: 250px;
+    }
+  }
+}

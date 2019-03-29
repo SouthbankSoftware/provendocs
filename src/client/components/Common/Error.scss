@@ -1,0 +1,25 @@
+/*
+ * @Author: Michael Harrison
+ * @Date:   2018-12-12T12:01:04+11:00
+ * @Last modified by:   Michael Harrison
+ * @Last modified time: 2019-01-22T11:03:48+11:00
+ */
+
+.errorWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20%;
+}
+
+.isFullScreen_true {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    svg {
+        margin-bottom: 10px;
+    }
+}
