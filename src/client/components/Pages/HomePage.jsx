@@ -164,7 +164,7 @@ class HomePage extends React.Component<Props, State> {
                 the Blockchain. The content of the documents can be private or shared.
               </span>
               <div className="heroButtons">
-                <a
+                {/*  <a
                   className="watchVideoButton button"
                   href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
                   target="_blank"
@@ -173,7 +173,7 @@ class HomePage extends React.Component<Props, State> {
                   <div className="button-text">
                     <span>Watch Video</span>
                   </div>
-                </a>
+                </a> */}
                 <a className="findOutMoreButton button" href="/signup">
                   <div className="button-text">
                     <span>Get Proving!</span>
@@ -223,7 +223,7 @@ class HomePage extends React.Component<Props, State> {
                   </div>
                   <div className="bottom">
                     <div className="sectionButtons">
-                      <a
+                      {/*  <a
                         className="lightpaper tealish whiteBorder button"
                         href="/litePaper"
                         target="_blank"
@@ -232,8 +232,8 @@ class HomePage extends React.Component<Props, State> {
                         <div className="button-text">
                           <span>Litepaper</span>
                         </div>
-                      </a>
-                      <a
+                      </a> */}
+                      {/*   <a
                         className="watchVideo dark button"
                         href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
                         target="_blank"
@@ -242,7 +242,7 @@ class HomePage extends React.Component<Props, State> {
                         <div className="button-text">
                           <span>Watch Video</span>
                         </div>
-                      </a>
+                      </a> */}
                     </div>
                   </div>
                 </div>
@@ -316,7 +316,7 @@ class HomePage extends React.Component<Props, State> {
                 </div>
               </div>
               <div className="sectionButtons">
-                <a
+                {/*   <a
                   className="lightpaper dark whiteBorder button"
                   href="/litePaper"
                   target="_blank"
@@ -325,8 +325,8 @@ class HomePage extends React.Component<Props, State> {
                   <div className="button-text">
                     <span>Litepaper</span>
                   </div>
-                </a>
-                <a
+                </a> */}
+                {/*  <a
                   className="watchVideo tealish button"
                   href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
                   target="_blank"
@@ -335,7 +335,7 @@ class HomePage extends React.Component<Props, State> {
                   <div className="button-text">
                     <span>Watch Video</span>
                   </div>
-                </a>
+                </a> */}
               </div>
             </div>
             <div className="snap section whatSection" style={sectionStyle}>
@@ -397,7 +397,7 @@ class HomePage extends React.Component<Props, State> {
                 </div>
               </div>
               <div className="sectionButtons">
-                <a
+                {/*                 <a
                   className="lightPaper button"
                   href="/lightPaper"
                   target="_blank"
@@ -406,8 +406,8 @@ class HomePage extends React.Component<Props, State> {
                   <div className="button-text">
                     <span>Litepaper</span>
                   </div>
-                </a>
-                <a
+                </a> */}
+                {/*  <a
                   className="watchVideo dark button"
                   href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
                   target="_blank"
@@ -416,7 +416,7 @@ class HomePage extends React.Component<Props, State> {
                   <div className="button-text">
                     <span>Watch Video</span>
                   </div>
-                </a>
+                </a> */}
               </div>
             </div>
             <div className="snap section aboutSection">
