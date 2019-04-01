@@ -12,7 +12,7 @@ import fs from 'fs';
 import uuidv4 from 'uuid/v4';
 import path from 'path';
 import fetch from 'node-fetch';
-import { convertFileToHTML, decodeFile } from '../helpers/fileHelpers';
+import { convertFileToHTML, decodeFile, reduceFileToPreview } from '../helpers/fileHelpers';
 import { getUserFromToken } from '../helpers/userHelpers';
 import {
   getFilesList,
@@ -317,7 +317,20 @@ module.exports = (app: any) => {
               });
               convertFileToHTML(filePath, fileInfo[0])
                 .then((result) => {
-                  res.status(200).send(result);
+                  reduceFileToPreview(result, fileInfo[0].mimetype).then((reducedResult) => {
+                    res.status(200).send(reducedResult);
+                  }).catch((reductionError) => {
+                    const returnObject = {
+                      level: LOG_LEVELS.ERROR,
+                      severity: STACKDRIVER_SEVERITY.ERROR,
+                      message: 'Failed to reduce file:',
+                      reductionError,
+                      errMsg: reductionError.message,
+                      reqId,
+                    };
+                    logger.log(returnObject);
+                    res.status(400).send(returnObject);
+                  });
                 })
                 .catch((err) => {
                   const returnObject = {
