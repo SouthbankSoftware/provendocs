@@ -4,7 +4,7 @@
  * @Date:   2019-03-25T13:30:22+11:00
  * @Email:  wahaj@southbanksoftware.com
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-01T13:24:58+11:00
+ * @Last modified time: 2019-04-01T13:49:43+11:00
  *
  * Copyright (c) 2019 Southbank Software
  */
@@ -239,13 +239,19 @@ export default class ViewFileThumb extends React.Component<Props, State> {
     ) {
       return <div className="fileTypeFooter img">IMAGE</div>;
     }
-    if (file.mimetype === MIMETYPES.DOC || file.mimetype === MIMETYPES.DOCX) {
+    if (file.mimetype === MIMETYPES.DOC) {
       return <div className="fileTypeFooter doc">DOC</div>;
+    }
+    if (file.mimetype === MIMETYPES.DOCX) {
+      return <div className="fileTypeFooter doc">DOCX</div>;
     }
     if (file.mimetype === MIMETYPES.EMAIL) {
       return <div className="fileTypeFooter email">EMAIL</div>;
     }
-    if (file.mimetype === MIMETYPES.PPT || file.mimetype === MIMETYPES.PPTX) {
+    if (file.mimetype === MIMETYPES.PPT) {
+      return <div className="fileTypeFooter ppt">PPT</div>;
+    }
+    if (file.mimetype === MIMETYPES.PPTX) {
       return <div className="fileTypeFooter ppt">PPTX</div>;
     }
 

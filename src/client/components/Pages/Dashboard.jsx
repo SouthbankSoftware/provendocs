@@ -4,7 +4,7 @@
  * @Author: Michael Harrison
  * @Date:   2018-10-29T20:03:41+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-03-26T16:11:33+11:00
+ * @Last modified time: 2019-04-01T13:46:44+11:00
  */
 
 import React from 'react';
@@ -384,9 +384,9 @@ class Dashboard extends React.Component<Props, State> {
                 <div className={`duplicateItem checked_${item.isDupe}`}>
                   <div className="duplicateName">{item.name}</div>
                   <div className="duplicateSwitch">
-                    <span className="noLabel">No </span>
+                    <span className="noLabel">New Document </span>
                     <Switch
-                      label="Yes"
+                      label="Update"
                       checked={item.isDupe}
                       onChange={() => {
                         item.isDupe = !item.isDupe;
