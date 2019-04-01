@@ -77,6 +77,10 @@ iframe {
       height: 100%;
       min-width: 1200px;
       overflow-x: hidden;
+
+      @media screen and (max-width: 420px) {
+        min-width: 400px;
+      }
     }
 
     .notFound {
