@@ -1,19 +1,22 @@
 /*
  * @Author: Michael Harrison
  * @Date:   2019-03-18T12:47:17+11:00
- * @Last modified by:   wahaj
- * @Last modified time: 2019-03-27T14:35:29+11:00
+ * @Last modified by:   Michael Harrison
+ * @Last modified time: 2019-04-01T16:16:51+11:00
  */
 
 @import "../../style/global_colors.scss";
+
 .homePage {
   scroll-snap-type: mandatory;
   scroll-snap-points-y: repeat(3rem);
   scroll-snap-type: y mandatory;
   background-color: $dusk-blue;
+
   .snap {
     scroll-snap-align: start;
   }
+
   .section {
     display: flex;
     flex-direction: column;
@@ -24,23 +27,28 @@
     padding-top: 6%;
     padding-bottom: 6%;
     color: white;
+
     @media screen and (min-height: 1080px) {
       padding-top: 8%;
       padding-bottom: 8%;
     }
+
     .sectionTitle {
       font-size: 30px;
       font-weight: bold;
       text-align: center;
     }
+
     .sectionBody {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+
       .sectionColumn {
         display: flex;
         flex-direction: column;
         max-width: 25%;
+
         .columnIcon {
           //   width: 100.9px; //   height: 100.9px;
           align-self: center;
@@ -48,10 +56,12 @@
           margin-bottom: 35px;
           display: flex;
           flex-direction: column;
+
           svg {
             width: 100.9px;
             height: 100.9px;
           }
+
           .iconWrapper {
             width: 100%;
             height: 100%;
@@ -61,17 +71,20 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+
             svg {
               width: 50%;
               height: 50%;
             }
           }
         }
+
         .circleIcon {
           margin-bottom: 32px;
           width: 142.9px;
           height: 142.9px;
         }
+
         .columnTitle {
           height: 40px;
           align-self: center;
@@ -81,10 +94,12 @@
           font-weight: normal;
           text-align: center;
           color: $white;
+
           b {
             font-weight: bold;
           }
         }
+
         .columnBody {
           width: 100%;
           padding-left: 7%;
@@ -100,10 +115,12 @@
         }
       }
     }
+
     .sectionButtons {
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
+
       .button {
         width: 126px;
         height: 36px;
@@ -111,13 +128,16 @@
         font-size: 12px;
       }
     }
+
     .leftAlign {
       justify-content: flex-start;
+
       .button {
         margin-left: 0px;
       }
     }
   }
+
   .heroSection {
     position: relative;
     width: 100%;
@@ -129,6 +149,7 @@
     padding-bottom: 100px;
     min-height: 724px;
     background-color: $flat-blue;
+
     .particles {
       opacity: 0.5;
       position: absolute;
@@ -136,10 +157,12 @@
       width: 100%;
       padding-top: 5px;
       padding-bottom: 5px;
+
       canvas {
         height: 724px;
       }
     }
+
     .heroText {
       user-select: none;
       display: flex;
@@ -156,7 +179,15 @@
       text-align: center;
       color: #ffffff;
       margin-bottom: 13px;
+
+      @media screen and (max-width: 420px) {
+        font-size: 30px;
+        width: 100%;
+        height: unset;
+      }
+
     }
+
     .heroSubtitle {
       user-select: none;
       display: flex;
@@ -174,7 +205,14 @@
       text-align: center;
       color: #ffffff;
       margin-bottom: 40px;
+
+      @media screen and (max-width: 420px) {
+        font-size: 16px;
+        width: 100%;
+        height: unset;
+      }
     }
+
     .heroButtons {
       z-index: 10;
       display: flex;
@@ -184,6 +222,7 @@
       width: 440px;
       height: 38px;
       margin-bottom: 62px;
+
       .button {
         border-radius: 0.4em;
         width: 126px;
@@ -191,24 +230,29 @@
         font-size: 12px;
         font-weight: bold;
       }
+
       .watchVideoButton {
         margin-right: 11px;
         background-color: rgba(256, 256, 256, 0.05);
       }
+
       .findOutMoreButton {
         color: white;
         background-color: $blue_button_background;
         border: 1px solid $blue_button_background;
       }
+
       .findOutMoreButton:hover {
         background-color: $blue_button_background_hover;
       }
+
       .button-text {
         span {
           user-select: none;
         }
       }
     }
+
     .poweredByIcon {
       color: white;
       display: flex;
@@ -218,10 +262,12 @@
       opacity: 0.5;
       align-self: center;
       text-align: center;
+
       svg {
         fill: white;
       }
     }
+
     .mouseIcon {
       width: 24.4px;
       height: 34.6px;
@@ -230,16 +276,19 @@
       align-self: center;
       position: absolute;
       bottom: 50px;
+
       svg {
         fill: white;
       }
     }
   }
+
   .white {
     background-color: white !important;
     color: $blue_button_background !important;
     width: 126px;
     height: 36px;
+
     div {
       span {
         color: $blue_button_background !important;
@@ -249,164 +298,348 @@
       }
     }
   }
+
   .dark {
     border: 1px solid $blue_button_background !important;
     background-color: $blue_button_background !important;
     color: white !important;
   }
+
   .tealish {
     border: 1px solid $tealish !important;
     background-color: $tealish !important;
     color: white !important;
   }
+
   .whiteBorder {
     border: 1px solid $white !important;
   }
+
   .howSection {
     background-color: $dusk-blue;
-  }
-  .howDoesItWorkSection {
-    padding-left: 10%;
-    padding-right: 10%;
-    z-index: 10;
-    background-color: $tealish;
-    .sectionBody {
-      align-items: center;
-      justify-content: space-evenly;
-      .image {
-        display: flex;
-        height: 500px;
-      }
-      .imageBody {
-        display: flex;
+
+    @media screen and (max-width: 420px) {
+      .sectionBody {
         flex-direction: column;
-        align-items: center;
-        @media screen and (min-width: 1440px) {
-          width: 700px;
-        }
-        .top {
+
+        .sectionColumn {
+          flex-grow: 1;
+          max-width: unset;
           display: flex;
           flex-direction: row;
-          align-items: center;
-          .copy {
-            min-width: 500px;
-            height: 350px;
-            margin-right: 26px;
-            margin-left: 26px;
-            .ant-steps {
-              .ant-steps-item-process,
-              .ant-steps-item-finish {
-                .ant-steps-item-icon {
-                  border: none;
-                  background-color: white;
-                  .ant-steps-icon {
-                    opacity: 0;
-                  }
-                }
-                .ant-steps-item-content {
-                  .ant-steps-item-title::after {
-                    background-color: white;
-                  }
-                }
-              }
-              .ant-steps-item-wait {
-                opacity: 0.5;
-                .ant-steps-item-icon {
-                  border: none;
-                  background-color: white;
-                  .ant-steps-icon {
-                    opacity: 0;
-                  }
-                }
-                .ant-steps-item-content {
-                  .ant-steps-item-title::after {
-                    background-color: white;
-                    opacity: 0.5;
-                  }
-                }
-              }
-              .ant-steps-item-process {
-                .ant-steps-item-content {
-                  .ant-steps-item-title::after {
-                    background-color: white;
-                    opacity: 0.5;
-                  }
-                }
-              }
-            }
-            .steps-content {
-              margin-top: 50px;
-              margin-bottom: 40px;
-              opacity: 0.7;
-              font-family: Roboto;
-              font-size: 16px;
-              font-weight: normal;
-              font-style: normal;
-              font-stretch: normal;
-              line-height: 1.56;
-              letter-spacing: 0.2px;
-              text-align: left;
-              color: #ffffff;
-              color: var(--white);
+          flex-wrap: wrap;
+
+          .columnIcon {
+            width: 35px;
+            height: 35px;
+            margin-bottom: 10px;
+            ;
+          }
+
+          .columnTitle {
+            margin-bottom: 15px;
+            height: unset;
+            text-align: start;
+            margin-left: 20px;
+
+            b {
+              margin-right: 12px;
             }
           }
-          .steps-button {
-            width: 37px;
-            height: 37px;
-            margin-top: 45px;
-            background-color: $white_three;
-            color: $tealish;
-            border: none;
-            border-radius: 5px;
-            opacity: 0.75;
-            box-shadow: none;
-            span {
-              text-shadow: none;
-            }
-            &:disabled {
-              opacity: 0;
-              &:hover {
-                opacity: 0.25;
-              }
-            }
-            &:hover {
-              opacity: 1;
-            }
-          }
-        }
-        .bottom {
-          width: 100%;
-          display: flex;
-          justify-content: flex-start;
-          .sectionButtons {
-            margin-left: 63px;
+
+          .columnBody {
+            width: 100%;
+            padding: 0px;
+            font-size: 14px;
+            line-height: 1.2;
+            text-align: start;
           }
         }
       }
     }
   }
-  .whatSection {
+}
+
+.howDoesItWorkSection {
+  padding-left: 10%;
+  padding-right: 10%;
+  z-index: 10;
+  background-color: $tealish;
+
+  @media screen and (max-width: 420px) {
+    justify-content: flex-start;
+  }
+
+  .sectionBody {
+    align-items: center;
+    justify-content: space-evenly;
+
+    @media screen and (max-width: 420px) {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .image {
+      display: flex;
+      height: 500px;
+
+      @media screen and (max-width: 420px) {
+        display: none;
+      }
+    }
+
+    .imageBody {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      @media screen and (min-width: 1440px) {
+        width: 700px;
+      }
+
+      @media screen and (max-width: 420px) {
+        flex-grow: 1;
+        justify-content: space-between;
+      }
+
+      .top {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        @media screen and (max-width: 420px) {
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+          height: unset;
+          flex-wrap: wrap;
+
+          .ant-btn {
+            margin: 0px;
+            order: 2;
+          }
+
+          .copy {
+            order: 1;
+          }
+        }
+
+        .copy {
+          min-width: 500px;
+          height: 350px;
+          margin-right: 26px;
+          margin-left: 26px;
+
+          @media screen and (max-width: 420px) {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 30px;
+            min-width: 100%;
+            height: unset;
+            margin-left: unset;
+            margin-right: unset;
+          }
+
+          .ant-steps {
+            @media screen and (max-width: 420px) {
+              .ant-steps-item-content {
+                min-height: unset;
+              }
+            }
+
+            .ant-steps-item-process,
+            .ant-steps-item-finish {
+              .ant-steps-item-icon {
+                border: none;
+                background-color: white;
+
+                .ant-steps-icon {
+                  opacity: 0;
+                }
+              }
+
+              .ant-steps-item-content {
+                .ant-steps-item-title::after {
+                  background-color: white;
+                }
+              }
+            }
+
+            .ant-steps-item-wait {
+              opacity: 0.5;
+
+              .ant-steps-item-icon {
+                border: none;
+                background-color: white;
+
+                .ant-steps-icon {
+                  opacity: 0;
+                }
+              }
+
+              .ant-steps-item-content {
+                .ant-steps-item-title::after {
+                  background-color: white;
+                  opacity: 0.5;
+                }
+              }
+            }
+
+            .ant-steps-item-process {
+              .ant-steps-item-content {
+                .ant-steps-item-title::after {
+                  background-color: white;
+                  opacity: 0.5;
+                }
+              }
+            }
+          }
+
+          .steps-content {
+            margin-top: 50px;
+            margin-bottom: 40px;
+            opacity: 0.7;
+            font-family: Roboto;
+            font-size: 16px;
+            font-weight: normal;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: 1.56;
+            letter-spacing: 0.2px;
+            text-align: left;
+            color: #ffffff;
+            color: var(--white);
+          }
+        }
+
+        .steps-button {
+          width: 37px;
+          height: 37px;
+          margin-top: 45px;
+          background-color: $white_three;
+          color: $tealish;
+          border: none;
+          border-radius: 5px;
+          opacity: 0.75;
+          box-shadow: none;
+
+          @media screen and (max-width: 420px) {
+            margin: 0px;
+            margin-bottom: 20px;
+            margin-right: 20px;
+          }
+
+          span {
+            text-shadow: none;
+          }
+
+          &:disabled {
+            opacity: 0;
+
+            &:hover {
+              opacity: 0.25;
+            }
+          }
+
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
+
+      .bottom {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+
+        .sectionButtons {
+          margin-left: 63px;
+        }
+      }
+    }
+  }
+}
+
+.section.whatSection {
+  @media screen and (max-width: 420px) {
+    .sectionBody {
+      flex-direction: column;
+
+      .sectionColumn {
+        flex-grow: 1;
+        max-width: unset;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        .columnIcon {
+          width: 35px;
+          height: 35px;
+          margin-bottom: 10px;
+
+          svg {
+            width: 40px !important;
+            height: 40px !important;
+          }
+        }
+
+        .columnTitle {
+          margin-bottom: 15px;
+          height: unset;
+          text-align: start;
+          margin-left: 20px;
+
+          b {
+            margin-right: 12px;
+          }
+        }
+
+        .columnBody {
+          width: 100%;
+          padding: 0px;
+          font-size: 14px;
+          line-height: 1.2;
+          text-align: start;
+        }
+      }
+    }
+  }
+
+
+  @media screen and (min-width: 420px) {
     background-color: $flat-blue;
+
     .sectionBody {
       padding-top: 50px;
+
       .sectionColumn {
         .columnIcon {
           height: 86px;
+
+          @media screen and (max-width: 420px) {
+            height: 40px;
+          }
+
           .will-icon {
             width: 123.4px;
             height: 84.8px;
             object-fit: contain;
           }
+
           .clipboard-icon {
             width: 62.2px;
             height: 85.1px;
             object-fit: contain;
           }
+
           .property-icon {
             width: 74.4px;
             height: 76.9px;
             object-fit: contain;
           }
+
           .calculator-icon {
             width: 58.8px;
             height: 79.9px;
@@ -416,100 +649,131 @@
       }
     }
   }
-  .aboutSection {
-    background-color: $dusk-blue;
+}
+
+.aboutSection {
+  background-color: $dusk-blue;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding-left: 7%;
+  padding-right: 7%;
+  padding-top: 8%;
+  width: 100%;
+  padding-bottom: 5%;
+  min-height: calc(100% - 150px);
+
+  .aboutContent {
     display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    padding-left: 7%;
-    padding-right: 7%;
-    padding-top: 8%;
-    width: 100%;
-    padding-bottom: 5%;
-    min-height: calc(100% - 150px);
-    .aboutContent {
-      display: flex;
-      flex-direction: column;
-      width: 633px;
-      margin-right: 42px;
-      .aboutHeader {
-        font-family: Roboto;
-        font-size: 30px;
-        font-weight: bold;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: 2;
-        letter-spacing: 0.9px;
-        text-align: left;
-        color: $white;
-        margin-top: 0px;
-        margin-bottom: 45px;
-      }
-      .bodyText {
-        opacity: 0.7;
-        font-family: Roboto;
-        font-size: 16px;
-        font-weight: normal;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: 1.56;
-        letter-spacing: 0.2px;
-        text-align: left;
-        color: $white;
+    flex-direction: column;
+    width: 633px;
+    margin-right: 42px;
+
+    .aboutHeader {
+      font-family: Roboto;
+      font-size: 30px;
+      font-weight: bold;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 2;
+      letter-spacing: 0.9px;
+      text-align: left;
+      color: $white;
+      margin-top: 0px;
+      margin-bottom: 45px;
+    }
+
+    .bodyText {
+      opacity: 0.7;
+      font-family: Roboto;
+      font-size: 16px;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.56;
+      letter-spacing: 0.2px;
+      text-align: left;
+      color: $white;
+    }
+  }
+
+  .vr {
+    border-right: 1px solid white;
+    margin-right: 36px;
+    height: calc(100% - 30px);
+    opacity: 0.5;
+  }
+
+  .contactContent {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    margin-top: 60px;
+
+    .contactHeading {
+      font-family: Roboto;
+      font-size: 16px;
+      font-weight: bold;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.56;
+      letter-spacing: 0.2px;
+      text-align: left;
+      color: $white;
+    }
+
+    .bodyText {
+      opacity: 0.7;
+      font-family: Roboto;
+      font-size: 16px;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.56;
+      letter-spacing: 0.2px;
+      text-align: left;
+      color: $white;
+    }
+
+    .subscribe {
+      font-family: Roboto;
+      font-size: 16px;
+      font-weight: bold;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.56;
+      letter-spacing: 0.2px;
+      text-align: left;
+      color: $white;
+      width: unset;
+      margin-bottom: 18px;
+    }
+
+    .subscribeButton {
+      background-color: white !important;
+
+      span {
+        color: $navbar_background_blue;
       }
     }
+  }
+
+  @media screen and (max-width: 420px) {
+    flex-direction: column;
+
     .vr {
-      border-right: 1px solid white;
-      margin-right: 36px;
-      height: calc(100% - 30px);
-      opacity: 0.5;
+      display: none;
     }
-    .contactContent {
-      display: flex;
-      flex-direction: column;
-      color: white;
-      margin-top: 60px;
-      .contactHeading {
-        font-family: Roboto;
-        font-size: 16px;
-        font-weight: bold;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: 1.56;
-        letter-spacing: 0.2px;
-        text-align: left;
-        color: $white;
-      }
+
+    .aboutContent {
+      width: 100%;
+
       .bodyText {
-        opacity: 0.7;
-        font-family: Roboto;
-        font-size: 16px;
-        font-weight: normal;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: 1.56;
-        letter-spacing: 0.2px;
-        text-align: left;
-        color: $white;
-      }
-      .subscribe {
-        font-family: Roboto;
-        font-size: 16px;
-        font-weight: bold;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: 1.56;
-        letter-spacing: 0.2px;
-        text-align: left;
-        color: $white;
-        width: unset;
-        margin-bottom: 18px;
-      }
-      .subscribeButton {
-        background-color: white !important;
-        span {
-          color: $navbar_background_blue;
-        }
+        width: 100%;
+        height: unset;
+        line-height: 1.25;
+        font-size: 14px;
+
       }
     }
   }

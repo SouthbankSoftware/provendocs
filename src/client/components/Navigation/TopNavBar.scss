@@ -7,6 +7,7 @@
 
 @import "../../style/global_colors.scss";
 @import "../../style/global_mixins.scss";
+
 .topNavigationRoot {
   background-color: $navbar_background_blue;
   display: flex;
@@ -18,26 +19,35 @@
   max-height: 76px;
   padding-top: 21px;
   padding-bottom: 21px;
+
+  @media screen and (max-width: 420px) {
+    display: none;
+  }
+
   .appLogo {
     width: 262px;
     height: 33px;
     margin-right: 15px;
     display: flex;
     align-items: center;
+
     .docsLogo {
       width: 100px;
       height: 34px;
       margin-right: 10px;
     }
+
     .provendbLogo {
       width: 144px;
       height: 14px;
     }
+
     svg {
       width: 100%;
       height: 100%;
     }
   }
+
   .title {
     opacity: 0.75;
     font-size: 20px;
@@ -50,14 +60,17 @@
     color: #ffffff;
     margin-right: 22px;
   }
+
   .leftButtons {
     float: left;
     display: flex;
     flex-direction: row;
+
     .homeLinks {
       display: flex;
       flex-direction: row;
       align-items: center;
+
       .link {
         opacity: 0.5;
         margin-right: 22px;
@@ -69,19 +82,23 @@
         align-items: center;
         color: white !important;
       }
+
       .link:hover {
         opacity: 1;
       }
     }
   }
+
   .rightButtons {
     float: right;
     margin-left: auto;
+
     .homeButtons {
       display: flex;
       flex-direction: row;
       justify-items: flex-end;
       align-items: center;
+
       svg {
         width: 15px;
         height: 15px;
@@ -90,27 +107,34 @@
         opacity: 0.5;
         cursor: pointer;
       }
+
       svg:hover {
         opacity: 1;
       }
+
       .bp3-popover-wrapper {
         height: 12px;
       }
+
       .leftButton {
         margin-right: 15px;
         margin-bottom: 4px;
         margin-top: auto;
       }
+
       a.leftButton {
         margin-bottom: 0px;
       }
+
       a:focus {
         outline: none;
       }
+
       .sb-avatar {
         margin-right: 12px;
         min-width: 25px;
       }
+
       .emailAddress {
         color: white;
         opacity: 0.5;
@@ -118,9 +142,11 @@
         margin-bottom: 4px;
         margin-top: auto;
       }
+
       .button {
         margin-right: 22px;
       }
+
       .btnDescription {
         opacity: 0.5;
         font-family: Roboto;
@@ -134,6 +160,7 @@
         color: $white;
         margin-right: 20px;
       }
+
       .antdButton {
         @include Text-Style;
         width: 94px;
@@ -141,13 +168,16 @@
         border: solid 1px $white;
         background-color: unset;
       }
+
       .loginButton {
         border: none;
         opacity: 0.5;
       }
+
       .loginButton:hover {
         opacity: 1;
       }
+
       .vr {
         margin-right: 10px;
         margin-top: 4px;
@@ -155,6 +185,7 @@
       }
     }
   }
+
   .vr {
     border-right: 1px solid rgba(256, 256, 256, 0.5);
     height: 14px;
