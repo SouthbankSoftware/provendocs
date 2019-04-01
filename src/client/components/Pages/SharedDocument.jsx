@@ -4,7 +4,7 @@
  * @Author: Michael Harrison
  * @Date:   2018-10-29T20:03:41+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-03-14T17:10:16+11:00
+ * @Last modified time: 2019-04-01T13:07:38+11:00
  */
 
 import React from 'react';
@@ -12,6 +12,7 @@ import { withRouter } from 'react-router';
 import autobind from 'autobind-decorator';
 import Timestamp from 'react-timestamp';
 import SplitPane from 'react-split-pane';
+import PreviewOffIcon from '../../style/icons/pages/dashboard/preview-off-icon.svg';
 import { ExcelPreview, TopNavBar } from '../index';
 import TickIcon from '../../style/icons/pages/dashboard/tick-icon.svg';
 import CrossIcon from '../../style/icons/pages/dashboard/cross-icon.svg';
@@ -234,11 +235,14 @@ class SharedDocument extends React.Component<Props, State> {
 
     if (!filePreview && mimetype !== MIMETYPES.PDF) {
       return (
-        <div className="viewDocumentWrapper iframeHolder">
-          <Error
-            title="Unable to fetch file preview."
-            message="We are unable to render a document preview for this file type, sorry!"
-          />
+        <div className="viewDocumentWrapper unknownType">
+          <PreviewOffIcon className="previewOffIcon" />
+          <span className="previewOffTitle">
+          Preview Unavaliable.
+          </span>
+          <span className="previewOffMessage">
+           Unfortunately we were unable to render a document preview for this file type.
+          </span>
         </div>
       );
     }

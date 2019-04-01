@@ -1,8 +1,8 @@
 /*
  * @Author: Michael Harrison
  * @Date:   2019-03-25T15:52:10+11:00
- * @Last modified by:   wahaj
- * @Last modified time: 2019-03-28T11:26:39+11:00
+ * @Last modified by:   Michael Harrison
+ * @Last modified time: 2019-04-01T13:35:31+11:00
  */
 
 @import "../../style/global_colors.scss";
@@ -523,6 +523,7 @@
       }
 
       .xlsx,
+      .ppt,
       .doc {
         svg {
           top: 0px;
@@ -623,6 +624,16 @@
 
       .fileTypeFooter.code {
         background-color: $preview_code;
+      }
+
+      .fileTypeFooter.email {
+        padding: 2px;
+        background-color: $preview_email;
+      }
+
+      .fileTypeFooter.ppt {
+        padding: 2px;
+        background-color: $preview_ppt;
       }
 
       .loading_undefined {
