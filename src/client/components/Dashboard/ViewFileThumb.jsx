@@ -4,7 +4,7 @@
  * @Date:   2019-03-25T13:30:22+11:00
  * @Email:  wahaj@southbanksoftware.com
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-01T12:52:46+11:00
+ * @Last modified time: 2019-04-01T13:24:58+11:00
  *
  * Copyright (c) 2019 Southbank Software
  */
@@ -25,6 +25,7 @@ import DocumentIcon from '../../style/icons/pages/dashboard/document-icon.svg';
 import WordDocumentIcon from '../../style/icons/pages/dashboard/word-thumbnail-icon.svg';
 import ExcelDocumentIcon from '../../style/icons/pages/dashboard/excel-thumbnail-icon.svg';
 import QuestionMarkIcon from '../../style/icons/pages/dashboard/question-mark-icon.svg';
+import PowerPointIcon from '../../style/icons/pages/dashboard/powerpoint-thumbnail-icon.svg';
 import { Loading } from '../Common';
 
 const openNotificationWithIcon = (type: string, title: string, message: string) => {
@@ -141,6 +142,13 @@ export default class ViewFileThumb extends React.Component<Props, State> {
       case MIMETYPES.DOCX:
         className = 'doc';
         break;
+      case MIMETYPES.PPT:
+      case MIMETYPES.PPTX:
+        return (
+          <div className={`docPreview pdf ppt ${selectedClass} loading_${loadingClass}`}>
+            <PowerPointIcon className="pptIcon" />
+          </div>
+        );
       case MIMETYPES.XLSX:
         return (
           <div className={`docPreview pdf xlsx ${selectedClass} loading_${loadingClass}`}>
@@ -156,7 +164,7 @@ export default class ViewFileThumb extends React.Component<Props, State> {
       default:
         return (
           <div className={`docPreview pdf ${selectedClass} loading_${loadingClass}`}>
-            <QuestionMarkIcon className="unknoqnIcon" />
+            <QuestionMarkIcon className="unknownIcon" />
           </div>
         );
     }
@@ -236,6 +244,9 @@ export default class ViewFileThumb extends React.Component<Props, State> {
     }
     if (file.mimetype === MIMETYPES.EMAIL) {
       return <div className="fileTypeFooter email">EMAIL</div>;
+    }
+    if (file.mimetype === MIMETYPES.PPT || file.mimetype === MIMETYPES.PPTX) {
+      return <div className="fileTypeFooter ppt">PPTX</div>;
     }
 
     Log.warn('Unknown file type: ');

@@ -1,8 +1,8 @@
 /*
  * @Author: Michael Harrison
  * @Date:   2019-03-25T15:52:10+11:00
- * @Last modified by:   wahaj
- * @Last modified time: 2019-03-29T12:58:36+11:00
+ * @Last modified by:   Michael Harrison
+ * @Last modified time: 2019-04-01T13:19:45+11:00
  */
 export const PAGES = {
   HOME: 'home',
@@ -60,6 +60,8 @@ export const MIMETYPES = {
   HTML: 'text/html',
   JS: 'text/javascript',
   SHELL: 'text/x-sh',
+  PPT: 'application/vnd.ms-powerpoint',
+  PPTX: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
 };
 
 export const DOMAINS = {
