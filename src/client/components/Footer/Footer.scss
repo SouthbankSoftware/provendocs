@@ -9,6 +9,7 @@
  */
 
 @import "../../style/global_colors.scss";
+
 .footerRoot {
   background-color: $navbar_background_blue;
   display: flex;
@@ -21,16 +22,20 @@
   align-items: center;
   min-height: 60px;
   max-height: 60px;
+
   .spacer {
     width: 126px;
   }
+
   .centerContent {
     display: flex;
     flex-direction: column;
     align-items: center;
+
     .socialLinks {
       display: flex;
       flex-direction: row;
+
       svg {
         margin-top: 0px;
         margin-bottom: 30px;
@@ -42,6 +47,7 @@
         fill: white !important;
       }
     }
+
     .copyright {
       font-family: Roboto;
       font-size: 12px;
@@ -59,6 +65,7 @@
       align-items: center;
     }
   }
+
   .privacy {
     opacity: 0.8;
     font-family: Roboto;
@@ -72,9 +79,14 @@
     color: $white;
     align-self: center;
   }
+
   .privacyLink {
     background: rgba(0, 0, 0, 0);
     border: none;
+
+    @media screen and (max-width: 420px) {
+      display: none;
+    }
   }
 }
 
