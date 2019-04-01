@@ -3,8 +3,8 @@
  * @Author: Wahaj Shamim <wahaj>
  * @Date:   2019-03-25T13:30:22+11:00
  * @Email:  wahaj@southbanksoftware.com
- * @Last modified by:   wahaj
- * @Last modified time: 2019-03-25T13:40:26+11:00
+ * @Last modified by:   Michael Harrison
+ * @Last modified time: 2019-04-01T12:34:33+11:00
  *
  * Copyright (c) 2019 Southbank Software
  */
@@ -34,11 +34,11 @@ const openNotificationWithIcon = (type: string, title: string, message: string) 
 };
 
 type Props = {
-  file: any;
-  selectedClass: string;
+  file: any,
+  selectedClass: string,
 };
 type State = {
-  file: any;
+  file: any,
 };
 export default class ViewFileThumb extends React.Component<Props, State> {
   constructor() {
@@ -249,6 +249,12 @@ export default class ViewFileThumb extends React.Component<Props, State> {
     if (file.mimetype === MIMETYPES.DOC || file.mimetype === MIMETYPES.DOCX) {
       return <div className="fileTypeFooter doc">DOC</div>;
     }
+    if (file.mimetype === MIMETYPES.EMAIL) {
+      return <div className="fileTypeFooter email">EMAIL</div>;
+    }
+
+    Log.warn('Unknown file type: ');
+    Log.warn(file);
     return <div className="fileTypeFooter unknown">UNKNOWN</div>;
   };
 

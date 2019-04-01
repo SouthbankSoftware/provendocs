@@ -1,8 +1,8 @@
 /*
  * @Author: Michael Harrison
  * @Date:   2019-03-25T15:52:10+11:00
- * @Last modified by:   wahaj
- * @Last modified time: 2019-03-28T11:26:39+11:00
+ * @Last modified by:   Michael Harrison
+ * @Last modified time: 2019-04-01T12:38:47+11:00
  */
 
 @import "../../style/global_colors.scss";
@@ -623,6 +623,11 @@
 
       .fileTypeFooter.code {
         background-color: $preview_code;
+      }
+
+      .fileTypeFooter.email {
+        padding: 2px;
+        background-color: $preview_email;
       }
 
       .loading_undefined {
