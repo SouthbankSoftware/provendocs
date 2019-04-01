@@ -172,7 +172,7 @@ class LandingPage extends React.Component<Props, State> {
                 the Blockchain. The content of the documents can be private or shared.
               </span>
               <div className="heroButtons">
-                <a
+                {/*  <a
                   className="watchVideoButton dark button"
                   href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
                   target="_blank"
@@ -181,7 +181,7 @@ class LandingPage extends React.Component<Props, State> {
                   <div className="button-text">
                     <span>Watch Video</span>
                   </div>
-                </a>
+                </a> */}
                 <Button
                   type="primary"
                   htmlType="submit"
@@ -234,7 +234,7 @@ class LandingPage extends React.Component<Props, State> {
                   </div>
                   <div className="bottom">
                     <div className="sectionButtons">
-                      <a
+                      {/*  <a
                         className="watchVideo button"
                         href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
                         target="_blank"
@@ -243,7 +243,7 @@ class LandingPage extends React.Component<Props, State> {
                         <div className="button-text">
                           <span>Watch Video</span>
                         </div>
-                      </a>
+                      </a> */}
                       <Button
                         type="primary"
                         htmlType="submit"
@@ -324,7 +324,7 @@ Prove files on the block chain
                 </div>
               </div>
               <div className="sectionButtons">
-                <a
+                {/*  <a
                   className="watchVideo button"
                   href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
                   target="_blank"
@@ -333,7 +333,7 @@ Prove files on the block chain
                   <div className="button-text">
                     <span>Watch Video</span>
                   </div>
-                </a>
+                </a> */}
                 <Button
                   type="primary"
                   htmlType="submit"
@@ -403,7 +403,7 @@ Prove files on the block chain
                 </div>
               </div>
               <div className="sectionButtons">
-                <a
+                {/*  <a
                   className="watchVideo button"
                   href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
                   target="_blank"
@@ -412,7 +412,7 @@ Prove files on the block chain
                   <div className="button-text">
                     <span>Watch Video</span>
                   </div>
-                </a>
+                </a> */}
                 <Button
                   type="primary"
                   htmlType="submit"
@@ -467,8 +467,7 @@ Prove files on the block chain
                 </Button>
               </div>
             </div>
-
-            <Footer currentPage={PAGES.LANDING} />
+            <Footer currentPage={PAGES.LANDING} privacyOpen={false} />
           </div>
         </div>
         <Modal

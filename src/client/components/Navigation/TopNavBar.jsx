@@ -23,8 +23,8 @@ import { Log } from '../../common';
 // $FlowFixMe
 import './TopNavBar.scss';
 
-type Props = { currentPage: string; isAuthenticated: boolean; onEarlyAccess: Function | null };
-type State = { currentPage: string; userDetails: Object };
+type Props = { currentPage: string, isAuthenticated: boolean, onEarlyAccess: Function | null };
+type State = { currentPage: string, userDetails: Object };
 export default class TopNavBar extends React.Component<Props, State> {
   constructor() {
     super();
@@ -201,13 +201,31 @@ export default class TopNavBar extends React.Component<Props, State> {
                 <span className="aboutLabel">The Team</span>
               </a>
               <a
-                href="https://provendb.readme.io/v1.0/discuss"
+                href="https://provendb.readme.io/discuss"
                 className="link supportLink"
                 style={{ textDecoration: 'none' }}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <span className="aboutLabel">Support</span>
+              </a>
+              <a
+                href="https://provendb.readme.io/docs/features"
+                className="link supportLink"
+                style={{ textDecoration: 'none' }}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="aboutLabel">Documentation</span>
+              </a>
+              <a
+                href="https://github.com/southbanksoftware/provendocs"
+                className="link supportLink"
+                style={{ textDecoration: 'none' }}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="aboutLabel">Github</span>
               </a>
             </div>
           )}
