@@ -4,7 +4,7 @@
  * @Date:   2019-03-25T13:30:22+11:00
  * @Email:  wahaj@southbanksoftware.com
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-01T12:34:33+11:00
+ * @Last modified time: 2019-04-01T12:52:46+11:00
  *
  * Copyright (c) 2019 Southbank Software
  */
@@ -24,6 +24,7 @@ import ImageIcon from '../../style/icons/pages/dashboard/img-icon.svg';
 import DocumentIcon from '../../style/icons/pages/dashboard/document-icon.svg';
 import WordDocumentIcon from '../../style/icons/pages/dashboard/word-thumbnail-icon.svg';
 import ExcelDocumentIcon from '../../style/icons/pages/dashboard/excel-thumbnail-icon.svg';
+import QuestionMarkIcon from '../../style/icons/pages/dashboard/question-mark-icon.svg';
 import { Loading } from '../Common';
 
 const openNotificationWithIcon = (type: string, title: string, message: string) => {
@@ -125,11 +126,6 @@ export default class ViewFileThumb extends React.Component<Props, State> {
         className = 'txt';
         break;
       case MIMETYPES.PDF:
-        // return (
-        //   <div className={`docPreview pdf ${selectedClass} loading_${loadingClass}`}>
-        //     <PDFIcon className="pdfIcon" />
-        //   </div>
-        // );
         className = 'pdf';
         break;
       case MIMETYPES.PNG:
@@ -138,11 +134,6 @@ export default class ViewFileThumb extends React.Component<Props, State> {
       case MIMETYPES.SVG:
         className = 'svg';
         break;
-      // return (
-      //   <div className={`docPreview pdf svg ${selectedClass} loading_${loadingClass}`}>
-      //     <DocumentIcon className="docIcon" />
-      //   </div>
-      // );
       case MIMETYPES.TEXT:
         className = 'txt';
         break;
@@ -150,11 +141,6 @@ export default class ViewFileThumb extends React.Component<Props, State> {
       case MIMETYPES.DOCX:
         className = 'doc';
         break;
-      // return (
-      //   <div className={`docPreview pdf doc ${selectedClass} loading_${loadingClass}`}>
-      //     <WordDocumentIcon className="wordIcon" />
-      //   </div>
-      // );
       case MIMETYPES.XLSX:
         return (
           <div className={`docPreview pdf xlsx ${selectedClass} loading_${loadingClass}`}>
@@ -170,7 +156,7 @@ export default class ViewFileThumb extends React.Component<Props, State> {
       default:
         return (
           <div className={`docPreview pdf ${selectedClass} loading_${loadingClass}`}>
-            <DocumentIcon className="docIcon" />
+            <QuestionMarkIcon className="unknoqnIcon" />
           </div>
         );
     }
@@ -193,8 +179,7 @@ export default class ViewFileThumb extends React.Component<Props, State> {
         )}
         {file.content === '' && className === 'doc' && <WordDocumentIcon className="wordIcon" />}
         {file.content === ''
-          && (className === 'UNKOWN'
-            || className === 'email'
+          && (className === 'email'
             || className === 'js txt'
             || className === 'shell txt'
             || className === 'txt') && <DocumentIcon className="docIcon" />}

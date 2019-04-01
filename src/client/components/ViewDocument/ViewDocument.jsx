@@ -9,6 +9,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import autobind from 'autobind-decorator';
 import _ from 'lodash';
+import PreviewOffIcon from '../../style/icons/pages/dashboard/preview-off-icon.svg';
 import { ExcelPreview } from '../index';
 import { Loading, Error } from '../Common';
 import { MIMETYPES } from '../../common/constants';
@@ -253,11 +254,14 @@ class ViewDocument extends React.Component<Props, State> {
       default:
         if (!filePreviewHTML.length) {
           return (
-            <div className="viewDocumentWrapper">
-              <Error
-                title="Unrecognised File Type!"
-                message="We are unable to render a document preview for this file type, sorry!"
-              />
+            <div className="viewDocumentWrapper unknownType">
+              <PreviewOffIcon className="previewOffIcon" />
+              <span className="previewOffTitle">
+                Preview Unavaliable.
+              </span>
+              <span className="previewOffMessage">
+                 Unfortunately we were unable to render a document preview for this file type.
+              </span>
             </div>
           );
         }
