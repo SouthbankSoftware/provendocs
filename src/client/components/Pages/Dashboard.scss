@@ -1,8 +1,8 @@
 /*
  * @Author: Michael Harrison
  * @Date:   2019-03-25T15:52:10+11:00
- * @Last modified by:   wahaj
- * @Last modified time: 2019-03-28T11:34:26+11:00
+ * @Last modified by:   Michael Harrison
+ * @Last modified time: 2019-04-03T09:13:53+11:00
  */
 
 @import "../../style/global_colors.scss";
@@ -302,8 +302,12 @@
 
         .errorMsg {
           align-self: flex-end;
-          color: $pale-red;
+          color: $white;
+          background-color: $dusk-blue;
+          padding: 10px;
+          border-radius: 7px;
           margin-bottom: 10px;
+          font-size: 14px;
         }
 
         .footerButtons {
@@ -327,6 +331,10 @@
             .bp3-button-text {
               font-size: 12px;
             }
+          }
+
+          .ant-btn[disabled] {
+            opacity: 0.7;
           }
         }
 

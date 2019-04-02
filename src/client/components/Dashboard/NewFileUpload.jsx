@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-02T15:49:25+11:00
+ * @Last modified time: 2019-04-03T09:18:20+11:00
  */
 
 import React from 'react';
@@ -219,6 +219,8 @@ class NewFileUpload extends React.Component<Props, State> {
             });
         }
         this.setState({ totalFileSize: fileSizeSum });
+        Log.info(`Storage Limit: ${storageLimit} - ${storageUsed} - ${fileSizeSum} < 0`);
+        Log.info(`Document Limit: ${documentsLimit} - ${documentsUsed} - ${acceptedFiles.length} < 0`);
         if ((storageLimit - storageUsed - fileSizeSum < 0) || (documentsLimit - documentsUsed - acceptedFiles.length < 0)) {
           openNotificationWithIcon(
             'error',
@@ -384,7 +386,9 @@ class NewFileUpload extends React.Component<Props, State> {
             });
         }
         this.setState({ totalFileSize: fileSizeSum });
-        if ((storageLimit - storageUsed - fileSizeSum < 0) || (documentsLimit - documentsUsed < 0)) {
+        Log.info(`Storage Limit: ${storageLimit} - ${storageUsed} - ${fileSizeSum} < 0`);
+        Log.info(`Document Limit: ${documentsLimit} - ${documentsUsed} - ${files.length} < 0`);
+        if ((storageLimit - storageUsed - fileSizeSum < 0) || (documentsLimit - documentsUsed - files.length < 0)) {
           openNotificationWithIcon(
             'error',
             'Upload exceeds allowance',
@@ -528,7 +532,9 @@ class NewFileUpload extends React.Component<Props, State> {
     const { size } = fileList[index];
     const newTotalFileSize = totalFileSize - size;
 
-    if ((storageLimit - storageUsed - newTotalFileSize < 0) || (documentsLimit - documentsUsed - fileList.length > 0)) {
+    Log.info(`Storage Limit: ${storageLimit} - ${storageUsed} - ${newTotalFileSize} < 0`);
+    Log.info(`Document Limit: ${documentsLimit} - ${documentsUsed} - ${fileList.length} + 1 < 0`);
+    if ((storageLimit - storageUsed - newTotalFileSize < 0) || (documentsLimit - documentsUsed - fileList.length + 1 < 0)) {
       openNotificationWithIcon(
         'error',
         'Upload exceeds allowance',
