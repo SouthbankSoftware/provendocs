@@ -3,13 +3,12 @@
  * @Date:   2018-11-21T09:28:25+11:00
  * @Email:  wahaj@southbanksoftware.com
  * @Last modified by:   wahaj
- * @Last modified time: 2019-04-02T17:00:42+11:00
+ * @Last modified time: 2019-04-03T09:02:01+11:00
  *
  *
  */
 import React, { Suspense } from 'react';
 import { hot, setConfig } from 'react-hot-loader';
-// import Loader from 'react-loader-spinner';
 import { Spin, Icon } from 'antd';
 
 import api from './common/api';
@@ -18,7 +17,19 @@ type Props = {};
 
 type State = { status: boolean };
 
-const antIcon = <Icon type="loading" style={{ fontSize: 80, color: '#fff' }} spin />;
+const antIcon = (
+  <Icon
+    type="loading"
+    style={{
+      fontSize: 100,
+      fontWeight: '100',
+      width: '100px',
+      height: '100px',
+      color: '#fff',
+    }}
+    spin
+  />
+);
 
 const DefaultRoutes = React.lazy(() => import('./routes/routes'));
 const FailedRoutes = React.lazy(() => import('./routes/failedRoutes'));
@@ -61,12 +72,21 @@ class App extends React.Component<Props, State> {
                 width: '100vw',
                 height: '100vh',
                 display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
               <Spin indicator={antIcon} />
-              {/* <Loader type="Bars" color="#FFFFFF" height="100" width="100" /> */}
+              <span
+                style={{
+                  color: '#fff',
+                  opacity: 0.5,
+                  marginTop: '20px',
+                }}
+              >
+                Loading, Please Wait...
+              </span>
             </div>
 )}
         >
