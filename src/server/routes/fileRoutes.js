@@ -199,6 +199,7 @@ module.exports = (app: any) => {
                       severity: STACKDRIVER_SEVERITY.DEBUG,
                       message: 'File Thumbnail generation result: ',
                       result,
+                      msg: result.message,
                     });
                     getFileThumbnail(fileId, user._id)
                       .then((resultAgain) => {
@@ -237,10 +238,11 @@ module.exports = (app: any) => {
                   })
                   .catch((thumbnailReqError) => {
                     logger.log({
-                      level: LOG_LEVELS.DEBUG,
-                      severity: STACKDRIVER_SEVERITY.DEBUG,
+                      level: LOG_LEVELS.ERROR,
+                      severity: STACKDRIVER_SEVERITY.ERROR,
                       message: 'File Thumbnail generation error: ',
                       thumbnailReqError,
+                      msg: thumbnailReqError.message,
                     });
                     _getDocProofForFile(fileInfo, user, resultPreview);
                   });
