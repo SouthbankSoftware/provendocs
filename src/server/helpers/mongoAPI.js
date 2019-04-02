@@ -1,17 +1,33 @@
-/*
- * @flow
- * Contains helper functions that connect to MongoDB.
+/* @flow
+ * provendocs
+ * Copyright (C) 2019  Southbank Software Ltd.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
  *
  * @Author: Michael Harrison
- * @Date:   2018-10-29T20:03:41+11:00
+ * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-03-27T09:26:56+11:00
+ * @Last modified time: 2019-04-03T09:18:20+11:00
  */
 
 import _ from 'lodash';
 import winston from 'winston';
 import sizeOf from 'object-sizeof';
-import { LOG_LEVELS, STACKDRIVER_SEVERITY, COLLECTION_NAMES } from '../common/constants';
+import {
+  LOG_LEVELS, STACKDRIVER_SEVERITY, COLLECTION_NAMES, STORAGE_LIMITS,
+} from '../common/constants';
 import { mongoAPIFormat } from '../modules/winston.config';
 import { generateNewFileName, convertSingleToBinary } from './fileHelpers';
 
@@ -186,6 +202,75 @@ const submitProof = () => new Promise<boolean>((resolve, reject) => {
       });
     }
   });
+});
+
+export const updateStorage = (newStorageUsed: number, newDocumentsUsed: number, userId: string) => new Promise<boolean>((resolve, reject) => {
+  logger.log({
+    level: LOG_LEVELS.DEBUG,
+    severity: STACKDRIVER_SEVERITY.DEBUG,
+    message: 'Driver Client Status:',
+    isConnected: dbObject && dbObject.serverConfig && dbObject.serverConfig.isConnected(),
+  });
+  // If the connection to ProvenDB has failed for some reason, try to reconnect it before failing.
+  if (!(dbObject && dbObject.serverConfig && dbObject.serverConfig.isConnected())) {
+    // Not connected, try reconnect.
+    connectToProvenDB()
+      .then(() => {
+        logger.log({
+          level: LOG_LEVELS.DEBUG,
+          severity: STACKDRIVER_SEVERITY.DEBUG,
+          message: 'Reconnected to ProvenDB:',
+          isConnected: dbObject.serverConfig.isConnected(),
+        });
+      })
+      .catch((err) => {
+        logger.log({
+          level: LOG_LEVELS.ERROR,
+          severity: STACKDRIVER_SEVERITY.ERROR,
+          message: 'Failed to reconnect to ProvenDB on second try.',
+          err,
+        });
+        reject(err);
+          return; //eslint-disable-line
+      });
+  }
+  const collection = dbObject.collection(COLLECTION_NAMES.USER_INFO);
+  const filter = { _id: userId };
+  const update = {
+    $set: {
+      documentsUsed: newDocumentsUsed,
+      storageUsed: newStorageUsed,
+    },
+  };
+  if (collection) {
+    collection.updateOne(filter, update, (error, count, status) => {
+      if (error) {
+        logger.log({
+          level: LOG_LEVELS.ERROR,
+          severity: STACKDRIVER_SEVERITY.ERROR,
+          message: 'Error updating documents.',
+          error,
+        });
+        reject(error);
+      } else {
+        logger.log({
+          level: LOG_LEVELS.DEBUG,
+          severity: STACKDRIVER_SEVERITY.DEBUG,
+          message: 'Documents updated',
+          count,
+          status,
+        });
+        resolve(true);
+      }
+    });
+  } else {
+    logger.log({
+      level: LOG_LEVELS.ERROR,
+      severity: STACKDRIVER_SEVERITY.ERROR,
+      message: 'Error getting collection.',
+    });
+    reject(new Error({ message: 'Error getting collection!' }));
+  }
 });
 
 export const showMetadata = () => new Promise<void>((resolve, reject) => {
@@ -682,6 +767,106 @@ export const updateFile = (
       level: LOG_LEVELS.ERROR,
       severity: STACKDRIVER_SEVERITY.ERROR,
       message: 'Error getting collection',
+    });
+    reject(new Error({ message: 'Error getting collection!' }));
+  }
+});
+
+/**
+ * Checks the database to retrieve the current storage usage of the user.
+ * If no information about the user is found, create a default document with default limimts.
+ * @param {string} userId - The ID of the user to check storage for.
+ * @returns {Promise<Object>} - A document containing storage info or the newly created document.
+ */
+export const getOrCreateStorageUsage = (userId: string) => new Promise<Object>((resolve, reject) => {
+  logger.log({
+    level: LOG_LEVELS.DEBUG,
+    severity: STACKDRIVER_SEVERITY.DEBUG,
+    message: 'Driver Client Status:',
+    isConnected: dbObject && dbObject.serverConfig && dbObject.serverConfig.isConnected(),
+  });
+  // If the connection to ProvenDB has failed for some reason, try to reconnect it before failing.
+  if (!(dbObject && dbObject.serverConfig && dbObject.serverConfig.isConnected())) {
+    // Not connected, try reconnect.
+    connectToProvenDB()
+      .then(() => {
+        logger.log({
+          level: LOG_LEVELS.DEBUG,
+          severity: STACKDRIVER_SEVERITY.DEBUG,
+          message: 'Reconnected to ProvenDB:',
+          isConnected: dbObject.serverConfig.isConnected(),
+        });
+      })
+      .catch((err) => {
+        logger.log({
+          level: LOG_LEVELS.ERROR,
+          severity: STACKDRIVER_SEVERITY.ERROR,
+          message: 'Failed to reconnect to ProvenDB on second try.',
+          err,
+        });
+        reject(err);
+          return; //eslint-disable-line
+      });
+  }
+  const collection = dbObject.collection(COLLECTION_NAMES.USER_INFO);
+  const queryFilter = { _id: userId };
+  if (collection) {
+    collection
+      .find(queryFilter, { promoteLongs: false })
+      .toArray((queryError, result) => {
+        if (queryError) {
+          logger.log({
+            level: LOG_LEVELS.ERROR,
+            severity: STACKDRIVER_SEVERITY.ERROR,
+            message: 'Error finding documents',
+            queryError,
+          });
+          reject(new Error({ message: 'Error finding documents.' }));
+        } else {
+          logger.log({
+            level: LOG_LEVELS.DEBUG,
+            severity: STACKDRIVER_SEVERITY.DEBUG,
+            message: 'Documents found',
+            result,
+          });
+          if (result.length === 0) {
+            // Create a new document with default storage limits.
+            const newDocument = {
+              _id: userId,
+              storageUsed: 0,
+              documentsUsed: 0,
+              storageLimit: STORAGE_LIMITS.DEFAULT_SIZE,
+              documentsLimit: STORAGE_LIMITS.DEFAULT_DOCUMENTS,
+            };
+            collection.insertOne(newDocument, (insertError, insertResult) => {
+              if (insertError) {
+                logger.log({
+                  level: LOG_LEVELS.ERROR,
+                  severity: STACKDRIVER_SEVERITY.ERROR,
+                  message: 'Error inserting storage document',
+                  insertError,
+                });
+                reject(insertError);
+              } else {
+                logger.log({
+                  level: LOG_LEVELS.DEBUG,
+                  severity: STACKDRIVER_SEVERITY.DEBUG,
+                  message: 'Storage Documents Inserted',
+                  insertResult,
+                });
+                resolve(newDocument);
+              }
+            });
+          } else {
+            resolve(result);
+          }
+        }
+      });
+  } else {
+    logger.log({
+      level: LOG_LEVELS.ERROR,
+      severity: STACKDRIVER_SEVERITY.ERROR,
+      message: 'Error getting collection.',
     });
     reject(new Error({ message: 'Error getting collection!' }));
   }
@@ -1345,75 +1530,6 @@ export const getHistoricalFile = (
       }
     }
   });
-});
-
-/**
- * Gets the total size of all a users files.
- * @param {string} userId - The ID of the user to get total file size for.
- * @param {number} - The sum of the size of each file.
- */
-export const getTotalFilesSize = (userId: string) => new Promise<number>((resolve, reject) => {
-  logger.log({
-    level: LOG_LEVELS.DEBUG,
-    severity: STACKDRIVER_SEVERITY.DEBUG,
-    message: 'Driver Client Status:',
-    isConnected: dbObject.serverConfig.isConnected(),
-  });
-  const collection = dbObject.collection(`files_${userId}`);
-  const queryFilter = {};
-  const projectionFilter = { size: true };
-  if (collection) {
-    logger.log({
-      level: LOG_LEVELS.DEBUG,
-      severity: STACKDRIVER_SEVERITY.DEBUG,
-      message: 'Query for files size: ',
-      queryFilter,
-      projectionFilter,
-    });
-    collection
-      .find(queryFilter)
-      .project(projectionFilter)
-      .toArray((queryError, result) => {
-        if (queryError) {
-          logger.log({
-            level: LOG_LEVELS.ERROR,
-            severity: STACKDRIVER_SEVERITY.ERROR,
-            message: 'Error finding documents size',
-            mongoError: queryError.message,
-          });
-          reject(queryError);
-        } else if (result !== []) {
-          let totalSize = 0;
-          result.forEach((value, index) => {
-            totalSize += value.size;
-            if (index === result.length - 1) {
-              logger.log({
-                level: LOG_LEVELS.DEBUG,
-                severity: STACKDRIVER_SEVERITY.DEBUG,
-                message: 'Documents size found',
-                totalSize,
-              });
-              resolve(totalSize);
-            }
-          });
-        } else {
-          logger.log({
-            level: LOG_LEVELS.DEBUG,
-            severity: STACKDRIVER_SEVERITY.DEBUG,
-            message: 'No files for size. ',
-            result,
-          });
-          resolve(0);
-        }
-      });
-  } else {
-    logger.log({
-      level: LOG_LEVELS.ERROR,
-      severity: STACKDRIVER_SEVERITY.ERROR,
-      message: 'Error getting collection.',
-    });
-    reject(new Error({ message: 'Error getting collection!' }));
-  }
 });
 
 /**

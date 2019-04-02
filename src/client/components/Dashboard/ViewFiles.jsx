@@ -1,9 +1,27 @@
 /* @flow
+ * provendocs
+ * Copyright (C) 2019  Southbank Software Ltd.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
  * @Author: Michael Harrison
- * @Date:   2018-12-07T11:42:20+11:00
+ * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2018-12-12T12:17:15+11:00
+ * @Last modified time: 2019-04-03T09:26:16+11:00
  */
+
 
 /* eslint-disable class-methods-use-this */
 import React from 'react';
@@ -70,6 +88,7 @@ const openNotificationWithIcon = (type: string, title: string, message: string) 
 type Props = {
   selectFileCallback: any;
   onDropCallback: any;
+  refreshFileSizeCallback: Function;
 };
 type State = {
   currentFilter: string;
@@ -496,12 +515,15 @@ export default class ViewFiles extends React.Component<Props, State> {
 
   @autobind
   _forgetFile(file: Object) {
+    const { refreshFileSizeCallback } = this.props;
     this.setState({ forgetLoading: true });
     api
       .forgetFile(file)
       .then(() => {
         openNotificationWithIcon('success', 'File Forgotten', 'Your file has been forgotten.');
+        refreshFileSizeCallback();
         this.setState({ forgetLoading: false });
+        this.setState({ forgetDialogIsOpen: false });
         this.setState({ forgetFinished: true });
         this.getFileList(true);
       })
