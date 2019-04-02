@@ -28,8 +28,8 @@ const logger = winston.createLogger({
 
 export const resetTokenCookies = (req: Object, res: Object) => {
   logger.log({
-    level: LOG_LEVELS.INFO,
-    severity: STACKDRIVER_SEVERITY.INFO,
+    level: LOG_LEVELS.DEBUG,
+    severity: STACKDRIVER_SEVERITY.DEBUG,
     message: 'Reset Token Cookies: ',
     cookies: req.cookies,
   });
@@ -48,8 +48,8 @@ export const resetTokenCookies = (req: Object, res: Object) => {
 };
 function checkStatus(res) {
   logger.log({
-    level: LOG_LEVELS.INFO,
-    severity: STACKDRIVER_SEVERITY.INFO,
+    level: LOG_LEVELS.DEBUG,
+    severity: STACKDRIVER_SEVERITY.DEBUG,
     message: 'checkStatus',
     res,
   });

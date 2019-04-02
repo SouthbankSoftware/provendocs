@@ -4,7 +4,7 @@
  * @Date:   2019-02-27T09:36:17+11:00
  * @Email:  wahaj@southbanksoftware.com
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-03-08T09:53:05+11:00
+ * @Last modified time: 2019-04-02T09:39:57+11:00
  *
  *
  */
@@ -100,6 +100,42 @@ const decompressFile = compressedBuffer => new Promise<Buffer>((resolve, reject)
       reject(new Error(`Worker stopped with exit code ${code}`));
     }
   });
+});
+
+/**
+ * Checks if the files to be uploaded would cause a user to go over their usage limit.
+ * @param {Object} storageDocument - A document containing the current usage of the users storage limit.
+ * @param {Object} files - A list of files the user is trying to upload.
+ * @returns {boolean} - false if upload would exceed storage, true otherwise.
+ */
+export const doesUploadExceedRemainingStorage = (storageDocument: Object, files: Object) => new Promise<any>((resolve) => {
+  const totalFilesNumber = files.length;
+  let totalFilesSize = 0;
+  let filesAdded = 0;
+  const storage = storageDocument[0] || storageDocument;
+  logger.log({
+    level: LOG_LEVELS.DEBUG,
+    severity: STACKDRIVER_SEVERITY.DEBUG,
+    message: 'Size limits:',
+    storage,
+    numFilesToUpload: files.length,
+  });
+  if (totalFilesNumber + storage.documentsUsed > storage.documentsLimit) {
+    resolve({ exceed: true });
+  } else {
+    _.forEach(files, (file) => {
+      totalFilesSize += file.size;
+      filesAdded += 1;
+
+      if (filesAdded === totalFilesNumber) {
+        if (totalFilesSize + storage.storageUsed > storage.storageLimit) {
+          resolve({ exceed: true });
+        } else {
+          resolve({ exceed: false, newStorageUsed: totalFilesSize + storage.storageUsed, newDocumentsUsed: totalFilesNumber + storage.documentsUsed });
+        }
+      }
+    });
+  }
 });
 
 export const convertToBinary = (files: Object) => new Promise<Array<Object>>((resolve, reject) => {

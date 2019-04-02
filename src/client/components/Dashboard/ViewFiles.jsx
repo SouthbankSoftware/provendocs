@@ -70,6 +70,7 @@ const openNotificationWithIcon = (type: string, title: string, message: string) 
 type Props = {
   selectFileCallback: any;
   onDropCallback: any;
+  refreshFileSizeCallback: Function;
 };
 type State = {
   currentFilter: string;
@@ -496,12 +497,15 @@ export default class ViewFiles extends React.Component<Props, State> {
 
   @autobind
   _forgetFile(file: Object) {
+    const { refreshFileSizeCallback } = this.props;
     this.setState({ forgetLoading: true });
     api
       .forgetFile(file)
       .then(() => {
         openNotificationWithIcon('success', 'File Forgotten', 'Your file has been forgotten.');
+        refreshFileSizeCallback();
         this.setState({ forgetLoading: false });
+        this.setState({ forgetDialogIsOpen: false });
         this.setState({ forgetFinished: true });
         this.getFileList(true);
       })

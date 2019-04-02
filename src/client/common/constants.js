@@ -2,7 +2,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-25T15:52:10+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-01T13:19:45+11:00
+ * @Last modified time: 2019-04-02T09:31:01+11:00
  */
 export const PAGES = {
   HOME: 'home',
@@ -20,7 +20,7 @@ export const ANTD_BUTTON_TYPES = {
   DANGER: 'danger',
   GHOST: 'ghost',
 };
-export const TOTAL_FILE_SIZE_LIMIT = 350000000;
+export const TOTAL_FILE_SIZE_LIMIT = 1000000000;
 export const FILE_SIZE_LIMIT = 16777216;
 export const FILE_UPLOAD_LIMIT = 12;
 

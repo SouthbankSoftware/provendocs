@@ -1,8 +1,25 @@
-/* @flow
+/*
+ * provendocs
+ * Copyright (C) 2019  Southbank Software Ltd.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
  * @Author: Michael Harrison
- * @Date:   2019-03-25T15:52:10+11:00
+ * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-03-25T15:55:23+11:00
+ * @Last modified time: 2019-04-02T15:49:25+11:00
  */
 
 import React from 'react';
@@ -16,7 +33,7 @@ import ForgetIcon from '../../style/icons/pages/dashboard/close-icon.svg';
 import { convertBytes, openNotificationWithIcon } from '../../common/util';
 import { Log, api } from '../../common';
 import { Loading, Error } from '../Common';
-import { FILE_SIZE_LIMIT, FILE_UPLOAD_LIMIT, TOTAL_FILE_SIZE_LIMIT } from '../../common/constants';
+import { FILE_SIZE_LIMIT, FILE_UPLOAD_LIMIT } from '../../common/constants';
 // $FlowFixMe
 import './NewUpload.scss';
 
@@ -53,6 +70,9 @@ type Props = {
   history: any;
   matchingFiles: Array<Object>;
   storageUsed: number;
+  documentsUsed: number;
+  storageLimit: number;
+  documentsLimit: number;
   setStorageLimitReachedCallback: Function;
 };
 
@@ -87,7 +107,9 @@ class NewFileUpload extends React.Component<Props, State> {
    * @param {Array<Object>} rejectedFiles - An array of file objects that do not match the criteria.
    */
   onDrop(acceptedFiles: Array<Object>, rejectedFiles: Array<Object>) {
-    const { storageUsed } = this.props;
+    const {
+      storageUsed, documentsUsed, storageLimit, documentsLimit,
+    } = this.props;
     Log.info(`Accepted Files: ${acceptedFiles.toString()}`);
     if ((rejectedFiles && rejectedFiles.length > 0) || acceptedFiles.length === 0) {
       Log.warn(`Unsupported files detected: ${rejectedFiles.toString()}`);
@@ -197,8 +219,7 @@ class NewFileUpload extends React.Component<Props, State> {
             });
         }
         this.setState({ totalFileSize: fileSizeSum });
-        Log.info(TOTAL_FILE_SIZE_LIMIT - storageUsed - fileSizeSum < 0);
-        if (TOTAL_FILE_SIZE_LIMIT - storageUsed - fileSizeSum < 0) {
+        if ((storageLimit - storageUsed - fileSizeSum < 0) || (documentsLimit - documentsUsed - acceptedFiles.length < 0)) {
           openNotificationWithIcon(
             'error',
             'Upload exceeds allowance',
@@ -279,6 +300,9 @@ class NewFileUpload extends React.Component<Props, State> {
     const {
       updateRHSState,
       storageUsed,
+      documentsUsed,
+      storageLimit,
+      documentsLimit,
       setFailedFiles,
       setStageCallback,
       filesFoundMatchingCallback,
@@ -360,8 +384,7 @@ class NewFileUpload extends React.Component<Props, State> {
             });
         }
         this.setState({ totalFileSize: fileSizeSum });
-        Log.info(TOTAL_FILE_SIZE_LIMIT - storageUsed - fileSizeSum < 0);
-        if (TOTAL_FILE_SIZE_LIMIT - storageUsed - fileSizeSum < 0) {
+        if ((storageLimit - storageUsed - fileSizeSum < 0) || (documentsLimit - documentsUsed < 0)) {
           openNotificationWithIcon(
             'error',
             'Upload exceeds allowance',
@@ -411,7 +434,9 @@ class NewFileUpload extends React.Component<Props, State> {
           api
             .getFileSizeForUser()
             .then((res) => {
-              updateSpaceUsedCallback(res.data.size);
+              Log.info('File Size Result: ');
+              Log.info(res);
+              updateSpaceUsedCallback(res.data[0].storageUsed, res.data[0].documentsUsed);
             })
             .catch((err) => {
               Log.error(`Error fetching files size: ${err}`);
@@ -443,7 +468,9 @@ class NewFileUpload extends React.Component<Props, State> {
           api
             .getFileSizeForUser()
             .then((res) => {
-              updateSpaceUsedCallback(res.data.size);
+              Log.info('File Size Result: ');
+              Log.info(res);
+              updateSpaceUsedCallback(res.data[0].storageUsed, res.data[0].documentsUsed);
             })
             .catch((err) => {
               Log.error(`Failed to fetch file size with error: ${err}`);
@@ -494,12 +521,14 @@ class NewFileUpload extends React.Component<Props, State> {
       updateMatchingFiles,
       setStorageLimitReachedCallback,
       storageUsed,
+      documentsUsed,
+      storageLimit,
+      documentsLimit,
     } = this.props;
     const { size } = fileList[index];
     const newTotalFileSize = totalFileSize - size;
 
-    Log.info(TOTAL_FILE_SIZE_LIMIT - storageUsed - newTotalFileSize < 0);
-    if (TOTAL_FILE_SIZE_LIMIT - storageUsed - newTotalFileSize < 0) {
+    if ((storageLimit - storageUsed - newTotalFileSize < 0) || (documentsLimit - documentsUsed - fileList.length > 0)) {
       openNotificationWithIcon(
         'error',
         'Upload exceeds allowance',

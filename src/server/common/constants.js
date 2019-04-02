@@ -22,6 +22,12 @@ export const EXTENSIONS = {
 
 export const COLLECTION_NAMES = {
   SHARING_INFO: 'file_sharing_pdbignore',
+  USER_INFO: 'user_info_pdbignore',
+};
+
+export const STORAGE_LIMITS = {
+  DEFAULT_SIZE: 1000000000,
+  DEFAULT_DOCUMENTS: 100,
 };
 
 export const DOMAINS = {

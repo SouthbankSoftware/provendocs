@@ -11,7 +11,7 @@ import path from 'path';
 import rimraf from 'rimraf';
 import multer from 'multer';
 import uuidv4 from 'uuid/v4';
-import { convertToBinary } from '../helpers/fileHelpers';
+import { convertToBinary, doesUploadExceedRemainingStorage } from '../helpers/fileHelpers';
 import { getUserFromEmail, getUserFromToken } from '../helpers/userHelpers';
 import { convertEmailToBinary, createEmailDocument } from '../helpers/emailHelpers';
 import {
@@ -22,6 +22,8 @@ import {
   uploadEmail,
   uploadAttachments,
   createNewProofImmediately,
+  getOrCreateStorageUsage,
+  updateStorage,
 } from '../helpers/mongoAPI';
 import {
   sendEmailUploadFailedEmail,
@@ -102,8 +104,8 @@ module.exports = (app: any) => {
               });
               if (matchingFiles.length > 0 && force === 'false') {
                 logger.log({
-                  level: LOG_LEVELS.INFO,
-                  severity: STACKDRIVER_SEVERITY.INFO,
+                  level: LOG_LEVELS.DEBUG,
+                  severity: STACKDRIVER_SEVERITY.DEBUG,
                   message: 'Found matching files for upload:',
                   uploadComplete: false,
                   matchingFiles,
@@ -111,125 +113,177 @@ module.exports = (app: any) => {
                 });
                 res.status(200).send({ uploadComplete: false, matchingFiles });
               } else {
-                // Convert file to binary for putting into Mongo.
-                convertToBinary(files)
-                  .then((result: Array<Object>) => {
-                    uploadFile(result, files, user._id, comment, tags)
-                      .then(() => {
-                        try {
-                          // Now clear the multer uploads directory:
-                          const uploadsDir = `${__dirname}/uploads`;
-                          logger.log({
-                            level: LOG_LEVELS.DEBUG,
-                            severity: STACKDRIVER_SEVERITY.DEBUG,
-                            message: 'Removing old uploads...',
-                            uploadsDir,
-                            reqId,
-                          });
-                          fs.readdir(uploadsDir, (err, certList) => {
-                            if (certList) {
-                              certList.forEach((cert) => {
-                                fs.stat(path.join(uploadsDir, cert), (statErr, stat) => {
-                                  if (statErr) {
-                                    logger.log({
-                                      level: LOG_LEVELS.WARN,
-                                      severity: STACKDRIVER_SEVERITY.WARNING,
-                                      message: 'Failed to stat upload in uploads.',
-                                      statErr,
-                                      reqId,
-                                    });
-                                  }
-                                  const now = new Date().getTime();
-                                  const endTime = new Date(stat.ctime).getTime() + 3600000;
-                                  if (now > endTime) {
+                // Check storage limit
+                getOrCreateStorageUsage(user._id).then((storageResult) => {
+                  doesUploadExceedRemainingStorage(storageResult, files).then((doesExceed) => {
+                    if (doesExceed.exceed) {
+                      const returnObj = {
+                        level: LOG_LEVELS.INFO,
+                        severity: STACKDRIVER_SEVERITY.INFO,
+                        message: 'Upload would exceed storage:',
+                        uploadComplete: false,
+                        matchingFiles,
+                        reqId,
+                      };
+                      logger.log(returnObj);
+                      res.status(403).send(returnObj);
+                    } else {
+                      // Convert file to binary for putting into Mongo.
+                      convertToBinary(files)
+                        .then((result: Array<Object>) => {
+                          uploadFile(result, files, user._id, comment, tags)
+                            .then(() => {
+                              updateStorage(doesExceed.newStorageUsed, doesExceed.newDocumentsUsed, user._id).then(() => {
+                                try {
+                                // Now clear the multer uploads directory:
+                                  const uploadsDir = `${__dirname}/uploads`;
+                                  logger.log({
+                                    level: LOG_LEVELS.DEBUG,
+                                    severity: STACKDRIVER_SEVERITY.DEBUG,
+                                    message: 'Removing old uploads...',
+                                    uploadsDir,
+                                    reqId,
+                                  });
+                                  fs.readdir(uploadsDir, (err, certList) => {
+                                    if (certList) {
+                                      certList.forEach((cert) => {
+                                        fs.stat(path.join(uploadsDir, cert), (statErr, stat) => {
+                                          if (statErr) {
+                                            logger.log({
+                                              level: LOG_LEVELS.WARN,
+                                              severity: STACKDRIVER_SEVERITY.WARNING,
+                                              message: 'Failed to stat upload in uploads.',
+                                              statErr,
+                                              reqId,
+                                            });
+                                          }
+                                          const now = new Date().getTime();
+                                          const endTime = new Date(stat.ctime).getTime() + 3600000;
+                                          if (now > endTime) {
+                                            logger.log({
+                                              level: LOG_LEVELS.INFO,
+                                              severity: STACKDRIVER_SEVERITY.INFO,
+                                              message: 'Upload is old, deleting',
+                                              now,
+                                              endTime,
+                                              cert,
+                                              reqId,
+                                            });
+                                            rimraf(path.join(uploadsDir, cert), (rimrafErr) => {
+                                              if (rimrafErr) {
+                                                logger.log({
+                                                  level: LOG_LEVELS.WARN,
+                                                  severity: STACKDRIVER_SEVERITY.WARNING,
+                                                  message: 'Failed to rimraf upload in uploads.',
+                                                  rimrafErr,
+                                                  reqId,
+                                                });
+                                              }
+                                              logger.log({
+                                                level: LOG_LEVELS.INFO,
+                                                severity: STACKDRIVER_SEVERITY.INFO,
+                                                message: 'Removed old upload.',
+                                                reqId,
+                                              });
+                                            });
+                                          }
+                                        });
+                                      });
+                                    }
+                                  });
+                                } catch (removeUploadsError) {
+                                  logger.log({
+                                    level: LOG_LEVELS.WARN,
+                                    severity: STACKDRIVER_SEVERITY.WARNING,
+                                    message: 'Failed to remove old uploads.',
+                                    removeUploadsError,
+                                    errMSg: removeUploadsError,
+                                    reqId,
+                                  });
+                                }
+                                createNewProof()
+                                  .then(() => {
                                     logger.log({
                                       level: LOG_LEVELS.INFO,
                                       severity: STACKDRIVER_SEVERITY.INFO,
-                                      message: 'Upload is old, deleting',
-                                      now,
-                                      endTime,
-                                      cert,
+                                      message: 'Succeeded in uploading files',
+                                      uploadComplete: true,
+                                      matchingFiles,
                                       reqId,
                                     });
-                                    rimraf(path.join(uploadsDir, cert), (rimrafErr) => {
-                                      if (rimrafErr) {
-                                        logger.log({
-                                          level: LOG_LEVELS.WARN,
-                                          severity: STACKDRIVER_SEVERITY.WARNING,
-                                          message: 'Failed to rimraf upload in uploads.',
-                                          rimrafErr,
-                                          reqId,
-                                        });
-                                      }
-                                      logger.log({
-                                        level: LOG_LEVELS.INFO,
-                                        severity: STACKDRIVER_SEVERITY.INFO,
-                                        message: 'Removed old upload.',
-                                        reqId,
-                                      });
+                                    res.status(200).send({ uploadComplete: true, matchingFiles: [] });
+                                  })
+                                  .catch((err) => {
+                                    logger.log({
+                                      level: LOG_LEVELS.ERROR,
+                                      severity: STACKDRIVER_SEVERITY.ERROR,
+                                      message: 'Error creating new proof:',
+                                      err,
+                                      errMsg: err.message,
+                                      reqId,
                                     });
-                                  }
-                                });
+                                  });
+                              }).catch((updateStorageErr) => {
+                                const returnObj = {
+                                  level: LOG_LEVELS.ERROR,
+                                  severity: STACKDRIVER_SEVERITY.ERROR,
+                                  message: 'Error updating storage usage:',
+                                  updateStorageErr,
+                                  errMsg: updateStorageErr.message,
+                                  reqId,
+                                };
+                                logger.log(returnObj);
+                                res.status(400).send(returnObj);
                               });
-                            }
-                          });
-                        } catch (removeUploadsError) {
+                            })
+                            .catch((err) => {
+                              logger.log({
+                                level: LOG_LEVELS.ERROR,
+                                severity: STACKDRIVER_SEVERITY.ERROR,
+                                message: 'Error uploading file:',
+                                err,
+                                errMsg: err.message,
+                                reqId,
+                              });
+                              res.status(400).send(err);
+                            });
+                        })
+                        .catch((err) => {
                           logger.log({
-                            level: LOG_LEVELS.WARN,
-                            severity: STACKDRIVER_SEVERITY.WARNING,
-                            message: 'Failed to remove old uploads.',
-                            removeUploadsError,
-                            errMSg: removeUploadsError,
+                            level: LOG_LEVELS.ERROR,
+                            severity: STACKDRIVER_SEVERITY.ERROR,
+                            message: 'Error converting to binary:',
+                            err,
+                            errMsg: err.message,
                             reqId,
                           });
-                        }
-
-                        createNewProof()
-                          .then(() => {
-                            logger.log({
-                              level: LOG_LEVELS.INFO,
-                              severity: STACKDRIVER_SEVERITY.INFO,
-                              message: 'Succeeded in uploading files',
-                              uploadComplete: true,
-                              matchingFiles,
-                              reqId,
-                            });
-                            res.status(200).send({ uploadComplete: true, matchingFiles: [] });
-                          })
-                          .catch((err) => {
-                            logger.log({
-                              level: LOG_LEVELS.ERROR,
-                              severity: STACKDRIVER_SEVERITY.ERROR,
-                              message: 'Error creating new proof:',
-                              err,
-                              errMsg: err.message,
-                              reqId,
-                            });
-                          });
-                      })
-                      .catch((err) => {
-                        logger.log({
-                          level: LOG_LEVELS.ERROR,
-                          severity: STACKDRIVER_SEVERITY.ERROR,
-                          message: 'Error uploading file:',
-                          err,
-                          errMsg: err.message,
-                          reqId,
+                          res.status(400).send(err);
                         });
-                        res.status(400).send(err);
-                      });
-                  })
-                  .catch((err) => {
-                    logger.log({
+                    }
+                  }).catch((doesExceedErr) => {
+                    const returnObj = {
                       level: LOG_LEVELS.ERROR,
                       severity: STACKDRIVER_SEVERITY.ERROR,
-                      message: 'Error converting to binary:',
-                      err,
-                      errMsg: err.message,
+                      message: 'Error checking if files exceed storage:',
+                      doesExceedErr,
+                      errMsg: doesExceedErr.message,
                       reqId,
-                    });
-                    res.status(400).send(err);
+                    };
+                    logger.log(returnObj);
+                    res.status(400).send(returnObj);
                   });
+                }).catch((getStorageErr) => {
+                  const returnObj = {
+                    level: LOG_LEVELS.ERROR,
+                    severity: STACKDRIVER_SEVERITY.ERROR,
+                    message: 'Error while checking storage:',
+                    getStorageErr,
+                    errMsg: getStorageErr.message,
+                    reqId,
+                  };
+                  logger.log(returnObj);
+                  res.status(400).send(returnObj);
+                });
               }
             })
             .catch((checkDupesErr) => {
@@ -295,158 +349,188 @@ module.exports = (app: any) => {
       getUserFromToken(req, res, app.get('jwtSecret'))
         .then((user) => {
           logger.log({
-            level: LOG_LEVELS.INFO,
-            severity: STACKDRIVER_SEVERITY.INFO,
+            level: LOG_LEVELS.DEBUG,
+            severity: STACKDRIVER_SEVERITY.DEBUG,
             message: 'Found user from token',
             user,
             reqId,
           });
-          // Convert file to binary for putting into Mongo.
-          convertToBinary(files)
-            .then((result) => {
-              createNewProofImmediately()
-                .then(() => {
-                  updateFile(result, files, user._id, comment, tags)
-                    .then(() => {
-                      logger.log({
-                        level: LOG_LEVELS.DEBUG,
-                        severity: STACKDRIVER_SEVERITY.DEBUG,
-                        message: 'Document update complete',
-                        reqId,
-                      });
+          getOrCreateStorageUsage(user._id).then((storageResult) => {
+            doesUploadExceedRemainingStorage(storageResult, files).then((doesExceed) => {
+              if (doesExceed.exceed) {
+                const returnObj = {
+                  level: LOG_LEVELS.INFO,
+                  severity: STACKDRIVER_SEVERITY.INFO,
+                  message: 'Upload would exceed storage:',
+                  uploadComplete: false,
+                  files,
+                  reqId,
+                };
+                logger.log(returnObj);
+                res.status(403).send(returnObj);
+              } else {
+                // Convert file to binary for putting into Mongo.
+                convertToBinary(files)
+                  .then((result) => {
+                    createNewProofImmediately()
+                      .then(() => {
+                        updateFile(result, files, user._id, comment, tags)
+                          .then(() => {
+                            logger.log({
+                              level: LOG_LEVELS.DEBUG,
+                              severity: STACKDRIVER_SEVERITY.DEBUG,
+                              message: 'Document update complete',
+                              reqId,
+                            });
 
-                      // Clear temp files.
-                      try {
-                        // Now clear the multer uploads directory:
-                        const uploadsDir = 'uploads/';
-                        logger.log({
-                          level: LOG_LEVELS.DEBUG,
-                          severity: STACKDRIVER_SEVERITY.DEBUG,
-                          message: 'Removing temp uploads...',
-                          uploadsDir,
-                          reqId,
-                        });
-                        fs.readdir(uploadsDir, (err, tempFilesList) => {
-                          if (tempFilesList) {
-                            tempFilesList.forEach((tempFile) => {
-                              fs.stat(path.join(uploadsDir, tempFile), (statErr, stat) => {
-                                if (statErr) {
-                                  logger.log({
-                                    level: LOG_LEVELS.WARN,
-                                    severity: STACKDRIVER_SEVERITY.WARNING,
-                                    message: 'Failed to stat temp uploads folder.',
-                                    statErr,
-                                    reqId,
-                                  });
-                                }
-                                const now = new Date().getTime();
-                                const endTime = new Date(stat.ctime).getTime() + 360000;
-                                if (now > endTime) {
+                            updateStorage(doesExceed.newStorageUsed, doesExceed.newDocumentsUsed, user._id).then(() => {
+                              // Clear temp files.
+                              try {
+                              // Now clear the multer uploads directory:
+                                const uploadsDir = 'uploads/';
+                                logger.log({
+                                  level: LOG_LEVELS.DEBUG,
+                                  severity: STACKDRIVER_SEVERITY.DEBUG,
+                                  message: 'Removing temp uploads...',
+                                  uploadsDir,
+                                  reqId,
+                                });
+                                fs.readdir(uploadsDir, (err, tempFilesList) => {
+                                  if (tempFilesList) {
+                                    tempFilesList.forEach((tempFile) => {
+                                      fs.stat(path.join(uploadsDir, tempFile), (statErr, stat) => {
+                                        if (statErr) {
+                                          logger.log({
+                                            level: LOG_LEVELS.WARN,
+                                            severity: STACKDRIVER_SEVERITY.WARNING,
+                                            message: 'Failed to stat temp uploads folder.',
+                                            statErr,
+                                            reqId,
+                                          });
+                                        }
+                                        const now = new Date().getTime();
+                                        const endTime = new Date(stat.ctime).getTime() + 360000;
+                                        if (now > endTime) {
+                                          logger.log({
+                                            level: LOG_LEVELS.INFO,
+                                            severity: STACKDRIVER_SEVERITY.INFO,
+                                            message: 'Temp file is old, deleting',
+                                            now,
+                                            endTime,
+                                            tempFile,
+                                            reqId,
+                                          });
+                                          rimraf(path.join(uploadsDir, tempFile), (rimrafErr) => {
+                                            if (rimrafErr) {
+                                              logger.log({
+                                                level: LOG_LEVELS.WARN,
+                                                severity: STACKDRIVER_SEVERITY.WARNING,
+                                                message: 'Failed to rimraf temp file in uploads.',
+                                                rimrafErr,
+                                                errMsg: rimrafErr.message,
+                                                reqId,
+                                              });
+                                            }
+                                            logger.log({
+                                              level: LOG_LEVELS.INFO,
+                                              severity: STACKDRIVER_SEVERITY.INFO,
+                                              message: 'Removed temp file.',
+                                              reqId,
+                                            });
+                                          });
+                                        }
+                                      });
+                                    });
+                                  }
+                                });
+                              } catch (removeUploadsError) {
+                                logger.log({
+                                  level: LOG_LEVELS.WARN,
+                                  severity: STACKDRIVER_SEVERITY.WARNING,
+                                  message: 'Failed to remove old certs.',
+                                  removeUploadsError,
+                                  errMsg: removeUploadsError.message,
+                                  reqId,
+                                });
+                              }
+                              createNewProof()
+                                .then(() => {
                                   logger.log({
                                     level: LOG_LEVELS.INFO,
                                     severity: STACKDRIVER_SEVERITY.INFO,
-                                    message: 'Temp file is old, deleting',
-                                    now,
-                                    endTime,
-                                    tempFile,
+                                    message: 'Success in uploading new file version',
+                                    uploadComplete: true,
+                                    matchingFiles: [],
                                     reqId,
                                   });
-                                  rimraf(path.join(uploadsDir, tempFile), (rimrafErr) => {
-                                    if (rimrafErr) {
-                                      logger.log({
-                                        level: LOG_LEVELS.WARN,
-                                        severity: STACKDRIVER_SEVERITY.WARNING,
-                                        message: 'Failed to rimraf temp file in uploads.',
-                                        rimrafErr,
-                                        errMsg: rimrafErr.message,
-                                        reqId,
-                                      });
-                                    }
-                                    logger.log({
-                                      level: LOG_LEVELS.INFO,
-                                      severity: STACKDRIVER_SEVERITY.INFO,
-                                      message: 'Removed temp file.',
-                                      reqId,
-                                    });
-                                  });
-                                }
-                              });
+                                  res.status(200).send({ uploadComplete: true, matchingFiles: [] });
+                                })
+                                .catch((err) => {
+                                  const returnMessage = {
+                                    level: LOG_LEVELS.ERROR,
+                                    severity: STACKDRIVER_SEVERITY.ERROR,
+                                    message: 'Error creating new proof:',
+                                    err,
+                                    errMsg: err.message,
+                                    reqId,
+                                  };
+                                  logger.log(returnMessage);
+                                  res.status(400).send(returnMessage);
+                                });
+                            }).catch((updateStorageErr) => {
+                              const returnObj = {
+                                level: LOG_LEVELS.ERROR,
+                                severity: STACKDRIVER_SEVERITY.ERROR,
+                                message: 'Error updating storage usage:',
+                                updateStorageErr,
+                                errMsg: updateStorageErr.message,
+                                reqId,
+                              };
+                              logger.log(returnObj);
+                              res.status(400).send(returnObj);
                             });
-                          }
-                        });
-                      } catch (removeUploadsError) {
-                        logger.log({
-                          level: LOG_LEVELS.WARN,
-                          severity: STACKDRIVER_SEVERITY.WARNING,
-                          message: 'Failed to remove old certs.',
-                          removeUploadsError,
-                          errMsg: removeUploadsError.message,
-                          reqId,
-                        });
-                      }
-                      createNewProof()
-                        .then(() => {
-                          logger.log({
-                            level: LOG_LEVELS.INFO,
-                            severity: STACKDRIVER_SEVERITY.INFO,
-                            message: 'Success in uploading new file version',
-                            uploadComplete: true,
-                            matchingFiles: [],
-                            reqId,
+                          })
+                          .catch((err) => {
+                            const returnMessage = {
+                              level: LOG_LEVELS.ERROR,
+                              severity: STACKDRIVER_SEVERITY.ERROR,
+                              message: 'Error Updating File:',
+                              err,
+                              errMsg: err.message,
+                              reqId,
+                            };
+                            logger.log(returnMessage);
+                            res.status(400).send(returnMessage);
                           });
-                          res.status(200).send({ uploadComplete: true, matchingFiles: [] });
-                        })
-                        .catch((err) => {
-                          const returnMessage = {
-                            level: LOG_LEVELS.ERROR,
-                            severity: STACKDRIVER_SEVERITY.ERROR,
-                            message: 'Error creating new proof:',
-                            err,
-                            errMsg: err.message,
-                            reqId,
-                          };
-                          logger.log(returnMessage);
-                          res.status(400).send(returnMessage);
-                        });
-                    })
-                    .catch((err) => {
-                      const returnMessage = {
-                        level: LOG_LEVELS.ERROR,
-                        severity: STACKDRIVER_SEVERITY.ERROR,
-                        message: 'Error Updating File:',
-                        err,
-                        errMsg: err.message,
-                        reqId,
-                      };
-                      logger.log(returnMessage);
-                      res.status(400).send(returnMessage);
-                    });
-                })
-                .catch((err) => {
-                  const returnMessage = {
-                    level: LOG_LEVELS.ERROR,
-                    severity: STACKDRIVER_SEVERITY.ERROR,
-                    message: 'Error submitted proof for previous version.',
-                    err,
-                    errMsg: err.message,
-                    reqId,
-                  };
-                  logger.log(returnMessage);
-                  res.status(400).send(returnMessage);
-                });
-            })
-            .catch((err) => {
-              const returnMessage = {
-                level: LOG_LEVELS.ERROR,
-                severity: STACKDRIVER_SEVERITY.ERROR,
-                message: 'Error converting to binary:',
-                err,
-                errMsg: err.message,
-                reqId,
-              };
-              logger.log(returnMessage);
-              res.status(400).send(returnMessage);
+                      })
+                      .catch((err) => {
+                        const returnMessage = {
+                          level: LOG_LEVELS.ERROR,
+                          severity: STACKDRIVER_SEVERITY.ERROR,
+                          message: 'Error submitted proof for previous version.',
+                          err,
+                          errMsg: err.message,
+                          reqId,
+                        };
+                        logger.log(returnMessage);
+                        res.status(400).send(returnMessage);
+                      });
+                  })
+                  .catch((err) => {
+                    const returnMessage = {
+                      level: LOG_LEVELS.ERROR,
+                      severity: STACKDRIVER_SEVERITY.ERROR,
+                      message: 'Error converting to binary:',
+                      err,
+                      errMsg: err.message,
+                      reqId,
+                    };
+                    logger.log(returnMessage);
+                    res.status(400).send(returnMessage);
+                  });
+              }
             });
+          });
         })
         .catch((err) => {
           const returnMessage = {
@@ -565,94 +649,124 @@ module.exports = (app: any) => {
           result: getUserResult,
           reqId,
         });
-        convertEmailToBinary({
-          subject,
-          to,
-          from,
-          cc,
-          html,
-          attachments,
-          headers,
-        })
-          .then(createEmailDocument)
-          .then((createEmailDocResult: Object) => {
-            createEmailDocResult.userId = getUserResult.user_id;
-            logger.log({
-              level: LOG_LEVELS.INFO,
-              severity: STACKDRIVER_SEVERITY.INFO,
-              message: 'Result of creating email document',
-              result: createEmailDocResult,
-              reqId,
-            });
-            uploadAttachments(subject, attachments, getUserResult.user_id)
-              .then((uploadAttachmentsResult) => {
-                logger.log({
-                  level: LOG_LEVELS.DEBUG,
-                  message: 'Finished Uploading Attachments...',
-                  uploadAttachmentsResult,
-                  reqId,
-                });
-                uploadEmail(createEmailDocResult, getUserResult.user_id)
-                  .then(createNewProof)
-                  .then((createNewProofResult) => {
-                    sendEmailUploadPassedEmail(getUserResult.email, subject, attachments.length)
-                      .then(() => {
-                        res.status(200).send(createNewProofResult);
-                      })
-                      .catch((err) => {
-                        const returnObj = {
-                          level: LOG_LEVELS.ERROR,
-                          severity: STACKDRIVER_SEVERITY.ERROR,
-                          message: 'Failed to send outbound email.',
-                          err,
-                          errMsg: err.message,
-                          reqId,
-                        };
-                        logger.log(returnObj);
-                        res.status(200).send(createNewProofResult);
-                      });
-                  })
-                  .catch((uploadErr) => {
-                    const returnObj = {
-                      level: LOG_LEVELS.ERROR,
-                      severity: STACKDRIVER_SEVERITY.ERROR,
-                      message: 'Failed to upload email.',
-                      uploadErr,
-                      errMSg: uploadErr.message,
-                      reqId,
-                    };
-                    logger.log(returnObj);
-                    sendEmailUploadFailedEmail(getUserResult.email, subject, attachments.length)
-                      .then(() => {
-                        res.status(404).send(returnObj);
-                      })
-                      .catch((sendErr) => {
-                        const returnObjEmail = {
-                          level: LOG_LEVELS.WARN,
-                          severity: STACKDRIVER_SEVERITY.WARNING,
-                          message: 'Failed to send email.',
-                          sendErr,
-                          errMsg: sendErr.message,
-                          reqId,
-                        };
-                        logger.log(returnObjEmail);
-                        res.status(404).send(returnObj);
-                      });
-                  });
+        getOrCreateStorageUsage(getUserResult.user_id).then((storageResult) => {
+          doesUploadExceedRemainingStorage(storageResult, attachments).then((doesExceed) => {
+            if (doesExceed.exceed) {
+              const returnObj = {
+                level: LOG_LEVELS.INFO,
+                severity: STACKDRIVER_SEVERITY.INFO,
+                message: 'Upload would exceed storage:',
+                uploadComplete: false,
+                attachments,
+                reqId,
+              };
+              logger.log(returnObj);
+              res.status(403).send(returnObj);
+            } else {
+              convertEmailToBinary({
+                subject,
+                to,
+                from,
+                cc,
+                html,
+                attachments,
+                headers,
               })
-              .catch((uploadAttachmentsError) => {
-                const returnObj = {
-                  level: LOG_LEVELS.ERROR,
-                  severity: STACKDRIVER_SEVERITY.ERROR,
-                  message: 'Failed to upload attachments.',
-                  uploadAttachmentsError,
+                .then(createEmailDocument)
+                .then((createEmailDocResult: Object) => {
+                  createEmailDocResult.userId = getUserResult.user_id;
+                  logger.log({
+                    level: LOG_LEVELS.INFO,
+                    severity: STACKDRIVER_SEVERITY.INFO,
+                    message: 'Result of creating email document',
+                    result: createEmailDocResult,
+                    reqId,
+                  });
+                  uploadAttachments(subject, attachments, getUserResult.user_id)
+                    .then((uploadAttachmentsResult) => {
+                      logger.log({
+                        level: LOG_LEVELS.DEBUG,
+                        message: 'Finished Uploading Attachments...',
+                        uploadAttachmentsResult,
+                        reqId,
+                      });
+                      uploadEmail(createEmailDocResult, getUserResult.user_id)
+                        .then(createNewProof)
+                        .then((createNewProofResult) => {
+                          sendEmailUploadPassedEmail(getUserResult.email, subject, attachments.length)
+                            .then(() => {
+                              updateStorage(doesExceed.newStorageUsed, doesExceed.newDocumentsUsed, getUserResult.user_id).then(() => {
+                                res.status(200).send(createNewProofResult);
+                              }).catch((updateStorageErr) => {
+                                const returnObj = {
+                                  level: LOG_LEVELS.ERROR,
+                                  severity: STACKDRIVER_SEVERITY.ERROR,
+                                  message: 'Error updating storage usage:',
+                                  updateStorageErr,
+                                  errMsg: updateStorageErr.message,
+                                  reqId,
+                                };
+                                logger.log(returnObj);
+                                res.status(400).send(returnObj);
+                              });
+                            })
+                            .catch((err) => {
+                              const returnObj = {
+                                level: LOG_LEVELS.ERROR,
+                                severity: STACKDRIVER_SEVERITY.ERROR,
+                                message: 'Failed to send outbound email.',
+                                err,
+                                errMsg: err.message,
+                                reqId,
+                              };
+                              logger.log(returnObj);
+                              res.status(200).send(createNewProofResult);
+                            });
+                        })
+                        .catch((uploadErr) => {
+                          const returnObj = {
+                            level: LOG_LEVELS.ERROR,
+                            severity: STACKDRIVER_SEVERITY.ERROR,
+                            message: 'Failed to upload email.',
+                            uploadErr,
+                            errMSg: uploadErr.message,
+                            reqId,
+                          };
+                          logger.log(returnObj);
+                          sendEmailUploadFailedEmail(getUserResult.email, subject, attachments.length)
+                            .then(() => {
+                              res.status(404).send(returnObj);
+                            })
+                            .catch((sendErr) => {
+                              const returnObjEmail = {
+                                level: LOG_LEVELS.WARN,
+                                severity: STACKDRIVER_SEVERITY.WARNING,
+                                message: 'Failed to send email.',
+                                sendErr,
+                                errMsg: sendErr.message,
+                                reqId,
+                              };
+                              logger.log(returnObjEmail);
+                              res.status(404).send(returnObj);
+                            });
+                        });
+                    })
+                    .catch((uploadAttachmentsError) => {
+                      const returnObj = {
+                        level: LOG_LEVELS.ERROR,
+                        severity: STACKDRIVER_SEVERITY.ERROR,
+                        message: 'Failed to upload attachments.',
+                        uploadAttachmentsError,
 
-                  reqId,
-                };
-                sendEmailUploadFailedEmail(getUserResult.email, subject);
-                res.status(404).send(returnObj);
-              });
+                        reqId,
+                      };
+                      sendEmailUploadFailedEmail(getUserResult.email, subject);
+                      res.status(404).send(returnObj);
+                    });
+                });
+            }
           });
+        });
       })
       .catch((getUserErr) => {
         const returnObj = {

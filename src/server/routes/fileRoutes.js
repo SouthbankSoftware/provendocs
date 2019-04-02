@@ -3,8 +3,8 @@
  * Contains all the Express Routes for requests related to files.
  * @Author: Michael Harrison
  * @Date:   2018-10-29T20:03:41+11:00
- * @Last modified by:   wahaj
- * @Last modified time: 2019-03-29T09:54:32+11:00
+ * @Last modified by:   Michael Harrison
+ * @Last modified time: 2019-04-02T13:31:07+11:00
  */
 
 import winston from 'winston';
@@ -18,13 +18,14 @@ import {
   getFilesList,
   getFileInformation,
   getFileThumbnail,
-  getTotalFilesSize,
+  getOrCreateStorageUsage,
   getFileHistory,
   getDocumentProofForFile,
   getHistoricalFile,
   createNewProof,
   forgetFile,
   getFileVersionCount,
+  updateStorage,
 } from '../helpers/mongoAPI';
 import {
   ERROR_CODES,
@@ -317,20 +318,22 @@ module.exports = (app: any) => {
               });
               convertFileToHTML(filePath, fileInfo[0])
                 .then((result) => {
-                  reduceFileToPreview(result, fileInfo[0].mimetype).then((reducedResult) => {
-                    res.status(200).send(reducedResult);
-                  }).catch((reductionError) => {
-                    const returnObject = {
-                      level: LOG_LEVELS.ERROR,
-                      severity: STACKDRIVER_SEVERITY.ERROR,
-                      message: 'Failed to reduce file:',
-                      reductionError,
-                      errMsg: reductionError.message,
-                      reqId,
-                    };
-                    logger.log(returnObject);
-                    res.status(400).send(returnObject);
-                  });
+                  reduceFileToPreview(result, fileInfo[0].mimetype)
+                    .then((reducedResult) => {
+                      res.status(200).send(reducedResult);
+                    })
+                    .catch((reductionError) => {
+                      const returnObject = {
+                        level: LOG_LEVELS.ERROR,
+                        severity: STACKDRIVER_SEVERITY.ERROR,
+                        message: 'Failed to reduce file:',
+                        reductionError,
+                        errMsg: reductionError.message,
+                        reqId,
+                      };
+                      logger.log(returnObject);
+                      res.status(400).send(returnObject);
+                    });
                 })
                 .catch((err) => {
                   const returnObject = {
@@ -682,7 +685,7 @@ module.exports = (app: any) => {
         userId: user._id,
         reqId,
       });
-      getTotalFilesSize(user._id)
+      getOrCreateStorageUsage(user._id)
         .then((filesSize) => {
           logger.info({
             level: LOG_LEVELS.INFO,
@@ -691,7 +694,7 @@ module.exports = (app: any) => {
             filesSize,
             reqId,
           });
-          res.status(200).send({ size: filesSize });
+          res.status(200).send(filesSize);
         })
         .catch((err) => {
           const returnObject = {
@@ -736,16 +739,6 @@ module.exports = (app: any) => {
         });
         getFileVersionCount(fileId, user._id)
           .then((result) => {
-            logger.log({
-              // @TODO -> Change to debug.
-              level: LOG_LEVELS.INFO,
-              severity: STACKDRIVER_SEVERITY.INFO,
-              message: 'Found number of versions:',
-              userId: user._id,
-              fileId,
-              result,
-              reqId,
-            });
             res.status(200).send(result.length.toString());
           })
           .catch((fileVersionCountErr) => {
@@ -929,27 +922,67 @@ module.exports = (app: any) => {
           userId: user._id,
           reqId,
         });
-        forgetFile(fileId, user._id)
-          .then((result) => {
-            logger.log({
-              level: LOG_LEVELS.INFO,
-              severity: STACKDRIVER_SEVERITY.INFO,
-              message: 'Success, Forgot file.',
-              reqId,
-            });
-            res.status(200).send(result);
-          })
-          .catch((err) => {
+        getFileInformation(fileId, user._id, false, true).then((getFileResult) => {
+          getOrCreateStorageUsage(user._id).then((storageResult) => {
+            forgetFile(fileId, user._id)
+              .then((result) => {
+                logger.log({
+                  level: LOG_LEVELS.INFO,
+                  severity: STACKDRIVER_SEVERITY.INFO,
+                  message: 'Storage Result',
+                  storageResult,
+                  getFileResult,
+                  newSize: storageResult[0].storageUsed - getFileResult[0].size,
+                  newDocs: storageResult[0].documentsUsed - 1,
+                });
+
+                updateStorage(storageResult[0].storageUsed - getFileResult[0].size, storageResult[0].documentsUsed - 1, user._id).then(() => {
+                  res.status(200).send(result);
+                }).catch((updateStorageErr) => {
+                  const returnObject = {
+                    level: LOG_LEVELS.WARN,
+                    severity: STACKDRIVER_SEVERITY.WARNING,
+                    message: 'Failed to forget file.',
+                    updateStorageErr,
+                    reqId,
+                  };
+                  logger.log(returnObject);
+                  res.status(400).send(returnObject);
+                });
+              })
+              .catch((err) => {
+                const returnObject = {
+                  level: LOG_LEVELS.WARN,
+                  severity: STACKDRIVER_SEVERITY.WARNING,
+                  message: 'Failed to forget file.',
+                  err,
+                  reqId,
+                };
+                logger.log(returnObject);
+                res.status(400).send(returnObject);
+              });
+          }).catch((getStorageErr) => {
             const returnObject = {
               level: LOG_LEVELS.WARN,
               severity: STACKDRIVER_SEVERITY.WARNING,
-              message: 'Failed to forget file.',
-              err,
+              message: 'Failed to get storage info.',
+              getStorageErr,
               reqId,
             };
             logger.log(returnObject);
             res.status(400).send(returnObject);
           });
+        }).catch((getFileErr) => {
+          const returnObject = {
+            level: LOG_LEVELS.WARN,
+            severity: STACKDRIVER_SEVERITY.WARNING,
+            message: 'Failed to get file info.',
+            getFileErr,
+            reqId,
+          };
+          logger.log(returnObject);
+          res.status(400).send(returnObject);
+        });
       })
       .catch((err) => {
         const returnObject = {

@@ -42,8 +42,8 @@ export const getUserFromToken = (req: any, res: any, secret: Object) => new Prom
     const { AuthToken } = req.cookies;
     jwt.verify(AuthToken, secret, (err, decoded) => {
       logger.log({
-        level: LOG_LEVELS.INFO,
-        severity: STACKDRIVER_SEVERITY.INFO,
+        level: LOG_LEVELS.DEBUG,
+        severity: STACKDRIVER_SEVERITY.DEBUG,
         message: 'jwt.verify: ',
         decoded,
         err,
