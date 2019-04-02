@@ -9,6 +9,7 @@
     "@babel/plugin-proposal-decorators", { "legacy": true }],
     "@babel/plugin-proposal-class-properties",
     "@babel/plugin-transform-regenerator",
+    "@babel/plugin-syntax-dynamic-import",
     "react-hot-loader/babel",
     [
       "module-resolver",

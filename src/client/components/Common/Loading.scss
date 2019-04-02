@@ -10,25 +10,27 @@
  */
 
 .loadingWrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .loadingSpinner {
-        margin-bottom: 16px;
-    }
-    .loadingMessage {
-        opacity: 0.5;
-        color: white;
-        margin-top: 10px;
-    }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .loadingSpinner {
+    margin-bottom: 10px;
+  }
+
+  .loadingMessage {
+    opacity: 0.5;
+    color: white;
+    margin-top: 10px;
+  }
 }
 
 .isFullScreen_true {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

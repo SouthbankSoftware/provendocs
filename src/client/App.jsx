@@ -2,27 +2,43 @@
  * @Author: Wahaj Shamim <wahaj>
  * @Date:   2018-11-21T09:28:25+11:00
  * @Email:  wahaj@southbanksoftware.com
- * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-03-14T10:45:55+11:00
+ * @Last modified by:   wahaj
+ * @Last modified time: 2019-04-03T09:02:01+11:00
  *
  *
  */
-import React from 'react';
+import React, { Suspense } from 'react';
 import { hot, setConfig } from 'react-hot-loader';
-import { BrowserRouter } from 'react-router-dom';
+import { Spin, Icon } from 'antd';
+
 import api from './common/api';
-import Routes from './routes/routes';
-import FailedRoutes from './routes/failedRoutes';
 
 type Props = {};
 
 type State = { status: boolean };
 
+const antIcon = (
+  <Icon
+    type="loading"
+    style={{
+      fontSize: 100,
+      fontWeight: '100',
+      width: '100px',
+      height: '100px',
+      color: '#fff',
+    }}
+    spin
+  />
+);
+
+const DefaultRoutes = React.lazy(() => import('./routes/routes'));
+const FailedRoutes = React.lazy(() => import('./routes/failedRoutes'));
+
 class App extends React.Component<Props, State> {
   constructor() {
     super();
     this.state = {
-      status: false,
+      status: true,
     };
   }
 
@@ -30,9 +46,12 @@ class App extends React.Component<Props, State> {
     api
       .checkStatus()
       .then(() => {
-        this.setState({
-          status: true,
-        });
+        const { status } = this.state;
+        if (!status) {
+          this.setState({
+            status: true,
+          });
+        }
       })
       .catch(() => {
         this.setState({
@@ -45,15 +64,40 @@ class App extends React.Component<Props, State> {
     const { status } = this.state;
     if (status) {
       return (
-        <BrowserRouter>
-          <Routes />
-        </BrowserRouter>
+        <Suspense
+          fallback={(
+            <div
+              style={{
+                backgroundColor: '#2f79a3',
+                width: '100vw',
+                height: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Spin indicator={antIcon} />
+              <span
+                style={{
+                  color: '#fff',
+                  opacity: 0.5,
+                  marginTop: '20px',
+                }}
+              >
+                Loading, Please Wait...
+              </span>
+            </div>
+)}
+        >
+          <DefaultRoutes />
+        </Suspense>
       );
     }
     return (
-      <BrowserRouter>
+      <Suspense fallback={<div>Loading...</div>}>
         <FailedRoutes />
-      </BrowserRouter>
+      </Suspense>
     );
   }
 }

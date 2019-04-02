@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import HomePage from '../components/Pages/HomePage';
 import NotFound from '../components/Pages/Status/404';
 import FailPage from '../components/Pages/Status/503';
@@ -14,17 +14,19 @@ import FailPage from '../components/Pages/Status/503';
 import '../style/global_styles.scss';
 
 const Routes = () => (
-  <Switch>
-    <Route exact path="/" component={HomePage} />
-    <Route path="/landing" component={HomePage} />
-    <Route path="/landing/:page" component={HomePage} />
-    <Route path="/dashboard" component={FailPage} />
-    <Route exact path="/login" component={FailPage} />
-    <Route exact path="/loginFailed" component={FailPage} />
-    <Route exact path="/signup" component={FailPage} />
-    <Route exact path="/signupFailed" component={FailPage} />
-    <Route exact path="/signupSucceeded" component={FailPage} />
-    <Route path="*" component={NotFound} />
-  </Switch>
+  <BrowserRouter>
+    <Switch>
+      <Route exact path="/" component={HomePage} />
+      <Route path="/landing" component={HomePage} />
+      <Route path="/landing/:page" component={HomePage} />
+      <Route path="/dashboard" component={FailPage} />
+      <Route exact path="/login" component={FailPage} />
+      <Route exact path="/loginFailed" component={FailPage} />
+      <Route exact path="/signup" component={FailPage} />
+      <Route exact path="/signupFailed" component={FailPage} />
+      <Route exact path="/signupSucceeded" component={FailPage} />
+      <Route path="*" component={NotFound} />
+    </Switch>
+  </BrowserRouter>
 );
 export default Routes;
