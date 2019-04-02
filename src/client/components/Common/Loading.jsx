@@ -7,7 +7,7 @@
 
 /* eslint-disable react/prefer-stateless-function */
 import React from 'react';
-import Loader from 'react-loader-spinner';
+import { Spin, Icon } from 'antd';
 // $FlowFixMe
 import './Loading.scss';
 
@@ -16,6 +16,20 @@ type Props = {
   message: string;
   color: string;
 };
+
+const antIcon = (
+  <Icon
+    type="loading"
+    style={{
+      fontSize: 100,
+      fontWeight: '100',
+      width: '100px',
+      height: '100px',
+      color: '#fff',
+    }}
+    spin
+  />
+);
 
 export default class Loading extends React.Component<Props> {
   render() {
@@ -27,14 +41,7 @@ export default class Loading extends React.Component<Props> {
     const colorValue = color || '#FFF';
     return (
       <div className={`loadingWrapper isFullScreen_${className}`}>
-        <Loader
-          className="loadingSpinner"
-          type="TailSpin"
-          color={colorValue}
-          height="100"
-          width="100"
-        />
-        {' '}
+        <Spin indicator={antIcon} />
         {message && (
           <span style={{ color: colorValue }} className="loadingMessage">
             {message}
