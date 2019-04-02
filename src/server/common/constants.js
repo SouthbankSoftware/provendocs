@@ -32,7 +32,9 @@ export const STORAGE_LIMITS = {
 
 export const DOMAINS = {
   ID: process.env.USER_MODULE_URL || 'http://localhost:8000',
-  PROVENDOCS: process.env.DOCS_URL || 'http://localhost:8888',
+  PROVENDOCS:
+    process.env.DOCS_URL
+    || (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://localhost:8888'),
   API: process.env.API_URL || 'http://localhost:8080',
   INTERNAL_API: process.env.INTERNAL_API_URL || 'http://localhost:8080', // TODO: this is just added for the local kubernetes deployment
   THUMBS_MODULE_URL: process.env.THUMBS_MODULE_URL || 'http://localhost:8889',
