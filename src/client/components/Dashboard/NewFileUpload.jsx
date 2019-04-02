@@ -1,4 +1,4 @@
-/*
+/* @flow
  * provendocs
  * Copyright (C) 2019  Southbank Software Ltd.
  *
