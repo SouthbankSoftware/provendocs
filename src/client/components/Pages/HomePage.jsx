@@ -169,7 +169,7 @@ class HomePage extends React.Component<Props, State> {
     const { howDoesItWorkCurrentStep, isAuthenticated } = this.state;
     return (
       <div className="App">
-        <TopNavBar currentPage={PAGES.HOME} isAuthenticated={isAuthenticated} />
+        <TopNavBar currentPage={PAGES.HOME} isAuthenticated={isAuthenticated} onEarlyAccess={null} />
         <div className="AppBody">
           <div className="mainPanel homePage">
             <div className="snap section heroSection" id="home" style={sectionStyle}>
@@ -311,7 +311,7 @@ class HomePage extends React.Component<Props, State> {
                   <div className="columnBody">
                     <span>
                       Track your uploads in real-time and receive a completed proof once your
-                      document proof is securely proven on the blockchain.
+                      document proof is securely proven on the Blockchain.
                     </span>
                   </div>
                 </div>
@@ -368,7 +368,7 @@ class HomePage extends React.Component<Props, State> {
                   </div>
                   <div className="columnBody">
                     Need to maintain wills or other legal records? ProvenDocs can keep a record of
-                    all the variations of your documents, proving each version on the blockchain.
+                    all the variations of your documents, proving each version on the Blockchain.
                     Keep your legal records verifiable, confidential, and tamper-proof.
                   </div>
                 </div>
@@ -394,7 +394,7 @@ class HomePage extends React.Component<Props, State> {
                   </div>
                   <div className="columnBody">
                     Prove ownership of any intellectual property securely, permanently and
-                    incontrovertibly on the blockchain. The blockchain proof can be used to
+                    incontrovertibly on the Blockchain. The Blockchain proof can be used to
                     establish your rights to art, patentable ideas, designs or any other
                     intellectual property.
                   </div>
@@ -479,7 +479,7 @@ class HomePage extends React.Component<Props, State> {
                 </Button>
               </div>
             </div>
-            <Footer currentPage={PAGES.LANDING} privacyOpen={privacyOpen} />
+            <Footer currentPage={PAGES.LANDING} privacyOpen={privacyOpen} onEarlyAccess={null} />
           </div>
         </div>
         <Modal

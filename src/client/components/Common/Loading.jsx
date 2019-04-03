@@ -29,9 +29,9 @@ import { Spin, Icon } from 'antd';
 import './Loading.scss';
 
 type Props = {
-  isFullScreen: boolean;
-  message: string;
-  color: string;
+  isFullScreen: boolean,
+  message?: string,
+  color?: string,
 };
 
 const antIcon = (
@@ -49,6 +49,8 @@ const antIcon = (
 );
 
 export default class Loading extends React.Component<Props> {
+  static defaultProps: Object;
+
   render() {
     const { isFullScreen, message, color } = this.props;
     let className = 'false';
@@ -68,3 +70,8 @@ export default class Loading extends React.Component<Props> {
     );
   }
 }
+
+Loading.defaultProps = {
+  message: '',
+  color: '#FFF',
+};

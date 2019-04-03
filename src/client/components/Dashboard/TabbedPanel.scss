@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-03T09:18:20+11:00
+ * @Last modified time: 2019-04-03T14:03:23+11:00
  */
 
 @import "../../style/global_colors.scss";
@@ -43,7 +43,7 @@
         color: white;
         background-color: $dashboard_panel_background !important;
         opacity: 0.5;
-        width: 38px;
+        min-width: 38px;
         height: 38px;
         margin-right: 0px !important;
         justify-content: center;
@@ -56,6 +56,28 @@
           height: 15px;
           fill: white !important;
         }
+
+        .tabIconWrapper {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
+          align-content: center;
+          padding-left: 8px;
+          padding-right: 8px;
+
+          .tabIconText {
+            margin-left: 10px;
+          }
+        }
+      }
+
+      #bp3-tab-title_undefined_viewDocs {
+        border-right: 1px solid rgba(256, 256, 256, 0.5);
+      }
+
+      #bp3-tab-title_undefined_viewDoc {
+        border-right: 1px solid rgba(256, 256, 256, 0.2);
       }
 
       .bp3-tab:focus {

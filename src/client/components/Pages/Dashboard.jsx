@@ -662,7 +662,11 @@ class Dashboard extends React.Component<Props, State> {
         id: 'viewDocs',
         icon: (
           <Tooltip content="View My Documents." position={Position.TOP}>
-            <ViewDocsIcon />
+            <div className="tabIconWrapper">
+              <ViewDocsIcon />
+              <span className="tabIconText">Documents</span>
+            </div>
+
           </Tooltip>
         ),
         panel: (
@@ -683,7 +687,10 @@ class Dashboard extends React.Component<Props, State> {
         id: 'uploadDoc',
         icon: (
           <Tooltip content="Upload New Documents" position={Position.TOP}>
-            <PlusIcon />
+            <div className="tabIconWrapper">
+              <PlusIcon />
+              <span className="tabIconText">Upload</span>
+            </div>
           </Tooltip>
         ),
         panel: (
@@ -741,7 +748,10 @@ class Dashboard extends React.Component<Props, State> {
 
         icon: (
           <Tooltip content="View this document." position={Position.TOP}>
-            <PreviewDocumentIcon />
+            <div className="tabIconWrapper">
+              <PreviewDocumentIcon />
+              <span className="tabIconText">Preview</span>
+            </div>
           </Tooltip>
         ),
         panel: (
@@ -760,7 +770,10 @@ class Dashboard extends React.Component<Props, State> {
         id: 'viewProof',
         icon: (
           <Tooltip content="View the proof of this document." position={Position.TOP}>
-            <ViewProofIcon />
+            <div className="tabIconWrapper">
+              <ViewProofIcon />
+              <span className="tabIconText">Proof</span>
+            </div>
           </Tooltip>
         ),
         panel: (
@@ -783,13 +796,13 @@ class Dashboard extends React.Component<Props, State> {
     );
     return (
       <div className="App">
-        <TopNavBar currentPage={PAGES.DASHBOARD} isAuthenticated />
+        <TopNavBar currentPage={PAGES.DASHBOARD} isAuthenticated onEarlyAccess={null} />
         <div className="AppBody">
           <div className="mainPanel dashboard">
             <div className="pageTitle">
               <div className="left">
                 <ViewDocsIcon />
-                <span className="title"> Proof Dashboard</span>
+                <span className="title"> Dashboard </span>
               </div>
               <div className="right">
                 {proofReady && fileSelected && (

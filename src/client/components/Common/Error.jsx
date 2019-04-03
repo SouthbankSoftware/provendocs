@@ -28,12 +28,14 @@ import CrossIcon from '../../style/icons/color/cross-icon.svg';
 import './Error.scss';
 
 type Props = {
-  isFullScreen: boolean;
-  message: string;
-  title: string;
+  isFullScreen: boolean,
+  message?: string,
+  title?: string,
 };
 
 export default class Loading extends React.Component<Props> {
+  static defaultProps: Object;
+
   render() {
     const { isFullScreen, message, title } = this.props;
     let className = 'false';
@@ -49,3 +51,8 @@ export default class Loading extends React.Component<Props> {
     );
   }
 }
+
+Loading.defaultProps = {
+  message: '',
+  title: '',
+};

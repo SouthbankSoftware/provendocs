@@ -101,13 +101,13 @@ export function sendSharedFileEmail(
           message: 'Error response received while sending shared file email ',
           error,
         });
-        reject(new Error('Error from SendGrid API: ', error));
+        reject(new Error(`Error from SendGrid API: ${error}`));
       }
       if (response.statusCode >= 200 && response.statusCode < 300) {
         resolve(true);
         // res.sendFile(path.join(__dirname, '../static/check-inbox.html'));
       } else {
-        reject(new Error('Error from SendGrid API: ', response));
+        reject(new Error(`Error from SendGrid API: ${response}`));
         // res.sendFile(path.join(__dirname, '../static/error.html'));
       }
     });
@@ -152,13 +152,13 @@ export function sendWelcomeToProvenDocsEmail(toEmail: string) {
           message: 'Error response received while sending welcome to provendocs email',
           error,
         });
-        reject(new Error('Error from SendGrid API: ', error));
+        reject(new Error(`Error from SendGrid API: ${error}`));
       }
       if (response.statusCode >= 200 && response.statusCode < 300) {
         resolve(true);
         // res.sendFile(path.join(__dirname, '../static/check-inbox.html'));
       } else {
-        reject(new Error('Error from SendGrid API: ', response));
+        reject(new Error(`Error from SendGrid API: ${response}`));
         // res.sendFile(path.join(__dirname, '../static/error.html'));
       }
     });
@@ -213,13 +213,13 @@ export function sendEmailUploadPassedEmail(toEmail: string, subject: string, num
           message: 'Error response received while sending upload passed email',
           error,
         });
-        reject(new Error('Error from SendGrid API: ', error));
+        reject(new Error(`Error from SendGrid API: ${error}`));
       }
       if (response.statusCode >= 200 && response.statusCode < 300) {
         resolve(true);
         // res.sendFile(path.join(__dirname, '../static/check-inbox.html'));
       } else {
-        reject(new Error('Error from SendGrid API: ', response));
+        reject(new Error(`Error from SendGrid API: ${response}`));
         // res.sendFile(path.join(__dirname, '../static/error.html'));
       }
     });
@@ -266,13 +266,13 @@ export function sendEmailUploadFailedEmail(toEmail: string, subject: string, num
           message: 'Error response received while sending upload failed email',
           error,
         });
-        reject(new Error('Error from SendGrid API: ', error));
+        reject(new Error(`Error from SendGrid API: ${error}`));
       }
       if (response.statusCode >= 200 && response.statusCode < 300) {
         resolve(true);
         // res.sendFile(path.join(__dirname, '../static/check-inbox.html'));
       } else {
-        reject(new Error('Error from SendGrid API: ', response));
+        reject(new Error(`Error from SendGrid API: ${response}`));
         // res.sendFile(path.join(__dirname, '../static/error.html'));
       }
     });
@@ -318,13 +318,13 @@ export function sendEmailUploadNoAccountEmail(toEmail: string, subject: string) 
           message: 'Error response received while sending upload no account email',
           error,
         });
-        reject(new Error('Error from SendGrid API: ', error));
+        reject(new Error(`Error from SendGrid API: ${error}`));
       }
       if (response.statusCode >= 200 && response.statusCode < 300) {
         resolve(true);
         // res.sendFile(path.join(__dirname, '../static/check-inbox.html'));
       } else {
-        reject(new Error('Error from SendGrid API: ', response));
+        reject(new Error(`Error from SendGrid API: ${response}`));
         // res.sendFile(path.join(__dirname, '../static/error.html'));
       }
     });
@@ -396,12 +396,12 @@ export function sendEmailProofCopyEmail(
           message: 'Error response received while sending Proof Copy email',
           error,
         });
-        reject(new Error('Error from SendGrid API: ', error));
+        reject(new Error(`Error from SendGrid API: ${error}`));
       }
       if (response.statusCode >= 200 && response.statusCode < 300) {
         resolve(true);
       } else {
-        reject(new Error('Error from SendGrid API: ', response));
+        reject(new Error(`Error from SendGrid API: ${response}`));
       }
     });
   });
@@ -456,12 +456,12 @@ export function sendVerificationEmail(toEmail: string, verifyLink: string) {
           message: 'Error response received while sending verification email ',
           error,
         });
-        reject(new Error('Error from SendGrid API: ', error));
+        reject(new Error(`Error from SendGrid API: ${error}`));
       }
       if (response.statusCode >= 200 && response.statusCode < 300) {
         resolve(true);
       } else {
-        reject(new Error('Error from SendGrid API: ', response));
+        reject(new Error(`Error from SendGrid API: ${response}`));
       }
     });
   });
@@ -515,12 +515,12 @@ export function sendResetPasswordEmail(toEmail: string, newPassword: string) {
           message: 'Error response received while sending reset password email ',
           error,
         });
-        reject(new Error('Error from SendGrid API: ', error));
+        reject(new Error(`Error from SendGrid API: ${error}`));
       }
       if (response.statusCode >= 200 && response.statusCode < 300) {
         resolve(true);
       } else {
-        reject(new Error('Error from SendGrid API: ', response));
+        reject(new Error(`Error from SendGrid API: ${response}`));
       }
     });
   });
@@ -561,7 +561,7 @@ function prepareSubscriptionConfirmationEmail(reqBody) {
   return emailBody;
 }
 
-export function sendSubscriptionConfirmationEmail(req, res) {
+export function sendSubscriptionConfirmationEmail(req: any, res: any) {
   const request = sg.emptyRequest({
     method: 'POST',
     path: '/v3/mail/send',
@@ -602,7 +602,7 @@ function prepareSubscriptionThanksEmail(reqBody) {
   return emailBody;
 }
 
-export function handleSubscriptionConfirmation(req, res) {
+export function handleSubscriptionConfirmation(req: any, res: any) {
   const { listId } = Settings;
   const recipients = [{}];
 
