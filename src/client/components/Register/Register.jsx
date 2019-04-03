@@ -1,15 +1,32 @@
-/*
- * @flow
- * Created Date: Monday August 6th 2018
- * Last Modified: Friday August 31st 2018 3:24:14 pm
- * Modified By: Michael Harrison at <Mike@Southbanksoftware.com>
+/* @flow
+ * provendocs
+ * Copyright (C) 2019  Southbank Software Ltd.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
+ * @Author: Michael Harrison
+ * @Date:   2019-03-29T10:46:51+11:00
+ * @Last modified by:   Michael Harrison
+ * @Last modified time: 2019-04-03T09:18:20+11:00
  */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Modal } from 'antd';
-import { EULA, Security } from '../index';
+import { EULA } from '../index';
 import { DOMAINS } from '../../common/constants';
 
 import GoogleIcon from '../../style/icons/pages/login-signup-pages/google-icon.svg';
@@ -18,11 +35,10 @@ import GithubIcon from '../../style/icons/pages/login-signup-pages/github-icon.s
 // import FacebookIcon from '../../style/icons/pages/login-signup-pages/facebook-icon.svg';
 
 type Props = {
-  pageProps: Object;
+  pageProps: Object,
 };
 type State = {
-  eulaIsOpen: boolean;
-  securityIsOpen: boolean;
+  eulaIsOpen: boolean,
 };
 const { confirm } = Modal;
 
@@ -31,16 +47,13 @@ export default class Login extends React.Component<Props, State> {
     super();
     this.state = {
       eulaIsOpen: false,
-      securityIsOpen: false,
     };
   }
 
   componentDidMount() {
-    const { eulaOpen, securityOpen } = this.props.pageProps;
+    const { eulaOpen } = this.props.pageProps;
     if (eulaOpen) {
       this.setState({ eulaIsOpen: true });
-    } else if (securityOpen) {
-      this.setState({ securityIsOpen: true });
     } else {
       confirm({
         className: 'confirmEULA',
@@ -59,7 +72,7 @@ export default class Login extends React.Component<Props, State> {
   };
 
   render() {
-    const { eulaIsOpen, securityIsOpen } = this.state;
+    const { eulaIsOpen } = this.state;
     const apiLoginURL = `${DOMAINS.API}/auth/signup?redirectURL=${
       DOMAINS.PROVENDOCS
     }/api/signup&provider=`;
@@ -75,17 +88,6 @@ export default class Login extends React.Component<Props, State> {
           }}
         >
           <EULA />
-        </Modal>
-        <Modal
-          visible={securityIsOpen}
-          className="modal privacyModal"
-          centered
-          footer={null}
-          onCancel={() => {
-            this.setState({ securityIsOpen: false });
-          }}
-        >
-          <Security />
         </Modal>
         <div className="pageCenter">
           <div className="pageMessage">

@@ -1,11 +1,27 @@
-/*
- * @flow
- * Dashboard component, master component for web app.
+/* @flow
+ * provendocs
+ * Copyright (C) 2019  Southbank Software Ltd.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
  * @Author: Michael Harrison
- * @Date:   2018-10-29T20:03:41+11:00
+ * @Date:   2019-04-01T16:06:05+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-03T11:57:07+11:00
+ * @Last modified time: 2019-04-03T09:25:50+11:00
  */
+
 
 import React from 'react';
 import { withRouter } from 'react-router';
@@ -21,7 +37,7 @@ import Log from '../../common/log';
 import {
   TabbedPanel, EmailProofButton, NewFileUpload, ViewFiles,
 } from '../Dashboard/index';
-import { PAGES, ANTD_BUTTON_TYPES, TOTAL_FILE_SIZE_LIMIT } from '../../common/constants';
+import { PAGES, ANTD_BUTTON_TYPES } from '../../common/constants';
 import { checkAuthentication } from '../../common/authentication';
 import { Loading } from '../Common';
 import ViewDocsIcon from '../../style/icons/pages/dashboard/view-documents-icon.svg';
@@ -67,6 +83,9 @@ type Props = { history: any };
 type State = {
   isAuthenticated: boolean;
   storageUsed: number;
+  documentsUsed: number;
+  storageLimit: number;
+  documentsLimit: number;
   comment: string;
   allUploadsInvalid: boolean;
   commentTags: Array<string>;
@@ -93,6 +112,9 @@ class Dashboard extends React.Component<Props, State> {
     this.state = {
       isAuthenticated: false,
       storageUsed: 0,
+      documentsUsed: 0,
+      storageLimit: 0,
+      documentsLimit: 0,
       comment: '',
       allUploadsInvalid: false,
       commentTags: [],
@@ -134,7 +156,12 @@ class Dashboard extends React.Component<Props, State> {
             api
               .getFileSizeForUser()
               .then((res) => {
-                this.setState({ storageUsed: res.data.size });
+                Log.info('File Size Result: ');
+                Log.info(res);
+                this.setState({ storageUsed: res.data[0].storageUsed });
+                this.setState({ documentsUsed: res.data[0].documentsUsed });
+                this.setState({ storageLimit: res.data[0].storageLimit });
+                this.setState({ documentsLimit: res.data[0].documentsLimit });
               })
               .catch((err) => {
                 Log.error(`Error fetching files size: ${err}`);
@@ -181,9 +208,30 @@ class Dashboard extends React.Component<Props, State> {
     });
   };
 
-  newFileUpload: any;
+  /**
+   * Refresh the storage usage, after a forget is issues.
+   */
+  _refreshFileSize = () => {
+    api
+      .getFileSizeForUser()
+      .then((res) => {
+        Log.info('File Size Result: ');
+        Log.info(res);
+        this.setState({ storageUsed: res.data[0].storageUsed });
+        this.setState({ documentsUsed: res.data[0].documentsUsed });
+        this.setState({ storageLimit: res.data[0].storageLimit });
+        this.setState({ documentsLimit: res.data[0].documentsLimit });
+      })
+      .catch((err) => {
+        Log.error(`Error fetching files size: ${err}`);
+        openNotificationWithIcon(
+          'error',
+          'File List Error',
+          'Failed to get files size, sorry.',
+        );
+      });
+  }
 
-  viewDocs: any;
 
   @autobind
   _checkAuth() {
@@ -548,8 +596,9 @@ class Dashboard extends React.Component<Props, State> {
   }
 
   @autobind
-  _setSpaceUsed(used: number) {
-    this.setState({ storageUsed: used });
+  _setSpaceUsed(storageUsed: number, documentsUsed: number) {
+    this.setState({ storageUsed });
+    this.setState({ documentsUsed });
   }
 
   @autobind
@@ -572,6 +621,12 @@ class Dashboard extends React.Component<Props, State> {
     newFileUpload.onDrop(files);
   }
 
+
+  newFileUpload: any;
+
+  viewDocs: any;
+
+
   render() {
     const {
       lhsTabSelected,
@@ -583,6 +638,9 @@ class Dashboard extends React.Component<Props, State> {
       shareDialogIsOpen,
       matchingFiles,
       storageUsed,
+      documentsUsed,
+      storageLimit,
+      documentsLimit,
       size,
       isAuthenticated,
     } = this.state;
@@ -616,6 +674,7 @@ class Dashboard extends React.Component<Props, State> {
               swapTabCallback={this._swapLHSTab}
               onDropCallback={this._onDropFile}
               selectFileCallback={this._fileSelected}
+              refreshFileSizeCallback={this._refreshFileSize}
             />
           </div>
         ),
@@ -632,6 +691,9 @@ class Dashboard extends React.Component<Props, State> {
             <NewFileUpload
               history={history}
               storageUsed={storageUsed}
+              documentsUsed={documentsUsed}
+              storageLimit={storageLimit}
+              documentsLimit={documentsLimit}
               ref={(c) => {
                 this.newFileUpload = c;
               }}
@@ -656,18 +718,19 @@ class Dashboard extends React.Component<Props, State> {
     ];
 
     const usedBytes = convertBytes(storageUsed, 'b', 3);
-    const freeBytes = convertBytes(TOTAL_FILE_SIZE_LIMIT - storageUsed, 'b', 3);
+    const freeBytes = convertBytes(storageLimit - storageUsed, 'b', 3);
+    const freeDocs = documentsLimit - documentsUsed;
     // $FlowFixMe
     const lhsTabExtras = (
       <div className="fileSizeInfo">
         <span className="used">
           <b>Used: </b>
-          {`${usedBytes.value} ${usedBytes.unit}`}
+          {`${usedBytes.value} ${usedBytes.unit} (${documentsUsed}) docs`}
         </span>
         <div className="vr" />
         <span className="free">
           <b>Free: </b>
-          {`${freeBytes.value} ${freeBytes.unit}`}
+          {`${freeBytes.value} ${freeBytes.unit} (${freeDocs}) docs`}
         </span>
       </div>
     );
