@@ -208,9 +208,30 @@ class Dashboard extends React.Component<Props, State> {
     });
   };
 
-  newFileUpload: any;
+  /**
+   * Refresh the storage usage, after a forget is issues.
+   */
+  _refreshFileSize = () => {
+    api
+      .getFileSizeForUser()
+      .then((res) => {
+        Log.info('File Size Result: ');
+        Log.info(res);
+        this.setState({ storageUsed: res.data[0].storageUsed });
+        this.setState({ documentsUsed: res.data[0].documentsUsed });
+        this.setState({ storageLimit: res.data[0].storageLimit });
+        this.setState({ documentsLimit: res.data[0].documentsLimit });
+      })
+      .catch((err) => {
+        Log.error(`Error fetching files size: ${err}`);
+        openNotificationWithIcon(
+          'error',
+          'File List Error',
+          'Failed to get files size, sorry.',
+        );
+      });
+  }
 
-  viewDocs: any;
 
   @autobind
   _checkAuth() {
@@ -600,29 +621,11 @@ class Dashboard extends React.Component<Props, State> {
     newFileUpload.onDrop(files);
   }
 
-  /**
-   * Refresh the storage usage, after a forget is issues.
-   */
-  _refreshFileSize = () => {
-    api
-      .getFileSizeForUser()
-      .then((res) => {
-        Log.info('File Size Result: ');
-        Log.info(res);
-        this.setState({ storageUsed: res.data[0].storageUsed });
-        this.setState({ documentsUsed: res.data[0].documentsUsed });
-        this.setState({ storageLimit: res.data[0].storageLimit });
-        this.setState({ documentsLimit: res.data[0].documentsLimit });
-      })
-      .catch((err) => {
-        Log.error(`Error fetching files size: ${err}`);
-        openNotificationWithIcon(
-          'error',
-          'File List Error',
-          'Failed to get files size, sorry.',
-        );
-      });
-  }
+
+  newFileUpload: any;
+
+  viewDocs: any;
+
 
   render() {
     const {
