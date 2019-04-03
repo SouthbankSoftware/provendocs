@@ -33,6 +33,7 @@ import InfoIcon from '../../style/icons/pages/dashboard/info-icon.svg'; // @TODO
 import LogoutIcon from '../../style/icons/pages/top-nav-bar/log-out-icon.svg';
 import LogoIcon from '../../style/icons/pages/top-nav-bar/proven-docs-logo.svg';
 import ProvendbIcon from '../../style/icons/pages/top-nav-bar/powered-by-provendb.svg';
+import HomeIcon from '../../style/icons/pages/top-nav-bar/home-icon.svg';
 import { PAGES, OAUTH_PROVIDERS, DOMAINS } from '../../common/constants';
 import { openNotificationWithIcon } from '../../common/util';
 import { Log } from '../../common';
@@ -172,6 +173,52 @@ export default class TopNavBar extends React.Component<Props, State> {
     );
   };
 
+  _renderSharedTopNav = () => {
+    const { userDetails } = this.state;
+    let avatar = <div />;
+    switch (userDetails.provider) {
+      case OAUTH_PROVIDERS.GOOGLE:
+        avatar = <Avatar googleId={userDetails.googleID} size="25" round />;
+        break;
+      case OAUTH_PROVIDERS.GITHUB:
+        avatar = <Avatar githubHandle={userDetails.githubID} size="25" round />;
+        break;
+      default:
+        avatar = <Avatar name={userDetails.name} size="25" round />;
+        break;
+    }
+
+    return (
+      <div className="homeButtons">
+        {
+          <Tooltip content="Getting Started Guide" position={Position.BOTTOM}>
+            <a
+              className="leftButton"
+              href="https://medium.com/provendb"
+              target="__blank"
+              style={{ 'text-decoration': 'none' }}
+            >
+              <InfoIcon className="leftButton" />
+            </a>
+          </Tooltip>
+        }
+        <Tooltip content="Logout" position={Position.BOTTOM}>
+          <a className="leftButton" href="/api/logout" style={{ 'text-decoration': 'none' }}>
+            <LogoutIcon />
+          </a>
+        </Tooltip>
+        <Tooltip content="Dashboard" position={Position.BOTTOM}>
+          <a className="leftButton" href="/dashboard" style={{ 'text-decoration': 'none' }}>
+            <HomeIcon />
+          </a>
+        </Tooltip>
+        <div className="vr" />
+        {avatar}
+        <span className="emailAddress">{userDetails && userDetails.email}</span>
+      </div>
+    );
+  };
+
   render() {
     const { currentPage } = this.state;
     return (
@@ -252,6 +299,7 @@ export default class TopNavBar extends React.Component<Props, State> {
           {(currentPage === PAGES.LOGIN || currentPage === PAGES.REGISTER)
             && this._renderLoginTopNav()}
           {currentPage === PAGES.DASHBOARD && this._renderDashboardTopNav()}
+          {currentPage === PAGES.SHARED && this._renderSharedTopNav()}
         </div>
       </div>
     );

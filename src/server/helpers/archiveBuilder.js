@@ -25,12 +25,16 @@ import fs from 'fs';
 import archiver from 'archiver';
 import Path from 'path';
 import winston from 'winston';
+import Cryptr from 'cryptr';
 import { decodeFile } from './fileHelpers';
 import createPDF from './certificateBuilder';
 import { STACKDRIVER_SEVERITY, LOG_LEVELS, DOMAINS } from '../common/constants';
 import { certificateAPIFormat } from '../modules/winston.config';
 
+const urlEncryptionKey = process.env.PROVENDOCS_SECRET || 'mySecretHere';
 const EJSON = require('mongodb-extjson');
+
+const cryptr = new Cryptr(urlEncryptionKey);
 
 const logger = winston.createLogger({
   transports: [
@@ -58,13 +62,17 @@ const getReadMeString = (
   proofInformation: Object,
   versionProof: Object,
 ) => {
-  const { name, uploadedAt } = fileInformation;
+  const { name, uploadedAt, _id } = fileInformation;
   const { email } = userInformation;
   const { btcBlockNumber, btcTransaction } = proofInformation;
   const { submitted } = versionProof;
   const proofHash = versionProof.hash;
   const { hash } = fileInformation._provendb_metadata;
-  const url = 'PLACEHOLDER_URL';
+  const url = cryptr.encrypt(
+    `${_id.toString()}-${
+      userInformation._id
+    }-${fileInformation._provendb_metadata.minVersion.toString()}`,
+  );
   let cliDownload = `${DOMAINS.PROVENDOCS}/downloads`;
   if (process.env.PROVENDOCS_ENV === 'TEST') {
     cliDownload = 'https://provendocs.com/downloads';
@@ -107,7 +115,7 @@ const getReadMeString = (
    Viewing and validating the document proof
    -----------------------------------------
    
-   You can view this document and it's proof (subject to permissions) at https://provendocs.com/${url}.
+   You can view this document and it's proof (subject to permissions) at https://provendocs.com/share/${url}.
    
    You can validate this archive - confirming the integrity of the document
    and validity of the proof - using our open using our open source command-line tool.

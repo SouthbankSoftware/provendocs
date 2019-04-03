@@ -23,356 +23,539 @@
  */
 
 @import "../../style/global_colors.scss";
+
 .sharedDocument {
-    .pageTitle {
-        .left {
-            .title {
-                width: 147px;
-                height: 24px;
-                font-family: Roboto;
-                font-size: 20px;
-                font-weight: bold;
-                font-style: normal;
-                font-stretch: normal;
-                line-height: 1.2;
-                letter-spacing: normal;
-                text-align: left;
-                .fileTitle {
-                    width: 227px;
-                    height: 14px;
-                    opacity: 0.7;
-                    font-family: Roboto;
-                    font-size: 12px;
-                    font-weight: normal;
-                    font-style: normal;
-                    font-stretch: normal;
-                    line-height: 1.17;
-                    letter-spacing: normal;
-                    text-align: left;
-                }
-            }
-        }
-        .right {
-            span {
-                width: 442px;
-                height: 14px;
-                opacity: 0.7;
-                font-family: Roboto;
-                font-size: 12px;
-                font-weight: normal;
-                font-style: normal;
-                font-stretch: normal;
-                line-height: 1.17;
-                letter-spacing: normal;
-                text-align: left;
-            }
-            .bold {
-                font-weight: bold;
-            }
-        }
-    }
-    .subWrapper {
+  display: flex;
+  flex-direction: column;
+
+  .lowerGroup {
+    flex-grow: 1;
+    display: flex;
+
+    .SplitPane {
+      flex-grow: 1;
+      padding-left: 90px;
+      padding-right: 90px;
+      padding-bottom: 120px;
+      min-width: 1280px;
+      overflow-x: scroll;
+      position: static !important;
+
+      .Pane1 {
         display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        padding: 0px;
-        height: 100%;
-        .contentWrapper {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            height: 100%;
-            padding: 0px;
-            .header {
-                color: white;
-                padding-left: 25px;
-                padding-right: 25px;
-                width: 100%;
-                margin: 0px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                margin-top: 25px;
-                margin-bottom: 20px;
-                .documentTitle {
-                    min-height: 25px;
-                    border-bottom: 1px solid rgba(256, 256, 256, 0.3);
-                    padding-bottom: 10px;
-                    font-size: 18px;
-                    font-weight: unset;
-                }
-            }
-            .body {
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                flex-grow: 19;
-                padding: 20px;
-                padding-top: 0px;
-                iframe {
-                    flex-grow: 1
-                }
-            }
+        padding-right: 40px !important;
+
+        .lhs {
+          flex-grow: 1;
         }
-    }
-    .viewDocumentWrapper {
-        flex-grow: 19;
-        .contentWrapper {
-            .loadingWrapper {
-                flex-grow: 19;
-            }
-        }
-        .default {
-            padding-bottom: unset !important;
-        }
-        .pdf {
-            height: 100%;
-            width: 100%;
-            padding-top: 0px;
-            overflow-y: scroll;
-            #sidebar {
-                display: none;
-            }
-            #page-container {
-                position: relative;
-                .pf {
-                    margin-top: 20px;
-                    .pc {
-                        padding: 0px;
-                        .bi {
-                            margin-bottom: 8px;
-                        }
-                    }
-                }
-            }
-        }
-        .html {
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.5);
-            overflow: scroll;
-        }
-        .docx {
-            overflow-y: scroll;
-            background-color: white;
-            padding: 20px;
-            p,
-            h1,
-            h2,
-            h3,
-            h4 {
-                color: black;
-                width: 100%;
-                word-break: break-word;
-            }
-            a {
-                color: $azure;
-            }
-        }
-        .default {
-            padding-top: 0px;
-            overflow-y: scroll;
-            align-self: flex-start;
-            width: 100%;
-            height: 100%;
-            padding-bottom: 80px;
-            div {
-                height: 100%;
-                pre {
-                    height: 100%;
-                }
-            }
-        }
-        .png {
-            max-width: 100%;
-            max-height: 100%;
-            img {
-                object-fit: scale-down;
-                max-width: 100%;
-            }
-        }
-        .svg {
-            width: 75%;
-            height: 75%;
-        }
-        .errorWrapper {
-            justify-content: center;
-        }
-        .errorIcon {
-            width: 25%;
-            height: 25%;
-        }
-        span {
-            color: white;
-        }
-        .email {
-            width: 100%;
-            height: 100%;
-            padding: 20px;
-            overflow: scroll;
-            color: black;
-            background-color: white;
-            a {
-                color: blue;
-            }
-        }
-        .emailExtras {
-            margin-bottom: 10px;
-            display: flex;
-            flex-direction: column;
-            align-self: flex-start;
-            flex-grow: 1;
-            width: 100%;
-            div {
-                background-color: $dashboard_panel_background_strong;
-                border-radius: 0.5em;
-                padding: 5px;
-                padding-left: 10px;
-                display: flex;
-                flex-direction: row;
-                align-content: center;
-                margin-bottom: 10px;
-                width: 100%;
-                height: 60px;
-                .emailLabel {
-                    min-width: 90px;
-                    font-weight: bold;
-                    height: 80%;
-                }
-                .value {
-                    overflow: scroll;
-                    white-space: pre-wrap;
-                    width: 100%;
-                    height: 80%;
-                }
-                span {
-                    display: flex;
-                    align-self: center;
-                }
-            }
-        }
-    }
-    .smallProofDiagramWrapper {
+      }
+
+      .Pane2 {
         display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        height: 100%;
+        padding-left: 40px !important;
+
+        .rhs {
+          flex-grow: 1;
+        }
+      }
+    }
+
+    .Resizer {
+      background: #fff;
+      opacity: .2;
+      z-index: 1;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      -moz-background-clip: padding;
+      -webkit-background-clip: padding;
+      background-clip: padding-box;
+      height: 100%;
+    }
+
+    .Resizer:hover {
+      -webkit-transition: all 2s ease;
+      transition: all 2s ease;
+    }
+
+    .Resizer.horizontal {
+      height: 11px;
+      margin: -5px 0;
+      border-top: 5px solid rgba(255, 255, 255, 0);
+      border-bottom: 5px solid rgba(255, 255, 255, 0);
+      cursor: row-resize;
+      width: 100%;
+    }
+
+    .Resizer.horizontal:hover {
+      border-top: 5px solid rgba(0, 0, 0, 0.5);
+      border-bottom: 5px solid rgba(0, 0, 0, 0.5);
+    }
+
+    .Resizer.vertical {
+      width: 11px;
+      margin: 0 -5px;
+      border-left: 5px solid rgba(255, 255, 255, 0);
+      border-right: 5px solid rgba(255, 255, 255, 0);
+      cursor: col-resize;
+    }
+
+    .Resizer.vertical:hover {
+      border-left: 5px solid rgba(0, 0, 0, 0.5);
+      border-right: 5px solid rgba(0, 0, 0, 0.5);
+    }
+
+    .Resizer.disabled {
+      cursor: not-allowed;
+    }
+
+    .Resizer.disabled:hover {
+      border-color: transparent;
+    }
+  }
+
+  .pageTitle {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 60px;
+    margin-bottom: 85px;
+    margin-left: 90px;
+    margin-right: 90px;
+    color: white;
+
+    .left {
+      .title {
+        width: 147px;
+        height: 24px;
+        font-family: Roboto;
+        font-size: 20px;
+        font-weight: bold;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.2;
+        letter-spacing: normal;
+        text-align: left;
+
+        .fileTitle {
+          width: 227px;
+          height: 14px;
+          opacity: 0.7;
+          font-family: Roboto;
+          font-size: 12px;
+          font-weight: normal;
+          font-style: normal;
+          font-stretch: normal;
+          line-height: 1.17;
+          letter-spacing: normal;
+          text-align: left;
+        }
+      }
+    }
+
+    .right {
+      display: flex;
+      flex-direction: row;
+
+      span {
+        width: 442px;
+        height: 14px;
+        opacity: 0.7;
+        font-family: Roboto;
+        font-size: 12px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.17;
+        letter-spacing: normal;
+        text-align: left;
+        margin-right: 10px;
+      }
+
+      .vr {
+        border-right: 1px solid rgba(256, 256, 256, 0.5);
+        margin-top: 5px;
+        margin-bottom: 5px;
+        margin-right: 10px;
+      }
+
+      .bold {
+        font-weight: bold;
+        margin-right: 2px;
+      }
+    }
+  }
+
+  .subWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0px;
+    height: 100%;
+
+    .contentWrapper {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      height: 100%;
+      padding: 0px;
+
+      .header {
+        color: white;
+        padding-left: 25px;
+        padding-right: 25px;
         width: 100%;
-        margin-top: 23px;
-        span {
-            color: white;
+        margin: 0px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-top: 25px;
+        margin-bottom: 20px;
+
+        .documentTitle {
+          min-height: 25px;
+          border-bottom: 1px solid rgba(256, 256, 256, 0.3);
+          padding-bottom: 10px;
+          font-size: 18px;
+          font-weight: unset;
         }
-        b {
-            color: white;
+      }
+
+      .body {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 19;
+        padding: 20px;
+        padding-top: 0px;
+
+        iframe {
+          flex-grow: 1
         }
-        .header {
-            margin-bottom: 18px;
-            font-size: 12px;
-        }
-        .subheader {
-            margin-bottom: 21px;
-            font-size: 12px;
-            font-style: italic;
-            display: flex;
-            flex-direction: row;
-            .infoIcon {
-                margin-left: 10px;
-                fill: white;
-                width: 10px;
-                height: 10px;
-                opacity: 0.5;
-            }
-            .infoIcon:hover {
-                opacity: 1;
-            }
-        }
-        .diagram {
-            margin-left: 14px;
-            margin-right: 14px;
-            .steps {
-                padding-left: 30px;
-                padding-right: 30px;
-                margin-bottom: 15px;
-                display: flex;
-                flex-direction: row;
-                align-content: space-between;
-                justify-content: space-between;
-                font-size: 12px;
-            }
-            .line {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-around;
-                margin-bottom: 25px;
-                padding-left: 40px;
-                padding-right: 40px;
-                svg {
-                    width: 20px;
-                    height: 20px;
-                    flex-grow: 1;
-                }
-                .hr {
-                    flex-grow: 10;
-                    border-bottom: 1px solid white;
-                    margin-bottom: 10px;
-                }
-                .emptyCircle {
-                    width: 18px;
-                    height: 18px;
-                    border-radius: 5em;
-                    border: 1px solid white;
-                    margin-left: 5px;
-                }
-            }
-            .icons {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                .faded {
-                    opacity: 0.1;
-                }
-                span {
-                    font-size: 10px;
-                    width: 75%;
-                    text-align: center;
-                }
-                .document {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    width: 140px;
-                    svg {
-                        width: 29.1px;
-                        height: 36.8px;
-                        align-self: center;
-                        margin-bottom: 17px;
-                    }
-                }
-                .hash {
-                    width: 140px;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    svg {
-                        width: 29.1px;
-                        height: 36.8px;
-                        align-self: center;
-                        margin-bottom: 17px;
-                    }
-                }
-                .blockchain {
-                    width: 140px;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    svg {
-                        width: 29.1px;
-                        height: 36.8px;
-                        align-self: center;
-                        margin-bottom: 17px;
-                    }
-                }
-            }
-        }
+      }
     }
+  }
+
+  .viewDocumentWrapper {
+    flex-grow: 19;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .contentWrapper {
+      .loadingWrapper {
+        flex-grow: 19;
+      }
+    }
+
+    .default {
+      padding-bottom: unset !important;
+    }
+
+    .pdf {
+      height: 100%;
+      width: 100%;
+      padding-top: 0px;
+      overflow-y: scroll;
+
+      #sidebar {
+        display: none;
+      }
+
+      #page-container {
+        position: relative;
+
+        .pf {
+          margin-top: 20px;
+
+          .pc {
+            padding: 0px;
+
+            .bi {
+              margin-bottom: 8px;
+            }
+          }
+        }
+      }
+    }
+
+    .html {
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.5);
+      overflow: scroll;
+    }
+
+    .docx {
+      overflow-y: scroll;
+      background-color: white;
+      padding: 20px;
+
+      p,
+      h1,
+      h2,
+      h3,
+      h4 {
+        color: black;
+        width: 100%;
+        word-break: break-word;
+      }
+
+      a {
+        color: $azure;
+      }
+    }
+
+    .default {
+      padding-top: 0px;
+      overflow-y: scroll;
+      align-self: flex-start;
+      width: 100%;
+      height: 100%;
+      padding-bottom: 80px;
+
+      div {
+        height: 100%;
+
+        pre {
+          height: 100%;
+        }
+      }
+    }
+
+    .png {
+      max-width: 100%;
+      max-height: 100%;
+
+      img {
+        object-fit: scale-down;
+        max-width: 100%;
+      }
+    }
+
+    .svg {
+      width: 75%;
+      height: 75%;
+    }
+
+    .errorWrapper {
+      justify-content: center;
+    }
+
+    .errorIcon {
+      width: 25%;
+      height: 25%;
+    }
+
+    span {
+      color: white;
+    }
+
+    .email {
+      width: 100%;
+      height: 100%;
+      padding: 20px;
+      overflow: scroll;
+      color: black;
+      background-color: white;
+
+      a {
+        color: blue;
+      }
+    }
+
+    .emailExtras {
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      align-self: flex-start;
+      flex-grow: 1;
+      width: 100%;
+
+      div {
+        background-color: $dashboard_panel_background_strong;
+        border-radius: 0.5em;
+        padding: 5px;
+        padding-left: 10px;
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        margin-bottom: 10px;
+        width: 100%;
+        height: 60px;
+
+        .emailLabel {
+          min-width: 90px;
+          font-weight: bold;
+          height: 80%;
+        }
+
+        .value {
+          overflow: scroll;
+          white-space: pre-wrap;
+          width: 100%;
+          height: 80%;
+        }
+
+        span {
+          display: flex;
+          align-self: center;
+        }
+      }
+    }
+
+    img {
+      object-fit: contain !important;
+      width: 100%;
+    }
+  }
+
+  .smallProofDiagramWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    width: 100%;
+    margin-top: 23px;
+
+    span {
+      color: white;
+    }
+
+    b {
+      color: white;
+    }
+
+    .header {
+      margin-bottom: 18px;
+      font-size: 12px;
+    }
+
+    .subheader {
+      margin-bottom: 21px;
+      font-size: 12px;
+      font-style: italic;
+      display: flex;
+      flex-direction: row;
+
+      .infoIcon {
+        margin-left: 10px;
+        fill: white;
+        width: 10px;
+        height: 10px;
+        opacity: 0.5;
+      }
+
+      .infoIcon:hover {
+        opacity: 1;
+      }
+    }
+
+    .diagram {
+      margin-left: 14px;
+      margin-right: 14px;
+
+      .steps {
+        padding-left: 30px;
+        padding-right: 30px;
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: row;
+        align-content: space-between;
+        justify-content: space-between;
+        font-size: 12px;
+      }
+
+      .line {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin-bottom: 25px;
+        padding-left: 40px;
+        padding-right: 40px;
+
+        svg {
+          width: 20px;
+          height: 20px;
+          flex-grow: 1;
+        }
+
+        .hr {
+          flex-grow: 10;
+          border-bottom: 1px solid white;
+          margin-bottom: 10px;
+        }
+
+        .emptyCircle {
+          width: 18px;
+          height: 18px;
+          border-radius: 5em;
+          border: 1px solid white;
+          margin-left: 5px;
+        }
+      }
+
+      .icons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .faded {
+          opacity: 0.1;
+        }
+
+        span {
+          font-size: 10px;
+          width: 75%;
+          text-align: center;
+        }
+
+        .document {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 140px;
+
+          svg {
+            width: 29.1px;
+            height: 36.8px;
+            align-self: center;
+            margin-bottom: 17px;
+          }
+        }
+
+        .hash {
+          width: 140px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          svg {
+            width: 29.1px;
+            height: 36.8px;
+            align-self: center;
+            margin-bottom: 17px;
+          }
+        }
+
+        .blockchain {
+          width: 140px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          svg {
+            width: 29.1px;
+            height: 36.8px;
+            align-self: center;
+            margin-bottom: 17px;
+          }
+        }
+      }
+    }
+  }
 }

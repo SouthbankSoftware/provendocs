@@ -852,7 +852,7 @@ class Dashboard extends React.Component<Props, State> {
                     <HistoryIcon className="historyIcon" onClick={this._historyRHS} />
                   </Tooltip>
                 )}
-                {fileSelected && <div className="vr" />}
+                {fileSelected && proofReady && <div className="vr" />}
                 {fileSelected && proofReady && (
                   <Tooltip content="Recieve this proof via email." position={Position.TOP}>
                     <EmailProofButton
