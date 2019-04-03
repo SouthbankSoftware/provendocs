@@ -4,7 +4,7 @@
  * @Author: Michael Harrison
  * @Date:   2018-10-29T20:03:41+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-01T13:07:38+11:00
+ * @Last modified time: 2019-04-03T11:50:31+11:00
  */
 
 import React from 'react';
@@ -511,7 +511,7 @@ In progress.
     const sizeResult = convertBytes(fileSize, 'b', 3);
     return (
       <div className="App">
-        <TopNavBar currentPage={PAGES.DASHBOARD} isAuthenticated />
+        <TopNavBar currentPage={PAGES.SHARED} isAuthenticated />
         <div className="AppBody">
           <div className="mainPanel sharedDocument">
             <div className="pageTitle">

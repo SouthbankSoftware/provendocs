@@ -2,7 +2,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-25T15:52:10+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-01T13:19:45+11:00
+ * @Last modified time: 2019-04-03T11:48:03+11:00
  */
 export const PAGES = {
   HOME: 'home',
@@ -12,6 +12,7 @@ export const PAGES = {
   DASHBOARD: 'dashboard',
   SUPPORT: 'support',
   LANDING: 'landing',
+  SHARED: 'shared',
 };
 
 export const ANTD_BUTTON_TYPES = {

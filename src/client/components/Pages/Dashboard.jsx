@@ -4,7 +4,7 @@
  * @Author: Michael Harrison
  * @Date:   2018-10-29T20:03:41+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-01T13:46:44+11:00
+ * @Last modified time: 2019-04-03T11:57:07+11:00
  */
 
 import React from 'react';
@@ -789,7 +789,7 @@ class Dashboard extends React.Component<Props, State> {
                     <HistoryIcon className="historyIcon" onClick={this._historyRHS} />
                   </Tooltip>
                 )}
-                {fileSelected && <div className="vr" />}
+                {fileSelected && proofReady && <div className="vr" />}
                 {fileSelected && proofReady && (
                   <Tooltip content="Recieve this proof via email." position={Position.TOP}>
                     <EmailProofButton
