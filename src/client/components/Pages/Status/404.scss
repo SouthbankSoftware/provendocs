@@ -19,17 +19,21 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-03T09:18:20+11:00
+ * @Last modified time: 2019-04-03T12:19:58+11:00
  */
 @import "../../../style/global_colors.scss";
+
 .notFound {
   height: auto !important;
+
   .heroSection {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-content: center;
     padding-bottom: 100px;
+
     .heroText {
       display: flex;
       align-self: center;
@@ -44,6 +48,7 @@
       text-align: center;
       color: #ffffff;
     }
+
     .heroSubtitle {
       display: flex;
       align-self: center;
