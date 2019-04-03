@@ -3,7 +3,7 @@
  * @Date:   2019-03-13T14:56:22+11:00
  * @Email:  wahaj@southbanksoftware.com
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-01T16:00:58+11:00
+ * @Last modified time: 2019-04-03T14:55:35+11:00
  * 
  */
 
@@ -194,7 +194,7 @@
       color: #ffffff;
       margin-bottom: 13px;
 
-      @media screen and (max-width: 420px) {
+      @media screen and (max-width: 780px) {
         font-size: 30px;
         width: 100%;
         height: unset;
@@ -333,9 +333,11 @@
   .howSection {
     background-color: $dusk-blue;
 
-    @media screen and (max-width: 420px) {
+    @media screen and (max-width: 780px) {
       .sectionBody {
         flex-direction: column;
+        flex-grow: 1;
+        justify-content: space-between;
 
         .sectionColumn {
           flex-grow: 1;
@@ -389,7 +391,7 @@
     z-index: 10;
     background-color: $tealish;
 
-    @media screen and (max-width: 420px) {
+    @media screen and (max-width: 780px) {
       justify-content: flex-start;
     }
 
@@ -401,7 +403,7 @@
       align-items: center;
       justify-content: space-evenly;
 
-      @media screen and (max-width: 420px) {
+      @media screen and (max-width: 780px) {
         display: flex;
         flex-direction: column;
         flex-grow: 1;
@@ -411,7 +413,7 @@
         display: flex;
         height: 500px;
 
-        @media screen and (max-width: 420px) {
+        @media screen and (max-width: 780px) {
           display: none;
         }
       }
@@ -600,7 +602,7 @@
         .columnIcon {
           height: 86px;
 
-          @media screen and (max-width: 420px) {
+          @media screen and (max-width: 780px) {
             height: 40px;
           }
 
@@ -631,9 +633,11 @@
       }
     }
 
-    @media screen and (max-width: 420px) {
+    @media screen and (max-width: 780px) {
       .sectionBody {
         flex-direction: column;
+        justify-content: space-between;
+        flex-grow: 1;
 
         .sectionColumn {
           flex-grow: 1;
@@ -672,6 +676,10 @@
             text-align: start;
           }
         }
+      }
+
+      .ant-btn-primary {
+        display: none;
       }
     }
   }
@@ -783,7 +791,7 @@
       }
     }
 
-    @media screen and (max-width: 420px) {
+    @media screen and (max-width: 780px) {
       flex-direction: column;
 
       .vr {

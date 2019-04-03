@@ -13,6 +13,11 @@
     display: none;
   }
 
+  @media screen and (max-width: 780px) {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
   background-color: $navbar_background_blue;
   display: flex;
   flex-direction: row;
@@ -31,6 +36,10 @@
     display: flex;
     align-items: center;
 
+    @media screen and (max-width: 780px) {
+      width: 120px !important;
+    }
+
     .docsLogo {
       width: 100px;
       height: 34px;
@@ -40,6 +49,10 @@
     .provendbLogo {
       width: 144px;
       height: 14px;
+
+      @media screen and (max-width: 780px) {
+        display: none;
+      }
     }
 
     svg {
@@ -81,6 +94,11 @@
         justify-content: center;
         align-items: center;
         color: white !important;
+
+        @media screen and (max-width: 780px) {
+          font-size: 12px;
+          text-align: center;
+        }
       }
 
       .link:hover {
@@ -148,6 +166,10 @@
       }
 
       .btnDescription {
+        @media screen and (max-width: 780px) {
+          display: none;
+        }
+
         opacity: 0.5;
         font-family: Roboto;
         font-size: 12px;
