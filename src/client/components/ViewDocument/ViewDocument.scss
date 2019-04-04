@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-03T09:18:20+11:00
+ * @Last modified time: 2019-04-03T13:54:45+11:00
  */
 
 @import "../../style/global_colors.scss";
@@ -51,6 +51,7 @@
 
     .documentTitle {
       width: 100%;
+      display: flex;
 
       span {
         font-size: 14px;
@@ -62,12 +63,17 @@
         text-align: left;
         color: #ffffff;
         opacity: 0.5;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
       }
 
       .bold {
         font-size: 18px;
         font-weight: bold;
         opacity: 1;
+        overflow: visible;
+        margin-right: 10px;
       }
     }
   }

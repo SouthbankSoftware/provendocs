@@ -31,3 +31,5 @@ export { default as Footer } from './Footer/Footer';
 export { default as ProofDialog } from './ProofDiagram/ProofDialog';
 export { default as Privacy } from './Privacy/Privacy';
 export { default as EULA } from './Privacy/EULA';
+export { default as ProofInProgress } from './Dashboard/ProofInProgress';
+export { default as ProofComplete } from './Dashboard/ProofComplete';

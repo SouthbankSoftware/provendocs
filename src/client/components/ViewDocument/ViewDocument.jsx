@@ -24,7 +24,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
 import autobind from 'autobind-decorator';
-import _ from 'lodash';
 import PreviewOffIcon from '../../style/icons/pages/dashboard/preview-off-icon.svg';
 import { ExcelPreview } from '../index';
 import { Loading, Error } from '../Common';
@@ -332,7 +331,7 @@ class ViewDocument extends React.Component<Props, State> {
                   <span className="bold">
                     <b>Document Preview: </b>
                   </span>
-                  <span>{_.truncate(file.name, { length: 50 })}</span>
+                  <span>{file.name}</span>
                 </div>
               </div>
               {this._renderFilePreview()}

@@ -37,7 +37,7 @@ import './Footer.scss';
 
 type State = { privacyOpen: boolean };
 
-type Props = { currentPage: String; privacyOpen: boolean };
+type Props = { currentPage: string, privacyOpen: boolean };
 export default class Footer extends React.Component<Props, State> {
   constructor() {
     super();

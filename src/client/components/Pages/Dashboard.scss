@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-03T09:26:05+11:00
+ * @Last modified time: 2019-04-03T14:02:00+11:00
  */
 
 @import "../../style/global_colors.scss";
@@ -27,6 +27,10 @@
 .dashboard {
   height: auto !important;
   overflow-y: auto !important;
+
+  a:hover {
+    color: $azure;
+  }
 
   .vr {
     border-right: 1px solid white;

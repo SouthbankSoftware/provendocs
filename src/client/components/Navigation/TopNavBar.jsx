@@ -114,7 +114,6 @@ export default class TopNavBar extends React.Component<Props, State> {
     return (
       <div className="homeButtons">
         <span className="btnDescription">Join our early access program:</span>
-
         <Button type="primary" htmlType="submit" className="antdButton" onClick={onEarlyAccess}>
           Early Access
         </Button>
@@ -280,15 +279,6 @@ export default class TopNavBar extends React.Component<Props, State> {
                 rel="noopener noreferrer"
               >
                 <span className="aboutLabel">Documentation</span>
-              </a>
-              <a
-                href="https://github.com/southbanksoftware.com/provendocs"
-                className="link supportLink"
-                style={{ textDecoration: 'none' }}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="aboutLabel">Github</span>
               </a>
             </div>
           )}

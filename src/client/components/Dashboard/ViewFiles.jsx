@@ -241,7 +241,7 @@ export default class ViewFiles extends React.Component<Props, State> {
             </span>
             <div className="fileButtons">
               <FileHistoryButton onClickCallback={this._onClickHistory} file={file} />
-              <Tooltip content="See Upload Comments.">
+              <Tooltip content="See Document Comments.">
                 <CommentIcon
                   className="commentIcon"
                   onClick={() => {
@@ -737,7 +737,7 @@ export default class ViewFiles extends React.Component<Props, State> {
             <div className="fileSummaryListWrapper">
               <div className="fileList">
                 <div className="row header">
-                  <Error message="Failed to get file list for you." />
+                  <Error message="Failed to get file list for you." isFullScreen={false} />
                 </div>
               </div>
             </div>
@@ -830,7 +830,7 @@ export default class ViewFiles extends React.Component<Props, State> {
           className={`sort_selected_${(currentSort.type === SORTS.UPLOADED).toString()}`}
           key="uploaded"
         >
-          Uploaded
+          Upload Date
         </Menu.Item>
       </Menu>
     );
@@ -852,7 +852,7 @@ export default class ViewFiles extends React.Component<Props, State> {
           >
             <div className="fileSummaryListWrapper">
               <div className="fileList">
-                <span className="headerLabel">Document overview:</span>
+                <span className="headerLabel">Your Documents</span>
                 <div className="row header">
                   <div className="headerFilters">
                     <ButtonGroup className="filterButtonGroup">

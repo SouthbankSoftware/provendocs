@@ -29,10 +29,10 @@ import LockIcon from '../../style/icons/pages/login-signup-pages/lock-icon.svg';
 import { api, Log } from '../../common';
 
 type Props = {
-  form: any;
+  form: any,
 };
 type State = {
-  errForm: string;
+  errForm: string,
 };
 
 class EmailLogin extends React.Component<Props, State> {
@@ -88,7 +88,7 @@ class EmailLogin extends React.Component<Props, State> {
         <Form onSubmit={this.handleSubmit} className="antForm">
           {errForm !== '' && (
             <Form.Item>
-              <span className="ant-form-explain">{errForm}</span>
+              <span className="ant-form-explain">Username / Password combination not found. </span>
             </Form.Item>
           )}
           <Form.Item>

@@ -25,9 +25,9 @@ const HOW_DOES_IT_WORK_STEPS = [
   {
     title: 'The Blockchain',
     content:
-      'Information stored on the public blockchain is immutable - '
+      'Information stored on the public Blockchain is immutable - '
       + 'it cannot be changed or deleted. By storing cryptographic signatures'
-      + ' of the contents of your document on the blockchain, we can prove that'
+      + ' of the contents of your document on the Blockchain, we can prove that'
       + ' the document existed at a specific time and that you uploaded it.',
   },
   {
@@ -41,7 +41,7 @@ const HOW_DOES_IT_WORK_STEPS = [
   {
     title: 'Security',
     content:
-      'Only the cryptographic signature (hash) is stored on the public blockchain and'
+      'Only the cryptographic signature (hash) is stored on the public Blockchain and'
       + ' cannot be used to view your document contents. Your document is stored securely'
       + ' in the ProvenDocs database and cannot be viewed by anyone without your permission.',
   },

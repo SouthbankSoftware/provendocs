@@ -457,7 +457,7 @@ class NewFileUpload extends React.Component<Props, State> {
             .uploadNewVersions(dupeFiles, comment, commentTags)
             .then(() => {
               this.onClickCancel();
-              swapTabCallback();
+              swapTabCallback(true);
             })
             .catch((err) => {
               Log.error(`Failed to upload files with error: ${err}`);
@@ -496,7 +496,7 @@ class NewFileUpload extends React.Component<Props, State> {
                 'Your files have been uploaded!',
               );
               this.onClickCancel();
-              swapTabCallback();
+              swapTabCallback(true);
             })
             .catch((err) => {
               Log.error(`Failed to upload files with err: ${err}`);

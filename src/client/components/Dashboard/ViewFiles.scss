@@ -69,6 +69,7 @@
         overflow-y: scroll;
         padding-left: 24px;
         padding-right: 24px;
+        align-content: flex-start;
       }
 
       .files {
@@ -391,9 +392,9 @@
   }
 
   .Grid-cell {
-    width: 105px;
-    height: 192px;
-    margin-right: 12px;
+    width: 113px;
+    height: 214px;
+    margin-right: 15px;
     border-radius: 9px;
     border: 1px solid rgba(256, 256, 256, 0.15);
 
@@ -402,7 +403,7 @@
       padding-left: 12px;
       padding-right: 12px;
       width: 100%;
-      height: 115px;
+      height: 124.9px;
       box-shadow: none;
       background-image: none;
       cursor: pointer;
@@ -416,6 +417,8 @@
         overflow-x: hidden;
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
         div.ant-spin {
           display: flex;
@@ -447,7 +450,6 @@
           left: 0px;
           min-width: unset;
           width: 34px;
-          margin-left: 20px;
           height: 100%;
           padding-top: 20%;
           padding-bottom: 20%;
@@ -499,7 +501,6 @@
           left: 0px;
           min-width: unset;
           width: 34px;
-          margin-left: 20px;
           height: 100%;
           padding-top: 20%;
           padding-bottom: 20%;
@@ -555,7 +556,6 @@
           left: 0px;
           min-width: unset;
           width: 34px;
-          margin-left: 20px;
           height: 100%;
           padding-top: 20%;
           padding-bottom: 20%;
@@ -606,10 +606,10 @@
       svg {
         z-index: 1;
         position: relative;
-        left: 60px;
-        top: -110px;
+        left: 75px;
+        top: -130px;
         min-width: 20px;
-        height: 14px;
+        height: 16px;
       }
 
       .fileTypeFooter {
@@ -722,7 +722,7 @@
       letter-spacing: 0.1px;
       text-align: center;
       color: $white;
-      margin-bottom: 6px;
+      margin-bottom: 16px;
     }
 
     .fileButtons {

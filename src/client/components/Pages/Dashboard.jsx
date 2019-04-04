@@ -30,14 +30,17 @@ import { Switch, Tooltip, Position } from '@blueprintjs/core';
 import _ from 'lodash';
 import SplitPane from 'react-split-pane';
 import { Button, Modal } from 'antd';
-import { ShareDialog, CommentAndTags, TopNavBar } from '../index';
+import Cookies from 'universal-cookie';
+import {
+  ShareDialog, CommentAndTags, TopNavBar, ProofInProgress, ProofComplete,
+} from '../index';
 import { convertBytes, openNotificationWithIcon } from '../../common/util';
 import { api } from '../../common';
 import Log from '../../common/log';
 import {
   TabbedPanel, EmailProofButton, NewFileUpload, ViewFiles,
 } from '../Dashboard/index';
-import { PAGES, ANTD_BUTTON_TYPES } from '../../common/constants';
+import { PAGES, ANTD_BUTTON_TYPES, PROOF_STATUS } from '../../common/constants';
 import { checkAuthentication } from '../../common/authentication';
 import { Loading } from '../Common';
 import ViewDocsIcon from '../../style/icons/pages/dashboard/view-documents-icon.svg';
@@ -58,6 +61,7 @@ import ProofDialog from '../ProofDiagram/ProofDialog';
 // $FlowFixMe
 import './Dashboard.scss';
 
+const cookies = new Cookies();
 const { confirm } = Modal;
 
 const LHS_TABS = {
@@ -96,6 +100,8 @@ type State = {
   rhsStage: string;
   proofReady: boolean;
   diagramDialogIsOpen: boolean;
+  firstUploadDialogueOpen: boolean;
+  firstProofDialogueOpen: boolean;
   storageLimitReached: boolean;
   shareDialogIsOpen: boolean;
   matchingFiles: Array<Object>;
@@ -125,6 +131,8 @@ class Dashboard extends React.Component<Props, State> {
       rhsStage: RHS_STAGES.BEGIN,
       proofReady: false,
       diagramDialogIsOpen: false,
+      firstUploadDialogueOpen: false,
+      firstProofDialogueOpen: false,
       shareDialogIsOpen: false,
       matchingFiles: [],
       failedFiles: [],
@@ -156,8 +164,6 @@ class Dashboard extends React.Component<Props, State> {
             api
               .getFileSizeForUser()
               .then((res) => {
-                Log.info('File Size Result: ');
-                Log.info(res);
                 this.setState({ storageUsed: res.data[0].storageUsed });
                 this.setState({ documentsUsed: res.data[0].documentsUsed });
                 this.setState({ storageLimit: res.data[0].storageLimit });
@@ -215,8 +221,6 @@ class Dashboard extends React.Component<Props, State> {
     api
       .getFileSizeForUser()
       .then((res) => {
-        Log.info('File Size Result: ');
-        Log.info(res);
         this.setState({ storageUsed: res.data[0].storageUsed });
         this.setState({ documentsUsed: res.data[0].documentsUsed });
         this.setState({ storageLimit: res.data[0].storageLimit });
@@ -232,6 +236,11 @@ class Dashboard extends React.Component<Props, State> {
       });
   }
 
+  _checkAndShowFirstUploadDialogue = () => {
+    if ((cookies.get('provendocs_upload_dont_remind_me') === 'false' || cookies.get('provendocs_upload_dont_remind_me') === undefined)) {
+      this.setState({ firstUploadDialogueOpen: true });
+    }
+  }
 
   @autobind
   _checkAuth() {
@@ -269,7 +278,7 @@ class Dashboard extends React.Component<Props, State> {
   }
 
   @autobind
-  _swapLHSTab() {
+  _swapLHSTab(uploadComplete: boolean) {
     const { lhsTabSelected } = this.state;
     // const { viewDocs } = this.refs;
     const { viewDocs } = this;
@@ -279,6 +288,10 @@ class Dashboard extends React.Component<Props, State> {
       this.setState({ lhsTabSelected: LHS_TABS.VIEW_DOCUMENTS });
     }
     viewDocs.getFileList(true);
+    console.log(uploadComplete);
+    if (uploadComplete) {
+      this._checkAndShowFirstUploadDialogue();
+    }
   }
 
   @autobind
@@ -295,6 +308,9 @@ class Dashboard extends React.Component<Props, State> {
   _fileSelected(file: Object, fileVersion: number) {
     this.state.fileVersion = fileVersion;
     this.setState({ fileSelected: file });
+    if (file.proofInfo === PROOF_STATUS.VALID && (cookies.get('provendocs_proof_dont_remind_me') === 'false' || cookies.get('provendocs_proof_dont_remind_me') === undefined)) {
+      this.setState({ firstProofDialogueOpen: true });
+    }
   }
 
   @autobind
@@ -636,6 +652,8 @@ class Dashboard extends React.Component<Props, State> {
       proofReady,
       diagramDialogIsOpen,
       shareDialogIsOpen,
+      firstUploadDialogueOpen,
+      firstProofDialogueOpen,
       matchingFiles,
       storageUsed,
       documentsUsed,
@@ -662,7 +680,11 @@ class Dashboard extends React.Component<Props, State> {
         id: 'viewDocs',
         icon: (
           <Tooltip content="View My Documents." position={Position.TOP}>
-            <ViewDocsIcon />
+            <div className="tabIconWrapper">
+              <ViewDocsIcon />
+              <span className="tabIconText">Documents</span>
+            </div>
+
           </Tooltip>
         ),
         panel: (
@@ -683,7 +705,10 @@ class Dashboard extends React.Component<Props, State> {
         id: 'uploadDoc',
         icon: (
           <Tooltip content="Upload New Documents" position={Position.TOP}>
-            <PlusIcon />
+            <div className="tabIconWrapper">
+              <PlusIcon />
+              <span className="tabIconText">Upload</span>
+            </div>
           </Tooltip>
         ),
         panel: (
@@ -741,7 +766,10 @@ class Dashboard extends React.Component<Props, State> {
 
         icon: (
           <Tooltip content="View this document." position={Position.TOP}>
-            <PreviewDocumentIcon />
+            <div className="tabIconWrapper">
+              <PreviewDocumentIcon />
+              <span className="tabIconText">Preview</span>
+            </div>
           </Tooltip>
         ),
         panel: (
@@ -760,7 +788,10 @@ class Dashboard extends React.Component<Props, State> {
         id: 'viewProof',
         icon: (
           <Tooltip content="View the proof of this document." position={Position.TOP}>
-            <ViewProofIcon />
+            <div className="tabIconWrapper">
+              <ViewProofIcon />
+              <span className="tabIconText">Proof</span>
+            </div>
           </Tooltip>
         ),
         panel: (
@@ -783,13 +814,35 @@ class Dashboard extends React.Component<Props, State> {
     );
     return (
       <div className="App">
-        <TopNavBar currentPage={PAGES.DASHBOARD} isAuthenticated />
+        <TopNavBar currentPage={PAGES.DASHBOARD} isAuthenticated onEarlyAccess={null} />
         <div className="AppBody">
+          <Modal
+            className="firstUploadDialogueModal"
+            cancelText="Ok"
+            visible={firstUploadDialogueOpen}
+            centered
+            onCancel={() => {
+              this.setState({ firstUploadDialogueOpen: false });
+            }}
+          >
+            <ProofInProgress />
+          </Modal>
+          <Modal
+            className="firstProofDialogueModal"
+            cancelText="Ok"
+            visible={firstProofDialogueOpen}
+            centered
+            onCancel={() => {
+              this.setState({ firstProofDialogueOpen: false });
+            }}
+          >
+            <ProofComplete />
+          </Modal>
           <div className="mainPanel dashboard">
             <div className="pageTitle">
               <div className="left">
                 <ViewDocsIcon />
-                <span className="title"> Proof Dashboard</span>
+                <span className="title"> Dashboard </span>
               </div>
               <div className="right">
                 {proofReady && fileSelected && (

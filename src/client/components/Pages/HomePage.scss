@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-03T09:18:20+11:00
+ * @Last modified time: 2019-04-03T13:09:40+11:00
  */
 
 @import "../../style/global_colors.scss";
@@ -539,7 +539,7 @@
           color: $tealish;
           border: none;
           border-radius: 5px;
-          opacity: 0.75;
+          // opacity: 0.75;
           box-shadow: none;
 
           @media screen and (max-width: 420px) {
