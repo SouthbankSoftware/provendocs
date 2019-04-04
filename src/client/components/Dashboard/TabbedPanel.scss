@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-03T14:03:23+11:00
+ * @Last modified time: 2019-04-04T09:29:23+11:00
  */
 
 @import "../../style/global_colors.scss";
@@ -63,8 +63,8 @@
           justify-content: space-around;
           align-items: center;
           align-content: center;
-          padding-left: 8px;
-          padding-right: 8px;
+          padding-left: 12px;
+          padding-right: 12px;
 
           .tabIconText {
             margin-left: 10px;
@@ -73,11 +73,11 @@
       }
 
       #bp3-tab-title_undefined_viewDocs {
-        border-right: 1px solid rgba(256, 256, 256, 0.5);
+        // border-right: 1px solid rgba(256, 256, 256, 0.5);
       }
 
       #bp3-tab-title_undefined_viewDoc {
-        border-right: 1px solid rgba(256, 256, 256, 0.2);
+        // border-right: 1px solid rgba(256, 256, 256, 0.2);
       }
 
       .bp3-tab:focus {

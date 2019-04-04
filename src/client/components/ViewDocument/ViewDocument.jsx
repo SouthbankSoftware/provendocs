@@ -24,7 +24,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
 import autobind from 'autobind-decorator';
-import _ from 'lodash';
 import PreviewOffIcon from '../../style/icons/pages/dashboard/preview-off-icon.svg';
 import { ExcelPreview } from '../index';
 import { Loading, Error } from '../Common';
