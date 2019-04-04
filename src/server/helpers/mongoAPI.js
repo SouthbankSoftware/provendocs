@@ -970,9 +970,18 @@ export const findOrCreateIndex = (userId: string) => new Promise<any>((resolve, 
     isConnected: dbObject.serverConfig.isConnected(),
   });
   const collection = dbObject.collection(`files_${userId}`);
-  const indexObject = { name: 1 };
+  const indexObject = {
+    name: 1,
+    '_provendb_metadata.maxVersion': 1,
+    '_provendb_metadata.minVersion': 1,
+    '_provendb_metadata.forgotten': 1,
+  };
+  const indexOptions = {
+    name: 'nameIdx',
+    provendb_metadata: 0,
+  };
   if (collection) {
-    collection.createIndex(indexObject, (error, indexName) => {
+    collection.createIndex(indexObject, indexOptions, (error, indexName) => {
       if (error) {
         logger.log({
           level: LOG_LEVELS.ERROR,
