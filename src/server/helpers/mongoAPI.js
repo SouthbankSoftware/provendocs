@@ -63,10 +63,12 @@ if (
   sslEnabled = false;
 }
 
+const poolSize = process.env.PROVENDOCS_DRIVER_POOL_SIZE || 100;
 const connectToProvenDB = () => new Promise((resolve, reject) => {
   MongoClient.connect(process.env.PROVENDOCS_URI, {
     useNewUrlParser: true,
     ssl: sslEnabled,
+    poolSize: poolSize,
     sslValidate: false,
     socketOptions: {
       keepAlive: 30000,
