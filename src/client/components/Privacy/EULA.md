@@ -1,4 +1,3 @@
-1
 # ProvenDocs End User License Agreement
 
 
@@ -36,7 +35,7 @@ Southbank Software Pty Ltd. (&quot;the Service Provider&quot;) is pleased to off
 
 3.7        The Service Provider will ensure that our personnel who have access to the Customer Personal Data have committed themselves to confidentiality and are aware of and comply with our duties and their personal duties and obligations under this Agreement.
 
-3.8        The Service Provider will implement appropriate technical and organizational security measures to ensure a level of security appropriate to the risks that are presented by the processing of Customer Personal Data. A description of those technical and organizational security measures is located at [http://Provendb.com/security-measures.md.](http://ProvenDocs.com/security-measures.md) In case of a personal data breach which affects Customer Personal Data, the Service Provider will notify you without undue delay after becoming aware of it.
+3.8        The Service Provider will implement appropriate technical and organizational security measures to ensure a level of security appropriate to the risks that are presented by the processing of Customer Personal Data. A description of those technical and organizational security measures is located at [https://Provendb.com/security-measures.md.](https://ProvenDocs.com/security-measures.md) In case of a personal data breach which affects Customer Personal Data, the Service Provider will notify you without undue delay after becoming aware of it.
 
 3.9        You acknowledge and agree that the Service Provider may retain its affiliates and other third parties as sub-processors (all together &quot;Sub-Processors&quot;) in connection with the provision of the Services having imposed on such Sub-Processors the same data protection obligations as are imposed on the Service Provider under this Agreement. The Service Provider will be liable to you for the performance of the Sub-Processors&#39; obligations. The Service Provider will inform you in advance of any changes concerning the addition or replacement of third party processors.
 
@@ -87,4 +86,3 @@ Southbank Software Pty Ltd. (&quot;the Service Provider&quot;) is pleased to off
 10.5        Force Majeure. The Service Provider is not liable for any delay or failure to perform any obligation under this Agreement where the delay or failure results from any cause beyond its reasonable control, including acts of God, labor disputes or other industrial disturbances, systemic electrical, telecommunications, or other utility failures, earthquake, storms or other elements of nature, blockages, embargoes, riots, acts or orders of government, acts of terrorism, or war.
 
 10.6        Amendments. The Service Provider may amend this Agreement at any time by posting a revised version on our site.  The amended agreement become effective upon posting on the site.  By continuing to use the Services after the effective date of any amendment to this Agreement, you agree to be bound by the amended agreement. Please check the site regularly. The Service Provider last amended this Agreement on the date listed at the beginning of this Agreement.
-

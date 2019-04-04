@@ -77,9 +77,11 @@ iframe {
       height: 100%;
       min-width: 1200px;
 
-      @media screen and (max-width: 420px) {
-        min-width: 400px;
+      @media screen and (max-width: 1200px) {
+        min-width: 300px;
       }
+
+
 
       overflow-x: hidden;
     }

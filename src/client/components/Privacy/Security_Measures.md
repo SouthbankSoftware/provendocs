@@ -1,4 +1,4 @@
-# Defendite aliena titulum
+# PLACEHOLDER SECURITY MEASURES
 
 ## Indigestaque rupit socios lampadibus
 

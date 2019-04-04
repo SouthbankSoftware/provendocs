@@ -218,15 +218,6 @@ export default class TopNavBar extends React.Component<Props, State> {
               >
                 <span className="aboutLabel">Documentation</span>
               </a>
-              <a
-                href="https://github.com/southbanksoftware/provendocs"
-                className="link supportLink"
-                style={{ textDecoration: 'none' }}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="aboutLabel">Github</span>
-              </a>
             </div>
           )}
         </div>
