@@ -65,7 +65,6 @@ class ViewDocument extends React.Component<Props, State> {
       filePreviewHTML: null,
       emailExtras: {},
     };
-    Log.info('CONSTRUCTING: ');
   }
 
   componentDidMount() {
@@ -126,8 +125,6 @@ class ViewDocument extends React.Component<Props, State> {
   componentWillReceiveProps(props: Object) {
     const { file } = this.state;
     const { history } = this.props;
-    Log.info('PROPS RECIEVED: ');
-    Log.info(props.file);
     if (props.file !== null && props.file !== file) {
       this.state.file = props.file;
       this.state.fileVersion = props.fileVersion;

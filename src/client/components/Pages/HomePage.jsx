@@ -122,8 +122,6 @@ class HomePage extends React.Component<Props, State> {
     e.preventDefault();
     form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
-
         api.postEmailSubscribe(values).then(res => console.log(res));
         form.resetFields();
         this.setState({

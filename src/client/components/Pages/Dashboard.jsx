@@ -811,9 +811,6 @@ class Dashboard extends React.Component<Props, State> {
     Log.info(
       'Dashboard is rendering, this should not happen much as it is very performance intensive.',
     );
-    Log.info(
-      fileSelected,
-    );
     return (
       <div className="App">
         <TopNavBar currentPage={PAGES.DASHBOARD} isAuthenticated onEarlyAccess={null} />

@@ -480,8 +480,6 @@ export default class ViewFiles extends React.Component<Props, State> {
   _selectLatestFile = () => {
     const { fileList } = this.state;
     const { selectFileCallback } = this.props;
-    console.log('!!! -> ');
-    console.log(fileList);
     const latestFile = fileList[fileList.length - 1];
     selectFileCallback(latestFile);
     this.state.fileSelected = latestFile;
