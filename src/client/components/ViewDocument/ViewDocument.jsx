@@ -65,11 +65,69 @@ class ViewDocument extends React.Component<Props, State> {
       filePreviewHTML: null,
       emailExtras: {},
     };
+    Log.info('CONSTRUCTING: ');
+  }
+
+  componentDidMount() {
+    const { file, fileVersion, history } = this.props;
+    console.log('MOUNTING: ');
+    console.log(this.props);
+    console.log(this.state);
+    if (file && file.name) {
+      this.state.file = file;
+      this.state.fileVersion = fileVersion;
+      this.setState({ currentState: STATES.LOADING });
+      if (file.type === MIMETYPES.PDF || file.mimetype === MIMETYPES.PDF) {
+        // Do nothing yet.
+        this.setState({ currentState: STATES.FILE_PREVIEW });
+      } else {
+        this._fetchFile()
+          .then((data) => {
+            if (file.mimetype === MIMETYPES.EMAIL) {
+              if (data.data.subject || data.data.from || data.data.to) {
+                const {
+                  to, from, cc, subject, attachments,
+                } = data.data;
+                this.setState({
+                  emailExtras: {
+                    to,
+                    from,
+                    cc,
+                    subject,
+                    attachments,
+                  },
+                });
+              } else {
+                this.setState({ emailExtras: {} });
+              }
+            }
+            this.setState({ filePreviewHTML: data.data.content });
+            this.setState({ currentState: STATES.FILE_PREVIEW });
+          })
+          .catch((err) => {
+            if (err && err.response && err.response.status === 401) {
+              history.push('/login/expired');
+            } else {
+              openNotificationWithIcon(
+                'error',
+                'Error Previewing File',
+                'Failed to create preview of selected file, sorry!',
+              );
+              Log.error(`Error fetching file: ${err}`);
+              this.setState({
+                currentState: STATES.ERROR,
+              });
+            }
+          });
+      }
+    }
   }
 
   componentWillReceiveProps(props: Object) {
     const { file } = this.state;
     const { history } = this.props;
+    Log.info('PROPS RECIEVED: ');
+    Log.info(props.file);
     if (props.file !== null && props.file !== file) {
       this.state.file = props.file;
       this.state.fileVersion = props.fileVersion;
@@ -293,7 +351,6 @@ class ViewDocument extends React.Component<Props, State> {
 
   render() {
     const { currentState, file } = this.state;
-
     switch (currentState) {
       case STATES.ERROR:
         return (
@@ -331,7 +388,7 @@ class ViewDocument extends React.Component<Props, State> {
                   <span className="bold">
                     <b>Document Preview: </b>
                   </span>
-                  <span>{file.name}</span>
+                  <span>{name}</span>
                 </div>
               </div>
               {this._renderFilePreview()}

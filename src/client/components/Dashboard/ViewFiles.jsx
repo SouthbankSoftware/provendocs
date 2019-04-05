@@ -148,6 +148,7 @@ export default class ViewFiles extends React.Component<Props, State> {
               isLoading: false,
               fileList: result.data,
             });
+            this._selectLatestFile();
           } else {
             openNotificationWithIcon('error', 'Error', 'Failed to fetch file list, sorry!');
             Log.error(`Err getting file list: ${result}`);
@@ -474,6 +475,16 @@ export default class ViewFiles extends React.Component<Props, State> {
         this.state.fileSelected = newFileSelected;
       }
     }
+  }
+
+  _selectLatestFile = () => {
+    const { fileList } = this.state;
+    const { selectFileCallback } = this.props;
+    console.log('!!! -> ');
+    console.log(fileList);
+    const latestFile = fileList[fileList.length - 1];
+    selectFileCallback(latestFile);
+    this.state.fileSelected = latestFile;
   }
 
   @autobind
