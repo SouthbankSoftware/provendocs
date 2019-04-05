@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-04-04T12:32:56+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-04T15:18:33+11:00
+ * @Last modified time: 2019-04-05T10:00:00+11:00
  */
 import React from 'react';
 import { Icon, Checkbox } from 'antd';
@@ -54,7 +54,7 @@ export default class ProofInProgress extends React.Component<Props, State> {
         <Icon className="heroIcon" type="reload" />
         <h2 className="title">Proof in Progress</h2>
         <span className="subtitle">
-          Your proof is currently in progress. This may take several minutes to finish.
+          Your proof is currently in progress. This may take up to two hours to complete.
         </span>
         <div className="hr" />
         <span className="reminder">Reminder:</span>

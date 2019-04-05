@@ -63,10 +63,12 @@ if (
   sslEnabled = false;
 }
 
+const poolSize = process.env.PROVENDOCS_DRIVER_POOL_SIZE || 100;
 const connectToProvenDB = () => new Promise((resolve, reject) => {
   MongoClient.connect(process.env.PROVENDOCS_URI, {
     useNewUrlParser: true,
     ssl: sslEnabled,
+    poolSize,
     sslValidate: false,
     socketOptions: {
       keepAlive: 30000,
@@ -970,18 +972,9 @@ export const findOrCreateIndex = (userId: string) => new Promise<any>((resolve, 
     isConnected: dbObject.serverConfig.isConnected(),
   });
   const collection = dbObject.collection(`files_${userId}`);
-  const indexObject = {
-    name: 1,
-    '_provendb_metadata.maxVersion': 1,
-    '_provendb_metadata.minVersion': 1,
-    '_provendb_metadata.forgotten': 1,
-  };
-  const indexOptions = {
-    name: 'nameIdx',
-    provendb_metadata: 0,
-  };
+  const indexObject = { name: 1 };
   if (collection) {
-    collection.createIndex(indexObject, indexOptions, (error, indexName) => {
+    collection.createIndex(indexObject, (error, indexName) => {
       if (error) {
         logger.log({
           level: LOG_LEVELS.ERROR,
