@@ -243,15 +243,21 @@ export default class TopNavBar extends React.Component<Props, State> {
               <ProvendbIcon />
             </a>
           </div>
-          {(currentPage === PAGES.HOME || currentPage === PAGES.LANDING) && (
-            <div className="homeLinks">
+          <div className="homeLinks">
+            {(currentPage === PAGES.HOME || currentPage === PAGES.LANDING) && (
               <div className="vr" />
+            )}
+            {(currentPage === PAGES.HOME || currentPage === PAGES.LANDING) && (
               <a href="#howItWorks" className="link aboutLink" style={{ textDecoration: 'none' }}>
                 <span className="aboutLabel">How It Works</span>
               </a>
+            )}
+            {(currentPage === PAGES.HOME || currentPage === PAGES.LANDING) && (
               <a href="#howToUseIt" className="link plansLink" style={{ textDecoration: 'none' }}>
                 <span className="aboutLabel">How To Use It</span>
               </a>
+            )}
+            {(currentPage === PAGES.HOME || currentPage === PAGES.LANDING) && (
               <a
                 href="#whatToUseItFor"
                 className="link plansLink"
@@ -259,29 +265,32 @@ export default class TopNavBar extends React.Component<Props, State> {
               >
                 <span className="aboutLabel">What To Use It For</span>
               </a>
+            )}
+            {(currentPage === PAGES.HOME || currentPage === PAGES.LANDING) && (
               <a href="#theTeam" className="link plansLink" style={{ textDecoration: 'none' }}>
                 <span className="aboutLabel">The Team</span>
               </a>
-              <a
-                href="https://provendb.readme.io/v1.0/discuss"
-                className="link supportLink"
-                style={{ textDecoration: 'none' }}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="aboutLabel">Support</span>
-              </a>
-              <a
-                href="https://provendb.readme.io/docs/features"
-                className="link supportLink"
-                style={{ textDecoration: 'none' }}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="aboutLabel">Documentation</span>
-              </a>
-            </div>
-          )}
+            )}
+            {currentPage !== PAGES.HOME && currentPage !== PAGES.LANDING && <div className="vr" />}
+            <a
+              href="https://provendb.readme.io/v1.0/discuss"
+              className="link supportLink"
+              style={{ textDecoration: 'none' }}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="aboutLabel">Support</span>
+            </a>
+            <a
+              href="https://provendb.readme.io/docs/features"
+              className="link supportLink"
+              style={{ textDecoration: 'none' }}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="aboutLabel">Documentation</span>
+            </a>
+          </div>
         </div>
         <div className="rightButtons">
           {currentPage === PAGES.HOME && this._renderHomeTopNav()}

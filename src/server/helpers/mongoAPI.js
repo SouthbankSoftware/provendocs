@@ -68,7 +68,7 @@ const connectToProvenDB = () => new Promise((resolve, reject) => {
   MongoClient.connect(process.env.PROVENDOCS_URI, {
     useNewUrlParser: true,
     ssl: sslEnabled,
-    poolSize: poolSize,
+    poolSize,
     sslValidate: false,
     socketOptions: {
       keepAlive: 30000,

@@ -24,6 +24,7 @@
 import winston from 'winston';
 import uuidv4 from 'uuid/v4';
 import fs from 'fs';
+import path from 'path';
 
 import createArchiveForDocument from '../helpers/archiveBuilder';
 import { getUserDetails } from '../helpers/userHelpers';
@@ -136,7 +137,7 @@ module.exports = (app: any) => {
               level: LOG_LEVELS.INFO,
               severity: STACKDRIVER_SEVERITY.INFO,
               message: 'Got File Details',
-              name: fileInfo,
+              name: fileInfo.name,
               reqId,
             });
             getDocumentProofForFile(fileInfo[0], user._id, 'json')
@@ -148,7 +149,6 @@ module.exports = (app: any) => {
                         level: LOG_LEVELS.DEBUG,
                         severity: STACKDRIVER_SEVERITY.DEBUG,
                         message: 'Got Version Proof for file:',
-                        proof,
                         reqId,
                       });
                       createArchiveForDocument(
@@ -172,7 +172,7 @@ module.exports = (app: any) => {
                           res.setHeader('Content-Type', 'application/zip');
                           res.setHeader(
                             'Content-Disposition',
-                            `${disposition}; filename=${fileInfo[0].name}.proof.zip`,
+                            `${disposition}; filename="${fileInfo[0].name}.proof.zip"`,
                           );
                           file.pipe(res);
                         })
@@ -188,6 +188,9 @@ module.exports = (app: any) => {
                           };
                           logger.log(returnObj);
                           res.status(404).send(returnObj);
+                          /* res
+                            .status(400)
+                            .sendFile(path.join(`${__dirname}/../pages/failedToGetArchive.html`)); */
                         });
                     })
                     .catch((getProofErr) => {

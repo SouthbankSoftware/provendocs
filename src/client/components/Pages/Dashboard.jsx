@@ -288,7 +288,6 @@ class Dashboard extends React.Component<Props, State> {
       this.setState({ lhsTabSelected: LHS_TABS.VIEW_DOCUMENTS });
     }
     viewDocs.getFileList(true);
-    console.log(uploadComplete);
     if (uploadComplete) {
       this._checkAndShowFirstUploadDialogue();
     }

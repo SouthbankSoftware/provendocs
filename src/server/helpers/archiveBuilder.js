@@ -303,10 +303,9 @@ const createArchiveForDocument = (
 
           // Add the Chainpoint proof in JSON format.
           logger.log({
-            level: LOG_LEVELS.INFO,
-            severity: STACKDRIVER_SEVERITY.INFO,
-            message: 'Adding Chainpoint Proof (JSON)',
-            documentProof,
+            level: LOG_LEVELS.DEBUG,
+            severity: STACKDRIVER_SEVERITY.DEBUG,
+            message: 'Adding Chainpoint Proof (JSON)...',
           });
           archive.append(JSON.stringify(documentProof.proof), {
             name: `${fileInformation.name}.proof.json`,
