@@ -385,7 +385,7 @@ class ViewDocument extends React.Component<Props, State> {
                   <span className="bold">
                     <b>Document Preview: </b>
                   </span>
-                  <span>{name}</span>
+                  <span>{file.name}</span>
                 </div>
               </div>
               {this._renderFilePreview()}

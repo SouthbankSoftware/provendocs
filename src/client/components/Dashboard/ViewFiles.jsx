@@ -167,6 +167,14 @@ export default class ViewFiles extends React.Component<Props, State> {
       });
   }
 
+  _selectLatestFile = () => {
+    const { fileList } = this.state;
+    const { selectFileCallback } = this.props;
+    const latestFile = fileList[fileList.length - 1];
+    selectFileCallback(latestFile);
+    this.state.fileSelected = latestFile;
+  }
+
   @autobind
   _renderFileList() {
     const {
@@ -475,14 +483,6 @@ export default class ViewFiles extends React.Component<Props, State> {
         this.state.fileSelected = newFileSelected;
       }
     }
-  }
-
-  _selectLatestFile = () => {
-    const { fileList } = this.state;
-    const { selectFileCallback } = this.props;
-    const latestFile = fileList[fileList.length - 1];
-    selectFileCallback(latestFile);
-    this.state.fileSelected = latestFile;
   }
 
   @autobind
