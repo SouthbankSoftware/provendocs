@@ -125,7 +125,7 @@ class ViewDocument extends React.Component<Props, State> {
   componentWillReceiveProps(props: Object) {
     const { file } = this.state;
     const { history } = this.props;
-    if (props.file !== null && props.file !== file) {
+    if (props.file !== null && props.file !== undefined && props.file !== file) {
       this.state.file = props.file;
       this.state.fileVersion = props.fileVersion;
       this.setState({ currentState: STATES.LOADING });
