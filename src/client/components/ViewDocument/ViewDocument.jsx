@@ -69,9 +69,6 @@ class ViewDocument extends React.Component<Props, State> {
 
   componentDidMount() {
     const { file, fileVersion, history } = this.props;
-    console.log('MOUNTING: ');
-    console.log(this.props);
-    console.log(this.state);
     if (file && file.name) {
       this.state.file = file;
       this.state.fileVersion = fileVersion;

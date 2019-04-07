@@ -164,10 +164,20 @@ class Dashboard extends React.Component<Props, State> {
             api
               .getFileSizeForUser()
               .then((res) => {
-                this.setState({ storageUsed: res.data[0].storageUsed });
-                this.setState({ documentsUsed: res.data[0].documentsUsed });
-                this.setState({ storageLimit: res.data[0].storageLimit });
-                this.setState({ documentsLimit: res.data[0].documentsLimit });
+                Log.info(res);
+                if (res.status === 200) {
+                  if (res.data[0]) {
+                    this.setState({ storageUsed: res.data[0].storageUsed });
+                    this.setState({ documentsUsed: res.data[0].documentsUsed });
+                    this.setState({ storageLimit: res.data[0].storageLimit });
+                    this.setState({ documentsLimit: res.data[0].documentsLimit });
+                  } else {
+                    this.setState({ storageUsed: res.data.storageUsed });
+                    this.setState({ documentsUsed: res.data.documentsUsed });
+                    this.setState({ storageLimit: res.data.storageLimit });
+                    this.setState({ documentsLimit: res.data.documentsLimit });
+                  }
+                }
               })
               .catch((err) => {
                 Log.error(`Error fetching files size: ${err}`);

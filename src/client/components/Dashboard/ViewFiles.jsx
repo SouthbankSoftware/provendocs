@@ -148,7 +148,9 @@ export default class ViewFiles extends React.Component<Props, State> {
               isLoading: false,
               fileList: result.data,
             });
-            this._selectLatestFile();
+            if (result.data.length > 0) {
+              this._selectLatestFile();
+            }
           } else {
             openNotificationWithIcon('error', 'Error', 'Failed to fetch file list, sorry!');
             Log.error(`Err getting file list: ${result}`);
@@ -191,6 +193,7 @@ export default class ViewFiles extends React.Component<Props, State> {
       filterFunc = file => !file.proofInfo || file.proofInfo !== PROOF_STATUS.VALID;
     }
 
+
     let sortFunc;
     if (currentSort.type === SORTS.FILENAME) {
       // eslint-disable-next-line
@@ -206,6 +209,7 @@ export default class ViewFiles extends React.Component<Props, State> {
       // eslint-disable-next-line
       sortFunc = (fileA, fileB) => fileA.uploadedAt > fileB.uploadedAt ? -1 : fileA.uploadedAt < fileB.uploadedAt ? 1 : 0;
     }
+
 
     // Assume all files are below 16mb.
     fileList
