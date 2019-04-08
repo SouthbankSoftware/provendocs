@@ -526,7 +526,7 @@ In progress.
     const sizeResult = convertBytes(fileSize, 'b', 3);
     return (
       <div className="App">
-        <TopNavBar currentPage={PAGES.SHARED} isAuthenticated />
+        <TopNavBar currentPage={PAGES.SHARED} isAuthenticated onEarlyAccess={false} />
         <div className="AppBody">
           <div className="mainPanel sharedDocument">
             <div className="pageTitle">

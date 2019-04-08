@@ -24,7 +24,8 @@
 
 import React from 'react';
 import autobind from 'autobind-decorator';
-import { Loading, Error } from '../Common';
+import { Loading } from '../Common';
+import PreviewOffIcon from '../../style/icons/pages/dashboard/preview-off-icon.svg';
 import TickIcon from '../../style/icons/pages/dashboard/tick-icon.svg';
 import CrossIcon from '../../style/icons/pages/dashboard/cross-icon.svg';
 import DocumentIcon from '../../style/icons/pages/dashboard/document-icon.svg';
@@ -248,6 +249,7 @@ export default class ViewProof extends React.Component<Props, State> {
   }
 
   render() {
+    console.log('Rendering...', this.state);
     const { currentState, file, fileVersion } = this.state;
     switch (currentState) {
       case STATES.FAILED:
@@ -256,7 +258,13 @@ export default class ViewProof extends React.Component<Props, State> {
             <div className="contentWrapper">
               <div className="viewProofWrapper">
                 {' '}
-                <Error message="Failed to get Proof, sorry!" />
+                <PreviewOffIcon className="previewOffIcon" />
+                <span className="previewOffTitle">
+          Preview Unavaliable.
+                </span>
+                <span className="previewOffMessage">
+           Unfortunately we were unable to render a document preview for this file type.
+                </span>
               </div>
             </div>
           </div>
