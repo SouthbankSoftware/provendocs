@@ -550,7 +550,7 @@ class ShareDialog extends React.Component<Props, State> {
                       /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
                     )
                   ) {
-                    err = 'Some of the email addresses listed do not appear to follow normal email formats, these contacts might not recieve a share notification.';
+                    err = 'Some of the email addresses listed do not appear to follow normal email formats, these contacts might not receive a share notification.';
                   }
                 });
                 this.setState({ error: err });
