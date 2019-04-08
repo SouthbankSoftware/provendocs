@@ -22,7 +22,6 @@
  * @Last modified time: 2019-04-03T09:25:50+11:00
  */
 
-
 import React from 'react';
 import { withRouter } from 'react-router';
 import autobind from 'autobind-decorator';
@@ -238,19 +237,18 @@ class Dashboard extends React.Component<Props, State> {
       })
       .catch((err) => {
         Log.error(`Error fetching files size: ${err}`);
-        openNotificationWithIcon(
-          'error',
-          'File List Error',
-          'Failed to get files size, sorry.',
-        );
+        openNotificationWithIcon('error', 'File List Error', 'Failed to get files size, sorry.');
       });
-  }
+  };
 
   _checkAndShowFirstUploadDialogue = () => {
-    if ((cookies.get('provendocs_upload_dont_remind_me') === 'false' || cookies.get('provendocs_upload_dont_remind_me') === undefined)) {
+    if (
+      cookies.get('provendocs_upload_dont_remind_me') === 'false'
+      || cookies.get('provendocs_upload_dont_remind_me') === undefined
+    ) {
       this.setState({ firstUploadDialogueOpen: true });
     }
-  }
+  };
 
   @autobind
   _checkAuth() {
@@ -317,7 +315,11 @@ class Dashboard extends React.Component<Props, State> {
   _fileSelected(file: Object, fileVersion: number) {
     this.state.fileVersion = fileVersion;
     this.setState({ fileSelected: file });
-    if (file.proofInfo === PROOF_STATUS.VALID && (cookies.get('provendocs_proof_dont_remind_me') === 'false' || cookies.get('provendocs_proof_dont_remind_me') === undefined)) {
+    if (
+      file.proofInfo === PROOF_STATUS.VALID
+      && (cookies.get('provendocs_proof_dont_remind_me') === 'false'
+        || cookies.get('provendocs_proof_dont_remind_me') === undefined)
+    ) {
       this.setState({ firstProofDialogueOpen: true });
     }
   }
@@ -429,7 +431,8 @@ class Dashboard extends React.Component<Props, State> {
         return (
           <div className="newUploadRHSWrapper">
             <span className="messageText">
-              Would you like to update the existing document OR create a new document?
+              You have already loaded a document with this name. Do you want to create new document,
+              or a new version of the existing document?
             </span>
 
             <div className="duplicateList">
@@ -437,7 +440,7 @@ class Dashboard extends React.Component<Props, State> {
                 <div className={`duplicateSwitch checked_${checkAll.toString()}`}>
                   <span className="noLabel">New Document </span>
                   <Switch
-                    label="Update"
+                    label="New Version"
                     checked={checkAll}
                     onChange={() => {
                       this.state.checkAll = !checkAll;
@@ -459,7 +462,7 @@ class Dashboard extends React.Component<Props, State> {
                   <div className="duplicateSwitch">
                     <span className="noLabel">New Document </span>
                     <Switch
-                      label="Update"
+                      label="New Version"
                       checked={item.isDupe}
                       onChange={() => {
                         item.isDupe = !item.isDupe;
@@ -646,11 +649,9 @@ class Dashboard extends React.Component<Props, State> {
     newFileUpload.onDrop(files);
   }
 
-
   newFileUpload: any;
 
   viewDocs: any;
-
 
   render() {
     const {
@@ -693,7 +694,6 @@ class Dashboard extends React.Component<Props, State> {
               <ViewDocsIcon />
               <span className="tabIconText">Documents</span>
             </div>
-
           </Tooltip>
         ),
         panel: (
@@ -916,7 +916,7 @@ class Dashboard extends React.Component<Props, State> {
                 )}
                 {fileSelected && proofReady && <div className="vr" />}
                 {fileSelected && proofReady && (
-                  <Tooltip content="Recieve this proof via email." position={Position.TOP}>
+                  <Tooltip content="Receive this proof via email." position={Position.TOP}>
                     <EmailProofButton
                       history={history}
                       fileName={fileSelected.name}
