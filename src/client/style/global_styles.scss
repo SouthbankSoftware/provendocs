@@ -1814,6 +1814,13 @@ h3 {
     .tagsList {
       margin-bottom: 30px;
 
+      i {
+        font-size: 12px;
+        font-weight: normal;
+        margin-bottom: 15px;
+        color: $steel-grey;
+      }
+
       .noTags {
         font-size: 12px;
         color: $steel-grey;
@@ -2091,6 +2098,16 @@ h3 {
   text-align: left;
   color: $steel-grey;
   padding: 5px;
+}
+
+.ant-modal-mask {
+  background-color: rgba(0, 0, 0, 0.2);
+  filter: blur(150px);
+}
+
+.bp3-overlay-backdrop {
+  background-color: rgba(0, 0, 0, 0.2);
+  filter: blur(150px);
 }
 
 .ant-modal-wrap {

@@ -249,7 +249,6 @@ export default class ViewProof extends React.Component<Props, State> {
   }
 
   render() {
-    console.log('Rendering...', this.state);
     const { currentState, file, fileVersion } = this.state;
     switch (currentState) {
       case STATES.FAILED:

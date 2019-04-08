@@ -106,18 +106,18 @@ function addFooter(doc, file, pageNumber, user) {
 function addFrontPage(doc, proof, file, user) {
   return new Promise((resolve) => {
     // Constant strings.
-    const bodyText = `This certificate constitutes proof that a document has been anchored to the bitcoin blockchain as of ${
+    const bodyText = `This certificate constitutes proof that a document has been anchored to the bitcoin Blockchain as of ${
       file.uploadedAt
     },`
-      + ' thereby proving that the document existed in its current form on the date at which the blockchain entry was created.';
+      + ' thereby proving that the document existed in its current form on the date at which the Blockchain entry was created.';
     const bodyTextTwo = 'You can use this proof to attest that:';
     const bodyTextThree = '(a) the document has not been altered in any way.';
     const bodyTextFour = '(b) the document existed in its current from on the specified date.';
     const link = cryptr.encrypt(`${file._id}-${user._id}-${file._provendb_metadata.minVersion}`);
 
     // Add Images
-    doc.image(Path.join(__dirname, 'certificate/provenDocsVerticalLogo@2x.png'), 227, 50, {
-      scale: 0.5,
+    doc.image(Path.join(__dirname, 'certificate/proven-docs-logo@3x.png'), 175, 105, {
+      scale: 0.3,
     });
     doc.image(Path.join(__dirname, 'certificate/provenDocsSeal@2x.png'), 420, 600, {
       scale: 0.5,
@@ -149,17 +149,17 @@ function addFrontPage(doc, proof, file, user) {
       .fillColor('#595b60')
       .fontSize(12)
       .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
-      .text(bodyTextTwo, 205, 520, { width: 350, align: 'left', opacity: 0.8 });
+      .text(bodyTextTwo, 205, 530, { width: 350, align: 'left', opacity: 0.8 });
     doc
       .fillColor('#595b60')
       .fontSize(12)
       .font(Path.join(__dirname, 'certificate/Roboto-LightItalic.ttf'))
-      .text(bodyTextThree, 165, 545, { width: 350, align: 'left', opacity: 0.8 });
+      .text(bodyTextThree, 165, 555, { width: 350, align: 'left', opacity: 0.8 });
     doc
       .fillColor('#595b60')
       .fontSize(12)
       .font(Path.join(__dirname, 'certificate/Roboto-LightItalic.ttf'))
-      .text(bodyTextFour, 130, 560, { width: 350, align: 'left', opacity: 0.8 });
+      .text(bodyTextFour, 130, 570, { width: 350, align: 'left', opacity: 0.8 });
 
     // Add Document Name and User
     const userString = `${user.name} (${user.provider} user: `;
@@ -167,14 +167,13 @@ function addFrontPage(doc, proof, file, user) {
       .fillColor('#58595b')
       .fontSize(14)
       .font(Path.join(__dirname, 'certificate/Roboto-Regular.ttf'))
-      .text(file.name, 135, 350, { width: 350, align: 'center' });
+      .text(file.name, 135, 345, { width: 350, align: 'center' });
     doc.moveDown();
     doc
       .fillColor('#595b60')
       .fontSize(12)
       .font(Path.join(__dirname, 'certificate/Roboto-LightItalic.ttf'))
       .text(`${userString} `, {
-        align: 'left',
         opacity: 0.8,
         continued: true,
       })
@@ -204,7 +203,6 @@ function addFrontPage(doc, proof, file, user) {
         width: 350,
         align: 'left',
         opacity: 0.8,
-
         link: `${uri}/share/${link}`,
       });
 
@@ -241,11 +239,18 @@ function addSecondPage(doc, proof, file, user) {
       const uploadDate = new Date(Date.parse(file.uploadedAt));
       const finalUploadDate = uploadDate.toISOString().replace(/[-:.Z]/g, '');
 
+      newDoc.moveDown();
+      newDoc
+        .fillColor('#595b60')
+        .font(Path.join(__dirname, 'certificate/Roboto-Bold.ttf'))
+        .fontSize(12)
+        .text('Details of the document being proved', 35, 91);
+      newDoc.moveDown();
       newDoc
         .fillColor('#595b60')
         .fontSize(10)
         .font(Path.join(__dirname, 'certificate/Roboto-LightItalic.ttf'))
-        .text(`The document was uploaded by ${user.name} (${user.provider} user: `, 35, 91, {
+        .text(`The document was uploaded by ${user.name} (${user.provider} user: `, {
           align: 'left',
           opacity: 0.8,
           continued: true,
@@ -258,12 +263,6 @@ function addSecondPage(doc, proof, file, user) {
         .text(`${file.uploadedAt}`, {
           link: `https://www.timeanddate.com/worldclock/converter.html?iso=${finalUploadDate}&p1=1440&p2=152&p3=136&p4=179&p5=137&p6=33&p7=248`,
         });
-      newDoc.moveDown();
-      newDoc
-        .fillColor('#595b60')
-        .font(Path.join(__dirname, 'certificate/Roboto-Bold.ttf'))
-        .fontSize(12)
-        .text('Details of the document being proved');
       newDoc.moveDown();
       newDoc
         .fillColor('#595b60')
@@ -339,7 +338,7 @@ function addSecondPage(doc, proof, file, user) {
         .fillColor('#595b60')
         .fontSize(10)
         .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
-        .text('The Chainpoint proof was anchored to the bitcoin blockchain at block ', {
+        .text('The Chainpoint proof was anchored to the bitcoin Blockchain at block ', {
           continued: true,
         })
         .fillColor('#31b2d4')
@@ -399,7 +398,7 @@ function addSecondPage(doc, proof, file, user) {
         .text(`${file._provendb_metadata.hash}`, { continued: true })
         .fillColor('#595b60')
         .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
-        .text(' was anchored to the bitcoin blockchain', {});
+        .text(' was anchored to the bitcoin Blockchain', {});
 
       newDoc
         .fillColor('#595b60')
@@ -491,57 +490,47 @@ function addThirdPage(doc, proof, file, user, proofBinary) {
         .fillColor('#595b60')
         .fontSize(10)
         .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
-        .text(
-          'You can download a copy of the document and its metadata (permissions required) here',
-        );
+        .text('You can download a copy of the document and its metadata (permissions required)');
       newDoc
         .fillColor('#31b2d4')
         .fontSize(10)
         .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
-        .text('here', {
+        .text('here. ', {
           continued: true,
           link: `https://provendocs/share/${link}`,
         })
         .fillColor('#595b60')
-        .text('You can independently validate the hash by using the', {});
+        .text('You can independently validate the document proof by using the', {});
       newDoc
         .fillColor('#595b60')
         .fontSize(10)
         .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
-        .text('open source hash validation tool at ', { continued: true })
+        .text('open source validation tool at ', { continued: true })
         .fillColor('#31b2d4')
-        .text(`${uri}/downloads/validateHash.`, {
-          continued: true,
-          link: `${uri}/downloads/validateHash`,
-        })
-        .fillColor('#595b60')
-        .text('You can also extract the', {});
-      newDoc
-        .fillColor('#595b60')
-        .fontSize(10)
-        .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
-        .text('document from its metadata using this tool.');
+        .text(`${uri}/downloads.`, {
+          link: `${uri}/downloads`,
+        });
       newDoc.moveDown();
       newDoc.moveDown();
       newDoc
         .fillColor('#595b60')
         .font(Path.join(__dirname, 'certificate/Roboto-Bold.ttf'))
         .fontSize(12)
-        .text('Schedule 2: Chainpoint proof');
+        .text('Schedule 2: Chainpoint proof', {});
       newDoc.moveDown();
       newDoc
         .fillColor('#595b60')
         .fontSize(10)
         .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
         .text(
-          'Chainpoint is an open standard for linking data to the public blockchain. It aggregates multiple hash values into a single',
+          'Chainpoint is an open standard for linking data to the public Blockchain. It aggregates multiple hash values into a single',
         );
       newDoc
         .fillColor('#595b60')
         .fontSize(10)
         .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
         .text(
-          'hash value which is then placed on the blockchain. The following chainpoint proof proves that the hash value of',
+          'hash value which is then placed on the Blockchain. The following chainpoint proof proves that the hash value of',
         );
       newDoc
         .fillColor('#595b60')
@@ -553,7 +542,7 @@ function addThirdPage(doc, proof, file, user, proofBinary) {
         .fontSize(10)
         .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
         .text(
-          'is associated with the chainpoint proof placed on the bitcoin blockchain in transaction',
+          'is associated with the chainpoint proof placed on the bitcoin Blockchain in transaction',
         );
       newDoc
         .fillColor('#31b2d4')
@@ -648,19 +637,6 @@ function addFourthPage(doc, proof, file, user) {
         .fillColor('#595b60')
         .fontSize(10)
         .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
-        .text('Chainpoint proof for the document:');
-      newDoc
-        .fillColor('#31b2d4')
-        .fontSize(10)
-        .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
-        .text(`https://provendocs/share/${link}`, {
-          link: `https://provendocs/share/${link}`,
-        });
-      newDoc.moveDown();
-      newDoc
-        .fillColor('#595b60')
-        .fontSize(10)
-        .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
         .text('Chainpoint calendar entry for the proven document:');
       newDoc
         .fillColor('#31b2d4')
@@ -706,9 +682,9 @@ function addFourthPage(doc, proof, file, user) {
         .fontSize(10)
         .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
         .text(`${uri}/downloads/validateHash`, {
-          link: `${uri}/downloads/validateHash`,
+          link: `${uri}/downloads`,
         });
-      addFooter(newDoc, file, 3, user).then((doc2) => {
+      addFooter(newDoc, file, 4, user).then((doc2) => {
         resolve(doc2);
       });
     });

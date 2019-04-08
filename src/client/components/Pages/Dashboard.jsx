@@ -434,6 +434,7 @@ class Dashboard extends React.Component<Props, State> {
 
             <div className="duplicateList">
               <div className="checkAll">
+                { matchingFiles.length > 1 && (
                 <div className={`duplicateSwitch checked_${checkAll.toString()}`}>
                   <span className="noLabel">New Document </span>
                   <Switch
@@ -452,6 +453,7 @@ class Dashboard extends React.Component<Props, State> {
                     }}
                   />
                 </div>
+                )}
               </div>
               {matchingFiles.map(item => (
                 <div className={`duplicateItem checked_${item.isDupe}`}>
