@@ -106,14 +106,15 @@ function addFooter(doc, file, pageNumber, user) {
 function addFrontPage(doc, proof, file, user) {
   return new Promise((resolve) => {
     // Constant strings.
-    const bodyText = `This certificate constitutes proof that a document has been anchored to the bitcoin Blockchain as of ${
-      file.uploadedAt
-    },`
-      + ' thereby proving that the document existed in its current form on the date at which the Blockchain entry was created.';
+    const bodyTextZero = 'This certificate constitutes proof that a document has been anchored to the bitcoin Blockchain as of ';
+    const bodyTextOne = ' thereby proving that the document existed in its current form on the date at which the Blockchain entry was created.';
     const bodyTextTwo = 'You can use this proof to attest that:';
     const bodyTextThree = '(a) the document has not been altered in any way.';
     const bodyTextFour = '(b) the document existed in its current from on the specified date.';
     const link = cryptr.encrypt(`${file._id}-${user._id}-${file._provendb_metadata.minVersion}`);
+    // UTC Timestamp conversion
+    const date = new Date(Date.parse(file.provenAt));
+    const newFinalDate = date.toISOString().replace(/[-:.Z]/g, '');
 
     // Add Images
     doc.image(Path.join(__dirname, 'certificate/proven-docs-logo@3x.png'), 175, 105, {
@@ -144,22 +145,41 @@ function addFrontPage(doc, proof, file, user) {
       .fillColor('#595b60')
       .fontSize(12)
       .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
-      .text(bodyText, 135, 450, { width: 350, align: 'center', opacity: 0.8 });
+      .text(bodyTextZero, 135, 420, {
+        width: 350,
+        align: 'center',
+        opacity: 0.8,
+        continued: true,
+      })
+      .fillColor('#31b2d4')
+      .text(`${date.toISOString()}`, {
+        link: `https://www.timeanddate.com/worldclock/converter.html?iso=${newFinalDate}&p1=1440&p2=152&p3=136&p4=179&p5=137&p6=33&p7=248`,
+      });
+
     doc
       .fillColor('#595b60')
       .fontSize(12)
       .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
-      .text(bodyTextTwo, 205, 530, { width: 350, align: 'left', opacity: 0.8 });
+      .text(bodyTextOne, {
+        width: 350,
+        align: 'center',
+        opacity: 0.8,
+      });
+    doc
+      .fillColor('#595b60')
+      .fontSize(12)
+      .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
+      .text(bodyTextTwo, 205, 510, { width: 350, align: 'left', opacity: 0.8 });
     doc
       .fillColor('#595b60')
       .fontSize(12)
       .font(Path.join(__dirname, 'certificate/Roboto-LightItalic.ttf'))
-      .text(bodyTextThree, 165, 555, { width: 350, align: 'left', opacity: 0.8 });
+      .text(bodyTextThree, 165, 535, { width: 350, align: 'left', opacity: 0.8 });
     doc
       .fillColor('#595b60')
       .fontSize(12)
       .font(Path.join(__dirname, 'certificate/Roboto-LightItalic.ttf'))
-      .text(bodyTextFour, 130, 570, { width: 350, align: 'left', opacity: 0.8 });
+      .text(bodyTextFour, 130, 550, { width: 350, align: 'left', opacity: 0.8 });
 
     // Add Document Name and User
     const userString = `${user.name} (${user.provider} user: `;
@@ -351,7 +371,7 @@ function addSecondPage(doc, proof, file, user) {
         .text('in bitcoin transaction', {});
 
       // UTC Timestamp conversion
-      const date = new Date(Date.parse(proof.submitted));
+      const date = new Date(Date.parse(file.provenAt));
       const newFinalDate = date.toISOString().replace(/[-:.Z]/g, '');
 
       newDoc
@@ -410,10 +430,9 @@ function addSecondPage(doc, proof, file, user) {
         .fillColor('#595b60')
         .text(') at UTC: ', { continued: true })
         .fillColor('#31b2d4')
-        .text(`${file.uploadedAt}`, {
+        .text(`${date.toISOString()}`, {
           continued: true,
-
-          link: `https://www.timeanddate.com/worldclock/converter.html?iso=${finalUploadDate}&p1=1440&p2=152&p3=136&p4=179&p5=137&p6=33&p7=248`,
+          link: `https://www.timeanddate.com/worldclock/converter.html?iso=${newFinalDate}&p1=1440&p2=152&p3=136&p4=179&p5=137&p6=33&p7=248`,
         })
         .fillColor('#595b60')
         .text(
