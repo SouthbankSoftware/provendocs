@@ -22,7 +22,6 @@
  * @Last modified time: 2019-04-03T09:26:16+11:00
  */
 
-
 /* eslint-disable class-methods-use-this */
 import React from 'react';
 import autobind from 'autobind-decorator';
@@ -175,7 +174,7 @@ export default class ViewFiles extends React.Component<Props, State> {
     const latestFile = fileList[fileList.length - 1];
     selectFileCallback(latestFile);
     this.state.fileSelected = latestFile;
-  }
+  };
 
   @autobind
   _renderFileList() {
@@ -193,7 +192,6 @@ export default class ViewFiles extends React.Component<Props, State> {
       filterFunc = file => !file.proofInfo || file.proofInfo !== PROOF_STATUS.VALID;
     }
 
-
     let sortFunc;
     if (currentSort.type === SORTS.FILENAME) {
       // eslint-disable-next-line
@@ -209,7 +207,6 @@ export default class ViewFiles extends React.Component<Props, State> {
       // eslint-disable-next-line
       sortFunc = (fileA, fileB) => fileA.uploadedAt > fileB.uploadedAt ? -1 : fileA.uploadedAt < fileB.uploadedAt ? 1 : 0;
     }
-
 
     // Assume all files are below 16mb.
     fileList
@@ -620,13 +617,12 @@ export default class ViewFiles extends React.Component<Props, State> {
         <span className="forgetExplain">
           <b>Please Note: </b>
           <span>
-            Forgetting this document will not invalidate or delete your Blockchain proofs.
+            Forgetting this document will not invalidate or delete your Blockchain proofs. However
+            the document will not be stored on our servers anymore.
             <br />
-            However the document will not be stored on our servers anymore.
-            <br />
-            We recommend making sure you have a copy of this file.
+            We recommend downloading an archive of this file and its proof.
           </span>
-          <b>This process is permanent.</b>
+          <b>The Forgetting process is permanent.</b>
         </span>
       </div>
     );
@@ -716,7 +712,7 @@ export default class ViewFiles extends React.Component<Props, State> {
                 this.setState({ forgetLoading: false });
               }}
             >
-              Close
+              Cancel
             </Button>
             {!forgetFinished && (
               <Button
