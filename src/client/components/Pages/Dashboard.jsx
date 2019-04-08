@@ -315,6 +315,7 @@ class Dashboard extends React.Component<Props, State> {
 
   @autobind
   _fileSelected(file: Object, fileVersion: number) {
+    if (!file) return;
     this.state.fileVersion = fileVersion;
     this.setState({ fileSelected: file });
     if (file.proofInfo === PROOF_STATUS.VALID && (cookies.get('provendocs_proof_dont_remind_me') === 'false' || cookies.get('provendocs_proof_dont_remind_me') === undefined)) {

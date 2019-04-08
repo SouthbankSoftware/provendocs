@@ -78,35 +78,43 @@ export default class ViewProof extends React.Component<Props, State> {
       this.state.file = props.file;
       this.state.fileVersion = props.fileVersion;
       this.setState({ currentState: STATES.LOADING });
-      this._fetchProof()
-        .then((proof) => {
-          if (proof.data.proofs[0].status) {
-            this.setState({ proofInformation: proof.data.proofs[0] });
-            if (proof.data.proofs[0].status === PROOF_STATUS.VALID) {
-              setTimeout(() => {
+
+      if (props.file && props.file.proofInfo && props.file.proofInfo !== PROOF_STATUS.VALID) {
+        // Quick check to avoid fetching proofs for non-valid versions as it is a wasted request.
+        this.setState({ currentState: STATES.FILE_PROOF_PENDING });
+      } else {
+        this._fetchProof()
+          .then((proof) => {
+            if (props.file.name !== this.state.file.name) {
+              // A new file has been selected, disregard result of this fetch.
+              Log.trace('A new file has been selected while proof was fetching, therefore this proof has been disregarded.');
+              return;
+            }
+            if (proof.data.proofs[0].status) {
+              this.setState({ proofInformation: proof.data.proofs[0] });
+              if (proof.data.proofs[0].status === PROOF_STATUS.VALID) {
                 setProofCallback(true);
                 this.setState({ currentState: STATES.FILE_PROOF_COMPLETE });
-              }, 2000);
+              } else {
+                this.setState({ currentState: STATES.FILE_PROOF_PENDING });
+                setProofCallback(false);
+              }
             } else {
+            // No proofs for version yet.
+              this.setState({ proofInformation: { status: PROOF_STATUS.PENDING } });
               this.setState({ currentState: STATES.FILE_PROOF_PENDING });
               setProofCallback(false);
             }
-          } else {
-            // No proofs for version yet.
-            this.setState({ proofInformation: { status: PROOF_STATUS.PENDING } });
-            this.setState({ currentState: STATES.FILE_PROOF_PENDING });
-            setProofCallback(false);
-          }
-        })
-        .catch((err) => {
-          this.setState({ currentState: STATES.FAILED });
-          Log.error(`Fetch proof error: ${err}`);
-          openNotificationWithIcon(
-            'error',
-            'Proof Error',
-            'Failed to fetch proof for file, sorry!',
-          );
-        });
+          }).catch((err) => {
+            this.setState({ currentState: STATES.FAILED });
+            Log.error(`Fetch proof error: ${err}`);
+            openNotificationWithIcon(
+              'error',
+              'Proof Error',
+              'Failed to fetch proof for file, sorry!',
+            );
+          });
+      }
     }
   }
 

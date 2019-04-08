@@ -146,12 +146,19 @@ export default class ViewFiles extends React.Component<Props, State> {
         if (result.status === 200) {
           // Only refresh if forced, or if one or more items has been added to the list.
           if (forceUpdate || fileList.length !== result.data.length || result.data.length === 0) {
-            this.setState({
-              isLoading: false,
-              fileList: result.data,
-            });
             if (result.data.length > 0) {
-              this._selectLatestFile();
+              this.setState({
+                fileList: result.data,
+              });
+              this._selectLatestFile().then(() => {
+                this.setState({
+                  isLoading: false,
+                });
+              });
+            } else {
+              this.setState({
+                isLoading: false,
+              });
             }
           } else {
             openNotificationWithIcon('error', 'Error', 'Failed to fetch file list, sorry!');
@@ -171,13 +178,14 @@ export default class ViewFiles extends React.Component<Props, State> {
       });
   }
 
-  _selectLatestFile = () => {
+  _selectLatestFile = () => new Promise<boolean>((resolve) => {
     const { fileList } = this.state;
     const { selectFileCallback } = this.props;
     const latestFile = fileList[fileList.length - 1];
     selectFileCallback(latestFile);
     this.state.fileSelected = latestFile;
-  }
+    resolve(true);
+  })
 
   @autobind
   _renderFileList() {
