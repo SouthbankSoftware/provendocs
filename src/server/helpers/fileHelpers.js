@@ -32,6 +32,7 @@ import OOXMLReader from 'file2html-ooxml';
 import ImageReader from 'file2html-image';
 import 'regenerator-runtime/runtime'; // This is required to support Async function without using babel/polyfill
 import * as file2html from 'file2html';
+import sizeof from 'object-sizeof';
 import {
   MIMETYPES,
   ERROR_CODES,
@@ -121,7 +122,11 @@ const decompressFile = compressedBuffer => new Promise<Buffer>((resolve, reject)
  * @param {Object} files - A list of files the user is trying to upload.
  * @returns {boolean} - false if upload would exceed storage, true otherwise.
  */
-export const doesUploadExceedRemainingStorage = (storageDocument: Object, files: Object) => new Promise<any>((resolve) => {
+export const doesUploadExceedRemainingStorage = (
+  storageDocument: Object,
+  files: Object,
+  email?: Object | null,
+) => new Promise<any>((resolve) => {
   const totalFilesNumber = files.length;
   let totalFilesSize = 0;
   let filesAdded = 0;
@@ -136,15 +141,41 @@ export const doesUploadExceedRemainingStorage = (storageDocument: Object, files:
   if (totalFilesNumber + storage.documentsUsed > storage.documentsLimit) {
     resolve({ exceed: true });
   } else {
+    console.log(files);
+    console.log(email);
+    if (files.length < 1) {
+      // Email only.
+      totalFilesSize = sizeof(email);
+      filesAdded = 1;
+      if (totalFilesSize + storage.storageUsed > storage.storageLimit) {
+        resolve({ exceed: true });
+      } else {
+        resolve({
+          exceed: false,
+          newStorageUsed: totalFilesSize + storage.storageUsed,
+          newDocumentsUsed: totalFilesNumber + storage.documentsUsed,
+        });
+      }
+      resolve({ exceed: false });
+    }
     _.forEach(files, (file) => {
       totalFilesSize += file.size;
       filesAdded += 1;
 
       if (filesAdded === totalFilesNumber) {
+        // If email, add email.
+        if (email) {
+          filesAdded += 1;
+          totalFilesSize += sizeof(email);
+        }
         if (totalFilesSize + storage.storageUsed > storage.storageLimit) {
           resolve({ exceed: true });
         } else {
-          resolve({ exceed: false, newStorageUsed: totalFilesSize + storage.storageUsed, newDocumentsUsed: totalFilesNumber + storage.documentsUsed });
+          resolve({
+            exceed: false,
+            newStorageUsed: totalFilesSize + storage.storageUsed,
+            newDocumentsUsed: totalFilesNumber + storage.documentsUsed,
+          });
         }
       }
     });

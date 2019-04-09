@@ -236,7 +236,10 @@ export default class ViewFileThumb extends React.Component<Props, State> {
 
     return (
       <div readOnly disabled className={`docPreview ${className} loading_${loadingClass}`}>
-        {file.content !== '' && <img src={file.content} alt={file.fileName} />}
+        {file.content !== '' && className !== 'email' && (
+          <img src={file.content} alt={file.fileName} />
+        )}
+        {file.content !== '' && className === 'email' && <DocumentIcon className="docIcon" />}
         {file.content === '' && className === 'pdf' && <PDFIcon className="pdfIcon" />}
         {file.content === ''
           && (className === 'jpeg' || className === 'png' || className === 'svg') && (
