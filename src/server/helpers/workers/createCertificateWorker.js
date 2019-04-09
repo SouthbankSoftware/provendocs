@@ -113,6 +113,7 @@ function addFrontPage(doc, proof, file, user) {
     const bodyTextFour = '(b) the document existed in its current from on the specified date.';
     const link = cryptr.encrypt(`${file._id}-${user._id}-${file._provendb_metadata.minVersion}`);
     // UTC Timestamp conversion
+    const dateString = String(new Date(file.provenAt));
     const date = new Date(Date.parse(file.provenAt));
     const newFinalDate = date.toISOString().replace(/[-:.Z]/g, '');
 
@@ -149,10 +150,13 @@ function addFrontPage(doc, proof, file, user) {
         width: 350,
         align: 'center',
         opacity: 0.8,
-        continued: true,
-      })
+      });
+    doc
+      .fontSize(10)
       .fillColor('#31b2d4')
-      .text(`${date.toISOString()}`, {
+      .text(`${dateString}`, {
+        width: 350,
+        align: 'center',
         link: `https://www.timeanddate.com/worldclock/converter.html?iso=${newFinalDate}&p1=1440&p2=152&p3=136&p4=179&p5=137&p6=33&p7=248`,
       });
 
@@ -256,6 +260,7 @@ function addSecondPage(doc, proof, file, user) {
     // Add Header.
     addHeader(doc, file).then((newDoc) => {
       // UTC Timestamp conversion
+      const dateString = String(new Date(file.uploadedAt));
       const uploadDate = new Date(Date.parse(file.uploadedAt));
       const finalUploadDate = uploadDate.toISOString().replace(/[-:.Z]/g, '');
 
@@ -280,7 +285,7 @@ function addSecondPage(doc, proof, file, user) {
         .fillColor('#595b60')
         .text(' at ', { continued: true })
         .fillColor('#31b2d4')
-        .text(`${file.uploadedAt}`, {
+        .text(`${dateString}`, {
           link: `https://www.timeanddate.com/worldclock/converter.html?iso=${finalUploadDate}&p1=1440&p2=152&p3=136&p4=179&p5=137&p6=33&p7=248`,
         });
       newDoc.moveDown();
@@ -371,6 +376,7 @@ function addSecondPage(doc, proof, file, user) {
         .text('in bitcoin transaction', {});
 
       // UTC Timestamp conversion
+      const provenDateString = String(new Date(file.provenAt));
       const date = new Date(Date.parse(file.provenAt));
       const newFinalDate = date.toISOString().replace(/[-:.Z]/g, '');
 
@@ -384,9 +390,9 @@ function addSecondPage(doc, proof, file, user) {
           link: `https://live.blockcypher.com/btc/tx/${proof.documentProof.btcTransaction}/`,
         })
         .fillColor('#595b60')
-        .text(' at UTC: ', { continued: true })
+        .text(' at: ', { continued: true })
         .fillColor('#31b2d4')
-        .text(`${date.toISOString()}`, {
+        .text(`${provenDateString}`, {
           link: `https://www.timeanddate.com/worldclock/converter.html?iso=${newFinalDate}&p1=1440&p2=152&p3=136&p4=179&p5=137&p6=33&p7=248`,
         });
 
@@ -428,9 +434,9 @@ function addSecondPage(doc, proof, file, user) {
         .fillColor('#31b2d4')
         .text(user.email, { continued: true, link: `mailto:${user.email}` })
         .fillColor('#595b60')
-        .text(') at UTC: ', { continued: true })
+        .text(') at : ', { continued: true })
         .fillColor('#31b2d4')
-        .text(`${date.toISOString()}`, {
+        .text(`${provenDateString}`, {
           continued: true,
           link: `https://www.timeanddate.com/worldclock/converter.html?iso=${newFinalDate}&p1=1440&p2=152&p3=136&p4=179&p5=137&p6=33&p7=248`,
         })
