@@ -24,15 +24,9 @@
 
 import React from 'react';
 import autobind from 'autobind-decorator';
+import { ProofDiagram } from '../index';
 import { Loading } from '../Common';
 import PreviewOffIcon from '../../style/icons/pages/dashboard/preview-off-icon.svg';
-import TickIcon from '../../style/icons/pages/dashboard/tick-icon.svg';
-import CrossIcon from '../../style/icons/pages/dashboard/cross-icon.svg';
-import DocumentIcon from '../../style/icons/pages/dashboard/document-icon.svg';
-import BlockchainIcon from '../../style/icons/pages/dashboard/blockchain-icon.svg';
-import HashIcon from '../../style/icons/pages/dashboard/hash-icon.svg';
-import PendingIcon from '../../style/icons/pages/dashboard/uploading-icon.svg';
-import InfoIcon from '../../style/icons/pages/dashboard/info-icon.svg';
 import { openNotificationWithIcon } from '../../common/util';
 import { PROOF_STATUS } from '../../common/constants';
 import { api, Log } from '../../common';
@@ -147,117 +141,10 @@ export default class ViewProof extends React.Component<Props, State> {
     });
   }
 
-  @autobind
-  _renderProofDiagram() {
-    const { proofInformation } = this.state;
-    const { status } = proofInformation;
-    return (
-      <div className="smallProofDiagramWrapper">
-        <span className="header">
-          <b>Document upload:</b>
-          In progress.
-        </span>
-        <div className="subheader">
-          <span>
-            {' '}
-            Your document is currently being proven, please check back here later to view your
-            completed proof.
-          </span>
-          <InfoIcon
-            className="infoIcon"
-            onClick={() => {
-              window.open('https://provendb.com/concepts/proofs');
-            }}
-          />
-        </div>
-        <div className="diagram">
-          <div className="steps">
-            <div className="document">
-              <b>Step 1:</b>
-              {' '}
-              <span>Document</span>
-            </div>
-            <div className="hash">
-              <b>Step 2:</b>
-              {' '}
-              <span>Hash</span>
-            </div>
-            <div className="blockchain">
-              <b>Step 3:</b>
-              {' '}
-              <span>Blockchain</span>
-            </div>
-          </div>
-          <div className="line">
-            {status && status === PROOF_STATUS.FAILED && <CrossIcon className="crossIcon" />}
-            {status && status === PROOF_STATUS.VALID && <TickIcon className="tickIcon" />}
-            {status && (status === PROOF_STATUS.PENDING || status === PROOF_STATUS.SUBMITTED) && (
-              <TickIcon className="tickIcon" />
-            )}
-            <div className="hr" />
-            {
-              // Below is the Hash status icon.
-            }
-            {status && status === PROOF_STATUS.FAILED && <CrossIcon className="crossIcon" />}
-            {status && (status === PROOF_STATUS.VALID || status === PROOF_STATUS.SUBMITTED) && (
-              <TickIcon className="tickIcon" />
-            )}
-            {status && status === PROOF_STATUS.PENDING && <PendingIcon className="pendingIcon" />}
-            <div className="hr" />
-            {status && status === PROOF_STATUS.FAILED && <CrossIcon className="crossIcon" />}
-            {status && status === PROOF_STATUS.VALID && <TickIcon className="tickIcon" />}
-            {status && status === PROOF_STATUS.PENDING && <div className="emptyCircle" />}
-            {status && status === PROOF_STATUS.SUBMITTED && <PendingIcon className="pendingIcon" />}
-          </div>
-          <div className="icons">
-            <div className="document">
-              {status === PROOF_STATUS.PENDING
-              || status === PROOF_STATUS.SUBMITTED
-              || status === PROOF_STATUS.VALID ? (
-                <DocumentIcon className="documentIcon" />
-                ) : (
-                  <DocumentIcon className="documentIcon faded" />
-                )}
-              {status === PROOF_STATUS.PENDING
-              || status === PROOF_STATUS.SUBMITTED
-              || status === PROOF_STATUS.VALID ? (
-                <span>Your documents have been hashed.</span>
-                ) : (
-                  <span className="faded">First your documents are hashed.</span>
-                )}
-            </div>
-            <div className="hash">
-              {status === PROOF_STATUS.SUBMITTED || status === PROOF_STATUS.VALID ? (
-                <HashIcon className="hashIcon" />
-              ) : (
-                <HashIcon className="hashIcon faded" />
-              )}
-              {status === PROOF_STATUS.SUBMITTED || status === PROOF_STATUS.VALID ? (
-                <span>Your documents have been submitted to chainpoint.</span>
-              ) : (
-                <span>Then your documents are hashed together into one hash by Chainpoint.</span>
-              )}
-            </div>
-            <div className="blockchain">
-              {status === PROOF_STATUS.SUBMITTED || status === PROOF_STATUS.VALID ? (
-                <BlockchainIcon className="blockchainIcon" />
-              ) : (
-                <BlockchainIcon className="blockchainIcon faded" />
-              )}
-              {status === PROOF_STATUS.SUBMITTED || status === PROOF_STATUS.VALID ? (
-                <span>Your documents are being anchored on the blockchain</span>
-              ) : (
-                <span>Finally your merged hash is anchored on the blockchain!</span>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   render() {
-    const { currentState, file, fileVersion } = this.state;
+    const {
+      currentState, file, fileVersion, proofInformation,
+    } = this.state;
     switch (currentState) {
       case STATES.FAILED:
         return (
@@ -298,10 +185,15 @@ export default class ViewProof extends React.Component<Props, State> {
             <div className="contentWrapper">
               <div className="header">
                 <div className="documentTitle">
-                  <span className="docMessage" />
+                  <span className="bold">
+                    <b>Document Preview: </b>
+                  </span>
+                  <span>{file.name}</span>
                 </div>
               </div>
-              <div className="body">{this._renderProofDiagram()}</div>
+              <div className="body">
+                <ProofDiagram proofInformation={proofInformation} />
+              </div>
             </div>
           </div>
         );

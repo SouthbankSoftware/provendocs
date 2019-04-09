@@ -56,7 +56,6 @@ import DownloadAltIcon from '../../style/icons/pages/dashboard/download-icon-alt
 import DownloadIcon from '../../style/icons/pages/dashboard/download-icon.svg';
 import ViewDocument from '../ViewDocument/ViewDocument';
 import ViewProof from '../ViewProof/ViewProof';
-import ProofDialog from '../ProofDiagram/ProofDialog';
 
 // $FlowFixMe
 import './Dashboard.scss';
@@ -99,7 +98,6 @@ type State = {
   fileVersion: number;
   rhsStage: string;
   proofReady: boolean;
-  diagramDialogIsOpen: boolean;
   firstUploadDialogueOpen: boolean;
   firstProofDialogueOpen: boolean;
   storageLimitReached: boolean;
@@ -130,7 +128,6 @@ class Dashboard extends React.Component<Props, State> {
       fileVersion: 0, // 0 means current.
       rhsStage: RHS_STAGES.BEGIN,
       proofReady: false,
-      diagramDialogIsOpen: false,
       firstUploadDialogueOpen: false,
       firstProofDialogueOpen: false,
       shareDialogIsOpen: false,
@@ -558,23 +555,6 @@ class Dashboard extends React.Component<Props, State> {
   }
 
   @autobind
-  _historyRHS() {
-    const { history } = this.props;
-    this._checkAuth()
-      .then(() => {
-        this.setState({ diagramDialogIsOpen: true });
-      })
-      .catch(() => {
-        history.push('/login/expired');
-      });
-  }
-
-  @autobind
-  _onDiagramDialogIsClosed() {
-    this.setState({ diagramDialogIsOpen: false });
-  }
-
-  @autobind
   _onShareDialogIsClosed() {
     this.setState({ shareDialogIsOpen: false });
   }
@@ -662,7 +642,6 @@ class Dashboard extends React.Component<Props, State> {
       fileSelected,
       fileVersion,
       proofReady,
-      diagramDialogIsOpen,
       shareDialogIsOpen,
       firstUploadDialogueOpen,
       firstProofDialogueOpen,
@@ -909,14 +888,6 @@ class Dashboard extends React.Component<Props, State> {
                   </Tooltip>
                 )}
                 {fileSelected && <div className="vr" />}
-                {fileSelected && (
-                  <Tooltip
-                    content="See the proof process for this document."
-                    position={Position.TOP}
-                  >
-                    <HistoryIcon className="historyIcon" onClick={this._historyRHS} />
-                  </Tooltip>
-                )}
                 {fileSelected && proofReady && <div className="vr" />}
                 {fileSelected && proofReady && (
                   <Tooltip content="Recieve this proof via email." position={Position.TOP}>
@@ -935,15 +906,6 @@ class Dashboard extends React.Component<Props, State> {
                 )}
               </div>
             </div>
-            {fileSelected && diagramDialogIsOpen && (
-              <ProofDialog
-                history={history}
-                isOpen={diagramDialogIsOpen}
-                file={fileSelected}
-                fileVersion={fileVersion}
-                onClose={this._onDiagramDialogIsClosed}
-              />
-            )}
             {fileSelected && shareDialogIsOpen && (
               <ShareDialog
                 history={history}
