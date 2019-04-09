@@ -222,6 +222,8 @@ export default class ViewFiles extends React.Component<Props, State> {
 
 
     // Assume all files are below 16mb.
+    console.log('Filter: ', filterFunc);
+    console.log('Files: ', fileList);
     fileList
       .filter(filterFunc)
       .sort(sortFunc)
@@ -419,10 +421,13 @@ export default class ViewFiles extends React.Component<Props, State> {
     }
 
     // Assume all files are below 16mb.
+    console.log('Filter: ', filterFunc);
+    console.log('Files: ', fileList);
     fileList
       .filter(filterFunc)
       .sort(sortFunc)
       .forEach((file, key) => {
+        console.log(file.proofInfo);
         const validClass = 'valid';
 
         let selectedClass = '';

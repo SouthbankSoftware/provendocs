@@ -87,7 +87,7 @@ export function sendSharedFileEmail(
   fileName: string,
   fileLink: string,
 ) {
-  return new Promise((resolve, reject) => {
+  return new Promise<any>((resolve, reject) => {
     const request = sg.emptyRequest({
       method: 'POST',
       path: '/v3/mail/send',
@@ -138,7 +138,7 @@ function prepareWelcomeToProvenDocsEmail(toEmail: string) {
   return emailBody;
 }
 export function sendWelcomeToProvenDocsEmail(toEmail: string) {
-  return new Promise((resolve, reject) => {
+  return new Promise<any>((resolve, reject) => {
     const request = sg.emptyRequest({
       method: 'POST',
       path: '/v3/mail/send',
@@ -199,7 +199,7 @@ function prepareEmailUploadPassedEmail(toEmail: string, subject: string, numAtta
   return emailBody;
 }
 export function sendEmailUploadPassedEmail(toEmail: string, subject: string, numAttach: string) {
-  return new Promise((resolve, reject) => {
+  return new Promise<any>((resolve, reject) => {
     const request = sg.emptyRequest({
       method: 'POST',
       path: '/v3/mail/send',
@@ -252,7 +252,7 @@ function prepareEmailUploadFailedEmail(toEmail: string, subject: string, numAtta
   return emailBody;
 }
 export function sendEmailUploadFailedEmail(toEmail: string, subject: string, numAttach: string) {
-  return new Promise((resolve, reject) => {
+  return new Promise<any>((resolve, reject) => {
     const request = sg.emptyRequest({
       method: 'POST',
       path: '/v3/mail/send',
@@ -304,7 +304,7 @@ function prepareEmailUploadNoAccountEmail(toEmail: string, subject: string) {
   return emailBody;
 }
 export function sendEmailUploadNoAccountEmail(toEmail: string, subject: string) {
-  return new Promise((resolve, reject) => {
+  return new Promise<any>((resolve, reject) => {
     const request = sg.emptyRequest({
       method: 'POST',
       path: '/v3/mail/send',
@@ -338,6 +338,7 @@ function prepareEmailProofCopyEmail(
   fileName: string,
   fromName: string,
   fromEmail: string,
+  link: string,
 ) {
   // eslint-disable-next-line
   const template_id = Settings.templates.SEND_PROOF_COPY;
@@ -354,6 +355,7 @@ function prepareEmailProofCopyEmail(
           fromName,
           fromEmail,
           subject,
+          link,
         },
       },
     ],
@@ -381,12 +383,21 @@ export function sendEmailProofCopyEmail(
   fileName: string,
   fromName: string,
   fromEmail: string,
+  link: string,
 ) {
-  return new Promise((resolve, reject) => {
+  return new Promise<any>((resolve, reject) => {
     const request = sg.emptyRequest({
       method: 'POST',
       path: '/v3/mail/send',
-      body: prepareEmailProofCopyEmail(toEmail, subject, binaryData, fileName, fromName, fromEmail),
+      body: prepareEmailProofCopyEmail(
+        toEmail,
+        subject,
+        binaryData,
+        fileName,
+        fromName,
+        fromEmail,
+        link,
+      ),
     });
     sg.API(request, (error, response) => {
       if (error) {
@@ -442,7 +453,7 @@ export function sendVerificationEmail(toEmail: string, verifyLink: string) {
     toEmail,
     verifyLink,
   });
-  return new Promise((resolve, reject) => {
+  return new Promise<any>((resolve, reject) => {
     const request = sg.emptyRequest({
       method: 'POST',
       path: '/v3/mail/send',
@@ -501,7 +512,7 @@ export function sendResetPasswordEmail(toEmail: string, newPassword: string) {
     toEmail,
     newPassword,
   });
-  return new Promise((resolve, reject) => {
+  return new Promise<any>((resolve, reject) => {
     const request = sg.emptyRequest({
       method: 'POST',
       path: '/v3/mail/send',

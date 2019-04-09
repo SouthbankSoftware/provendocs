@@ -97,6 +97,50 @@ export default class ViewFileThumb extends React.Component<Props, State> {
       });
   }
 
+  componentWillReceiveProps(nextProps: Object) {
+    const { file } = this.state;
+    if (nextProps.file && nextProps.file.name !== file.name) {
+      // New file, update state.
+      nextProps.file.isLoading = true;
+      console.log('Setting State to: ', nextProps.file.name);
+      this.setState({ file: nextProps.file });
+      this.state.file = nextProps.file;
+      const newFile = nextProps.file;
+      this._getFilePreview(newFile)
+        .then((previewResult) => {
+          console.log('Fetched for: ', newFile.name);
+          console.log('Current: ', this.state.file.name);
+          if (newFile.name !== this.state.file.name) {
+            // A new file has been selected, disregard result of this fetch.
+            Log.trace(
+              'A new file has been selected while proof was fetching, therefore this preview has been disregarded.',
+            );
+            return;
+          }
+          if (previewResult.data.status) {
+            newFile.proofInfo = previewResult.data.status;
+          } else {
+            newFile.proofInfo = PROOF_STATUS.FAILED;
+          }
+          newFile.content = previewResult.data.content;
+          newFile.fileName = previewResult.data.fileName;
+          newFile.isLoading = false;
+          this.setState({
+            file: newFile,
+          });
+        })
+        .catch((err) => {
+          newFile.isLoading = false;
+          newFile.hasFailed = true;
+          openNotificationWithIcon('error', 'Error', 'Failed to get file preview, sorry!');
+          Log.error(`Error getting File Preview: ${err}`);
+          this.setState({
+            file: newFile,
+          });
+        });
+    }
+  }
+
   _getFilePreview = (file: Object) => new Promise<any>((resolve, reject) => {
     api
       .getFilePreviewForUser(file._id)

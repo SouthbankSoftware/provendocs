@@ -1313,6 +1313,11 @@ module.exports = (app: any) => {
                               .substr(0, 250)}`,
                             reqId,
                           });
+                          const link = cryptr.encrypt(
+                            `${fileInfo[0]._id.toString()}-${
+                              user._id
+                            }-${fileInfo[0]._provendb_metadata.minVersion.toString()}`,
+                          );
                           sendEmailProofCopyEmail(
                             toEmail,
                             fileInfo[0].name,
@@ -1320,6 +1325,7 @@ module.exports = (app: any) => {
                             fileName,
                             user.name,
                             user.email,
+                            `https://provendocs.com/share/${link}`,
                           )
                             .then((sendEmailResult) => {
                               logger.log({
