@@ -144,7 +144,7 @@ export default class ViewProof extends React.Component<Props, State> {
 
   render() {
     const {
-      currentState, file, fileVersion, proofInformation, userDetails,
+      currentState, file, proofInformation, userDetails,
     } = this.state;
     switch (currentState) {
       case STATES.FAILED:
@@ -216,51 +216,6 @@ export default class ViewProof extends React.Component<Props, State> {
             </div>
           </div>
         );
-        /*         return (
-          <div className="viewProof subWrapper">
-            <div className="contentWrapper">
-              <div className="header">
-                <div className="documentTitle">Document Proof:</div>
-              </div>
-              <div className="body">
-                {
-                  <div className="finishedProofWrapper iframeHolder">
-                    {// Current File!
-                    file && file._id && !fileVersion && (
-                      <iframe
-                        title="proofIFrame"
-                        src={`/api/proofCertificate/inline/${file._id}#view=fitH`}
-                        type="application/pdf"
-                        width="100%"
-                        height="100%"
-                      />
-                    )}
-                    {// Historical File 0 or less?
-                    file && file.name && fileVersion <= 0 && (
-                      <iframe
-                        title="proofIFrame"
-                        src={`/api/proofCertificate/inline/${file._id}#view=fitH`}
-                        type="application/pdf"
-                        width="100%"
-                        height="100%"
-                      />
-                    )}
-                    {// Historical File greater than 0.
-                    (file && file.name && fileVersion && fileVersion > 0) !== undefined && (
-                      <iframe
-                        title="proofIFrame"
-                        src={`/api/historicalProof/inline/${file.name}/${fileVersion}#view=fitH`}
-                        type="application/pdf"
-                        width="100%"
-                        height="100%"
-                      />
-                    )}
-                  </div>
-                }
-              </div>
-            </div>
-          </div>
-        ); */
       default:
         return (
           <div className="viewProof subWrapper">

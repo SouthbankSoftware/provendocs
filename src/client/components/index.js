@@ -33,3 +33,4 @@ export { default as EULA } from './Privacy/EULA';
 export { default as ProofInProgress } from './Dashboard/ProofInProgress';
 export { default as ProofComplete } from './Dashboard/ProofComplete';
 export { default as ProofDiagram } from './ViewProof/ProofDiagram';
+export { default as ProofCertificate } from './ViewProof/ViewProofCertificate';

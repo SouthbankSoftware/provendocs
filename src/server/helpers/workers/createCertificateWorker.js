@@ -113,9 +113,15 @@ function addFrontPage(doc, proof, file, user) {
     const bodyTextFour = '(b) the document existed in its current from on the specified date.';
     const link = cryptr.encrypt(`${file._id}-${user._id}-${file._provendb_metadata.minVersion}`);
     // UTC Timestamp conversion
-    const dateString = String(new Date(file.provenAt));
-    const date = new Date(Date.parse(file.provenAt));
-    const newFinalDate = date.toISOString().replace(/[-:.Z]/g, '');
+    let dateString = '';
+    let date = '';
+    let newFinalDate = '';
+
+    if (file.provenAt) {
+      dateString = String(new Date(file.provenAt));
+      date = new Date(Date.parse(file.provenAt));
+      newFinalDate = date.toISOString().replace(/[-:.Z]/g, '');
+    }
 
     // Add Images
     doc.image(Path.join(__dirname, 'certificate/proven-docs-logo@3x.png'), 175, 105, {
@@ -260,9 +266,15 @@ function addSecondPage(doc, proof, file, user) {
     // Add Header.
     addHeader(doc, file).then((newDoc) => {
       // UTC Timestamp conversion
-      const dateString = String(new Date(file.uploadedAt));
-      const uploadDate = new Date(Date.parse(file.uploadedAt));
-      const finalUploadDate = uploadDate.toISOString().replace(/[-:.Z]/g, '');
+      let dateString = '';
+      let uploadDate = '';
+      let finalUploadDate = '';
+
+      if (file.uploadedAt) {
+        dateString = String(new Date(file.uploadedAt));
+        uploadDate = new Date(Date.parse(file.uploadedAt));
+        finalUploadDate = uploadDate.toISOString().replace(/[-:.Z]/g, '');
+      }
 
       newDoc.moveDown();
       newDoc
@@ -376,9 +388,15 @@ function addSecondPage(doc, proof, file, user) {
         .text('in bitcoin transaction', {});
 
       // UTC Timestamp conversion
-      const provenDateString = String(new Date(file.provenAt));
-      const date = new Date(Date.parse(file.provenAt));
-      const newFinalDate = date.toISOString().replace(/[-:.Z]/g, '');
+      let provenDateString = '';
+      let date = '';
+      let newFinalDate = '';
+
+      if (file.provenAt) {
+        provenDateString = String(new Date(file.provenAt));
+        date = new Date(Date.parse(file.provenAt));
+        newFinalDate = date.toISOString().replace(/[-:.Z]/g, '');
+      }
 
       newDoc
         .fillColor('#31b2d4')

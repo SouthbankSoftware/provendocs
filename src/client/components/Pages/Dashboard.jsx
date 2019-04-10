@@ -32,7 +32,7 @@ import SplitPane from 'react-split-pane';
 import { Button, Modal } from 'antd';
 import Cookies from 'universal-cookie';
 import {
-  ShareDialog, CommentAndTags, TopNavBar, ProofInProgress, ProofComplete,
+  ShareDialog, CommentAndTags, TopNavBar, ProofInProgress, ProofComplete, ProofCertificate,
 } from '../index';
 import { convertBytes, openNotificationWithIcon } from '../../common/util';
 import { api } from '../../common';
@@ -54,6 +54,7 @@ import ViewProofIcon from '../../style/icons/pages/dashboard/proof-progress-icon
 import PreviewDocumentIcon from '../../style/icons/pages/dashboard/preview-icon.svg';
 import DownloadAltIcon from '../../style/icons/pages/dashboard/download-icon-alt.svg';
 import DownloadIcon from '../../style/icons/pages/dashboard/download-icon.svg';
+import CertificateIcon from '../../style/icons/pages/dashboard/certificate-icon.svg';
 import ViewDocument from '../ViewDocument/ViewDocument';
 import ViewProof from '../ViewProof/ViewProof';
 
@@ -70,6 +71,7 @@ const LHS_TABS = {
 const RHS_TABS = {
   VIEW_PROOF: 'viewProof',
   VIEW_DOCUMENT: 'viewDoc',
+  VIEW_CERTIFICATE: 'viewCertificate',
 };
 
 export const RHS_STAGES = {
@@ -95,7 +97,7 @@ type State = {
   commentTags: Array<string>;
   lhsTabSelected: string;
   rhsTabSelected: string;
-  fileSelected: Object | null;
+  fileSelected: any;
   fileVersion: number;
   rhsStage: string;
   proofReady: boolean;
@@ -312,23 +314,17 @@ class Dashboard extends React.Component<Props, State> {
   }
 
   @autobind
-  _swapRHSTab() {
+  _fileSelected(file: Object, fileVersion: number) {
     const { rhsTabSelected } = this.state;
-    if (rhsTabSelected === RHS_TABS.VIEW_PROOF) {
-      this.setState({ rhsTabSelected: RHS_TABS.VIEW_DOCUMENT });
-    } else {
+    if (!file) return; // Check new file exists.
+    if (rhsTabSelected === RHS_TABS.VIEW_CERTIFICATE && file.proofInfo !== PROOF_STATUS.VALID) { // Check if viewing cert, new file has cert.
       this.setState({ rhsTabSelected: RHS_TABS.VIEW_PROOF });
     }
-  }
-
-  @autobind
-  _fileSelected(file: Object, fileVersion: number) {
-    if (!file) return;
-    this.state.fileVersion = fileVersion;
-    this.setState({ fileSelected: file });
-    if (file.proofInfo === PROOF_STATUS.VALID && (cookies.get('provendocs_proof_dont_remind_me') === 'false' || cookies.get('provendocs_proof_dont_remind_me') === undefined)) {
+    if (file.proofInfo === PROOF_STATUS.VALID && (cookies.get('provendocs_proof_dont_remind_me') === 'false' || cookies.get('provendocs_proof_dont_remind_me') === undefined)) { // If cookie is set, show dialog.
       this.setState({ firstProofDialogueOpen: true });
     }
+    this.state.fileVersion = fileVersion;
+    this.setState({ fileSelected: file });
   }
 
   @autobind
@@ -696,7 +692,6 @@ class Dashboard extends React.Component<Props, State> {
               ref={(c) => {
                 this.viewDocs = c;
               }}
-              swapTabCallback={this._swapLHSTab}
               onDropCallback={this._onDropFile}
               selectFileCallback={this._fileSelected}
               refreshFileSizeCallback={this._refreshFileSize}
@@ -803,7 +798,6 @@ class Dashboard extends React.Component<Props, State> {
               file={fileSelected}
               fileVersion={fileVersion}
               userDetails={userDetails}
-              swapTabCallback={this._swapRHSTab}
               selectFileCallback={this._fileSelected}
               setProofCallback={this._setProofStatus}
             />
@@ -811,6 +805,29 @@ class Dashboard extends React.Component<Props, State> {
         ),
       },
     ];
+
+    if (fileSelected && fileSelected.proofInfo === PROOF_STATUS.VALID) {
+      rhsTabs.push({
+        id: 'viewCertificate',
+        icon: (
+          <Tooltip content="View the proof certificate for this document." position={Position.TOP}>
+            <div className="tabIconWrapper">
+              <CertificateIcon />
+              <span className="tabIconText">Certificate</span>
+            </div>
+          </Tooltip>
+        ),
+        panel: (
+          <div className="wrapper">
+            <ProofCertificate
+              file={fileSelected}
+              fileVersion={fileVersion}
+            />
+          </div>
+        ),
+      });
+    }
+
     const rhsTabExtras = <div className="rhsExtras" />;
 
     Log.info(

@@ -20,7 +20,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-04-09T15:19:41+10:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-10T15:06:39+10:00
+ * @Last modified time: 2019-04-10T15:26:37+10:00
  */
 
 import React from 'react';
@@ -105,7 +105,7 @@ class ProofDiagram extends React.Component<Props, State> {
         <div className="header">
           <div className={`icon isComplete_${isComplete.toString()}`}>{icon}</div>
           <h3 className="title">{`Step ${stepNum.toString()}: ${stepTitle}`}</h3>
-          <Tooltip placement="topLeft" title={tooltipText}>
+          <Tooltip placement="right" title={tooltipText}>
             <Icon type="question-circle" theme="filled" />
           </Tooltip>
         </div>
