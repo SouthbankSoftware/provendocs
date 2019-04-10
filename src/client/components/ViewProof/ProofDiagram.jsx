@@ -83,10 +83,6 @@ class ProofDiagram extends React.Component<Props, State> {
 
   render() {
     const { proofInformation, file, userDetails } = this.state;
-
-    console.log('file: ', file);
-    console.log('user: ', userDetails);
-    console.log('proof: ', proofInformation);
     if (!file._id) {
       return <Loading isFullScreen={false} />;
     }
