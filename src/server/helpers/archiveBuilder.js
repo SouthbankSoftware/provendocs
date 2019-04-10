@@ -26,6 +26,8 @@ import archiver from 'archiver';
 import Path from 'path';
 import winston from 'winston';
 import Cryptr from 'cryptr';
+import eol from 'eol';
+
 import { decodeFile } from './fileHelpers';
 import createPDF from './certificateBuilder';
 import { STACKDRIVER_SEVERITY, LOG_LEVELS, DOMAINS } from '../common/constants';
@@ -89,10 +91,10 @@ const getReadMeString = (
    proof for the document "${name}".
    
    "${name}" was uploaded to ProvenDocs on
-    ${uploadedAtDate} 
-   by ${email}
+             ${uploadedAtDate} 
+             by ${email}
    and proved to the Bitcoin blockchain  at 
-    ${submitted}.
+             ${submitted}.
    
    The bitcoin blockchain proof details are:
    
@@ -107,7 +109,7 @@ const getReadMeString = (
    This archive contains the following files:
    
    * ${name}:              the file which was uploaded
-   * ${name}.json:         the file data and metadata in ProvenDocs format
+   * ${name}.doc.json:     the file data and metadata in ProvenDocs format
    * ${name}.proof.binary: the blockchain proof in Chainpoint binary format 
    * ${name}.proof.json:   the blockchain proof in Chainpoint JSON format
    * ${name}.proof.pdf:    the PDF blockchain proof certificate
@@ -115,16 +117,20 @@ const getReadMeString = (
    Viewing and validating the document proof
    -----------------------------------------
    
-   You can view this document and it's proof (subject to permissions) at https://provendocs.com/share/${url}.
+   You can view this document and it's proof (subject to permissions) at 
+       https://provendocs.com/share/${url}.
    
    You can validate this archive - confirming the integrity of the document
-   and validity of the proof - using our open using our open source command-line tool.
+   and validity of the proof - using our open source command-line tool.
    
    To independently validate this document proof:
    
    1.  Download the provendb-verify tool from ${cliDownload}
+
        Validate the data using the following command:
-        provendb-verify --in "${name}.proof.zip"
+          provendb-verify --in "${name}.proof.zip"
+
+       See  https://provendb.readme.io/docs/provendb-verify for more information
    
    OR:
    
@@ -134,7 +140,8 @@ const getReadMeString = (
    
    ProvenDocs is powered by ProvenDB.  See https://provendb.com for more information.
    `;
-  return readMeText;
+
+  return eol.crlf(readMeText); // Windows format CRLF
 };
 
 /**
@@ -176,7 +183,9 @@ const createArchiveForDocument = (
   const path = Path.join(__dirname, `archives/${fileInformation.name}.proof.zip`);
   const output = fs.createWriteStream(path);
   const archive = archiver('zip', {
-    zlib: { level: 9 }, // Sets the compression level.
+    zlib: {
+      level: 9,
+    }, // Sets the compression level.
   });
     // Triggered on finish.
   output.on('close', () => {
@@ -238,9 +247,13 @@ const createArchiveForDocument = (
         fileType: typeof file,
       });
       if (typeof file === 'object') {
-        archive.append(JSON.stringify(file), { name: `${fileInformation.name}.json` });
+        archive.append(JSON.stringify(file), {
+          name: `${fileInformation.name}.json`,
+        });
       } else {
-        archive.file(file, { name: `${fileInformation.name}` });
+        archive.file(file, {
+          name: `${fileInformation.name}`,
+        });
       }
 
       logger.log({
@@ -249,8 +262,12 @@ const createArchiveForDocument = (
         message: 'Adding Certificate..',
       });
       createPDF(
-        { proofs: [proofInformation] },
-        { proofs: [documentProof] },
+        {
+          proofs: [proofInformation],
+        },
+        {
+          proofs: [documentProof],
+        },
         fileInformation,
         user,
       )
@@ -265,7 +282,9 @@ const createArchiveForDocument = (
           });
 
           // Add the Proof Certificate file to the Archive.
-          archive.file(certPath, { name: `${fileInformation.name}.proof.pdf` });
+          archive.file(certPath, {
+            name: `${fileInformation.name}.proof.pdf`,
+          });
 
           // Add the README.txt to the archive.
           logger.log({

@@ -157,7 +157,7 @@ export default class ViewProof extends React.Component<Props, State> {
           <InfoIcon
             className="infoIcon"
             onClick={() => {
-              window.open('https://provendb.com/concepts/proofs');
+              window.open('https://provendb.readme.io/docs/proofs');
             }}
           />
         </div>
