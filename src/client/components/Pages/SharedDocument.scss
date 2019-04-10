@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-09T15:43:32+10:00
+ * @Last modified time: 2019-04-10T14:11:44+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -200,7 +200,7 @@
       height: 100%;
       padding: 0px;
 
-      .header {
+      .topLevelHeader {
         color: white;
         padding-left: 25px;
         padding-right: 25px;
@@ -221,7 +221,7 @@
         }
       }
 
-      .body {
+      .topLevelBody {
         width: 100%;
         display: flex;
         flex-direction: column;

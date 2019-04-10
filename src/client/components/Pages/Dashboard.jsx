@@ -43,15 +43,15 @@ import {
 import { PAGES, ANTD_BUTTON_TYPES, PROOF_STATUS } from '../../common/constants';
 import { checkAuthentication } from '../../common/authentication';
 import { Loading } from '../Common';
-import ViewDocsIcon from '../../style/icons/pages/dashboard/view-documents-icon.svg';
-import UploadIcon from '../../style/icons/pages/dashboard/upload-icon.svg';
-import PlusIcon from '../../style/icons/pages/dashboard/plus-icon.svg';
+import ViewDocsIcon from '../../style/icons/pages/dashboard/dashboard-icon.svg';
+import UploadCompleteIcon from '../../style/icons/pages/dashboard/upload-prompt-icon.svg';
+import PlusIcon from '../../style/icons/pages/dashboard/upload-icon.svg';
 import ArrowIcon from '../../style/icons/pages/upload-file-folder-pages/arrow.svg';
 import HistoryIcon from '../../style/icons/pages/dashboard/merkle-tree-icon.svg';
 import EmailIcon from '../../style/icons/pages/dashboard/email-icon.svg';
 import LinkIcon from '../../style/icons/pages/dashboard/link-icon.svg';
-import ViewProofIcon from '../../style/icons/pages/dashboard/view-proof-icon.svg';
-import PreviewDocumentIcon from '../../style/icons/pages/dashboard/preview-document-icon.svg';
+import ViewProofIcon from '../../style/icons/pages/dashboard/proof-progress-icon.svg';
+import PreviewDocumentIcon from '../../style/icons/pages/dashboard/preview-icon.svg';
 import DownloadAltIcon from '../../style/icons/pages/dashboard/download-icon-alt.svg';
 import DownloadIcon from '../../style/icons/pages/dashboard/download-icon.svg';
 import ViewDocument from '../ViewDocument/ViewDocument';
@@ -89,6 +89,7 @@ type State = {
   documentsUsed: number;
   storageLimit: number;
   documentsLimit: number;
+  userDetails: Object;
   comment: string;
   allUploadsInvalid: boolean;
   commentTags: Array<string>;
@@ -119,6 +120,7 @@ class Dashboard extends React.Component<Props, State> {
       documentsUsed: 0,
       storageLimit: 0,
       documentsLimit: 0,
+      userDetails: {},
       comment: '',
       allUploadsInvalid: false,
       commentTags: [],
@@ -220,6 +222,15 @@ class Dashboard extends React.Component<Props, State> {
       storageLimitReached: storageReached,
     });
   };
+
+  /**
+   * Callback function for setting user details when found later.
+   */
+  _setUserDetails = (userDetails: Object) => {
+    this.setState({
+      userDetails,
+    });
+  }
 
   /**
    * Refresh the storage usage, after a forget is issues.
@@ -577,7 +588,7 @@ class Dashboard extends React.Component<Props, State> {
     confirm({
       title: (
         <div>
-          <UploadIcon className="uploadIcon" />
+          <UploadCompleteIcon className="uploadIcon" />
           <span>Upload Documents.</span>
         </div>
       ),
@@ -648,6 +659,7 @@ class Dashboard extends React.Component<Props, State> {
       matchingFiles,
       storageUsed,
       documentsUsed,
+      userDetails,
       storageLimit,
       documentsLimit,
       size,
@@ -741,12 +753,12 @@ class Dashboard extends React.Component<Props, State> {
       <div className="fileSizeInfo">
         <span className="used">
           <b>Used: </b>
-          {`${usedBytes.value} ${usedBytes.unit} (${documentsUsed}) docs`}
+          {`${usedBytes.value} ${usedBytes.unit} (${documentsUsed} docs)`}
         </span>
         <div className="vr" />
         <span className="free">
           <b>Free: </b>
-          {`${freeBytes.value} ${freeBytes.unit} (${freeDocs}) docs`}
+          {`${freeBytes.value} ${freeBytes.unit} (${freeDocs} docs)`}
         </span>
       </div>
     );
@@ -790,6 +802,7 @@ class Dashboard extends React.Component<Props, State> {
             <ViewProof
               file={fileSelected}
               fileVersion={fileVersion}
+              userDetails={userDetails}
               swapTabCallback={this._swapRHSTab}
               selectFileCallback={this._fileSelected}
               setProofCallback={this._setProofStatus}
@@ -805,7 +818,7 @@ class Dashboard extends React.Component<Props, State> {
     );
     return (
       <div className="App">
-        <TopNavBar currentPage={PAGES.DASHBOARD} isAuthenticated onEarlyAccess={null} />
+        <TopNavBar userDetailsCallback={this._setUserDetails} currentPage={PAGES.DASHBOARD} isAuthenticated onEarlyAccess={null} />
         <div className="AppBody">
           <Modal
             className="firstUploadDialogueModal"
@@ -887,7 +900,6 @@ class Dashboard extends React.Component<Props, State> {
                     />
                   </Tooltip>
                 )}
-                {fileSelected && <div className="vr" />}
                 {fileSelected && proofReady && <div className="vr" />}
                 {fileSelected && proofReady && (
                   <Tooltip content="Recieve this proof via email." position={Position.TOP}>

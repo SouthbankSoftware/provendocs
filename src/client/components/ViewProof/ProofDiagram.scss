@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-04-09T15:28:35+10:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-09T16:18:33+10:00
+ * @Last modified time: 2019-04-10T15:08:37+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -29,7 +29,6 @@
   flex-direction: column;
   width: 100%;
   flex-grow: 1;
-  margin-top: 19px;
 
   .proofSteps {
     display: flex;
@@ -54,14 +53,72 @@
           margin-right: 17px;
           height: 34px;
           width: 34px;
-          background-color: $greenish-teal;
+          background-color: $white;
           border-radius: 50%;
+
+          svg {
+            fill: $dashboard_panel_background !important;
+            width: 20px;
+            height: 20px;
+
+            g {
+              fill: $dashboard_panel_background !important;
+
+              path {
+                fill: $dashboard_panel_background !important;
+              }
+            }
+
+            #hash-icon {
+              #Path_1838 {
+                fill: $white !important;
+              }
+            }
+          }
+        }
+
+        .icon.isComplete_true {
+          background-color: $greenish-teal;
+
+          svg {
+            g {
+              fill: $white !important;
+
+              path {
+                fill: $white !important;
+              }
+            }
+          }
+
+          #document-new-icon {}
+
+          #hash-icon {
+            #Path_1838 {
+              fill: $greenish-teal !important;
+            }
+
+            #Path_1839 {
+              fill: $white !important;
+            }
+          }
+
+
         }
 
         .title {
           font-size: 14px;
           font-weight: bold;
           width: unset;
+          margin-right: 10px;
+        }
+
+        .anticon {
+          padding-top: 3px;
+          opacity: 0.7;
+
+          svg {
+            fill: white;
+          }
         }
       }
 
@@ -69,6 +126,7 @@
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
+        flex-grow: 1;
 
         .leftLine {
           border-left: 4px solid $greenish-teal;
@@ -82,6 +140,10 @@
 
         .leftLine.final_true {
           opacity: 0;
+        }
+
+        .leftLine.complete_false {
+          border-left: 4px solid $white;
         }
 
         .content {
@@ -108,6 +170,7 @@
               line-height: 1.17;
               text-align: left;
               max-width: 75%;
+              color: white;
             }
           }
 
@@ -124,6 +187,27 @@
               line-height: 1.17;
               text-align: left;
               margin-bottom: 10px;
+              text-decoration: underline;
+              color: white;
+              cursor: default;
+            }
+
+            a {
+              opacity: 0.7;
+              font-size: 14px;
+              line-height: 1.17;
+              text-align: left;
+              margin-bottom: 10px;
+              text-decoration: underline;
+            }
+
+            a:hover {
+              color: white;
+              opacity: 1;
+            }
+
+            a:focus {
+              color: white;
             }
 
           }

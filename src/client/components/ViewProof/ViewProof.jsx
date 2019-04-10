@@ -45,12 +45,14 @@ type Props = {
   file: Object | null;
   fileVersion: number;
   setProofCallback: any;
+  userDetails: Object;
 };
 type State = {
   file: any;
   fileVersion: number;
   proofInformation: Object;
   currentState: any;
+  userDetails: Object;
 };
 
 export default class ViewProof extends React.Component<Props, State> {
@@ -62,53 +64,52 @@ export default class ViewProof extends React.Component<Props, State> {
       fileVersion: 0,
       currentState: STATES.SELECT_FILE,
       proofInformation: {},
+      userDetails: {},
     };
   }
 
   componentWillReceiveProps(props: Object) {
     const { file } = this.state;
     const { setProofCallback } = this.props;
+    console.log('a ', props.file !== null && props.file !== undefined && props.file !== file);
     if (props.file !== null && props.file !== undefined && props.file !== file) {
+      console.log('b');
       this.state.file = props.file;
       this.state.fileVersion = props.fileVersion;
+      this.state.userDetails = props.userDetails;
       this.setState({ currentState: STATES.LOADING });
-
-      if (props.file && props.file.proofInfo && props.file.proofInfo !== PROOF_STATUS.VALID) {
-        // Quick check to avoid fetching proofs for non-valid versions as it is a wasted request.
-        this.setState({ currentState: STATES.FILE_PROOF_PENDING });
-      } else {
-        this._fetchProof()
-          .then((proof) => {
-            if (props.file.name !== this.state.file.name) {
-              // A new file has been selected, disregard result of this fetch.
-              Log.trace('A new file has been selected while proof was fetching, therefore this proof has been disregarded.');
-              return;
-            }
-            if (proof.data.proofs[0].status) {
-              this.setState({ proofInformation: proof.data.proofs[0] });
-              if (proof.data.proofs[0].status === PROOF_STATUS.VALID) {
-                setProofCallback(true);
-                this.setState({ currentState: STATES.FILE_PROOF_COMPLETE });
-              } else {
-                this.setState({ currentState: STATES.FILE_PROOF_PENDING });
-                setProofCallback(false);
-              }
+      this._fetchProof()
+        .then((proof) => {
+          if (props.file.name !== this.state.file.name) {
+            // A new file has been selected, disregard result of this fetch.
+            Log.trace('A new file has been selected while proof was fetching, therefore this proof has been disregarded.');
+            return;
+          }
+          console.log('Fetch Proof result for file: ', proof.data);
+          if (proof.data.proofs[0].status) {
+            this.setState({ proofInformation: proof.data.proofs[0] });
+            if (proof.data.proofs[0].status === PROOF_STATUS.VALID) {
+              setProofCallback(true);
+              this.setState({ currentState: STATES.FILE_PROOF_COMPLETE });
             } else {
-            // No proofs for version yet.
-              this.setState({ proofInformation: { status: PROOF_STATUS.PENDING } });
               this.setState({ currentState: STATES.FILE_PROOF_PENDING });
               setProofCallback(false);
             }
-          }).catch((err) => {
-            this.setState({ currentState: STATES.FAILED });
-            Log.error(`Fetch proof error: ${err}`);
-            openNotificationWithIcon(
-              'error',
-              'Proof Error',
-              'Failed to fetch proof for file, sorry!',
-            );
-          });
-      }
+          } else {
+            // No proofs for version yet.
+            this.setState({ proofInformation: { status: PROOF_STATUS.PENDING } });
+            this.setState({ currentState: STATES.FILE_PROOF_PENDING });
+            setProofCallback(false);
+          }
+        }).catch((err) => {
+          this.setState({ currentState: STATES.FAILED });
+          Log.error(`Fetch proof error: ${err}`);
+          openNotificationWithIcon(
+            'error',
+            'Proof Error',
+            'Failed to fetch proof for file, sorry!',
+          );
+        });
     }
   }
 
@@ -143,7 +144,7 @@ export default class ViewProof extends React.Component<Props, State> {
 
   render() {
     const {
-      currentState, file, fileVersion, proofInformation,
+      currentState, file, fileVersion, proofInformation, userDetails,
     } = this.state;
     switch (currentState) {
       case STATES.FAILED:
@@ -183,22 +184,39 @@ export default class ViewProof extends React.Component<Props, State> {
         return (
           <div className="viewProof subWrapper">
             <div className="contentWrapper">
-              <div className="header">
+              <div className="proofHeader">
                 <div className="documentTitle">
                   <span className="bold">
-                    <b>Document Preview: </b>
+                    <b>Proof Status: </b>
                   </span>
                   <span>{file.name}</span>
                 </div>
               </div>
               <div className="body">
-                <ProofDiagram proofInformation={proofInformation} />
+                <ProofDiagram userDetails={userDetails} proofInformation={proofInformation} file={file} />
               </div>
             </div>
           </div>
         );
       case STATES.FILE_PROOF_COMPLETE:
         return (
+          <div className="viewProof subWrapper">
+            <div className="contentWrapper">
+              <div className="proofHeader">
+                <div className="documentTitle">
+                  <span className="bold">
+                    <b>Proof Status: </b>
+                  </span>
+                  <span>{file.name}</span>
+                </div>
+              </div>
+              <div className="body">
+                <ProofDiagram userDetails={userDetails} proofInformation={proofInformation} file={file} />
+              </div>
+            </div>
+          </div>
+        );
+        /*         return (
           <div className="viewProof subWrapper">
             <div className="contentWrapper">
               <div className="header">
@@ -242,7 +260,7 @@ export default class ViewProof extends React.Component<Props, State> {
               </div>
             </div>
           </div>
-        );
+        ); */
       default:
         return (
           <div className="viewProof subWrapper">

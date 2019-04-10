@@ -51,13 +51,13 @@ type State = {
   proofLoading: boolean;
   fileName: string;
   proofDate: 'UNKNOWN';
-  proof: Object;
   isAuthenticated: boolean;
   mimetype: any;
   fileId: any;
   metadata: any;
   emailExtras: any;
   fileSize: number;
+  documentProof: Object;
 };
 
 class SharedDocument extends React.Component<Props, State> {
@@ -68,7 +68,6 @@ class SharedDocument extends React.Component<Props, State> {
       size: { width: 400, height: 200 },
       loading: true,
       proofLoading: true,
-      proof: {},
       fileName: 'UNKNOWN',
       fileSize: 0,
       proofDate: 'UNKNOWN',
@@ -78,6 +77,7 @@ class SharedDocument extends React.Component<Props, State> {
       mimetype: null,
       filePreview: null,
       emailExtras: {},
+      documentProof: {},
     };
   }
 
@@ -100,26 +100,8 @@ class SharedDocument extends React.Component<Props, State> {
               this.setState({ mimetype: result.data.mimetype });
               this.setState({ proofDate: result.data.proofDate });
               this.setState({ fileSize: result.data.size });
-
-              api
-                .getHistoricalProofInfoForUser(
-                  result.data.fileName,
-                  result.data.metaData.minVersion,
-                )
-                .then((proofResult) => {
-                  this.setState({ proofLoading: false });
-                  if (proofResult.data.ok === 1) {
-                    this.setState({ proof: proofResult.data.proofs[0] });
-                  }
-                })
-                .catch((err) => {
-                  Log.error(`Failed to fetch proof with err: ${err}`);
-                  openNotificationWithIcon(
-                    'error',
-                    'Error Getting Proof',
-                    'Failed to fetch proof for this document, sorry!',
-                  );
-                });
+              this.setState({ documentProof: result.data.documentProof });
+              this.setState({ proofLoading: false });
               if (result.data.mimetype !== MIMETYPES.PDF) {
                 // Can't display in IFRAME, therefore fetch a preview.
                 this._fetchFilePreview(
@@ -404,13 +386,14 @@ class SharedDocument extends React.Component<Props, State> {
     }
 
     const {
-      size, loading, fileName, proofDate, fileSize, proofLoading, proof,
+      size, loading, fileName, proofDate, fileSize, proofLoading, documentProof, metadata, fileId,
     } = this.state;
 
     const sizeResult = convertBytes(fileSize, 'b', 3);
+    console.log(documentProof);
     return (
       <div className="App">
-        <TopNavBar currentPage={PAGES.SHARED} isAuthenticated onEarlyAccess={false} />
+        <TopNavBar currentPage={PAGES.SHARED} isAuthenticated onEarlyAccess={false} userDetailsCallback={() => {}} />
         <div className="AppBody">
           <div className="mainPanel sharedDocument">
             <div className="pageTitle">
@@ -444,7 +427,7 @@ class SharedDocument extends React.Component<Props, State> {
                 <div className="lhs">
                   <div className="viewDocument subWrapper">
                     <div className="contentWrapper">
-                      <div className="header">
+                      <div className="topLevelHeader">
                         <div className="documentTitle">
                           <b>Document Preview: </b>
                         </div>
@@ -461,16 +444,16 @@ class SharedDocument extends React.Component<Props, State> {
                 <div className="rhs">
                   <div className="viewDocument subWrapper">
                     <div className="contentWrapper">
-                      <div className="header">
+                      <div className="topLevelHeader">
                         <div className="documentTitle">
                           <b>Blockchain Proof</b>
                         </div>
                       </div>
-                      <div className="body iframeHolder">
+                      <div className="topLevelBody iframeHolder">
                         {proofLoading && (
                           <Loading isFullScreen={false} message="Fetching Document Proof..." />
                         )}
-                        {!proofLoading && proof && proof.status === PROOF_STATUS.VALID && (
+                        {!proofLoading && documentProof && documentProof.status === PROOF_STATUS.VALID && (
                           <iframe
                             title="proofIFrame"
                             src={`/api/getSharedProof/${link}`}
@@ -480,9 +463,9 @@ class SharedDocument extends React.Component<Props, State> {
                           />
                         )}
                         {!proofLoading
-                          && proof
-                          && proof.status !== PROOF_STATUS.VALID
-                          && <ProofDiagram proofInformation />}
+                          && documentProof
+                          && documentProof.status !== PROOF_STATUS.VALID
+                          && <ProofDiagram proofInformation={documentProof} file={{ _id: fileId, _provendb_metadata: metadata }} userDetails={{}} />}
                       </div>
                     </div>
                   </div>
