@@ -78,8 +78,10 @@ class ViewDocument extends React.Component<Props, State> {
         // Do nothing yet.
         this.setState({ currentState: STATES.FILE_PREVIEW });
       } else {
+        console.log('Fetch file...');
         this._fetchFile()
           .then((data) => {
+            console.log('Fetched file:', data);
             if (file.mimetype === MIMETYPES.EMAIL) {
               if (data.data.subject || data.data.from || data.data.to) {
                 const {
@@ -284,28 +286,28 @@ class ViewDocument extends React.Component<Props, State> {
         return (
           <div className="viewDocumentWrapper">
             {emailExtras && (
-              <div className="emailExtras">
-                <div className="to">
-                  <span className="toLabel emailLabel">To: </span>
-                  <span className="toValue value">{to}</span>
-                </div>
-                <div className="from">
-                  <span className="fromLabel emailLabel">From: </span>
-                  <span className="fromValue value">{from}</span>
-                </div>
-                <div className="cc">
-                  <span className="ccLabel emailLabel">CC: </span>
-                  <span className="ccValue value">{cc}</span>
-                </div>
-                <div className="subject">
-                  <span className="subjectLabel emailLabel">Subject: </span>
-                  <span className="subjectValue value">{subject}</span>
-                </div>
-                <div className="attachements">
-                  <span className="attachmentsLabel emailLabel">Attachments: </span>
-                  <span className="attachmentsValue value">{attachments.join(',  ')}</span>
-                </div>
+            <div className="emailExtras">
+              <div className="to">
+                <span className="toLabel emailLabel">To: </span>
+                <span className="toValue value">{to}</span>
               </div>
+              <div className="from">
+                <span className="fromLabel emailLabel">From: </span>
+                <span className="fromValue value">{from}</span>
+              </div>
+              <div className="cc">
+                <span className="ccLabel emailLabel">CC: </span>
+                <span className="ccValue value">{cc}</span>
+              </div>
+              <div className="subject">
+                <span className="subjectLabel emailLabel">Subject: </span>
+                <span className="subjectValue value">{subject}</span>
+              </div>
+              <div className="attachements">
+                <span className="attachmentsLabel emailLabel">Attachments: </span>
+                <span className="attachmentsValue value">{attachments.join(',  ')}</span>
+              </div>
+            </div>
             )}
             <div
               className={`${previewClass}`}

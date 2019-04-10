@@ -71,9 +71,7 @@ export default class ViewProof extends React.Component<Props, State> {
   componentWillReceiveProps(props: Object) {
     const { file } = this.state;
     const { setProofCallback } = this.props;
-    console.log('a ', props.file !== null && props.file !== undefined && props.file !== file);
     if (props.file !== null && props.file !== undefined && props.file !== file) {
-      console.log('b');
       this.state.file = props.file;
       this.state.fileVersion = props.fileVersion;
       this.state.userDetails = props.userDetails;
@@ -85,7 +83,6 @@ export default class ViewProof extends React.Component<Props, State> {
             Log.trace('A new file has been selected while proof was fetching, therefore this proof has been disregarded.');
             return;
           }
-          console.log('Fetch Proof result for file: ', proof.data);
           if (proof.data.proofs[0].status) {
             this.setState({ proofInformation: proof.data.proofs[0] });
             if (proof.data.proofs[0].status === PROOF_STATUS.VALID) {

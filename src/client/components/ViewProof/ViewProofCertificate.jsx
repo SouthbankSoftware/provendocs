@@ -23,6 +23,7 @@
  */
 import React from 'react';
 import { Loading } from '../Common';
+// $FlowFixMe
 import './ViewProofCertificate.scss';
 
 type Props = {
@@ -53,7 +54,9 @@ class proofCertificate extends React.Component<Props, State> {
       this.setState({ fileVersion: props.fileVersion });
       this.setState({ loading: false });
     } else {
-      this.setState({ loading: false });
+      setTimeout(() => {
+        this.setState({ loading: false });
+      }, 0);
     }
   }
 
