@@ -24,7 +24,7 @@
 import React from 'react';
 import { withRouter } from 'react-router';
 import autobind from 'autobind-decorator';
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import ReactHtmlParser from 'react-html-parser';
 import PreviewOffIcon from '../../style/icons/pages/dashboard/preview-off-icon.svg';
 import { ExcelPreview } from '../index';
 import { Loading } from '../Common';
