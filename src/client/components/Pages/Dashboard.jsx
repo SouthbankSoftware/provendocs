@@ -43,6 +43,7 @@ import { PAGES, ANTD_BUTTON_TYPES, PROOF_STATUS } from '../../common/constants';
 import { checkAuthentication } from '../../common/authentication';
 import { Loading } from '../Common';
 import ViewDocsIcon from '../../style/icons/pages/dashboard/dashboard-icon.svg';
+import DocumentIcon from '../../style/icons/pages/dashboard/document-new-icon.svg';
 import UploadCompleteIcon from '../../style/icons/pages/dashboard/upload-prompt-icon.svg';
 import PlusIcon from '../../style/icons/pages/dashboard/upload-icon.svg';
 import ArrowIcon from '../../style/icons/pages/upload-file-folder-pages/arrow.svg';
@@ -890,7 +891,7 @@ class Dashboard extends React.Component<Props, State> {
                 {proofReady && fileSelected && <div className="vr" />}
                 {fileSelected && (
                   <Tooltip content="Download a copy of this file." position={Position.TOP}>
-                    <ViewDocsIcon
+                    <DocumentIcon
                       className="viewDocsIcon"
                       onClick={() => {
                         confirm({
