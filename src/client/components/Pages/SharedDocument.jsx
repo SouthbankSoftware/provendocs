@@ -228,11 +228,9 @@ class SharedDocument extends React.Component<Props, State> {
       return (
         <div className="viewDocumentWrapper unknownType">
           <PreviewOffIcon className="previewOffIcon" />
-          <span className="previewOffTitle">
-          Preview Unavaliable.
-          </span>
+          <span className="previewOffTitle">Preview Unavaliable.</span>
           <span className="previewOffMessage">
-           Unfortunately we were unable to render a document preview for this file type.
+            Unfortunately we were unable to render a document preview for this file type.
           </span>
         </div>
       );
