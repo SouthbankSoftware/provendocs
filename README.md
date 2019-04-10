@@ -13,11 +13,13 @@
 
 CI / CD
 
-_Build:_ [![provendb-verify-test](http://concourse.provendb.com/api/v1/pipelines/provendocs/jobs/publish/badge)](http://concourse.provendb.com/teams/main/pipelines/provendocs)
+_Build:_ [![provendocs-build](https://concourse.provendb.com/api/v1/pipelines/provendocs-deploy/jobs/build/badge)](https://concourse.provendb.com/teams/main/pipelines/provendocs-deploy/jobs/build)
 
 _Test:_ @TODO
 
-_Deploy:_ @TODO
+_Deploy Staging:_ [![provendocs-staging](https://concourse.provendb.com/api/v1/pipelines/provendocs-deploy/jobs/deploy-staging/badge)](https://concourse.provendb.com/teams/main/pipelines/provendocs-deploy/jobs/deploy-staging)
+
+_Deploy Test:_ [![provendocs-test](https://concourse.provendb.com/api/v1/pipelines/provendocs-deploy/jobs/deploy-test/badge)](https://concourse.provendb.com/teams/main/pipelines/provendocs-deploy/jobs/deploy-test)
 
 <div align="center">
 
