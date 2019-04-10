@@ -252,11 +252,9 @@ class SharedDocument extends React.Component<Props, State> {
       return (
         <div className="viewDocumentWrapper unknownType">
           <PreviewOffIcon className="previewOffIcon" />
-          <span className="previewOffTitle">
-          Preview Unavaliable.
-          </span>
+          <span className="previewOffTitle">Preview Unavaliable.</span>
           <span className="previewOffMessage">
-           Unfortunately we were unable to render a document preview for this file type.
+            Unfortunately we were unable to render a document preview for this file type.
           </span>
         </div>
       );
@@ -411,7 +409,7 @@ In progress.
           <InfoIcon
             className="infoIcon"
             onClick={() => {
-              window.open('https://provendb.com/concepts/proofs');
+              window.open('https://provendb.readme.io/docs/proofs');
             }}
           />
         </div>
