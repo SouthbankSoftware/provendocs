@@ -1,21 +1,21 @@
-    platform: linux
-    image_resource:
-      type: docker-image
-      source: {repository: node, tag: 10.13.0}
-    inputs:
-    - name: provendocs 
-    outputs:
-    - name: node_modules 
-    - name: dist
-    - name: bin
-    run:
-      path: sh
-      args:
-      - -exc
-      - |
-          cd provendocs
-          yarn install
-          yarn build
-          cp -r node_modules ./..
-          cp -r dist ./..
-          cp -r bin ./..
+# platform: linux
+# image_resource:
+#   type: docker-image
+#   source: {repository: node, tag: 10.13.0}
+# inputs:
+# - name: provendocs 
+# outputs:
+# - name: node_modules 
+# - name: dist
+# - name: bin
+# run:
+#   path: sh
+#   args:
+#   - -exc
+#   - |
+#       cd provendocs
+#       yarn install
+#       yarn build
+#       cp -r node_modules ./..
+#       cp -r dist ./..
+#       cp -r bin ./..
