@@ -31,7 +31,7 @@ import SplitPane from 'react-split-pane';
 import { Button, Modal } from 'antd';
 import Cookies from 'universal-cookie';
 import {
-  ShareDialog, CommentAndTags, TopNavBar, ProofInProgress, ProofComplete,
+  ShareDialog, CommentAndTags, TopNavBar, ProofInProgress, ProofComplete, ProofCertificate,
 } from '../index';
 import { convertBytes, openNotificationWithIcon } from '../../common/util';
 import { api } from '../../common';
@@ -42,20 +42,21 @@ import {
 import { PAGES, ANTD_BUTTON_TYPES, PROOF_STATUS } from '../../common/constants';
 import { checkAuthentication } from '../../common/authentication';
 import { Loading } from '../Common';
-import ViewDocsIcon from '../../style/icons/pages/dashboard/view-documents-icon.svg';
-import UploadIcon from '../../style/icons/pages/dashboard/upload-icon.svg';
-import PlusIcon from '../../style/icons/pages/dashboard/plus-icon.svg';
+import ViewDocsIcon from '../../style/icons/pages/dashboard/dashboard-icon.svg';
+import DocumentIcon from '../../style/icons/pages/dashboard/document-new-icon.svg';
+import UploadCompleteIcon from '../../style/icons/pages/dashboard/upload-prompt-icon.svg';
+import PlusIcon from '../../style/icons/pages/dashboard/upload-icon.svg';
 import ArrowIcon from '../../style/icons/pages/upload-file-folder-pages/arrow.svg';
 import HistoryIcon from '../../style/icons/pages/dashboard/merkle-tree-icon.svg';
 import EmailIcon from '../../style/icons/pages/dashboard/email-icon.svg';
 import LinkIcon from '../../style/icons/pages/dashboard/link-icon.svg';
-import ViewProofIcon from '../../style/icons/pages/dashboard/view-proof-icon.svg';
-import PreviewDocumentIcon from '../../style/icons/pages/dashboard/preview-document-icon.svg';
+import ViewProofIcon from '../../style/icons/pages/dashboard/proof-progress-icon.svg';
+import PreviewDocumentIcon from '../../style/icons/pages/dashboard/preview-icon.svg';
 import DownloadAltIcon from '../../style/icons/pages/dashboard/download-icon-alt.svg';
 import DownloadIcon from '../../style/icons/pages/dashboard/download-icon.svg';
+import CertificateIcon from '../../style/icons/pages/dashboard/certificate-icon.svg';
 import ViewDocument from '../ViewDocument/ViewDocument';
 import ViewProof from '../ViewProof/ViewProof';
-import ProofDialog from '../ProofDiagram/ProofDialog';
 
 // $FlowFixMe
 import './Dashboard.scss';
@@ -70,6 +71,7 @@ const LHS_TABS = {
 const RHS_TABS = {
   VIEW_PROOF: 'viewProof',
   VIEW_DOCUMENT: 'viewDoc',
+  VIEW_CERTIFICATE: 'viewCertificate',
 };
 
 export const RHS_STAGES = {
@@ -89,16 +91,16 @@ type State = {
   documentsUsed: number;
   storageLimit: number;
   documentsLimit: number;
+  userDetails: Object;
   comment: string;
   allUploadsInvalid: boolean;
   commentTags: Array<string>;
   lhsTabSelected: string;
   rhsTabSelected: string;
-  fileSelected: Object | null;
+  fileSelected: any;
   fileVersion: number;
   rhsStage: string;
   proofReady: boolean;
-  diagramDialogIsOpen: boolean;
   firstUploadDialogueOpen: boolean;
   firstProofDialogueOpen: boolean;
   storageLimitReached: boolean;
@@ -120,6 +122,7 @@ class Dashboard extends React.Component<Props, State> {
       documentsUsed: 0,
       storageLimit: 0,
       documentsLimit: 0,
+      userDetails: {},
       comment: '',
       allUploadsInvalid: false,
       commentTags: [],
@@ -129,7 +132,6 @@ class Dashboard extends React.Component<Props, State> {
       fileVersion: 0, // 0 means current.
       rhsStage: RHS_STAGES.BEGIN,
       proofReady: false,
-      diagramDialogIsOpen: false,
       firstUploadDialogueOpen: false,
       firstProofDialogueOpen: false,
       shareDialogIsOpen: false,
@@ -224,6 +226,15 @@ class Dashboard extends React.Component<Props, State> {
   };
 
   /**
+   * Callback function for setting user details when found later.
+   */
+  _setUserDetails = (userDetails: Object) => {
+    this.setState({
+      userDetails,
+    });
+  }
+
+  /**
    * Refresh the storage usage, after a forget is issues.
    */
   _refreshFileSize = () => {
@@ -302,26 +313,17 @@ class Dashboard extends React.Component<Props, State> {
   }
 
   @autobind
-  _swapRHSTab() {
+  _fileSelected(file: Object, fileVersion: number) {
     const { rhsTabSelected } = this.state;
-    if (rhsTabSelected === RHS_TABS.VIEW_PROOF) {
-      this.setState({ rhsTabSelected: RHS_TABS.VIEW_DOCUMENT });
-    } else {
+    if (!file) return; // Check new file exists.
+    if (rhsTabSelected === RHS_TABS.VIEW_CERTIFICATE && file.proofInfo !== PROOF_STATUS.VALID) { // Check if viewing cert, new file has cert.
       this.setState({ rhsTabSelected: RHS_TABS.VIEW_PROOF });
     }
-  }
-
-  @autobind
-  _fileSelected(file: Object, fileVersion: number) {
-    this.state.fileVersion = fileVersion;
-    this.setState({ fileSelected: file });
-    if (
-      file.proofInfo === PROOF_STATUS.VALID
-      && (cookies.get('provendocs_proof_dont_remind_me') === 'false'
-        || cookies.get('provendocs_proof_dont_remind_me') === undefined)
-    ) {
+    if (file.proofInfo === PROOF_STATUS.VALID && (cookies.get('provendocs_proof_dont_remind_me') === 'false' || cookies.get('provendocs_proof_dont_remind_me') === undefined)) { // If cookie is set, show dialog.
       this.setState({ firstProofDialogueOpen: true });
     }
+    this.state.fileVersion = fileVersion;
+    this.setState({ fileSelected: file });
   }
 
   @autobind
@@ -437,6 +439,7 @@ class Dashboard extends React.Component<Props, State> {
 
             <div className="duplicateList">
               <div className="checkAll">
+                { matchingFiles.length > 1 && (
                 <div className={`duplicateSwitch checked_${checkAll.toString()}`}>
                   <span className="noLabel">New Document </span>
                   <Switch
@@ -455,6 +458,7 @@ class Dashboard extends React.Component<Props, State> {
                     }}
                   />
                 </div>
+                )}
               </div>
               {matchingFiles.map(item => (
                 <div className={`duplicateItem checked_${item.isDupe}`}>
@@ -558,23 +562,6 @@ class Dashboard extends React.Component<Props, State> {
   }
 
   @autobind
-  _historyRHS() {
-    const { history } = this.props;
-    this._checkAuth()
-      .then(() => {
-        this.setState({ diagramDialogIsOpen: true });
-      })
-      .catch(() => {
-        history.push('/login/expired');
-      });
-  }
-
-  @autobind
-  _onDiagramDialogIsClosed() {
-    this.setState({ diagramDialogIsOpen: false });
-  }
-
-  @autobind
   _onShareDialogIsClosed() {
     this.setState({ shareDialogIsOpen: false });
   }
@@ -597,7 +584,7 @@ class Dashboard extends React.Component<Props, State> {
     confirm({
       title: (
         <div>
-          <UploadIcon className="uploadIcon" />
+          <UploadCompleteIcon className="uploadIcon" />
           <span>Upload Documents.</span>
         </div>
       ),
@@ -660,13 +647,13 @@ class Dashboard extends React.Component<Props, State> {
       fileSelected,
       fileVersion,
       proofReady,
-      diagramDialogIsOpen,
       shareDialogIsOpen,
       firstUploadDialogueOpen,
       firstProofDialogueOpen,
       matchingFiles,
       storageUsed,
       documentsUsed,
+      userDetails,
       storageLimit,
       documentsLimit,
       size,
@@ -702,7 +689,6 @@ class Dashboard extends React.Component<Props, State> {
               ref={(c) => {
                 this.viewDocs = c;
               }}
-              swapTabCallback={this._swapLHSTab}
               onDropCallback={this._onDropFile}
               selectFileCallback={this._fileSelected}
               refreshFileSizeCallback={this._refreshFileSize}
@@ -759,12 +745,12 @@ class Dashboard extends React.Component<Props, State> {
       <div className="fileSizeInfo">
         <span className="used">
           <b>Used: </b>
-          {`${usedBytes.value} ${usedBytes.unit} (${documentsUsed}) docs`}
+          {`${usedBytes.value} ${usedBytes.unit} (${documentsUsed} docs)`}
         </span>
         <div className="vr" />
         <span className="free">
           <b>Free: </b>
-          {`${freeBytes.value} ${freeBytes.unit} (${freeDocs}) docs`}
+          {`${freeBytes.value} ${freeBytes.unit} (${freeDocs} docs)`}
         </span>
       </div>
     );
@@ -808,7 +794,7 @@ class Dashboard extends React.Component<Props, State> {
             <ViewProof
               file={fileSelected}
               fileVersion={fileVersion}
-              swapTabCallback={this._swapRHSTab}
+              userDetails={userDetails}
               selectFileCallback={this._fileSelected}
               setProofCallback={this._setProofStatus}
             />
@@ -816,6 +802,29 @@ class Dashboard extends React.Component<Props, State> {
         ),
       },
     ];
+
+    if (fileSelected && fileSelected.proofInfo === PROOF_STATUS.VALID) {
+      rhsTabs.push({
+        id: 'viewCertificate',
+        icon: (
+          <Tooltip content="View the proof certificate for this document." position={Position.TOP}>
+            <div className="tabIconWrapper">
+              <CertificateIcon />
+              <span className="tabIconText">Certificate</span>
+            </div>
+          </Tooltip>
+        ),
+        panel: (
+          <div className="wrapper">
+            <ProofCertificate
+              file={fileSelected}
+              fileVersion={fileVersion}
+            />
+          </div>
+        ),
+      });
+    }
+
     const rhsTabExtras = <div className="rhsExtras" />;
 
     Log.info(
@@ -823,7 +832,7 @@ class Dashboard extends React.Component<Props, State> {
     );
     return (
       <div className="App">
-        <TopNavBar currentPage={PAGES.DASHBOARD} isAuthenticated onEarlyAccess={null} />
+        <TopNavBar userDetailsCallback={this._setUserDetails} currentPage={PAGES.DASHBOARD} isAuthenticated onEarlyAccess={null} />
         <div className="AppBody">
           <Modal
             className="firstUploadDialogueModal"
@@ -882,7 +891,7 @@ class Dashboard extends React.Component<Props, State> {
                 {proofReady && fileSelected && <div className="vr" />}
                 {fileSelected && (
                   <Tooltip content="Download a copy of this file." position={Position.TOP}>
-                    <ViewDocsIcon
+                    <DocumentIcon
                       className="viewDocsIcon"
                       onClick={() => {
                         confirm({
@@ -905,15 +914,6 @@ class Dashboard extends React.Component<Props, State> {
                     />
                   </Tooltip>
                 )}
-                {fileSelected && <div className="vr" />}
-                {fileSelected && (
-                  <Tooltip
-                    content="See the proof process for this document."
-                    position={Position.TOP}
-                  >
-                    <HistoryIcon className="historyIcon" onClick={this._historyRHS} />
-                  </Tooltip>
-                )}
                 {fileSelected && proofReady && <div className="vr" />}
                 {fileSelected && proofReady && (
                   <Tooltip content="Receive this proof via email." position={Position.TOP}>
@@ -932,15 +932,6 @@ class Dashboard extends React.Component<Props, State> {
                 )}
               </div>
             </div>
-            {fileSelected && diagramDialogIsOpen && (
-              <ProofDialog
-                history={history}
-                isOpen={diagramDialogIsOpen}
-                file={fileSelected}
-                fileVersion={fileVersion}
-                onClose={this._onDiagramDialogIsClosed}
-              />
-            )}
             {fileSelected && shareDialogIsOpen && (
               <ShareDialog
                 history={history}

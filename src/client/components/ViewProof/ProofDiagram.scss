@@ -1,0 +1,218 @@
+/*
+ * provendocs
+ * Copyright (C) 2019  Southbank Software Ltd.
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * 
+ * @Author: Michael Harrison
+ * @Date:   2019-04-09T15:28:35+10:00
+ * @Last modified by:   Michael Harrison
+ * @Last modified time: 2019-04-10T15:08:37+10:00
+ */
+
+@import "../../style/global_colors.scss";
+
+.proofDiagramWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex-grow: 1;
+
+  .proofSteps {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    .proofStep {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+
+      .header {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 34px;
+
+        .icon {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-right: 17px;
+          height: 34px;
+          width: 34px;
+          background-color: $white;
+          border-radius: 50%;
+
+          svg {
+            fill: $dashboard_panel_background !important;
+            width: 20px;
+            height: 20px;
+
+            g {
+              fill: $dashboard_panel_background !important;
+
+              path {
+                fill: $dashboard_panel_background !important;
+              }
+            }
+
+            #hash-icon {
+              #Path_1838 {
+                fill: $white !important;
+              }
+            }
+          }
+        }
+
+        .icon.isComplete_true {
+          background-color: $greenish-teal;
+
+          svg {
+            g {
+              fill: $white !important;
+
+              path {
+                fill: $white !important;
+              }
+            }
+          }
+
+          #document-new-icon {}
+
+          #hash-icon {
+            #Path_1838 {
+              fill: $greenish-teal !important;
+            }
+
+            #Path_1839 {
+              fill: $white !important;
+            }
+          }
+
+
+        }
+
+        .title {
+          font-size: 14px;
+          font-weight: bold;
+          width: unset;
+          margin-right: 10px;
+        }
+
+        .anticon {
+          padding-top: 3px;
+          opacity: 0.7;
+
+          svg {
+            fill: white;
+          }
+        }
+      }
+
+      .body {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        flex-grow: 1;
+
+        .leftLine {
+          border-left: 4px solid $greenish-teal;
+          height: 100%;
+          margin-left: 13px;
+          margin-top: 5px;
+          margin-bottom: 5px;
+          height: calc(100% - 20px);
+          margin-right: 32px;
+        }
+
+        .leftLine.final_true {
+          opacity: 0;
+        }
+
+        .leftLine.complete_false {
+          border-left: 4px solid $white;
+        }
+
+        .content {
+          border-top: 1px solid rgba(256, 256, 256, 0.15);
+          flex-grow: 1;
+          display: flex;
+          flex-direction: row;
+          height: 100%;
+          justify-content: flex-start;
+          padding-right: 32px;
+          padding-top: 15px;
+          padding-bottom: 15px;
+
+          .left {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-content: flex-start;
+            width: 50%;
+
+            span {
+              opacity: 0.7;
+              font-size: 14px;
+              line-height: 1.17;
+              text-align: left;
+              max-width: 75%;
+              color: white;
+            }
+          }
+
+          .right {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-content: flex-start;
+            width: 50%;
+
+            span {
+              opacity: 0.7;
+              font-size: 14px;
+              line-height: 1.17;
+              text-align: left;
+              margin-bottom: 10px;
+              text-decoration: underline;
+              color: white;
+              cursor: default;
+            }
+
+            a {
+              opacity: 0.7;
+              font-size: 14px;
+              line-height: 1.17;
+              text-align: left;
+              margin-bottom: 10px;
+              text-decoration: underline;
+            }
+
+            a:hover {
+              color: white;
+              opacity: 1;
+            }
+
+            a:focus {
+              color: white;
+            }
+
+          }
+        }
+      }
+    }
+  }
+}

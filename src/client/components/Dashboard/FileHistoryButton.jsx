@@ -29,12 +29,13 @@ import { api, Log } from '../../common';
 import HistoryIcon from '../../style/icons/pages/dashboard/version-history-icon.svg';
 
 type Props = {
-  onClickCallback: Function;
-  file: Object;
+  onClickCallback: Function,
+  file: Object,
 };
 type State = {
-  loading: boolean;
-  numVersions: number;
+  loading: boolean,
+  numVersions: number,
+  fileId: any,
 };
 
 export default class FileHistoryButton extends React.Component<Props, State> {
@@ -43,6 +44,7 @@ export default class FileHistoryButton extends React.Component<Props, State> {
     this.state = {
       loading: true,
       numVersions: 0,
+      fileId: null,
     };
   }
 
@@ -55,11 +57,32 @@ export default class FileHistoryButton extends React.Component<Props, State> {
       .then((response) => {
         this.setState({ loading: false });
         this.setState({ numVersions: response.data });
+        this.setState({ fileId: _id });
       })
       .catch((error) => {
         Log.error(error);
         this.setState({ loading: false });
       });
+  }
+
+  componentWillReceiveProps(newProps: any) {
+    const { file } = newProps;
+    const { fileId } = this.state;
+    const { _id } = file;
+    if (fileId !== _id) {
+      this.setState({ fileId: _id });
+      this.setState({ loading: true });
+      api
+        .getNumberOfFileVersions(_id)
+        .then((response) => {
+          this.setState({ loading: false });
+          this.setState({ numVersions: response.data });
+        })
+        .catch((error) => {
+          Log.error(error);
+          this.setState({ loading: false });
+        });
+    }
   }
 
   render() {

@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-05T13:33:17+11:00
+ * @Last modified time: 2019-04-10T15:39:35+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -52,6 +52,8 @@
     .documentTitle {
       width: 100%;
       display: flex;
+      justify-content: flex-start;
+      align-items: center;
 
       span {
         font-size: 14px;
@@ -170,11 +172,9 @@
       }
     }
 
-    .png {
-      img {
-        object-fit: contain;
-        width: 100%;
-      }
+    img {
+      object-fit: contain;
+      width: 100%;
     }
 
     .svg {
@@ -200,8 +200,8 @@
       display: flex;
       flex-direction: column;
       align-self: flex-start;
-      flex-grow: 1;
       width: 100%;
+      height: unset;
 
       div {
         background-color: $dashboard_panel_background_strong;

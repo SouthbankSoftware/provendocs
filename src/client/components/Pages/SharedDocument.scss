@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-03T09:18:20+11:00
+ * @Last modified time: 2019-04-10T14:11:44+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -200,7 +200,7 @@
       height: 100%;
       padding: 0px;
 
-      .header {
+      .topLevelHeader {
         color: white;
         padding-left: 25px;
         padding-right: 25px;
@@ -221,7 +221,7 @@
         }
       }
 
-      .body {
+      .topLevelBody {
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -411,151 +411,6 @@
     img {
       object-fit: contain !important;
       width: 100%;
-    }
-  }
-
-  .smallProofDiagramWrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    height: 100%;
-    width: 100%;
-    margin-top: 23px;
-
-    span {
-      color: white;
-    }
-
-    b {
-      color: white;
-    }
-
-    .header {
-      margin-bottom: 18px;
-      font-size: 12px;
-    }
-
-    .subheader {
-      margin-bottom: 21px;
-      font-size: 12px;
-      font-style: italic;
-      display: flex;
-      flex-direction: row;
-
-      .infoIcon {
-        margin-left: 10px;
-        fill: white;
-        width: 10px;
-        height: 10px;
-        opacity: 0.5;
-      }
-
-      .infoIcon:hover {
-        opacity: 1;
-      }
-    }
-
-    .diagram {
-      margin-left: 14px;
-      margin-right: 14px;
-
-      .steps {
-        padding-left: 30px;
-        padding-right: 30px;
-        margin-bottom: 15px;
-        display: flex;
-        flex-direction: row;
-        align-content: space-between;
-        justify-content: space-between;
-        font-size: 12px;
-      }
-
-      .line {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        margin-bottom: 25px;
-        padding-left: 40px;
-        padding-right: 40px;
-
-        svg {
-          width: 20px;
-          height: 20px;
-          flex-grow: 1;
-        }
-
-        .hr {
-          flex-grow: 10;
-          border-bottom: 1px solid white;
-          margin-bottom: 10px;
-        }
-
-        .emptyCircle {
-          width: 18px;
-          height: 18px;
-          border-radius: 5em;
-          border: 1px solid white;
-          margin-left: 5px;
-        }
-      }
-
-      .icons {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-
-        .faded {
-          opacity: 0.1;
-        }
-
-        span {
-          font-size: 10px;
-          width: 75%;
-          text-align: center;
-        }
-
-        .document {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          width: 140px;
-
-          svg {
-            width: 29.1px;
-            height: 36.8px;
-            align-self: center;
-            margin-bottom: 17px;
-          }
-        }
-
-        .hash {
-          width: 140px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-
-          svg {
-            width: 29.1px;
-            height: 36.8px;
-            align-self: center;
-            margin-bottom: 17px;
-          }
-        }
-
-        .blockchain {
-          width: 140px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-
-          svg {
-            width: 29.1px;
-            height: 36.8px;
-            align-self: center;
-            margin-bottom: 17px;
-          }
-        }
-      }
     }
   }
 }

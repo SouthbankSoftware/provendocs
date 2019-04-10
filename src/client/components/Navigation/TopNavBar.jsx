@@ -40,7 +40,12 @@ import { Log } from '../../common';
 // $FlowFixMe
 import './TopNavBar.scss';
 
-type Props = { currentPage: string, isAuthenticated: boolean, onEarlyAccess: Function | null };
+type Props = {
+  userDetailsCallback: any,
+  currentPage: string,
+  isAuthenticated: boolean,
+  onEarlyAccess: Function | null,
+};
 type State = { currentPage: string, userDetails: Object };
 export default class TopNavBar extends React.Component<Props, State> {
   constructor() {
@@ -53,11 +58,12 @@ export default class TopNavBar extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { currentPage } = this.props;
+    const { currentPage, userDetailsCallback } = this.props;
     if (currentPage === PAGES.DASHBOARD) {
       getUserDetails()
         .then((response) => {
           this.setState({ userDetails: response.data });
+          userDetailsCallback(response.data);
         })
         .catch((err) => {
           Log.error(`Failed to fetch user details with err: ${err}`);
