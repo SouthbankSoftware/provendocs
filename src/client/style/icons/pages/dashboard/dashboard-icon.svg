@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.074 15.041">
+    <defs>
+        <style>
+            .cls-1{fill:#fff}
+        </style>
+    </defs>
+    <g id="dashboard-icon" transform="translate(-104.626 -259)">
+        <path id="Path_12152" d="M68.16 0h-3.344a.518.518 0 0 0-.516.516v5.973a.518.518 0 0 0 .516.511h3.361a.518.518 0 0 0 .516-.516V.516A.522.522 0 0 0 68.16 0z" class="cls-1" data-name="Path 12152" transform="translate(51.007 259)"/>
+        <path id="Path_12153" d="M35.977 0h-3.361a.518.518 0 0 0-.516.516v5.973a.518.518 0 0 0 .516.511h3.361a.518.518 0 0 0 .516-.516V.516A.518.518 0 0 0 35.977 0z" class="cls-1" data-name="Path 12153" transform="translate(77.85 259)"/>
+        <path id="Path_12156" d="M35.976 0h-3.36a.518.518 0 0 0-.516.516v5.973a.518.518 0 0 0 .516.511h3.361a.518.518 0 0 0 .516-.516V.516A.518.518 0 0 0 35.976 0z" class="cls-1" data-name="Path 12156" transform="translate(72.526 259)"/>
+        <path id="Path_12154" d="M3.977 48.3H.616a.518.518 0 0 0-.516.516v5.973a.518.518 0 0 0 .516.516h3.361a.518.518 0 0 0 .516-.516v-5.957a.522.522 0 0 0-.516-.532z" class="cls-1" data-name="Path 12154" transform="translate(104.526 218.736)"/>
+        <path id="Path_12155" d="M35.977 48.3h-3.361a.518.518 0 0 0-.516.516v5.973a.518.518 0 0 0 .516.516h3.361a.518.518 0 0 0 .516-.516v-5.957a.522.522 0 0 0-.516-.532z" class="cls-1" data-name="Path 12155" transform="translate(77.85 218.736)"/>
+    </g>
+</svg>

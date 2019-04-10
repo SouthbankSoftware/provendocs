@@ -488,6 +488,7 @@ module.exports = (app: any) => {
                             fileId: fileInfo[0]._id,
                             metaData: fileInfo[0]._provendb_metadata,
                             mimetype: fileInfo[0].mimetype,
+                            documentProof: documentProofs.proofs[0],
                             proofDate: proof.proofs[0].submitted,
                             size: fileInfo[0].size,
                           });
@@ -496,13 +497,22 @@ module.exports = (app: any) => {
                           const returnObject = {
                             level: LOG_LEVELS.ERROR,
                             severity: STACKDRIVER_SEVERITY.ERROR,
-                            message: 'Could not get version proof info for file.',
+                            message: 'Could not get version proof info for file, not yet proven?',
                             getProofErr,
                             errMSg: getProofErr.message,
                             reqId,
                           };
                           logger.log(returnObject);
-                          res.status(400).send(returnObject);
+
+                          // We don't need this except for proofDate, send back without.
+                          res.status(200).send({
+                            fileName: fileInfo[0].name,
+                            fileId: fileInfo[0]._id,
+                            metaData: fileInfo[0]._provendb_metadata,
+                            mimetype: fileInfo[0].mimetype,
+                            documentProof: documentProofs.proofs[0],
+                            size: fileInfo[0].size,
+                          });
                         });
                     } else {
                       const returnObject = {
@@ -1313,6 +1323,11 @@ module.exports = (app: any) => {
                               .substr(0, 250)}`,
                             reqId,
                           });
+                          const link = cryptr.encrypt(
+                            `${fileInfo[0]._id.toString()}-${
+                              user._id
+                            }-${fileInfo[0]._provendb_metadata.minVersion.toString()}`,
+                          );
                           sendEmailProofCopyEmail(
                             toEmail,
                             fileInfo[0].name,
@@ -1320,6 +1335,7 @@ module.exports = (app: any) => {
                             fileName,
                             user.name,
                             user.email,
+                            `https://provendocs.com/share/${link}`,
                           )
                             .then((sendEmailResult) => {
                               logger.log({

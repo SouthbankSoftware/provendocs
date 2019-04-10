@@ -93,6 +93,7 @@ type State = {
   currentFilter: string;
   currentSort: Object;
   currentView: any;
+  previousView: string;
   isLoading: boolean;
   fileList: any;
   fileSelected: any;
@@ -113,6 +114,7 @@ export default class ViewFiles extends React.Component<Props, State> {
       currentFilter: FILTERS.SHOW_ALL,
       currentSort: { type: SORTS.UPLOADED, descending: true },
       currentView: VIEWS.PREVIEW_VIEW,
+      previousView: VIEWS.PREVIEW_VIEW,
       isLoading: true,
       fileList: [],
       fileSelected: null,
@@ -143,12 +145,19 @@ export default class ViewFiles extends React.Component<Props, State> {
         if (result.status === 200) {
           // Only refresh if forced, or if one or more items has been added to the list.
           if (forceUpdate || fileList.length !== result.data.length || result.data.length === 0) {
-            this.setState({
-              isLoading: false,
-              fileList: result.data,
-            });
             if (result.data.length > 0) {
-              this._selectLatestFile();
+              this.setState({
+                fileList: result.data,
+              });
+              this._selectLatestFile().then(() => {
+                this.setState({
+                  isLoading: false,
+                });
+              });
+            } else {
+              this.setState({
+                isLoading: false,
+              });
             }
           } else {
             openNotificationWithIcon('error', 'Error', 'Failed to fetch file list, sorry!');
@@ -168,13 +177,14 @@ export default class ViewFiles extends React.Component<Props, State> {
       });
   }
 
-  _selectLatestFile = () => {
+  _selectLatestFile = () => new Promise<boolean>((resolve) => {
     const { fileList } = this.state;
     const { selectFileCallback } = this.props;
     const latestFile = fileList[fileList.length - 1];
     selectFileCallback(latestFile);
     this.state.fileSelected = latestFile;
-  };
+    resolve(true);
+  })
 
   @autobind
   _renderFileList() {
@@ -343,6 +353,7 @@ export default class ViewFiles extends React.Component<Props, State> {
 
   @autobind
   _onClickHistory(file: Object) {
+    const { currentView } = this.state;
     this.setState({ isLoading: true });
     api
       .getFileHistoryForUser(file.name)
@@ -350,6 +361,7 @@ export default class ViewFiles extends React.Component<Props, State> {
         this.state.fileHistory = result.data;
         this.state.fileSelected = null;
         this.setState({ isLoading: false });
+        this.setState({ previousView: currentView });
         this.setState({ currentView: VIEWS.HISTORY_VIEW });
       })
       .catch((err) => {
@@ -632,6 +644,7 @@ export default class ViewFiles extends React.Component<Props, State> {
     const {
       isLoading,
       currentView,
+      previousView,
       fileHistory,
       commentDialogIsOpen,
       commentSelected,
@@ -646,14 +659,7 @@ export default class ViewFiles extends React.Component<Props, State> {
     const tagElements = [];
     if (commentSelected && commentSelected.tags) {
       commentSelected.tags.forEach((tag, index) => tagElements.push(<Tag intent={INTENTS[index % INTENTS.length]}>{tag}</Tag>));
-    } else {
-      tagElements.push(
-        <span className="noTags">
-          <i>No tags for this document.</i>
-        </span>,
-      );
     }
-
     const commentDialog = (
       <Dialog
         className="commentDialog smallDialog"
@@ -668,7 +674,7 @@ export default class ViewFiles extends React.Component<Props, State> {
             {(commentSelected && commentSelected.comment) || <i>No comments for this document.</i>}
           </span>
           <span className="tagsTitle">Tags:</span>
-          <div className="tagsList">{tagElements}</div>
+          <div className="tagsList">{(commentSelected && commentSelected.tags[0] && tagElements) || <i>No Tags for this document.</i>}</div>
           <Button
             text="Close"
             className="closeButton blueButton"
@@ -773,7 +779,7 @@ export default class ViewFiles extends React.Component<Props, State> {
                 type={ANTD_BUTTON_TYPES.PRIMARY}
                 onClick={() => {
                   this.state.fileSelected = null;
-                  this.setState({ currentView: VIEWS.PREVIEW_VIEW });
+                  this.setState({ currentView: previousView });
                 }}
               >
                 {'Back'}

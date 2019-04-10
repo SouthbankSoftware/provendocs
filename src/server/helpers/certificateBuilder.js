@@ -145,6 +145,7 @@ const createPDF = (proof: Object, documentProof: Object, file: Object, user: Obj
           file: {
             _id: file._id.toString(),
             uploadedAt: file.uploadedAt,
+            provenAt: singleProof.details.btcTxnConfirmed,
             name: file.name,
             _provendb_metadata: {
               minVersion: file._provendb_metadata.minVersion.toString(),

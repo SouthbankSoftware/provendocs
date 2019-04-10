@@ -24,9 +24,10 @@
 import React from 'react';
 import { withRouter } from 'react-router';
 import autobind from 'autobind-decorator';
+import ReactHtmlParser from 'react-html-parser';
 import PreviewOffIcon from '../../style/icons/pages/dashboard/preview-off-icon.svg';
 import { ExcelPreview } from '../index';
-import { Loading, Error } from '../Common';
+import { Loading } from '../Common';
 import { MIMETYPES } from '../../common/constants';
 import { openNotificationWithIcon } from '../../common/util';
 import { api, Log } from '../../common';
@@ -334,10 +335,13 @@ class ViewDocument extends React.Component<Props, State> {
         }
         return (
           <div className="viewDocumentWrapper">
-            <div
+            {/*             <div
               className={`${previewClass}`}
               dangerouslySetInnerHTML={{ __html: filePreviewHTML }}
-            />
+            /> */}
+            <div>
+              { ReactHtmlParser(filePreviewHTML)}
+            </div>
           </div>
         );
     }
@@ -350,10 +354,15 @@ class ViewDocument extends React.Component<Props, State> {
         return (
           <div className="viewDocument subWrapper">
             <div className="contentWrapper">
-              <Error
-                title="Sorry!"
-                message="Failed to fetch document preview, please try refreshing the page."
-              />
+              <div className="viewDocumentWrapper unknownType">
+                <PreviewOffIcon className="previewOffIcon" />
+                <span className="previewOffTitle">
+          Preview Error.
+                </span>
+                <span className="previewOffMessage">
+           Unfortunately we were unable to render a document preview for this file type.
+                </span>
+              </div>
             </div>
           </div>
         );
