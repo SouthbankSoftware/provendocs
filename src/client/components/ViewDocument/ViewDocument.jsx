@@ -334,12 +334,12 @@ class ViewDocument extends React.Component<Props, State> {
           );
         }
         return (
-          <div className="viewDocumentWrapper">
+          <div className="viewDocumentWrapper htmlParsed">
             {/*             <div
               className={`${previewClass}`}
               dangerouslySetInnerHTML={{ __html: filePreviewHTML }}
             /> */}
-            <div>
+            <div className="htmlParsed">
               { ReactHtmlParser(filePreviewHTML)}
             </div>
           </div>
