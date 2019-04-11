@@ -223,6 +223,9 @@ class SharedDocument extends React.Component<Props, State> {
     const {
       filePreview, mimetype, metadata, emailExtras, fileId, fileName,
     } = this.state;
+    const { match, history } = this.props;
+    const { params } = match;
+    const { link } = params;
 
     if (!filePreview && mimetype !== MIMETYPES.PDF) {
       return (
@@ -282,31 +285,17 @@ class SharedDocument extends React.Component<Props, State> {
 
     switch (mimetype) {
       case MIMETYPES.PDF:
-        if (fileVersion) {
-          return (
-            <div className="viewDocumentWrapper iframeHolder">
-              {fileName && (
-                <iframe
-                  title="proofIFrame"
-                  src={`/api/historicalFile/inline/${fileName}/${fileVersion}#view=fitH`}
-                  type="application/pdf"
-                  width="100%"
-                  height="100%"
-                />
-              )}
-            </div>
-          );
-        }
+
         return (
           <div className="viewDocumentWrapper iframeHolder">
-            {fileId && (
-              <iframe
-                title="proofIFrame"
-                src={`/api/file/inline/${fileId}#view=fitH`}
-                type="application/pdf"
-                width="100%"
-                height="100%"
-              />
+            {fileName && (
+            <iframe
+              title="proofIFrame"
+              src={`/api/getSharedFile/${link}#view=fitH`}
+              type="application/pdf"
+              width="100%"
+              height="100%"
+            />
             )}
           </div>
         );
