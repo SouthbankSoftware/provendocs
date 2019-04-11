@@ -19,12 +19,12 @@
  * @Author: Michael Harrison
  * @Date:   2019-04-04T12:32:56+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-05T10:00:00+11:00
+ * @Last modified time: 2019-04-11T14:13:47+10:00
  */
 import React from 'react';
 import { Icon, Checkbox } from 'antd';
 import Cookies from 'universal-cookie';
-import ProofIcon from '../../style/icons/pages/dashboard/view-proof-icon.svg';
+import ProofIcon from '../../style/icons/pages/dashboard/proof-progress-icon.svg';
 import './ProofInProgress.scss';
 
 const cookies = new Cookies();
