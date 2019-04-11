@@ -19,13 +19,13 @@
  * @Author: Michael Harrison
  * @Date:   2019-04-04T12:32:56+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-04T15:18:13+11:00
+ * @Last modified time: 2019-04-11T14:11:49+10:00
  */
 import React from 'react';
 import { Icon, Checkbox } from 'antd';
 import Cookies from 'universal-cookie';
-import ProofIcon from '../../style/icons/pages/dashboard/view-proof-icon.svg';
-import MerkleIcon from '../../style/icons/pages/dashboard/merkle-tree-icon.svg';
+import CertificateIcon from '../../style/icons/pages/dashboard/certificate-icon.svg';
+import ProofIcon from '../../style/icons/pages/dashboard/proof-progress-icon.svg';
 import TickIcon from '../../style/icons/pages/dashboard/tick-icon.svg';
 
 import './ProofComplete.scss';
@@ -62,16 +62,17 @@ export default class ProofComplete extends React.Component<Props, State> {
         <span className="message">
           1. View your proof certificate by clicking the
           {' '}
-          <ProofIcon />
+          <CertificateIcon />
           {' '}
-‘Proof Tab’ located in your
-          right panel.
+‘Certificate’ tab
+          located in your right panel.
           <br />
           2. To view a detailed view of your overall proof process, click the
           {' '}
-          <MerkleIcon />
+          <ProofIcon />
           {' '}
-          ‘‘Merkle Tree’ button located above your right panel.
+‘Proof’
+          tab located on your right panel.
         </span>
         <div className="remindMeAgain">
           <Checkbox checked={remindMeChecked} onChange={this._onCheckRemindMe} />

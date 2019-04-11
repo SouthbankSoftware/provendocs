@@ -161,7 +161,7 @@ export default class TopNavBar extends React.Component<Props, State> {
           <Tooltip content="Getting Started Guide" position={Position.BOTTOM}>
             <a
               className="leftButton"
-              href="https://medium.com/provendb"
+              href="https://provendb.readme.io/docs/getting-started-with-provendocs"
               target="__blank"
               style={{ 'text-decoration': 'none' }}
               onClick={() => {

@@ -330,6 +330,7 @@ class Dashboard extends React.Component<Props, State> {
       // If cookie is set, show dialog.
       this.setState({ firstProofDialogueOpen: true });
     }
+    this.setState({ proofReady: false });
     this.state.fileVersion = fileVersion;
     this.setState({ fileSelected: file });
   };
@@ -820,7 +821,77 @@ class Dashboard extends React.Component<Props, State> {
       });
     }
 
-    const rhsTabExtras = <div className="rhsExtras" />;
+    const rhsTabExtras = (
+      <div className="rhsExtras">
+        {proofReady && fileSelected && (
+        <Tooltip content="Download an archive for this proof." position={Position.TOP}>
+          <DownloadAltIcon
+            className="downloadAltIcon"
+            onClick={() => {
+              confirm({
+                title: (
+                  <div>
+                    <DownloadIcon className="downloadIcon" />
+                    <span>Download Package</span>
+                  </div>
+                ),
+                content:
+                            'Would you like to download your fully\npackaged blockchain proof?\nYou may need to enable pop-ups.',
+                okText: 'Download',
+                okType: 'success',
+                cancelText: 'Cancel',
+                cancelType: 'warning',
+                onOk: this._downloadArchiveRHS,
+                onCancel() {},
+              });
+            }}
+          />
+        </Tooltip>
+        )}
+        {proofReady && fileSelected && <div className="vr" />}
+        {fileSelected && (
+        <Tooltip content="Download a copy of this file." position={Position.TOP}>
+          <DocumentIcon
+            className="viewDocsIcon"
+            onClick={() => {
+              confirm({
+                title: (
+                  <div>
+                    <DownloadIcon className="downloadIcon" />
+                    <span>Download File</span>
+                  </div>
+                ),
+                content:
+                            'Would you like to download a copy of the proven file?\n You may need to enable pop-ups.',
+                okText: 'Download',
+                okType: 'success',
+                cancelText: 'Cancel',
+                cancelType: 'warning',
+                onOk: this._downloadFileRHS,
+                onCancel() {},
+              });
+            }}
+          />
+        </Tooltip>
+        )}
+        {fileSelected && proofReady && <div className="vr" />}
+        {fileSelected && proofReady && (
+        <Tooltip content="Receive this proof via email." position={Position.TOP}>
+          <EmailProofButton
+            history={history}
+            fileName={fileSelected.name}
+            fileVersion={fileSelected._provendb_metadata.minVersion}
+          />
+        </Tooltip>
+        )}
+        {fileSelected && <div className="vr" />}
+        {fileSelected && (
+        <Tooltip content="Create a public link to this proof." position={Position.TOP}>
+          <LinkIcon className="linkIcon" onClick={this._createLinkRHS} />
+        </Tooltip>
+        )}
+      </div>
+    );
 
     Log.info(
       'Dashboard is rendering, this should not happen much as it is very performance intensive.',
@@ -844,6 +915,17 @@ class Dashboard extends React.Component<Props, State> {
             }}
           >
             <ProofInProgress />
+          </Modal>
+          <Modal
+            className="shareUploadDialogueModal"
+            cancelText="Ok"
+            visible={shareDialogIsOpen}
+            centered
+            onCancel={() => {
+              this.setState({ shareDialogIsOpen: false });
+            }}
+          >
+            <ShareDialog file={fileSelected} userDetails={userDetails} />
           </Modal>
           <Modal
             className="firstProofDialogueModal"
@@ -952,15 +1034,6 @@ class Dashboard extends React.Component<Props, State> {
                 )}
               </div>
             </div>
-            {fileSelected && shareDialogIsOpen && (
-              <ShareDialog
-                history={history}
-                isOpen={shareDialogIsOpen}
-                file={fileSelected}
-                fileVersion={fileVersion}
-                onClose={this._onShareDialogIsClosed}
-              />
-            )}
             <div className="lowerGroup" id="lowerGroup">
               <SplitPane
                 split="vertical"

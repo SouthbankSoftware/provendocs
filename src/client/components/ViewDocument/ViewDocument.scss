@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-10T15:39:35+10:00
+ * @Last modified time: 2019-04-11T12:39:27+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -99,6 +99,16 @@
     padding-right: 20px;
     padding-bottom: 20px;
     overflow: auto;
+
+    .htmlParsed {
+      padding: 10px;
+      background-color: white;
+      flex-grow: 1;
+      color: black;
+      overflow-y: scroll;
+      height: auto;
+      border-radius: 7px;
+    }
 
 
     .pdf {

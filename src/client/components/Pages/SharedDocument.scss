@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-10T14:11:44+10:00
+ * @Last modified time: 2019-04-11T16:07:31+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -294,6 +294,7 @@
       overflow-y: scroll;
       background-color: white;
       padding: 20px;
+      display: unset;
 
       p,
       h1,

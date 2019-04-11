@@ -34,14 +34,14 @@ import { GA_CATEGORIES } from '../../common/constants';
 import EmailIcon from '../../style/icons/pages/dashboard/share-icon.svg';
 
 type Props = {
-  fileName: string;
-  fileVersion: number;
-  form: any;
-  history: any;
+  fileName: string,
+  fileVersion: number,
+  form: any,
+  history: any,
 };
 type State = {
-  showModal: boolean;
-  sending: boolean;
+  showModal: boolean,
+  sending: boolean,
 };
 
 const openNotificationWithIcon = (type: string, title: string, message: string) => {
@@ -84,6 +84,7 @@ class EmailProofButton extends React.Component<Props, State> {
                     'Email Proof Sent',
                     'Your Proof Archive has been successfully sent via email.',
                   );
+                  this.setState({ showModal: false });
                   this.setState({ sending: false });
                 })
                 .catch((sendErr) => {

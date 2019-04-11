@@ -26,7 +26,10 @@ import _ from 'lodash';
 import winston from 'winston';
 import sizeOf from 'object-sizeof';
 import {
-  LOG_LEVELS, STACKDRIVER_SEVERITY, COLLECTION_NAMES, STORAGE_LIMITS,
+  LOG_LEVELS,
+  STACKDRIVER_SEVERITY,
+  COLLECTION_NAMES,
+  STORAGE_LIMITS,
 } from '../common/constants';
 import { mongoAPIFormat } from '../modules/winston.config';
 import { generateNewFileName, convertSingleToBinary } from './fileHelpers';
@@ -813,57 +816,55 @@ export const getOrCreateStorageUsage = (userId: string) => new Promise<Object>((
   const collection = dbObject.collection(COLLECTION_NAMES.USER_INFO);
   const queryFilter = { _id: userId };
   if (collection) {
-    collection
-      .find(queryFilter, { promoteLongs: false })
-      .toArray((queryError, result) => {
-        if (queryError) {
-          logger.log({
-            level: LOG_LEVELS.ERROR,
-            severity: STACKDRIVER_SEVERITY.ERROR,
-            message: 'Error finding documents',
-            queryError,
+    collection.find(queryFilter, { promoteLongs: false }).toArray((queryError, result) => {
+      if (queryError) {
+        logger.log({
+          level: LOG_LEVELS.ERROR,
+          severity: STACKDRIVER_SEVERITY.ERROR,
+          message: 'Error finding documents',
+          queryError,
+        });
+        reject(new Error({ message: 'Error finding documents.' }));
+      } else {
+        logger.log({
+          level: LOG_LEVELS.DEBUG,
+          severity: STACKDRIVER_SEVERITY.DEBUG,
+          message: 'Documents found',
+          result,
+        });
+        if (result.length === 0) {
+          // Create a new document with default storage limits.
+          const newDocument = {
+            _id: userId,
+            storageUsed: 0,
+            documentsUsed: 0,
+            storageLimit: STORAGE_LIMITS.DEFAULT_SIZE,
+            documentsLimit: STORAGE_LIMITS.DEFAULT_DOCUMENTS,
+          };
+          collection.insertOne(newDocument, (insertError, insertResult) => {
+            if (insertError) {
+              logger.log({
+                level: LOG_LEVELS.ERROR,
+                severity: STACKDRIVER_SEVERITY.ERROR,
+                message: 'Error inserting storage document',
+                insertError,
+              });
+              reject(insertError);
+            } else {
+              logger.log({
+                level: LOG_LEVELS.DEBUG,
+                severity: STACKDRIVER_SEVERITY.DEBUG,
+                message: 'Storage Documents Inserted',
+                insertResult,
+              });
+              resolve(newDocument);
+            }
           });
-          reject(new Error({ message: 'Error finding documents.' }));
         } else {
-          logger.log({
-            level: LOG_LEVELS.DEBUG,
-            severity: STACKDRIVER_SEVERITY.DEBUG,
-            message: 'Documents found',
-            result,
-          });
-          if (result.length === 0) {
-            // Create a new document with default storage limits.
-            const newDocument = {
-              _id: userId,
-              storageUsed: 0,
-              documentsUsed: 0,
-              storageLimit: STORAGE_LIMITS.DEFAULT_SIZE,
-              documentsLimit: STORAGE_LIMITS.DEFAULT_DOCUMENTS,
-            };
-            collection.insertOne(newDocument, (insertError, insertResult) => {
-              if (insertError) {
-                logger.log({
-                  level: LOG_LEVELS.ERROR,
-                  severity: STACKDRIVER_SEVERITY.ERROR,
-                  message: 'Error inserting storage document',
-                  insertError,
-                });
-                reject(insertError);
-              } else {
-                logger.log({
-                  level: LOG_LEVELS.DEBUG,
-                  severity: STACKDRIVER_SEVERITY.DEBUG,
-                  message: 'Storage Documents Inserted',
-                  insertResult,
-                });
-                resolve(newDocument);
-              }
-            });
-          } else {
-            resolve(result);
-          }
+          resolve(result);
         }
-      });
+      }
+    });
   } else {
     logger.log({
       level: LOG_LEVELS.ERROR,
@@ -1371,6 +1372,80 @@ export const getSharedFile = (fileId: string, userId: string, version: number) =
         reject(new Error({ message: 'No file found matching link.' }));
       }
     });
+  } else {
+    logger.log({
+      level: LOG_LEVELS.ERROR,
+      severity: STACKDRIVER_SEVERITY.ERROR,
+      message: 'Error getting collection',
+    });
+    reject(new Error({ message: 'Error getting collection!' }));
+  }
+});
+
+/**
+ * Given a shareString, fetch the file associated with that link (public)
+ * @param {string} link - The link associated with a file for fetching.
+ * @returns {Object} - The result of a findOne against that link.
+ */
+export const getPublicFile = (
+  fileId: string,
+  userId: string,
+  version: number,
+  getBinaryData?: boolean,
+) => new Promise<any>((resolve, reject) => {
+  logger.log({
+    level: LOG_LEVELS.DEBUG,
+    severity: STACKDRIVER_SEVERITY.DEBUG,
+    message: 'Driver Client Status:',
+    isConnected: dbObject.serverConfig.isConnected(),
+  });
+  const collection = dbObject.collection(`files_${userId}`);
+  const filter = {
+    _id: new mongo.ObjectId(fileId),
+    '_provendb_metadata.minVersion': parseInt(version, 10),
+  };
+  let projection = {};
+  if (!getBinaryData) {
+    projection = { binaryData: 0 };
+  }
+
+  logger.log({
+    level: LOG_LEVELS.DEBUG,
+    severity: STACKDRIVER_SEVERITY.DEBUG,
+    message: 'Query Filter for Finding shared file',
+    filter,
+  });
+  if (collection) {
+    collection
+      .find(filter, { promoteLongs: false })
+      .project(projection)
+      .toArray((findError, findResult) => {
+        if (findError) {
+          logger.log({
+            level: LOG_LEVELS.ERROR,
+            severity: STACKDRIVER_SEVERITY.ERROR,
+            message: 'Error finding shared file from link.',
+          });
+          reject(new Error({ message: 'Error finding shared file from link' }));
+        } else if (findResult) {
+          logger.log({
+            level: LOG_LEVELS.DEBUG,
+            severity: STACKDRIVER_SEVERITY.DEBUG,
+            message: 'Find result for share',
+            fileFound: findResult[0].name,
+          });
+          resolve(findResult);
+        } else {
+          logger.log({
+            level: LOG_LEVELS.ERROR,
+            severity: STACKDRIVER_SEVERITY.ERROR,
+            message: 'No file found matching link.',
+            findError,
+            findResult,
+          });
+          reject(new Error({ message: 'No file found matching link.' }));
+        }
+      });
   } else {
     logger.log({
       level: LOG_LEVELS.ERROR,
