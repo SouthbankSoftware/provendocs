@@ -1,19 +1,19 @@
-platform: linux
-image_resource:
-  type: docker-image
-  source: {repository: node, tag: 10.13.0-alpine}
-inputs:
-- name: provendocs  
-- name: node_modules
-- name: dist
-- name: bin
-run:
-  path: sh
-  args:
-  - -exc
-  - |
-      cp -r node_modules provendocs/.
-      cp -r dist provendocs/.
-      cp -r bin provendocs/.
-      cd provendocs
-      yarn test  
+# platform: linux
+# image_resource:
+#   type: docker-image
+#   source: {repository: node, tag: 10.13.0-alpine}
+# inputs:
+# - name: provendocs  
+# - name: node_modules
+# - name: dist
+# - name: bin
+# run:
+#   path: sh
+#   args:
+#   - -exc
+#   - |
+#       cp -r node_modules provendocs/.
+#       cp -r dist provendocs/.
+#       cp -r bin provendocs/.
+#       cd provendocs
+#       yarn test  
