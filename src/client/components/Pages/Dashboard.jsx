@@ -17,21 +17,26 @@
  *
  *
  * @Author: Michael Harrison
- * @Date:   2019-04-01T16:06:05+11:00
- * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-03T09:25:50+11:00
+ * @Date:   2018-10-29T20:03:41+11:00
+ * @Last modified by:   wahaj
+ * @Last modified time: 2019-04-10T16:33:14+10:00
  */
 
 import React from 'react';
+import ReactGA from 'react-ga';
 import { withRouter } from 'react-router';
-import autobind from 'autobind-decorator';
 import { Switch, Tooltip, Position } from '@blueprintjs/core';
 import _ from 'lodash';
 import SplitPane from 'react-split-pane';
 import { Button, Modal } from 'antd';
 import Cookies from 'universal-cookie';
 import {
-  ShareDialog, CommentAndTags, TopNavBar, ProofInProgress, ProofComplete, ProofCertificate,
+  ShareDialog,
+  CommentAndTags,
+  TopNavBar,
+  ProofInProgress,
+  ProofComplete,
+  ProofCertificate,
 } from '../index';
 import { convertBytes, openNotificationWithIcon } from '../../common/util';
 import { api } from '../../common';
@@ -39,7 +44,9 @@ import Log from '../../common/log';
 import {
   TabbedPanel, EmailProofButton, NewFileUpload, ViewFiles,
 } from '../Dashboard/index';
-import { PAGES, ANTD_BUTTON_TYPES, PROOF_STATUS } from '../../common/constants';
+import {
+  PAGES, ANTD_BUTTON_TYPES, GA_CATEGORIES, PROOF_STATUS,
+} from '../../common/constants';
 import { checkAuthentication } from '../../common/authentication';
 import { Loading } from '../Common';
 import ViewDocsIcon from '../../style/icons/pages/dashboard/dashboard-icon.svg';
@@ -198,6 +205,7 @@ class Dashboard extends React.Component<Props, State> {
         this.setState({ isAuthenticated: false });
         history.push('/login/expired');
       });
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   componentDidUpdate() {
@@ -232,7 +240,7 @@ class Dashboard extends React.Component<Props, State> {
     this.setState({
       userDetails,
     });
-  }
+  };
 
   /**
    * Refresh the storage usage, after a forget is issues.
@@ -261,28 +269,24 @@ class Dashboard extends React.Component<Props, State> {
     }
   };
 
-  @autobind
-  _checkAuth() {
-    return new Promise((resolve, reject) => {
-      window.addEventListener('resize', this._updateDimensions);
-      checkAuthentication()
-        .then((response: any) => {
-          if (response.status === 200) {
-            resolve();
-          } else if (response.response.status === 400) {
-            this.setState({ isAuthenticated: true });
-            reject();
-          }
-        })
-        .catch(() => {
-          this.setState({ isAuthenticated: false });
+  _checkAuth = () => new Promise((resolve, reject) => {
+    window.addEventListener('resize', this._updateDimensions);
+    checkAuthentication()
+      .then((response: any) => {
+        if (response.status === 200) {
+          resolve();
+        } else if (response.response.status === 400) {
+          this.setState({ isAuthenticated: true });
           reject();
-        });
-    });
-  }
+        }
+      })
+      .catch(() => {
+        this.setState({ isAuthenticated: false });
+        reject();
+      });
+  });
 
-  @autobind
-  _updateDimensions() {
+  _updateDimensions = () => {
     const newSize = {};
     // $FlowFixMe
     const height = document.getElementById('lowerGroup').clientHeight;
@@ -294,10 +298,9 @@ class Dashboard extends React.Component<Props, State> {
     newSize.height = height;
     newSize.width = width;
     this.setState({ size: newSize });
-  }
+  };
 
-  @autobind
-  _swapLHSTab(uploadComplete: boolean) {
+  _swapLHSTab = (uploadComplete: boolean) => {
     const { lhsTabSelected } = this.state;
     // const { viewDocs } = this.refs;
     const { viewDocs } = this;
@@ -310,40 +313,41 @@ class Dashboard extends React.Component<Props, State> {
     if (uploadComplete) {
       this._checkAndShowFirstUploadDialogue();
     }
-  }
+  };
 
-  @autobind
-  _fileSelected(file: Object, fileVersion: number) {
+  _fileSelected = (file: Object, fileVersion: number) => {
     const { rhsTabSelected } = this.state;
     if (!file) return; // Check new file exists.
-    if (rhsTabSelected === RHS_TABS.VIEW_CERTIFICATE && file.proofInfo !== PROOF_STATUS.VALID) { // Check if viewing cert, new file has cert.
+    if (rhsTabSelected === RHS_TABS.VIEW_CERTIFICATE && file.proofInfo !== PROOF_STATUS.VALID) {
+      // Check if viewing cert, new file has cert.
       this.setState({ rhsTabSelected: RHS_TABS.VIEW_PROOF });
     }
-    if (file.proofInfo === PROOF_STATUS.VALID && (cookies.get('provendocs_proof_dont_remind_me') === 'false' || cookies.get('provendocs_proof_dont_remind_me') === undefined)) { // If cookie is set, show dialog.
+    if (
+      file.proofInfo === PROOF_STATUS.VALID
+      && (cookies.get('provendocs_proof_dont_remind_me') === 'false'
+        || cookies.get('provendocs_proof_dont_remind_me') === undefined)
+    ) {
+      // If cookie is set, show dialog.
       this.setState({ firstProofDialogueOpen: true });
     }
     this.setState({ proofReady: false });
     this.state.fileVersion = fileVersion;
     this.setState({ fileSelected: file });
-  }
+  };
 
-  @autobind
-  _setTab(newTabId: string) {
+  _setTab = (newTabId: string) => {
     this.setState({ lhsTabSelected: newTabId });
-  }
+  };
 
-  @autobind
-  _setRHSTab(newTabId: string) {
+  _setRHSTab = (newTabId: string) => {
     this.setState({ rhsTabSelected: newTabId });
-  }
+  };
 
-  @autobind
-  _setStage(newStage: string) {
+  _setStage = (newStage: string) => {
     this.setState({ rhsStage: newStage });
-  }
+  };
 
-  @autobind
-  _onClickContinue(comment?: string, commentTags?: Array<any>) {
+  _onClickContinue = (comment?: string, commentTags?: Array<any>) => {
     // Resume LHS Upload with new list.
     const { newFileUpload } = this;
     const { matchingFiles, rhsStage } = this.state;
@@ -360,17 +364,16 @@ class Dashboard extends React.Component<Props, State> {
       default:
         break;
     }
-  }
+  };
 
-  @autobind
-  _onClickCancel() {
+  _onClickCancel = () => {
     const { newFileUpload } = this;
     this.state.comment = '';
     this.state.commentTags = [];
     newFileUpload.onClickCancel();
-  }
+  };
 
-  _renderNewUploadRHS() {
+  _renderNewUploadRHS = () => {
     const {
       rhsStage,
       matchingFiles,
@@ -440,25 +443,25 @@ class Dashboard extends React.Component<Props, State> {
 
             <div className="duplicateList">
               <div className="checkAll">
-                { matchingFiles.length > 1 && (
-                <div className={`duplicateSwitch checked_${checkAll.toString()}`}>
-                  <span className="noLabel">New Document </span>
-                  <Switch
-                    label="New Version"
-                    checked={checkAll}
-                    onChange={() => {
-                      this.state.checkAll = !checkAll;
-                      let swapTo = false;
-                      if (!checkAll) {
-                        swapTo = true;
-                      }
-                      matchingFiles.forEach((item) => {
-                        item.isDupe = swapTo;
-                      });
-                      this.forceUpdate();
-                    }}
-                  />
-                </div>
+                {matchingFiles.length > 1 && (
+                  <div className={`duplicateSwitch checked_${checkAll.toString()}`}>
+                    <span className="noLabel">New Document </span>
+                    <Switch
+                      label="New Version"
+                      checked={checkAll}
+                      onChange={() => {
+                        this.state.checkAll = !checkAll;
+                        let swapTo = false;
+                        if (!checkAll) {
+                          swapTo = true;
+                        }
+                        matchingFiles.forEach((item) => {
+                          item.isDupe = swapTo;
+                        });
+                        this.forceUpdate();
+                      }}
+                    />
+                  </div>
                 )}
               </div>
               {matchingFiles.map(item => (
@@ -518,10 +521,9 @@ class Dashboard extends React.Component<Props, State> {
       default:
         return <div />;
     }
-  }
+  };
 
-  @autobind
-  _downloadArchiveRHS() {
+  _downloadArchiveRHS = () => {
     const { fileSelected, fileVersion } = this.state;
     const { history } = this.props;
     this._checkAuth()
@@ -537,10 +539,9 @@ class Dashboard extends React.Component<Props, State> {
       .catch(() => {
         history.push('/login/expired');
       });
-  }
+  };
 
-  @autobind
-  _downloadFileRHS() {
+  _downloadFileRHS = () => {
     const { fileSelected } = this.state;
     const { history } = this.props;
     this._checkAuth()
@@ -560,15 +561,13 @@ class Dashboard extends React.Component<Props, State> {
       .catch(() => {
         history.push('/login/expired');
       });
-  }
+  };
 
-  @autobind
-  _onShareDialogIsClosed() {
+  _onShareDialogIsClosed = () => {
     this.setState({ shareDialogIsOpen: false });
-  }
+  };
 
-  @autobind
-  _createLinkRHS() {
+  _createLinkRHS = () => {
     const { history } = this.props;
     this._checkAuth()
       .then(() => {
@@ -577,10 +576,9 @@ class Dashboard extends React.Component<Props, State> {
       .catch(() => {
         history.push('/login/expired');
       });
-  }
+  };
 
-  @autobind
-  _showConfirmUploadDialog(comment?: string, commentTags?: Array<any>) {
+  _showConfirmUploadDialog = (comment?: string, commentTags?: Array<any>) => {
     const { newFileUpload } = this;
     confirm({
       title: (
@@ -595,47 +593,47 @@ class Dashboard extends React.Component<Props, State> {
       cancelText: 'Cancel',
       cancelType: 'warning',
       onOk() {
+        ReactGA.event({
+          category: GA_CATEGORIES.DASHBOARD,
+          action: 'Upload Documents',
+          label: 'Button',
+        });
         newFileUpload.duplicateUpload(comment, commentTags);
       },
       onCancel() {},
     });
-  }
+  };
 
-  @autobind
-  _setProofStatus(status: boolean) {
+  _setProofStatus = (status: boolean) => {
     this.setState({ proofReady: status });
-  }
+  };
 
-  @autobind
-  updateRHSState(state: string) {
+  updateRHSState = (state: string) => {
     this.setState({ rhsStage: state });
-  }
+  };
 
-  @autobind
-  _setSpaceUsed(storageUsed: number, documentsUsed: number) {
+  _setSpaceUsed = (storageUsed: number, documentsUsed: number) => {
     this.setState({ storageUsed });
     this.setState({ documentsUsed });
-  }
+  };
 
-  @autobind
-  _filesFoundMatching(matchingFiles: any) {
+  _filesFoundMatching = (matchingFiles: any) => {
     matchingFiles.forEach((element) => {
       element.isDupe = true;
     });
     this.state.matchingFiles = _.uniqBy(matchingFiles, 'name');
     this.setState({ rhsStage: RHS_STAGES.DOCUMENT_MATCHING });
-  }
+  };
 
-  @autobind
   /**
    * Set tab to new upload and pass in the file list.
    * @param {Array<Object>} files - The list of files dropped into the view.
    */
-  _onDropFile(files: Array<Object>) {
+  _onDropFile = (files: Array<Object>) => {
     const { newFileUpload } = this;
     this.setState({ lhsTabSelected: LHS_TABS.NEW_UPLOAD });
     newFileUpload.onDrop(files);
-  }
+  };
 
   newFileUpload: any;
 
@@ -741,7 +739,7 @@ class Dashboard extends React.Component<Props, State> {
     const usedBytes = convertBytes(storageUsed, 'b', 3);
     const freeBytes = convertBytes(storageLimit - storageUsed, 'b', 3);
     const freeDocs = documentsLimit - documentsUsed;
-    // $FlowFixMe
+
     const lhsTabExtras = (
       <div className="fileSizeInfo">
         <span className="used">
@@ -817,10 +815,7 @@ class Dashboard extends React.Component<Props, State> {
         ),
         panel: (
           <div className="wrapper">
-            <ProofCertificate
-              file={fileSelected}
-              fileVersion={fileVersion}
-            />
+            <ProofCertificate file={fileSelected} fileVersion={fileVersion} />
           </div>
         ),
       });
@@ -903,7 +898,12 @@ class Dashboard extends React.Component<Props, State> {
     );
     return (
       <div className="App">
-        <TopNavBar userDetailsCallback={this._setUserDetails} currentPage={PAGES.DASHBOARD} isAuthenticated onEarlyAccess={null} />
+        <TopNavBar
+          userDetailsCallback={this._setUserDetails}
+          currentPage={PAGES.DASHBOARD}
+          isAuthenticated
+          onEarlyAccess={null}
+        />
         <div className="AppBody">
           <Modal
             className="firstUploadDialogueModal"
@@ -944,7 +944,95 @@ class Dashboard extends React.Component<Props, State> {
                 <ViewDocsIcon />
                 <span className="title"> Dashboard </span>
               </div>
-              <div className="right" />
+              <div className="right">
+                {proofReady && fileSelected && (
+                  <Tooltip content="Download an archive for this proof." position={Position.TOP}>
+                    <DownloadAltIcon
+                      className="downloadAltIcon"
+                      onClick={() => {
+                        ReactGA.event({
+                          category: GA_CATEGORIES.DASHBOARD,
+                          action: 'Download an archive for this proof.',
+                          label: 'Button',
+                        });
+                        confirm({
+                          title: (
+                            <div>
+                              <DownloadIcon className="downloadIcon" />
+                              <span>Download Package</span>
+                            </div>
+                          ),
+                          content:
+                            'Would you like to download your fully\npackaged blockchain proof?\nYou may need to enable pop-ups.',
+                          okText: 'Download',
+                          okType: 'success',
+                          cancelText: 'Cancel',
+                          cancelType: 'warning',
+                          onOk: this._downloadArchiveRHS,
+                          onCancel() {},
+                        });
+                      }}
+                    />
+                  </Tooltip>
+                )}
+                {proofReady && fileSelected && <div className="vr" />}
+                {fileSelected && (
+                  <Tooltip content="Download a copy of this file." position={Position.TOP}>
+                    <DocumentIcon
+                      className="viewDocsIcon"
+                      onClick={() => {
+                        ReactGA.event({
+                          category: GA_CATEGORIES.DASHBOARD,
+                          action: 'Download a copy of this file.',
+                          label: 'Button',
+                        });
+                        confirm({
+                          title: (
+                            <div>
+                              <DownloadIcon className="downloadIcon" />
+                              <span>Download File</span>
+                            </div>
+                          ),
+                          content:
+                            'Would you like to download a copy of the proven file?\n You may need to enable pop-ups.',
+                          okText: 'Download',
+                          okType: 'success',
+                          cancelText: 'Cancel',
+                          cancelType: 'warning',
+                          onOk: this._downloadFileRHS,
+                          onCancel() {},
+                        });
+                      }}
+                    />
+                  </Tooltip>
+                )}
+                {fileSelected && proofReady && <div className="vr" />}
+                {fileSelected && proofReady && (
+                  <Tooltip content="Receive this proof via email." position={Position.TOP}>
+                    <EmailProofButton
+                      history={history}
+                      fileName={fileSelected.name}
+                      fileVersion={fileSelected._provendb_metadata.minVersion}
+                    />
+                  </Tooltip>
+                )}
+                {fileSelected && <div className="vr" />}
+                {fileSelected && (
+                  <Tooltip content="Create a public link to this proof." position={Position.TOP}>
+                    <LinkIcon
+                      className="linkIcon"
+                      onClick={() => {
+                        ReactGA.event({
+                          category: GA_CATEGORIES.DASHBOARD,
+                          action: 'Create a public link to this proof.',
+                          label: 'Button',
+                        });
+                        this._createLinkRHS();
+                      }}
+                    />
+                  </Tooltip>
+                )}
+              </div>
             </div>
             <div className="lowerGroup" id="lowerGroup">
               <SplitPane

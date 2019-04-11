@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-prop-types */
 /* @flow
  * provendocs
  * Copyright (C) 2019  Southbank Software Ltd.
@@ -43,10 +44,8 @@ import './LoginSignup.scss';
 type State = { loggedIn: boolean };
 type Props = {
   signedUp: boolean;
-  // eslint-disable-next-line
-  eulaOpen: boolean;
-  // eslint-disable-next-line
-  securityOpen: boolean;
+  eulaIsOpen: boolean;
+  securityIsOpen: boolean;
   signUpFailed: boolean;
   history: any;
   location: any;

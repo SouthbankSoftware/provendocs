@@ -22,10 +22,12 @@
  * @Last modified time: 2019-04-03T09:18:20+11:00
  */
 import React from 'react';
+import ReactGA from 'react-ga';
+import autobind from 'autobind-decorator';
 import { Tab, Tabs } from '@blueprintjs/core';
+import { GA_CATEGORIES } from '../../common/constants';
 // $FlowFixMe
 import './TabbedPanel.scss';
-import autobind from 'autobind-decorator';
 
 type Props = {
   setTabCallback: any;
@@ -49,6 +51,11 @@ export default class TabbedPanel extends React.Component<Props, State> {
   _onChange(newTabId: string) {
     const { setTabCallback } = this.props;
     setTabCallback(newTabId);
+    ReactGA.event({
+      category: GA_CATEGORIES.DASHBOARD,
+      action: `Tab Selected: ${newTabId}`,
+      label: 'Tab',
+    });
   }
 
   @autobind

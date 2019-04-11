@@ -23,19 +23,21 @@
  */
 
 import React from 'react';
+import ReactGA from 'react-ga';
 import { Icon } from 'antd';
 import { Tooltip } from '@blueprintjs/core';
 import { api, Log } from '../../common';
+import { GA_CATEGORIES } from '../../common/constants';
 import HistoryIcon from '../../style/icons/pages/dashboard/version-history-icon.svg';
 
 type Props = {
-  onClickCallback: Function,
-  file: Object,
+  onClickCallback: Function;
+  file: Object;
 };
 type State = {
-  loading: boolean,
-  numVersions: number,
-  fileId: any,
+  loading: boolean;
+  numVersions: number;
+  fileId: any;
 };
 
 export default class FileHistoryButton extends React.Component<Props, State> {
@@ -101,6 +103,11 @@ export default class FileHistoryButton extends React.Component<Props, State> {
           <HistoryIcon
             className="historyIcon"
             onClick={() => {
+              ReactGA.event({
+                category: GA_CATEGORIES.DASHBOARD,
+                action: 'See Document History.',
+                label: 'Button',
+              });
               onClickCallback(file);
             }}
           />

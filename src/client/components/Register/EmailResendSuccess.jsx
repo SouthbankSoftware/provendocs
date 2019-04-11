@@ -22,35 +22,45 @@
  * @Last modified time: 2019-04-03T09:18:20+11:00
  */
 import React from 'react';
+import ReactGA from 'react-ga';
 import { Link } from 'react-router-dom';
 
 import PaperPlaneIcon from '../../style/icons/pages/login-signup-pages/paper-plane-icon.svg';
 
-const EmailResendSuccess = () => (
-  <div className="pageCenter">
-    <div className="pageIcon">
-      <PaperPlaneIcon />
-    </div>
-    <div className="pageMessage">
-      <span className="sectionTitle">RESENT</span>
-      <span className="sectionText">
-        To verify your identity we’ve sent a confirmation email to confirm
-        <br />
-        your email address and activate your account.
-      </span>
-    </div>
-    <div className="footerLinks footerLinkSingleButton">
-      <Link
-        className="linkBtn primaryButton"
-        to={{ pathname: '/login', search: '' }}
-        style={{ textDecoration: 'none' }}
-      >
-        <div className="button-text">
-          <span>Login</span>
-        </div>
-      </Link>
-    </div>
-  </div>
-);
+type Props = {};
+type State = {};
 
-export default EmailResendSuccess;
+export default class EmailResendSuccess extends React.Component<Props, State> {
+  componentDidMount() {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }
+
+  render() {
+    return (
+      <div className="pageCenter">
+        <div className="pageIcon">
+          <PaperPlaneIcon />
+        </div>
+        <div className="pageMessage">
+          <span className="sectionTitle">RESENT</span>
+          <span className="sectionText">
+            To verify your identity we’ve sent a confirmation email to confirm
+            <br />
+            your email address and activate your account.
+          </span>
+        </div>
+        <div className="footerLinks footerLinkSingleButton">
+          <Link
+            className="linkBtn primaryButton"
+            to={{ pathname: '/login', search: '' }}
+            style={{ textDecoration: 'none' }}
+          >
+            <div className="button-text">
+              <span>Login</span>
+            </div>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+}

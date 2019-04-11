@@ -23,6 +23,7 @@
  */
 
 import React from 'react';
+import ReactGA from 'react-ga';
 import Particles from 'react-particles-js';
 import { withRouter } from 'react-router';
 import {
@@ -84,6 +85,7 @@ class LandingPage extends React.Component<Props, State> {
         this.setState({ isAuthenticated: true });
       }
     });
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   componentWillReceiveProps() {}

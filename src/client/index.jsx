@@ -23,7 +23,16 @@
  */
 
 import React from 'react';
+import ReactGA from 'react-ga';
 import ReactDOM from 'react-dom';
 import App from './App';
+
+const googleAnalytics = {
+  gaOptions: { cookieDomain: 'auto' },
+};
+if (process.env.NODE_ENV !== 'production') {
+  googleAnalytics.debug = true;
+}
+ReactGA.initialize('UA-101162043-7', googleAnalytics);
 
 ReactDOM.render(<App />, document.getElementById('root'));

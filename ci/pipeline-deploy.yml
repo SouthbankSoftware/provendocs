@@ -1,0 +1,161 @@
+# @Author: mike
+# @Date:   2019-04-10T23:00:00+10:00
+# @Last modified by:   guiguan
+# @Last modified time: 2019-04-11T14:58:17+10:00
+
+# update pipeline:
+# fly -t staging sp -c pipeline-deploy.yml -p provendocs-deploy -l vars.yml
+---
+resource_types:
+  - name: gcs-resource
+    type: docker-image
+    source:
+      repository: frodenas/gcs-resource
+
+  - name: slack-alert
+    type: docker-image
+    source:
+      repository: southbanksoftware/concourse-slack-alert-resource
+
+  - name: slack-notification
+    type: docker-image
+    source:
+      repository: cfcommunity/slack-notification-resource
+
+  - name: kubernetes
+    type: docker-image
+    source:
+      repository: zlabjp/kubernetes-resource
+      tag: "1.12"
+
+resources:
+  - name: notify
+    type: slack-alert
+    source:
+      url: ((common.slack-webook-url))
+
+  - name: provendocs
+    type: git
+    check_every: 5m
+    webhook_token: ((provendb-io.webhook-token))
+    source:
+      uri: https://github.com/SouthbankSoftware/provendocs.git
+      branch: develop
+      username: ((provendocs.git-username))
+      password: ((provendocs.git-password))
+      disable_ci_skip: false
+
+  - name: version
+    type: semver
+    source:
+      driver: gcs
+      bucket: provendb-ci
+      json_key: ((common.serviceaccount))
+      key: provendocs/version/version.txt
+      initial_version: 0.0.0
+
+  - name: k8s-test
+    type: kubernetes
+    source:
+      kubeconfig: ((common.kubeconfig-test))
+
+  # https://github.com/zlabjp/kubernetes-resource/issues/17
+  # https://github.com/zlabjp/kubernetes-resource/issues/25
+  - name: k8s
+    type: kubernetes
+    source:
+      kubeconfig: ((common.kubeconfig))
+
+  - name: artifacts
+    type: docker-image
+    source:
+      repository: asia.gcr.io/provendb/provendocs
+      username: _json_key
+      password: ((common.serviceaccount))
+
+jobs:
+  - name: build
+    serial: true
+    plan:
+      - get: version
+        params: { bump: patch }
+      - get: provendocs
+        trigger: true
+      - put: artifacts
+        params:
+          additional_tags: provendocs/.git/short_ref
+          build: provendocs
+          tag_as_latest: true
+          tag_file: version/number
+        get_params: { skip_download: true }
+        on_success:
+          put: notify
+          params:
+            alert_type: success
+        on_failure:
+          put: notify
+          params:
+            alert_type: failed
+            text: ((slack.koustubh))
+        on_abort:
+          put: notify
+          params:
+            alert_type: aborted
+      - put: version
+        params: { file: version/number }
+
+  - name: deploy-staging
+    serial: true
+    plan:
+      - get: artifacts
+        passed: [build]
+        trigger: true
+      - get: version
+      - put: k8s
+        params:
+          kubectl: |-
+            set image deployment provendocs provendocs=asia.gcr.io/provendb/provendocs:$(cat version/number) -n staging --record
+          wait_until_ready_selector: app=provendocs
+          wait_until_ready: 600
+          wait_until_ready_interval: 30
+        on_success:
+          put: notify
+          params:
+            alert_type: success
+        on_failure:
+          put: notify
+          params:
+            alert_type: failed
+            text: ((slack.koustubh))
+        on_abort:
+          put: notify
+          params:
+            alert_type: aborted
+
+  - name: deploy-test
+    serial: true
+    plan:
+      - get: artifacts
+        passed: [build]
+        trigger: true
+      - get: version
+      - put: k8s-test
+        params:
+          kubectl: |-
+            set image deployment provendocs provendocs=asia.gcr.io/provendb/provendocs:$(cat version/number) -n staging --record
+          wait_until_ready_selector: app=provendocs
+          wait_until_ready: 600
+          wait_until_ready_interval: 30
+        on_success:
+          put: notify
+          params:
+            alert_type: success
+        on_failure:
+          put: notify
+          params:
+            alert_type: failed
+            text: ((slack.koustubh))
+        on_abort:
+          put: notify
+          params:
+            alert_type: aborted

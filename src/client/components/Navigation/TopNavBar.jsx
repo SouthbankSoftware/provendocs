@@ -24,6 +24,7 @@
 
 /* eslint class-methods-use-this: 1 */
 import React from 'react';
+import ReactGA from 'react-ga';
 import { Link } from 'react-router-dom';
 import Avatar from 'react-avatar';
 import { Button } from 'antd';
@@ -34,19 +35,21 @@ import LogoutIcon from '../../style/icons/pages/top-nav-bar/log-out-icon.svg';
 import LogoIcon from '../../style/icons/pages/top-nav-bar/proven-docs-logo.svg';
 import ProvendbIcon from '../../style/icons/pages/top-nav-bar/powered-by-provendb.svg';
 import HomeIcon from '../../style/icons/pages/top-nav-bar/home-icon.svg';
-import { PAGES, OAUTH_PROVIDERS, DOMAINS } from '../../common/constants';
+import {
+  PAGES, OAUTH_PROVIDERS, DOMAINS, GA_CATEGORIES,
+} from '../../common/constants';
 import { openNotificationWithIcon } from '../../common/util';
 import { Log } from '../../common';
 // $FlowFixMe
 import './TopNavBar.scss';
 
 type Props = {
-  userDetailsCallback: any,
-  currentPage: string,
-  isAuthenticated: boolean,
-  onEarlyAccess: Function | null,
+  userDetailsCallback: any;
+  currentPage: string;
+  isAuthenticated: boolean;
+  onEarlyAccess: Function | null;
 };
-type State = { currentPage: string, userDetails: Object };
+type State = { currentPage: string; userDetails: Object };
 export default class TopNavBar extends React.Component<Props, State> {
   constructor() {
     super();
@@ -161,6 +164,13 @@ export default class TopNavBar extends React.Component<Props, State> {
               href="https://provendb.readme.io/docs/getting-started-with-provendocs"
               target="__blank"
               style={{ 'text-decoration': 'none' }}
+              onClick={() => {
+                ReactGA.event({
+                  category: GA_CATEGORIES.TOPBAR,
+                  action: 'Click: #gettingStartedGuide',
+                  label: 'Button',
+                });
+              }}
             >
               <InfoIcon className="leftButton" />
             </a>
@@ -236,6 +246,13 @@ export default class TopNavBar extends React.Component<Props, State> {
               rel="noopener noreferrer"
               className="link homeLink docsLogo"
               style={{ textDecoration: 'none' }}
+              onClick={() => {
+                ReactGA.event({
+                  category: GA_CATEGORIES.TOPBAR,
+                  action: 'Click: #ProvenDocsLogo',
+                  label: 'Button',
+                });
+              }}
             >
               <LogoIcon />
             </a>
@@ -245,6 +262,13 @@ export default class TopNavBar extends React.Component<Props, State> {
               rel="noopener noreferrer"
               className="link homeLink provendbLogo"
               style={{ textDecoration: 'none' }}
+              onClick={() => {
+                ReactGA.event({
+                  category: GA_CATEGORIES.TOPBAR,
+                  action: 'Click: #poweredByProvenDB',
+                  label: 'Button',
+                });
+              }}
             >
               <ProvendbIcon />
             </a>
@@ -254,12 +278,34 @@ export default class TopNavBar extends React.Component<Props, State> {
               <div className="vr" />
             )}
             {(currentPage === PAGES.HOME || currentPage === PAGES.LANDING) && (
-              <a href="#howItWorks" className="link aboutLink" style={{ textDecoration: 'none' }}>
+              <a
+                href="#howItWorks"
+                className="link aboutLink"
+                style={{ textDecoration: 'none' }}
+                onClick={() => {
+                  ReactGA.event({
+                    category: GA_CATEGORIES.TOPBAR,
+                    action: 'Click: #howItWorks',
+                    label: 'Button',
+                  });
+                }}
+              >
                 <span className="aboutLabel">How It Works</span>
               </a>
             )}
             {(currentPage === PAGES.HOME || currentPage === PAGES.LANDING) && (
-              <a href="#howToUseIt" className="link plansLink" style={{ textDecoration: 'none' }}>
+              <a
+                href="#howToUseIt"
+                className="link plansLink"
+                style={{ textDecoration: 'none' }}
+                onClick={() => {
+                  ReactGA.event({
+                    category: GA_CATEGORIES.TOPBAR,
+                    action: 'Click: #howToUseIt',
+                    label: 'Button',
+                  });
+                }}
+              >
                 <span className="aboutLabel">How To Use It</span>
               </a>
             )}
@@ -268,12 +314,30 @@ export default class TopNavBar extends React.Component<Props, State> {
                 href="#whatToUseItFor"
                 className="link plansLink"
                 style={{ textDecoration: 'none' }}
+                onClick={() => {
+                  ReactGA.event({
+                    category: GA_CATEGORIES.TOPBAR,
+                    action: 'Click: #whatToUseItFor',
+                    label: 'Button',
+                  });
+                }}
               >
                 <span className="aboutLabel">What To Use It For</span>
               </a>
             )}
             {(currentPage === PAGES.HOME || currentPage === PAGES.LANDING) && (
-              <a href="#theTeam" className="link plansLink" style={{ textDecoration: 'none' }}>
+              <a
+                href="#theTeam"
+                className="link plansLink"
+                style={{ textDecoration: 'none' }}
+                onClick={() => {
+                  ReactGA.event({
+                    category: GA_CATEGORIES.TOPBAR,
+                    action: 'Click: #theTeam',
+                    label: 'Button',
+                  });
+                }}
+              >
                 <span className="aboutLabel">The Team</span>
               </a>
             )}
@@ -284,6 +348,13 @@ export default class TopNavBar extends React.Component<Props, State> {
               style={{ textDecoration: 'none' }}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => {
+                ReactGA.event({
+                  category: GA_CATEGORIES.TOPBAR,
+                  action: 'Click: #Support',
+                  label: 'Button',
+                });
+              }}
             >
               <span className="aboutLabel">Support</span>
             </a>
@@ -293,6 +364,13 @@ export default class TopNavBar extends React.Component<Props, State> {
               style={{ textDecoration: 'none' }}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => {
+                ReactGA.event({
+                  category: GA_CATEGORIES.TOPBAR,
+                  action: 'Click: #Documentation',
+                  label: 'Button',
+                });
+              }}
             >
               <span className="aboutLabel">Documentation</span>
             </a>

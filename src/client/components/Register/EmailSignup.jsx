@@ -22,6 +22,7 @@
  * @Last modified time: 2019-04-03T09:18:20+11:00
  */
 import React from 'react';
+import ReactGA from 'react-ga';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
@@ -45,6 +46,10 @@ class EmailSignup extends React.Component<Props, State> {
     this.state = {
       errForm: '',
     };
+  }
+
+  componentDidMount() {
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   compareToFirstPassword = (rule, value, callback) => {

@@ -22,30 +22,40 @@
  * @Last modified time: 2019-04-03T09:18:20+11:00
  */
 import React from 'react';
+import ReactGA from 'react-ga';
 import { Link } from 'react-router-dom';
 import ErrorIcon from '../../style/icons/pages/login-signup-pages/error-icon.svg';
 
-const RegisterFailed = () => (
-  <div className="loginSignupRoot">
-    <div className="pageCenter">
-      <div className="pageIcon">
-        <ErrorIcon />
-      </div>
-      <div className="pageMessage">
-        <span className="sectionTitle">Error!</span>
-        <span className="sectionText">Sorry, something went wrong. Please try again.</span>
-      </div>
-      <Link
-        className="oAuthButton defaultButton"
-        to={{ pathname: '/signup', search: '' }}
-        style={{ textDecoration: 'none', width: '200px' }}
-      >
-        <div className="button-text">
-          <span>Try Again</span>
-        </div>
-      </Link>
-    </div>
-  </div>
-);
+type Props = {};
+type State = {};
 
-export default RegisterFailed;
+export default class RegisterFailed extends React.Component<Props, State> {
+  componentDidMount() {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }
+
+  render() {
+    return (
+      <div className="loginSignupRoot">
+        <div className="pageCenter">
+          <div className="pageIcon">
+            <ErrorIcon />
+          </div>
+          <div className="pageMessage">
+            <span className="sectionTitle">Error!</span>
+            <span className="sectionText">Sorry, something went wrong. Please try again.</span>
+          </div>
+          <Link
+            className="oAuthButton defaultButton"
+            to={{ pathname: '/signup', search: '' }}
+            style={{ textDecoration: 'none', width: '200px' }}
+          >
+            <div className="button-text">
+              <span>Try Again</span>
+            </div>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+}
