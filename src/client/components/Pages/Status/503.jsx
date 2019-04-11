@@ -22,9 +22,10 @@
  * @Last modified time: 2019-04-03T09:18:20+11:00
  */
 import React from 'react';
+import ReactGA from 'react-ga';
 import TopNavBar from '../../Navigation/TopNavBar';
 import Footer from '../../Footer/Footer';
-import { PAGES } from '../../../common/constants';
+import { PAGES, GA_CATEGORIES } from '../../../common/constants';
 import './503.scss';
 
 type Props = {};
@@ -36,7 +37,15 @@ export default class FailPage extends React.Component<Props, State> {
     this.state = {};
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const pagePath = window.location.pathname + window.location.search;
+    ReactGA.event({
+      category: GA_CATEGORIES.PAGE_503,
+      action: `visit page:${pagePath}`,
+      label: 'Button',
+    });
+    ReactGA.pageview(pagePath);
+  }
 
   componentWillReceiveProps() {}
 

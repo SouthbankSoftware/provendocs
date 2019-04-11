@@ -23,6 +23,7 @@
  */
 /* eslint-disable react/prefer-stateless-function */
 import React from 'react';
+import ReactGA from 'react-ga';
 import { Link } from 'react-router-dom';
 import { Form } from 'antd';
 import CrossIcon from '../../style/icons/pages/login-signup-pages/error-icon.svg';
@@ -33,6 +34,10 @@ type Props = {};
 
 type State = {};
 export default class LoginFailed extends React.Component<Props, State> {
+  componentDidMount() {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }
+
   render() {
     return (
       <div className="loginSignupRoot">

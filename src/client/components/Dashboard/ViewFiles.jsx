@@ -24,6 +24,7 @@
 
 /* eslint-disable class-methods-use-this */
 import React from 'react';
+import ReactGA from 'react-ga';
 import autobind from 'autobind-decorator';
 import Timestamp from 'react-timestamp';
 import {
@@ -40,6 +41,7 @@ import {
   FILE_SIZE_LIMIT,
   FILE_UPLOAD_LIMIT,
   ANTD_BUTTON_TYPES,
+  GA_CATEGORIES,
 } from '../../common/constants';
 import ViewFileThumb from './ViewFileThumb';
 import FileHistoryButton from './FileHistoryButton';
@@ -184,7 +186,7 @@ export default class ViewFiles extends React.Component<Props, State> {
     selectFileCallback(latestFile);
     this.state.fileSelected = latestFile;
     resolve(true);
-  })
+  });
 
   @autobind
   _renderFileList() {
@@ -265,6 +267,11 @@ export default class ViewFiles extends React.Component<Props, State> {
                 <CommentIcon
                   className="commentIcon"
                   onClick={() => {
+                    ReactGA.event({
+                      category: GA_CATEGORIES.DASHBOARD,
+                      action: 'See Document Comments.',
+                      label: 'Button',
+                    });
                     this._onClickComment(file);
                   }}
                 />
@@ -273,6 +280,11 @@ export default class ViewFiles extends React.Component<Props, State> {
                 <ForgetIcon
                   className="forgetIcon"
                   onClick={() => {
+                    ReactGA.event({
+                      category: GA_CATEGORIES.DASHBOARD,
+                      action: 'Forget Document.',
+                      label: 'Button',
+                    });
                     this._onClickForget(file);
                   }}
                 />
@@ -674,7 +686,11 @@ export default class ViewFiles extends React.Component<Props, State> {
             {(commentSelected && commentSelected.comment) || <i>No comments for this document.</i>}
           </span>
           <span className="tagsTitle">Tags:</span>
-          <div className="tagsList">{(commentSelected && commentSelected.tags[0] && tagElements) || <i>No Tags for this document.</i>}</div>
+          <div className="tagsList">
+            {(commentSelected && commentSelected.tags[0] && tagElements) || (
+              <i>No Tags for this document.</i>
+            )}
+          </div>
           <Button
             text="Close"
             className="closeButton blueButton"

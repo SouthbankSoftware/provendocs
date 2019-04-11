@@ -22,6 +22,7 @@
  * @Last modified time: 2019-04-03T09:18:20+11:00
  */
 import React from 'react';
+import ReactGA from 'react-ga';
 import Markdown from 'react-markdown';
 import CalenderIcon from '../../style/icons/pages/landing-page/calender-icon.svg';
 import MailIcon from '../../style/icons/pages/landing-page/mail-icon.svg';
@@ -47,6 +48,7 @@ class Privacy extends React.Component<Props, State> {
 
   componentDidMount() {
     this.setState({ markdown: PrivacyDoc });
+    ReactGA.modalview('Privacy');
   }
 
   render() {

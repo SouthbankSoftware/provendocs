@@ -23,6 +23,7 @@
  */
 
 import React from 'react';
+import ReactGA from 'react-ga';
 import Particles from 'react-particles-js';
 import { withRouter } from 'react-router';
 import {
@@ -82,6 +83,7 @@ class HomePage extends React.Component<Props, State> {
         this.setState({ isAuthenticated: true });
       }
     });
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   componentWillReceiveProps() {}
@@ -167,7 +169,11 @@ class HomePage extends React.Component<Props, State> {
     const { howDoesItWorkCurrentStep, isAuthenticated } = this.state;
     return (
       <div className="App">
-        <TopNavBar currentPage={PAGES.HOME} isAuthenticated={isAuthenticated} onEarlyAccess={null} />
+        <TopNavBar
+          currentPage={PAGES.HOME}
+          isAuthenticated={isAuthenticated}
+          onEarlyAccess={null}
+        />
         <div className="AppBody">
           <div className="mainPanel homePage">
             <div className="snap section heroSection" id="home" style={sectionStyle}>

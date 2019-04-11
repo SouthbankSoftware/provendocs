@@ -3,11 +3,12 @@
  * @Author: Wahaj Shamim <wahaj>
  * @Date:   2018-11-21T14:26:20+11:00
  * @Email:  wahaj@southbanksoftware.com
- * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-03-25T15:57:07+11:00
+ * @Last modified by:   wahaj
+ * @Last modified time: 2019-04-10T14:29:40+10:00
  *
  */
 import React from 'react';
+import ReactGA from 'react-ga';
 import { Link } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
 import { withRouter } from 'react-router';
@@ -29,6 +30,10 @@ class ResetPassword extends React.Component<Props, State> {
     this.state = {
       errForm: '',
     };
+  }
+
+  componentDidMount() {
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   handleSubmit = (e: any) => {

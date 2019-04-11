@@ -22,48 +22,58 @@
  * @Last modified time: 2019-04-03T09:18:20+11:00
  */
 import React from 'react';
+import ReactGA from 'react-ga';
 import { Link } from 'react-router-dom';
 import { Form } from 'antd';
 import WelcomeIcon from '../../style/icons/pages/login-signup-pages/welcome-icon.svg';
 
 const FormItem = Form.Item;
 
-const EmailSignupSuccess = () => (
-  <div className="pageCenter">
-    <div className="pageIcon">
-      <WelcomeIcon />
-    </div>
-    <div className="pageMessage">
-      <span className="sectionTitle">Welcome!</span>
-      <span className="sectionText">
-        Thanks for signing up! We just need you to verify your email
-        <br />
-        address to complete setting up your account.
-      </span>
-    </div>
-    <Form className="antForm">
-      <FormItem className="antFormItem">
-        <Link
-          className="linkBtn secondaryButton"
-          to={{ pathname: '/signup/emailResend', search: '' }}
-          style={{ textDecoration: 'none' }}
-        >
-          <div className="button-text">
-            <span>Resend Email</span>
-          </div>
-        </Link>
-        <Link
-          className="linkBtn primaryButton"
-          to={{ pathname: '/login', search: '' }}
-          style={{ textDecoration: 'none' }}
-        >
-          <div className="button-text">
-            <span>Login</span>
-          </div>
-        </Link>
-      </FormItem>
-    </Form>
-  </div>
-);
+type Props = {};
+type State = {};
 
-export default EmailSignupSuccess;
+export default class EmailSignupSuccess extends React.Component<Props, State> {
+  componentDidMount() {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }
+
+  render() {
+    return (
+      <div className="pageCenter">
+        <div className="pageIcon">
+          <WelcomeIcon />
+        </div>
+        <div className="pageMessage">
+          <span className="sectionTitle">Welcome!</span>
+          <span className="sectionText">
+            Thanks for signing up! We just need you to verify your email
+            <br />
+            address to complete setting up your account.
+          </span>
+        </div>
+        <Form className="antForm">
+          <FormItem className="antFormItem">
+            <Link
+              className="linkBtn secondaryButton"
+              to={{ pathname: '/signup/emailResend', search: '' }}
+              style={{ textDecoration: 'none' }}
+            >
+              <div className="button-text">
+                <span>Resend Email</span>
+              </div>
+            </Link>
+            <Link
+              className="linkBtn primaryButton"
+              to={{ pathname: '/login', search: '' }}
+              style={{ textDecoration: 'none' }}
+            >
+              <div className="button-text">
+                <span>Login</span>
+              </div>
+            </Link>
+          </FormItem>
+        </Form>
+      </div>
+    );
+  }
+}

@@ -22,34 +22,44 @@
  * @Last modified time: 2019-04-03T09:18:20+11:00
  */
 import React from 'react';
+import ReactGA from 'react-ga';
 import { Link } from 'react-router-dom';
 import EmailTickIcon from '../../style/icons/pages/login-signup-pages/email-tick-icon.svg';
 
-const EmailConfirmed = () => (
-  <div className="loginSignupRoot">
-    <div className="pageCenter">
-      <div className="pageIcon">
-        <EmailTickIcon />
-      </div>
-      <div className="pageMessage">
-        <span className="sectionTitle">Email Confirmed</span>
-        <span className="sectionText">
-          Thank you for verifying your email. You can now Log into ProvenDocs.
-        </span>
-      </div>
-      <div className="footerLinks footerLinkSingleButton">
-        <Link
-          className="linkBtn primaryButton"
-          to={{ pathname: '/login/email', search: '' }}
-          style={{ textDecoration: 'none', width: '200px' }}
-        >
-          <div className="button-text">
-            <span>Log In</span>
-          </div>
-        </Link>
-      </div>
-    </div>
-  </div>
-);
+type Props = {};
+type State = {};
 
-export default EmailConfirmed;
+export default class EmailConfirmed extends React.Component<Props, State> {
+  componentDidMount() {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }
+
+  render() {
+    return (
+      <div className="loginSignupRoot">
+        <div className="pageCenter">
+          <div className="pageIcon">
+            <EmailTickIcon />
+          </div>
+          <div className="pageMessage">
+            <span className="sectionTitle">Email Confirmed</span>
+            <span className="sectionText">
+              Thank you for verifying your email. You can now Log into ProvenDocs.
+            </span>
+          </div>
+          <div className="footerLinks footerLinkSingleButton">
+            <Link
+              className="linkBtn primaryButton"
+              to={{ pathname: '/login/email', search: '' }}
+              style={{ textDecoration: 'none', width: '200px' }}
+            >
+              <div className="button-text">
+                <span>Log In</span>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
