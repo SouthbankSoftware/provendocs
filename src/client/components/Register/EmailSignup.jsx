@@ -107,9 +107,9 @@ class EmailSignup extends React.Component<Props, State> {
           })
           .catch((errSignup) => {
             this.setState({
-              errForm: errSignup.response.data.message,
+              errForm: errSignup.response.data,
             });
-            Log.error(`Signup Error::${errSignup.response}`);
+            Log.error(`Signup Error::${JSON.stringify(errSignup.response)}`);
           });
       }
     });
