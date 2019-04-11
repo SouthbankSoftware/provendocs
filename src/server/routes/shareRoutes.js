@@ -34,7 +34,7 @@ import {
   getSharingInfo,
   addShareLink,
   addShareEmail,
-  getSharedFile,
+  // getSharedFile,
   getPublicFile,
   getFileInformation,
   getHistoricalFile,
@@ -330,7 +330,7 @@ module.exports = (app: any) => {
                 user,
                 reqId,
               });
-              getFileInformation(fileId, user._id, false)
+              getFileInformation(fileId, user._id, false, false)
                 .then((fileInformation) => {
                   sendSharedFileEmail(
                     emails[0],

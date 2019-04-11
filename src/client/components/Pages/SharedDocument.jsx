@@ -221,9 +221,9 @@ class SharedDocument extends React.Component<Props, State> {
   @autobind
   _renderFilePreview() {
     const {
-      filePreview, mimetype, metadata, emailExtras, fileId, fileName,
+      filePreview, mimetype, emailExtras, fileId, fileName,
     } = this.state;
-    const { match, history } = this.props;
+    const { match } = this.props;
     const { params } = match;
     const { link } = params;
 
@@ -238,7 +238,6 @@ class SharedDocument extends React.Component<Props, State> {
         </div>
       );
     }
-    const fileVersion = metadata.minVersion;
     const {
       to, from, cc, subject,
     } = emailExtras;
