@@ -17,9 +17,9 @@
  *
  *
  * @Author: Michael Harrison
- * @Date:   2019-04-01T16:06:05+11:00
- * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-03T11:48:03+11:00
+ * @Date:   2019-03-25T15:52:10+11:00
+ * @Last modified by:   wahaj
+ * @Last modified time: 2019-04-10T14:36:38+10:00
  */
 
 export const PAGES = {
@@ -96,4 +96,14 @@ export const PROOF_STATUS = {
   FAILED: 'Failed',
   SUBMITTED: 'Submitted',
   UNPROVEN: 'Unproven',
+};
+
+export const GA_CATEGORIES = {
+  PAGE_404: '404',
+  PAGE_503: '503',
+  DASHBOARD: 'Dashboard',
+  LOGIN: 'Login',
+  HOMEPAGE: 'HomePage',
+  REGISTER: 'Register',
+  TOPBAR: 'Topbar',
 };

@@ -24,10 +24,11 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
+import ReactGA from 'react-ga';
 import { Link } from 'react-router-dom';
 import { Modal } from 'antd';
 import { EULA } from '../index';
-import { DOMAINS } from '../../common/constants';
+import { DOMAINS, GA_CATEGORIES } from '../../common/constants';
 
 import GoogleIcon from '../../style/icons/pages/login-signup-pages/google-icon.svg';
 import GithubIcon from '../../style/icons/pages/login-signup-pages/github-icon.svg';
@@ -35,10 +36,10 @@ import GithubIcon from '../../style/icons/pages/login-signup-pages/github-icon.s
 // import FacebookIcon from '../../style/icons/pages/login-signup-pages/facebook-icon.svg';
 
 type Props = {
-  pageProps: Object,
+  pageProps: Object;
 };
 type State = {
-  eulaIsOpen: boolean,
+  eulaIsOpen: boolean;
 };
 const { confirm } = Modal;
 
@@ -51,8 +52,11 @@ export default class Login extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { eulaOpen } = this.props.pageProps;
-    if (eulaOpen) {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+    const {
+      pageProps: { eulaIsOpen },
+    } = this.props;
+    if (eulaIsOpen) {
       this.setState({ eulaIsOpen: true });
     } else {
       confirm({
@@ -94,7 +98,17 @@ export default class Login extends React.Component<Props, State> {
             <span className="sectionTitle">Sign Up</span>
             <span className="sectionText">Create your free account. No credit card required.</span>
           </div>
-          <a className=" oAuthButton googleButton button" href={`${apiLoginURL}google`}>
+          <a
+            className=" oAuthButton googleButton button"
+            href={`${apiLoginURL}google`}
+            onClick={() => {
+              ReactGA.event({
+                category: GA_CATEGORIES.REGISTER,
+                action: 'Sign up with Google',
+                label: 'Button',
+              });
+            }}
+          >
             <div className="button-text">
               <div className="icon googleIcon">
                 <GoogleIcon />
@@ -103,7 +117,17 @@ export default class Login extends React.Component<Props, State> {
               <span>Sign up with Google</span>
             </div>
           </a>
-          <a className=" oAuthButton githubButton button" href={`${apiLoginURL}github`}>
+          <a
+            className=" oAuthButton githubButton button"
+            href={`${apiLoginURL}github`}
+            onClick={() => {
+              ReactGA.event({
+                category: GA_CATEGORIES.REGISTER,
+                action: 'Sign up with Github',
+                label: 'Button',
+              });
+            }}
+          >
             <div className="button-text">
               <div className="icon githubIcon">
                 <GithubIcon />
@@ -113,7 +137,13 @@ export default class Login extends React.Component<Props, State> {
             </div>
           </a>
           {/* Removed until support is ready.
-           <a className=" oAuthButton microsoftButton button" href="/signup/microsoft">
+           <a className=" oAuthButton microsoftButton button" href="/signup/microsoft" onClick={() => {
+              ReactGA.event({
+                category: GA_CATEGORIES.REGISTER,
+                action: 'Sign up with Microsoft',
+                label: 'Button',
+              });
+            }}>
             <div className="button-text">
               <div className="icon microsoftIcon">
                 <MicrosoftIcon />
@@ -122,7 +152,13 @@ export default class Login extends React.Component<Props, State> {
               <span>Sign up with Microsoft</span>
             </div>
           </a>
-          <a className=" oAuthButton facebookButton button" href="/signup/facebook">
+          <a className=" oAuthButton facebookButton button" href="/signup/facebook" onClick={() => {
+              ReactGA.event({
+                category: GA_CATEGORIES.REGISTER,
+                action: 'Sign up with Facebook',
+                label: 'Button',
+              });
+            }}>
             <div className="button-text">
               <div className="icon facebookIcon">
                 <FacebookIcon />
@@ -135,6 +171,13 @@ export default class Login extends React.Component<Props, State> {
             to={{ pathname: '/signup/email', search: '' }}
             className="oAuthButton emailButton button"
             style={{ textDecoration: 'none' }}
+            onClick={() => {
+              ReactGA.event({
+                category: GA_CATEGORIES.REGISTER,
+                action: 'Sign up with Email',
+                label: 'Button',
+              });
+            }}
           >
             <div className="button-text">
               <span className="linkSpan">Sign up with Email</span>

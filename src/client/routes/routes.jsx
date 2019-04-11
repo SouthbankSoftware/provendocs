@@ -17,9 +17,9 @@
  *
  *
  * @Author: Michael Harrison
- * @Date:   2019-03-29T10:46:51+11:00
- * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-03T09:18:20+11:00
+ * @Date:   2018-11-23T15:00:28+11:00
+ * @Last modified by:   wahaj
+ * @Last modified time: 2019-04-10T14:44:37+10:00
  */
 
 // eslint no-return-assign:0
@@ -45,8 +45,8 @@ const Routes = () => (
       <Route path="/dashboard/" component={Dashboard} />
       <Route path="/home/" component={Dashboard} />
       <Route path="/privacy" component={() => <HomePage privacyOpen />} />
-      <Route path="/eula" component={() => <RegistrationPage eulaOpen />} />
-      <Route path="/security" component={() => <RegistrationPage securityOpen />} />
+      <Route path="/eula" component={() => <RegistrationPage eulaIsOpen />} />
+      <Route path="/security" component={() => <RegistrationPage securityIsOpen />} />
       <Route path="/share/:link" component={SharedDocument} />
       <Route path="/login" component={LoginPage} />
       <Route path="/login/:page" component={LoginPage} />

@@ -22,30 +22,42 @@
  * @Last modified time: 2019-04-03T09:18:20+11:00
  */
 import React from 'react';
+import ReactGA from 'react-ga';
 import { Link } from 'react-router-dom';
 import SuccessIcon from '../../style/icons/pages/login-signup-pages/tick-icon.svg';
 
-const ResetPasswordSuccess = () => (
-  <div className="pageCenter">
-    <div className="pageIcon">
-      <SuccessIcon />
-    </div>
-    <div className="pageMessage">
-      <span className="sectionTitle">RESET PASSWORD</span>
-      <span className="sectionText">Your password has been reset. Please check your email.</span>
-    </div>
-    <div className="footerLinks footerLinkSingleButton">
-      <Link
-        className="linkBtn primaryButton"
-        to={{ pathname: '/login', search: '' }}
-        style={{ textDecoration: 'none' }}
-      >
-        <div className="button-text">
-          <span>Login</span>
-        </div>
-      </Link>
-    </div>
-  </div>
-);
+type Props = {};
+type State = {};
 
-export default ResetPasswordSuccess;
+export default class ResetPasswordSuccess extends React.Component<Props, State> {
+  componentDidMount() {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }
+
+  render() {
+    return (
+      <div className="pageCenter">
+        <div className="pageIcon">
+          <SuccessIcon />
+        </div>
+        <div className="pageMessage">
+          <span className="sectionTitle">RESET PASSWORD</span>
+          <span className="sectionText">
+            Your password has been reset. Please check your email.
+          </span>
+        </div>
+        <div className="footerLinks footerLinkSingleButton">
+          <Link
+            className="linkBtn primaryButton"
+            to={{ pathname: '/login', search: '' }}
+            style={{ textDecoration: 'none' }}
+          >
+            <div className="button-text">
+              <span>Login</span>
+            </div>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+}

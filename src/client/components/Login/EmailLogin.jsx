@@ -22,6 +22,7 @@
  * @Last modified time: 2019-04-03T09:18:20+11:00
  */
 import React from 'react';
+import ReactGA from 'react-ga';
 import { Link } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
 import { withRouter } from 'react-router';
@@ -29,10 +30,10 @@ import LockIcon from '../../style/icons/pages/login-signup-pages/lock-icon.svg';
 import { api, Log } from '../../common';
 
 type Props = {
-  form: any,
+  form: any;
 };
 type State = {
-  errForm: string,
+  errForm: string;
 };
 
 class EmailLogin extends React.Component<Props, State> {
@@ -42,6 +43,10 @@ class EmailLogin extends React.Component<Props, State> {
     this.state = {
       errForm: '',
     };
+  }
+
+  componentDidMount() {
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   handleSubmit = (e: any) => {

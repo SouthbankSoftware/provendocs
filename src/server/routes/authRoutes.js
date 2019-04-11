@@ -24,7 +24,14 @@
 
 import winston from 'winston';
 import rp from 'request-promise';
-import { getUserDetails, createUser, validateUser } from '../helpers/userHelpers';
+import {
+  getUserDetails,
+  createUser,
+  validateUser,
+  verifyTokenFromUserModule,
+  confirmUserViaEmail,
+  resetPassword,
+} from '../helpers/userHelpers';
 import { findOrCreateIndex } from '../helpers/mongoAPI';
 import {
   sendWelcomeToProvenDocsEmail,
@@ -33,11 +40,6 @@ import {
   sendSubscriptionConfirmationEmail,
   handleSubscriptionConfirmation,
 } from '../helpers/sendgrid';
-import {
-  verifyTokenFromUserModule,
-  confirmUserViaEmail,
-  resetPassword,
-} from '../helpers/authHelpers';
 import { DOMAINS, STACKDRIVER_SEVERITY, LOG_LEVELS } from '../common/constants';
 import { authFormat } from '../modules/winston.config';
 

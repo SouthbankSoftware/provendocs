@@ -22,6 +22,7 @@
  * @Last modified time: 2019-04-03T09:18:20+11:00
  */
 import React from 'react';
+import ReactGA from 'react-ga';
 import { withRouter } from 'react-router';
 import {
   Modal, Input, Form, Button, notification,
@@ -29,6 +30,7 @@ import {
 import { checkAuthentication } from '../../common/authentication';
 import { api } from '../../common';
 import Log from '../../common/log';
+import { GA_CATEGORIES } from '../../common/constants';
 import EmailIcon from '../../style/icons/pages/dashboard/share-icon.svg';
 
 type Props = {
@@ -119,6 +121,11 @@ class EmailProofButton extends React.Component<Props, State> {
         <EmailIcon
           className=" emailIcon"
           onClick={() => {
+            ReactGA.event({
+              category: GA_CATEGORIES.DASHBOARD,
+              action: 'Receive this proof via email.',
+              label: 'Button',
+            });
             this.setState({ showModal: true });
           }}
         />
