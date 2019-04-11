@@ -917,6 +917,17 @@ class Dashboard extends React.Component<Props, State> {
             <ProofInProgress />
           </Modal>
           <Modal
+            className="shareUploadDialogueModal"
+            cancelText="Ok"
+            visible={shareDialogIsOpen}
+            centered
+            onCancel={() => {
+              this.setState({ shareDialogIsOpen: false });
+            }}
+          >
+            <ShareDialog file={fileSelected} userDetails={userDetails} />
+          </Modal>
+          <Modal
             className="firstProofDialogueModal"
             cancelText="Ok"
             visible={firstProofDialogueOpen}
@@ -935,15 +946,6 @@ class Dashboard extends React.Component<Props, State> {
               </div>
               <div className="right" />
             </div>
-            {fileSelected && shareDialogIsOpen && (
-              <ShareDialog
-                history={history}
-                isOpen={shareDialogIsOpen}
-                file={fileSelected}
-                fileVersion={fileVersion}
-                onClose={this._onShareDialogIsClosed}
-              />
-            )}
             <div className="lowerGroup" id="lowerGroup">
               <SplitPane
                 split="vertical"

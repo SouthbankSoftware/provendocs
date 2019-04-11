@@ -1,26 +1,132 @@
-/*
- * provendocs
- * Copyright (C) 2019  Southbank Software Ltd.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- *
- * @Author: Michael Harrison
- * @Date:   2019-03-29T10:46:51+11:00
- * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-03T09:18:20+11:00
- */
-.shareDialog {
-    width: 25%;
+@import "../../style/global_colors.scss";
+
+.shareUploadDialogueModal {
+  width: auto;
+
+  .ant-modal-body {
+    padding-bottom: 0px;
+  }
+
+  .ant-modal-content {
+    padding: 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: center;
+
+    .shareProofDialogueWrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+
+      svg {
+        margin-bottom: 25px;
+        width: 62px;
+        height: 62px;
+        fill: $tealish;
+      }
+
+      .title {
+        margin-bottom: 17.5px;
+        font-size: 16px;
+        font-weight: bold;
+        color: $steel-grey;
+      }
+
+      .subtitle {
+        margin-bottom: 25px;
+        color: $steel-grey;
+        opacity: 0.7;
+        font-family: Roboto;
+        font-size: 14px;
+        text-align: center;
+        margin-left: 20%;
+        margin-right: 20%;
+      }
+
+      .hr {
+        width: 100%;
+        margin-bottom: 25px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+      }
+
+      .reminder {
+        margin-bottom: 9px;
+        width: 100%;
+        text-align: left;
+        opacity: 0.7;
+        font-family: Roboto;
+        font-size: 14px;
+        font-weight: bold;
+        font-style: italic;
+
+      }
+
+      .publicLink {
+        word-break: break-all;
+        margin-bottom: 20px;
+      }
+
+      .ant-btn {
+        color: white;
+        width: auto;
+      }
+
+      .ant-btn:focus {
+        background-color: #35b3d4;
+      }
+
+      .message {
+        margin-bottom: 34px;
+        opacity: 0.7;
+        font-family: Roboto;
+        font-size: 14px;
+        font-weight: normal;
+        font-style: italic;
+        line-height: 1.2;
+
+        svg {
+          width: 15px;
+          height: 15px;
+          margin-bottom: 0px;
+        }
+      }
+
+      .remindMeAgain {
+        font-size: 12px;
+        font-weight: normal;
+        font-style: italic;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+      }
+    }
+
+    .ant-modal-footer {
+      width: 100%;
+      border-top: none;
+
+      div {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .ant-btn {
+        color: white;
+      }
+
+      .ant-btn:hover {
+        color: white;
+      }
+
+      .ant-btn-primary {
+        display: none;
+      }
+    }
+
+  }
 }
