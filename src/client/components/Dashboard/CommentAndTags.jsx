@@ -25,18 +25,19 @@
 import React from 'react';
 import { TextArea, TagInput, Tooltip } from '@blueprintjs/core';
 import { Button } from 'antd';
+import { openNotificationWithIcon } from '../../common/util';
 import InfoIcon from '../../style/icons/pages/dashboard/info-icon.svg';
 import ClearIcon from '../../style/icons/pages/dashboard/close-icon.svg';
 import { ANTD_BUTTON_TYPES } from '../../common/constants';
 
 type Props = {
-  onClickContinue: (comment: string, commentTags: Array<any>) => void;
-  onClickCancel: () => void;
-  storageLimitReached: boolean;
+  onClickContinue: (comment: string, commentTags: Array<any>) => void,
+  onClickCancel: () => void,
+  storageLimitReached: boolean,
 };
 type State = {
-  comment: string;
-  commentTags: Array<any>;
+  comment: string,
+  commentTags: Array<any>,
 };
 
 export default class CommentAndTags extends React.Component<Props, State> {
@@ -102,8 +103,19 @@ export default class CommentAndTags extends React.Component<Props, State> {
                 addOnPaste
                 fill
                 onChange={(values: Array<string>) => {
-                  // You can only have 5 tags at a time.
-                  if (values.length <= 5) {
+                  let valid = true;
+                  values.forEach((tag) => {
+                    if (tag.length > 30) {
+                      openNotificationWithIcon(
+                        'error',
+                        'Tag too long.',
+                        'Each tag must be under 30 characters.',
+                      );
+                      valid = false;
+                    }
+                  });
+                  // You can only have 5 tags at a time and no tag can be larger than 30 characters.
+                  if (values.length <= 5 && valid) {
                     this.setState({ commentTags: values });
                   }
                 }}
