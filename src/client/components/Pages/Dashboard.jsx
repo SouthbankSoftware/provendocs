@@ -1037,9 +1037,9 @@ class Dashboard extends React.Component<Props, State> {
             <div className="lowerGroup" id="lowerGroup">
               <SplitPane
                 split="vertical"
-                minSize={size.width / 4 < 500 ? 500 : size.width / 4}
-                maxSize={(size.width / 4) * 3 < 900 ? 900 : (size.width / 4) * 3}
-                defaultSize={size.width / 2 < 500 ? 500 : size.width / 2}
+                minSize={size.width <= 1280 ? 500 : size.width * 0.4} // Min size 40%
+                maxSize={size.width <= 1280 ? 700 : size.width * 0.6} // Max size 60%
+                defaultSize={size.width <= 1280 ? 645 : size.width * 0.5} // Default size 50%
               >
                 <div className="lhs">
                   <TabbedPanel
