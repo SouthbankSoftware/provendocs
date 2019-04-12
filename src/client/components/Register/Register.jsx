@@ -33,7 +33,7 @@ import { DOMAINS, GA_CATEGORIES } from '../../common/constants';
 import GoogleIcon from '../../style/icons/pages/login-signup-pages/google-icon.svg';
 import GithubIcon from '../../style/icons/pages/login-signup-pages/github-icon.svg';
 // import MicrosoftIcon from '../../style/icons/pages/login-signup-pages/microsoft-icon.svg';
-// import FacebookIcon from '../../style/icons/pages/login-signup-pages/facebook-icon.svg';
+import FacebookIcon from '../../style/icons/pages/login-signup-pages/facebook-icon.svg';
 
 type Props = {
   pageProps: Object;
@@ -151,14 +151,18 @@ export default class Login extends React.Component<Props, State> {
               <div className="vr" />
               <span>Sign up with Microsoft</span>
             </div>
-          </a>
-          <a className=" oAuthButton facebookButton button" href="/signup/facebook" onClick={() => {
+          </a> */}
+          <a
+            className=" oAuthButton facebookButton button"
+            href={`${apiLoginURL}facebook`}
+            onClick={() => {
               ReactGA.event({
                 category: GA_CATEGORIES.REGISTER,
                 action: 'Sign up with Facebook',
                 label: 'Button',
               });
-            }}>
+            }}
+          >
             <div className="button-text">
               <div className="icon facebookIcon">
                 <FacebookIcon />
@@ -166,7 +170,7 @@ export default class Login extends React.Component<Props, State> {
               <div className="vr" />
               <span>Sign up with Facebook</span>
             </div>
-          </a> */}
+          </a>
           <Link
             to={{ pathname: '/signup/email', search: '' }}
             className="oAuthButton emailButton button"

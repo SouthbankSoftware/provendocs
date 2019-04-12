@@ -28,7 +28,7 @@ import { Link } from 'react-router-dom';
 import GoogleIcon from '../../style/icons/pages/login-signup-pages/google-icon.svg';
 import GithubIcon from '../../style/icons/pages/login-signup-pages/github-icon.svg';
 // import MicrosoftIcon from '../../style/icons/pages/login-signup-pages/microsoft-icon.svg';
-// import FacebookIcon from '../../style/icons/pages/login-signup-pages/facebook-icon.svg';
+import FacebookIcon from '../../style/icons/pages/login-signup-pages/facebook-icon.svg';
 
 import { DOMAINS, GA_CATEGORIES } from '../../common/constants';
 
@@ -108,14 +108,18 @@ export default class Login extends React.Component<Props, State> {
               <div className="vr" />
               <span>Log in with Microsoft</span>
             </div>
-          </a>
-          <a className=" oAuthButton facebookButton button" href="/auth/facebook" onClick={() => {
+          </a> */}
+          <a
+            className=" oAuthButton facebookButton button"
+            href={`${apiLoginURL}facebook`}
+            onClick={() => {
               ReactGA.event({
                 category: GA_CATEGORIES.LOGIN,
                 action: 'Log in with Facebook',
                 label: 'Button',
               });
-            }}>
+            }}
+          >
             <div className="button-text">
               <div className="icon facebookIcon">
                 <FacebookIcon />
@@ -123,7 +127,7 @@ export default class Login extends React.Component<Props, State> {
               <div className="vr" />
               <span>Log in with Facebook</span>
             </div>
-          </a> */}
+          </a>
           <Link
             className=" oAuthButton emailButton button"
             to={{ pathname: '/login/email', search: '' }}
