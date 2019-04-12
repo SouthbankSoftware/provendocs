@@ -21,7 +21,7 @@
 # @Last modified time: 2019-04-11T14:59:39+10:00
 
 # update pipeline:
-# fly -t staging sp -c pipeline-test.yml -p provendocs-test -l vars.yml
+# fly -t dev sp -c pipeline-test.yml -p provendocs-test
 ---
 resource_types:
   - name: gcs-resource
@@ -43,8 +43,8 @@ resources:
     source:
       uri: https://github.com/SouthbankSoftware/provenDocs-tests.git
       branch: master
-      username: ((provendocs.git-username))
-      password: ((provendocs.git-password))
+      username: ((common.git-username))
+      password: ((common.git-password))
   - name: node
     type: docker-image
     source:
@@ -63,7 +63,7 @@ resources:
     type: gcs-resource
     source:
       bucket: provendocs-tests
-      json_key: ((common.serviceaccount))
+      json_key: ((common.service-account))
       versioned_file: result.tar.gz
       file: result.tar.gz
   - name: nightly-build
@@ -72,7 +72,7 @@ resources:
       expression: "30 4 * * *"
       location: "Australia/Melbourne"
       fire_immediately: true
-  - name: notify
+  - name: slack
     type: slack-alert
     source:
       url: ((common.slack-webook-url))
@@ -102,7 +102,7 @@ jobs:
           outputs:
             - results
         on_success:
-          put: notify
+          put: slack
           params:
             alert_type: success
             text: Download result.tar.gz from here https://console.cloud.google.com/storage/browser/provendocs-tests?project=provendb
@@ -123,17 +123,17 @@ jobs:
                 chmod a+x provendocs-tests/ci/decideBuildStatus.sh 
                 chmod a+r results/junit.xml
                 sh provendocs-tests/ci/decideBuildStatus.sh results/junit.xml
-    on_success:
-      put: notify
-      params:
-        alert_type: success
     on_failure:
-      put: notify
+      put: slack
       params:
         alert_type: failed
         text: ((slack.virender))
     on_abort:
-      put: notify
+      put: slack
       params:
         alert_type: failed
-        text: ((slack.virender))
+        text: Aborted. ((slack.virender))
+    on_success:
+      put: slack
+      params:
+        alert_type: success
