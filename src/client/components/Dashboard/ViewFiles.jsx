@@ -399,6 +399,7 @@ export default class ViewFiles extends React.Component<Props, State> {
   _onClickForget(file: Object) {
     this.setState({ forgetSelected: file });
     this.setState({ forgetDialogIsOpen: true });
+    this.setState({ forgetFinished: false });
   }
 
   @autobind
@@ -563,7 +564,11 @@ export default class ViewFiles extends React.Component<Props, State> {
   @autobind
   _forgetFile(file: Object) {
     const { refreshFileSizeCallback } = this.props;
+    this.setState({ forgetDialogIsOpen: false });
+    this.setState({ forgetFinished: false });
+    this.setState({ forgetSelected: null });
     this.setState({ forgetLoading: true });
+
     api
       .forgetFile(file)
       .then(() => {
@@ -717,6 +722,7 @@ export default class ViewFiles extends React.Component<Props, State> {
         </div>
       </Dialog>
     );
+
 
     const forgetDialog = (
       <Dialog
