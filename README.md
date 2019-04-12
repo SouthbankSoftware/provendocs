@@ -15,11 +15,7 @@ CI / CD
 
 _Test Nightly:_ [![provendocs-test-nightly](https://concourse.provendb.com/api/v1/pipelines/provendocs-test/jobs/test-nightly/badge)](https://concourse.provendb.com/teams/main/pipelines/provendocs-test/jobs/test-nightly)
 
-_Build:_ [![provendocs-deploy-build](https://concourse.provendb.com/api/v1/pipelines/provendocs-deploy/jobs/build/badge)](https://concourse.provendb.com/teams/main/pipelines/provendocs-deploy/jobs/build)
-
-_Deploy Staging:_ [![provendocs-deploy-staging](https://concourse.provendb.com/api/v1/pipelines/provendocs-deploy/jobs/deploy-staging/badge)](https://concourse.provendb.com/teams/main/pipelines/provendocs-deploy/jobs/deploy-staging)
-
-_Deploy Test:_ [![provendocs-deploy-test](https://concourse.provendb.com/api/v1/pipelines/provendocs-deploy/jobs/deploy-test/badge)](https://concourse.provendb.com/teams/main/pipelines/provendocs-deploy/jobs/deploy-test)
+_Build and Deploy:_ [![provendocs-deploy-build](https://concourse.provendb.com/api/v1/pipelines/provendocs-deploy/jobs/build-and-deploy/badge)](https://concourse.provendb.com/teams/main/pipelines/provendocs-deploy/jobs/build-and-deploy)
 
 <div align="center">
 
