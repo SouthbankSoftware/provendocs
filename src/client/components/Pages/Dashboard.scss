@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-10T15:31:05+10:00
+ * @Last modified time: 2019-04-12T09:27:02+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -109,17 +109,19 @@
 
   .lowerGroup {
     height: 100%;
-    padding-left: 45px;
-    padding-bottom: 2%;
     margin-top: 35px;
-    padding-right: 45px;
     display: flex;
     flex-direction: row;
+    max-width: 100%;
 
     .SplitPane {
       min-width: 1280px;
       overflow-x: scroll;
       position: static !important;
+      padding-left: 45px;
+      padding-right: 45px;
+      max-width: 100%;
+      padding-bottom: 4%;
     }
 
     .Resizer {

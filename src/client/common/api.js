@@ -131,4 +131,5 @@ export default {
   forgetFile: (file: Object) => axios.get(`/api/forgetFile/${file._id}`),
   sendEmailProof: (fileName: string, version: string | number, toEmail: string) => axios.get(`/api/sendEmailProof/${fileName}/${version}/${toEmail}`),
   postEmailSubscribe: (values: Object) => axios.post('/api/sendConfirmation', values),
+  deleteAccount: () => axios.get('/api/util/deleteAccount'),
 };

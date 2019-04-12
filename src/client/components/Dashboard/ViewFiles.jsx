@@ -108,6 +108,8 @@ type State = {
   forgetLoading: boolean;
 };
 
+const offset = new Date().getTimezoneOffset();
+
 export default class ViewFiles extends React.Component<Props, State> {
   constructor() {
     super();
@@ -259,7 +261,9 @@ export default class ViewFiles extends React.Component<Props, State> {
               </Tooltip>
             </span>
             <span className={`fileSize ${validClass}`}>
-              <Timestamp time={file.uploadedAt} format="full" />
+              <Tooltip content={<Timestamp relative time={file.uploadedAt} />} position={Position.TOP}>
+                <Timestamp time={file.uploadedAt} format="full" />
+              </Tooltip>
             </span>
             <div className="fileButtons">
               <FileHistoryButton onClickCallback={this._onClickHistory} file={file} />
@@ -349,7 +353,9 @@ export default class ViewFiles extends React.Component<Props, State> {
             <span className="number">{`${versions.length - key}: `}</span>
             <span className="fileName">{file.document.name}</span>
             <span className="fileDate">
-              <Timestamp time={file.document.uploadedAt} format="full" />
+              <Tooltip content={<Timestamp relative time={file.uploadedAt} />} position={Position.TOP}>
+                <Timestamp time={file.document.uploadedAt} format="full" />
+              </Tooltip>
             </span>
             <div className="commentButton">
               <CommentIcon
@@ -393,6 +399,7 @@ export default class ViewFiles extends React.Component<Props, State> {
   _onClickForget(file: Object) {
     this.setState({ forgetSelected: file });
     this.setState({ forgetDialogIsOpen: true });
+    this.setState({ forgetFinished: false });
   }
 
   @autobind
@@ -455,12 +462,16 @@ export default class ViewFiles extends React.Component<Props, State> {
             </div>
             <span className="fileName">
               <Tooltip content={file.name} position={Position.TOP}>
-                {_.truncate(file.name, { length: 16 })}
+                {file.name}
               </Tooltip>
             </span>
             <span className="fileDate">
-              <Timestamp time={file.uploadedAt} format="date" />
-              <Timestamp time={file.uploadedAt} format="time" />
+              <Tooltip content={<Timestamp relative time={file.uploadedAt} relativeTo={Date.now()} />} position={Position.TOP}>
+                <div>
+                  <Timestamp time={file.uploadedAt} format="date" />
+                  <Timestamp time={file.uploadedAt} format="time" />
+                </div>
+              </Tooltip>
             </span>
             <div className="fileButtons">
               <FileHistoryButton onClickCallback={this._onClickHistory} file={file} />
@@ -550,7 +561,11 @@ export default class ViewFiles extends React.Component<Props, State> {
   @autobind
   _forgetFile(file: Object) {
     const { refreshFileSizeCallback } = this.props;
+    this.setState({ forgetDialogIsOpen: false });
+    this.setState({ forgetFinished: false });
+    this.setState({ forgetSelected: null });
     this.setState({ forgetLoading: true });
+
     api
       .forgetFile(file)
       .then(() => {
@@ -704,6 +719,7 @@ export default class ViewFiles extends React.Component<Props, State> {
         </div>
       </Dialog>
     );
+
 
     const forgetDialog = (
       <Dialog

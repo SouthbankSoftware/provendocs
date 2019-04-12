@@ -258,4 +258,38 @@ module.exports = (app: any) => {
         res.status(404).send(returnObj);
       });
   });
+
+  app.get('/api/util/deleteAccount/', (req, res) => {
+    const reqId = uuidv4();
+    logger.log({
+      level: LOG_LEVELS.INFO,
+      severity: STACKDRIVER_SEVERITY.INFO,
+      message: '[REQUEST] -> Delete account.',
+      reqId,
+    });
+    // Get User
+    getUserDetails(req, res, app.get('jwtSecret'))
+      .then((user) => {
+        logger.log({
+          level: LOG_LEVELS.INFO,
+          severity: STACKDRIVER_SEVERITY.INFO,
+          message: 'Found user for deletion',
+          userId: user._id,
+          reqId,
+        });
+        // @TODO -> Add actual account deletion logic.
+        res.status(200).send({ ok: 1 });
+      })
+      .catch((error) => {
+        logger.log({
+          level: LOG_LEVELS.INFO,
+          severity: STACKDRIVER_SEVERITY.INFO,
+          message: 'Failed to authenticate user for deletion.',
+          error,
+          errMsg: error.message,
+          reqId,
+        });
+        res.status(400).send({ ok: 0, error: 'Failed to authenticate user to delete.' });
+      });
+  });
 };

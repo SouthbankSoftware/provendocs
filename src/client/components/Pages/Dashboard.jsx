@@ -93,29 +93,29 @@ export const RHS_STAGES = {
 
 type Props = { history: any };
 type State = {
-  isAuthenticated: boolean;
-  storageUsed: number;
-  documentsUsed: number;
-  storageLimit: number;
-  documentsLimit: number;
-  userDetails: Object;
-  comment: string;
-  allUploadsInvalid: boolean;
-  commentTags: Array<string>;
-  lhsTabSelected: string;
-  rhsTabSelected: string;
-  fileSelected: any;
-  fileVersion: number;
-  rhsStage: string;
-  proofReady: boolean;
-  firstUploadDialogueOpen: boolean;
-  firstProofDialogueOpen: boolean;
-  storageLimitReached: boolean;
-  shareDialogIsOpen: boolean;
-  matchingFiles: Array<Object>;
-  failedFiles: Array<string>;
-  size: Object;
-  checkAll: boolean;
+  isAuthenticated: boolean,
+  storageUsed: number,
+  documentsUsed: number,
+  storageLimit: number,
+  documentsLimit: number,
+  userDetails: Object,
+  comment: string,
+  allUploadsInvalid: boolean,
+  commentTags: Array<string>,
+  lhsTabSelected: string,
+  rhsTabSelected: string,
+  fileSelected: any,
+  fileVersion: number,
+  rhsStage: string,
+  proofReady: boolean,
+  firstUploadDialogueOpen: boolean,
+  firstProofDialogueOpen: boolean,
+  storageLimitReached: boolean,
+  shareDialogIsOpen: boolean,
+  matchingFiles: Array<Object>,
+  failedFiles: Array<string>,
+  size: Object,
+  checkAll: boolean,
 };
 
 Log.setSource('Dashboard');
@@ -824,71 +824,71 @@ class Dashboard extends React.Component<Props, State> {
     const rhsTabExtras = (
       <div className="rhsExtras">
         {proofReady && fileSelected && (
-        <Tooltip content="Download an archive for this proof." position={Position.TOP}>
-          <DownloadAltIcon
-            className="downloadAltIcon"
-            onClick={() => {
-              confirm({
-                title: (
-                  <div>
-                    <DownloadIcon className="downloadIcon" />
-                    <span>Download Package</span>
-                  </div>
-                ),
-                content:
-                            'Would you like to download your fully\npackaged blockchain proof?\nYou may need to enable pop-ups.',
-                okText: 'Download',
-                okType: 'success',
-                cancelText: 'Cancel',
-                cancelType: 'warning',
-                onOk: this._downloadArchiveRHS,
-                onCancel() {},
-              });
-            }}
-          />
-        </Tooltip>
+          <Tooltip content="Download an archive for this proof." position={Position.TOP}>
+            <DownloadAltIcon
+              className="downloadAltIcon"
+              onClick={() => {
+                confirm({
+                  title: (
+                    <div>
+                      <DownloadIcon className="downloadIcon" />
+                      <span>Download Package</span>
+                    </div>
+                  ),
+                  content:
+                    'Would you like to download your fully\npackaged blockchain proof?\nYou may need to enable pop-ups.',
+                  okText: 'Download',
+                  okType: 'success',
+                  cancelText: 'Cancel',
+                  cancelType: 'warning',
+                  onOk: this._downloadArchiveRHS,
+                  onCancel() {},
+                });
+              }}
+            />
+          </Tooltip>
         )}
         {proofReady && fileSelected && <div className="vr" />}
         {fileSelected && (
-        <Tooltip content="Download a copy of this file." position={Position.TOP}>
-          <DocumentIcon
-            className="viewDocsIcon"
-            onClick={() => {
-              confirm({
-                title: (
-                  <div>
-                    <DownloadIcon className="downloadIcon" />
-                    <span>Download File</span>
-                  </div>
-                ),
-                content:
-                            'Would you like to download a copy of the proven file?\n You may need to enable pop-ups.',
-                okText: 'Download',
-                okType: 'success',
-                cancelText: 'Cancel',
-                cancelType: 'warning',
-                onOk: this._downloadFileRHS,
-                onCancel() {},
-              });
-            }}
-          />
-        </Tooltip>
+          <Tooltip content="Download a copy of this file." position={Position.TOP}>
+            <DocumentIcon
+              className="viewDocsIcon"
+              onClick={() => {
+                confirm({
+                  title: (
+                    <div>
+                      <DownloadIcon className="downloadIcon" />
+                      <span>Download File</span>
+                    </div>
+                  ),
+                  content:
+                    'Would you like to download a copy of the proven file?\n You may need to enable pop-ups.',
+                  okText: 'Download',
+                  okType: 'success',
+                  cancelText: 'Cancel',
+                  cancelType: 'warning',
+                  onOk: this._downloadFileRHS,
+                  onCancel() {},
+                });
+              }}
+            />
+          </Tooltip>
         )}
         {fileSelected && proofReady && <div className="vr" />}
         {fileSelected && proofReady && (
-        <Tooltip content="Receive this proof via email." position={Position.TOP}>
-          <EmailProofButton
-            history={history}
-            fileName={fileSelected.name}
-            fileVersion={fileSelected._provendb_metadata.minVersion}
-          />
-        </Tooltip>
+          <Tooltip content="Receive this proof via email." position={Position.TOP}>
+            <EmailProofButton
+              history={history}
+              fileName={fileSelected.name}
+              fileVersion={fileSelected._provendb_metadata.minVersion}
+            />
+          </Tooltip>
         )}
         {fileSelected && <div className="vr" />}
         {fileSelected && (
-        <Tooltip content="Create a public link to this proof." position={Position.TOP}>
-          <LinkIcon className="linkIcon" onClick={this._createLinkRHS} />
-        </Tooltip>
+          <Tooltip content="Create a public link to this proof." position={Position.TOP}>
+            <LinkIcon className="linkIcon" onClick={this._createLinkRHS} />
+          </Tooltip>
         )}
       </div>
     );
@@ -903,6 +903,7 @@ class Dashboard extends React.Component<Props, State> {
           currentPage={PAGES.DASHBOARD}
           isAuthenticated
           onEarlyAccess={null}
+          history={history}
         />
         <div className="AppBody">
           <Modal
@@ -944,102 +945,14 @@ class Dashboard extends React.Component<Props, State> {
                 <ViewDocsIcon />
                 <span className="title"> Dashboard </span>
               </div>
-              <div className="right">
-                {proofReady && fileSelected && (
-                  <Tooltip content="Download an archive for this proof." position={Position.TOP}>
-                    <DownloadAltIcon
-                      className="downloadAltIcon"
-                      onClick={() => {
-                        ReactGA.event({
-                          category: GA_CATEGORIES.DASHBOARD,
-                          action: 'Download an archive for this proof.',
-                          label: 'Button',
-                        });
-                        confirm({
-                          title: (
-                            <div>
-                              <DownloadIcon className="downloadIcon" />
-                              <span>Download Package</span>
-                            </div>
-                          ),
-                          content:
-                            'Would you like to download your fully\npackaged blockchain proof?\nYou may need to enable pop-ups.',
-                          okText: 'Download',
-                          okType: 'success',
-                          cancelText: 'Cancel',
-                          cancelType: 'warning',
-                          onOk: this._downloadArchiveRHS,
-                          onCancel() {},
-                        });
-                      }}
-                    />
-                  </Tooltip>
-                )}
-                {proofReady && fileSelected && <div className="vr" />}
-                {fileSelected && (
-                  <Tooltip content="Download a copy of this file." position={Position.TOP}>
-                    <DocumentIcon
-                      className="viewDocsIcon"
-                      onClick={() => {
-                        ReactGA.event({
-                          category: GA_CATEGORIES.DASHBOARD,
-                          action: 'Download a copy of this file.',
-                          label: 'Button',
-                        });
-                        confirm({
-                          title: (
-                            <div>
-                              <DownloadIcon className="downloadIcon" />
-                              <span>Download File</span>
-                            </div>
-                          ),
-                          content:
-                            'Would you like to download a copy of the proven file?\n You may need to enable pop-ups.',
-                          okText: 'Download',
-                          okType: 'success',
-                          cancelText: 'Cancel',
-                          cancelType: 'warning',
-                          onOk: this._downloadFileRHS,
-                          onCancel() {},
-                        });
-                      }}
-                    />
-                  </Tooltip>
-                )}
-                {fileSelected && proofReady && <div className="vr" />}
-                {fileSelected && proofReady && (
-                  <Tooltip content="Receive this proof via email." position={Position.TOP}>
-                    <EmailProofButton
-                      history={history}
-                      fileName={fileSelected.name}
-                      fileVersion={fileSelected._provendb_metadata.minVersion}
-                    />
-                  </Tooltip>
-                )}
-                {fileSelected && <div className="vr" />}
-                {fileSelected && (
-                  <Tooltip content="Create a public link to this proof." position={Position.TOP}>
-                    <LinkIcon
-                      className="linkIcon"
-                      onClick={() => {
-                        ReactGA.event({
-                          category: GA_CATEGORIES.DASHBOARD,
-                          action: 'Create a public link to this proof.',
-                          label: 'Button',
-                        });
-                        this._createLinkRHS();
-                      }}
-                    />
-                  </Tooltip>
-                )}
-              </div>
+              <div className="right" />
             </div>
             <div className="lowerGroup" id="lowerGroup">
               <SplitPane
                 split="vertical"
-                minSize={size.width / 4 < 500 ? 500 : size.width / 4}
-                maxSize={(size.width / 4) * 3 < 900 ? 900 : (size.width / 4) * 3}
-                defaultSize={size.width / 2 < 500 ? 500 : size.width / 2}
+                minSize={size.width <= 1280 ? 500 : size.width * 0.4} // Min size 40%
+                maxSize={size.width <= 1280 ? 700 : size.width * 0.6} // Max size 60%
+                defaultSize={size.width <= 1280 ? 645 : size.width * 0.5} // Default size 50%
               >
                 <div className="lhs">
                   <TabbedPanel

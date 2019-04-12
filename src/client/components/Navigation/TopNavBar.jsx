@@ -27,7 +27,10 @@ import React from 'react';
 import ReactGA from 'react-ga';
 import { Link } from 'react-router-dom';
 import Avatar from 'react-avatar';
-import { Button } from 'antd';
+import {
+  Button, Dropdown, Icon, Menu, Modal,
+} from 'antd';
+import { withRouter } from 'react-router';
 import { Tooltip, Position } from '@blueprintjs/core';
 import { getUserDetails } from '../../common/authentication';
 import InfoIcon from '../../style/icons/pages/dashboard/info-icon.svg'; // @TODO -> Used for getting started section.
@@ -39,18 +42,21 @@ import {
   PAGES, OAUTH_PROVIDERS, DOMAINS, GA_CATEGORIES,
 } from '../../common/constants';
 import { openNotificationWithIcon } from '../../common/util';
-import { Log } from '../../common';
+import { Log, api } from '../../common';
 // $FlowFixMe
 import './TopNavBar.scss';
 
+const { confirm } = Modal;
+
 type Props = {
-  userDetailsCallback: any;
-  currentPage: string;
-  isAuthenticated: boolean;
-  onEarlyAccess: Function | null;
+  userDetailsCallback: any,
+  currentPage: string,
+  isAuthenticated: boolean,
+  onEarlyAccess: Function | null,
+  history: any,
 };
-type State = { currentPage: string; userDetails: Object };
-export default class TopNavBar extends React.Component<Props, State> {
+type State = { currentPage: string, userDetails: Object };
+class TopNavBar extends React.Component<Props, State> {
   constructor() {
     super();
     Log.setSource('TopNavBar');
@@ -142,6 +148,7 @@ export default class TopNavBar extends React.Component<Props, State> {
 
   _renderDashboardTopNav = () => {
     const { userDetails } = this.state;
+    const { history } = this.props;
     let avatar = <div />;
     switch (userDetails.provider) {
       case OAUTH_PROVIDERS.GOOGLE:
@@ -154,36 +161,122 @@ export default class TopNavBar extends React.Component<Props, State> {
         avatar = <Avatar name={userDetails.name} size="25" round />;
         break;
     }
+    const userMenu = (
+      <Menu>
+        <Menu.Item key="logout">
+          <a href="/api/logout" style={{ textDecoration: 'none' }}>
+            <Icon type="logout" style={{ marginRight: '8px' }} />
+            Log Out
+          </a>
+        </Menu.Item>
+        <Menu.Item key="logout">
+          <a
+            className="leftButton"
+            href="https://provendb.readme.io/docs/getting-started-with-provendocs"
+            target="__blank"
+            style={{ 'text-decoration': 'none' }}
+            onClick={() => {
+              ReactGA.event({
+                category: GA_CATEGORIES.TOPBAR,
+                action: 'Click: #gettingStartedGuide',
+                label: 'Button',
+              });
+            }}
+          >
+            <Icon type="info-circle" style={{ marginRight: '8px' }} />
+            Getting Started
+          </a>
+        </Menu.Item>
+        <Menu.Item key="logout">
+          <span
+            className="leftButton"
+            style={{ 'text-decoration': 'none' }}
+            key="deleteAccount"
+            role="button"
+            tabIndex={0}
+            onClick={() => {
+              ReactGA.event({
+                category: GA_CATEGORIES.TOPBAR,
+                action: 'Click: #deleteAccount',
+                label: 'Button',
+              });
+              confirm({
+                className: 'deleteAccountModal',
+                title: 'Are you sure you want to delete your account?',
+                content: (
+                  <span>
+                    This action is
+                    {' '}
+                    <bold>permanent</bold>
+                    , after deleting your account you will not be able to view your proofs or files.
+                    <br />
+                    {' '}
+We suggest you download a proof archive for each ofyour files before
+                    deleting your account.
+                  </span>
+                ),
+                okText: 'Delete',
+                okType: 'danger',
+                cancelText: 'Cancel',
+                onOk() {
+                  confirm({
+                    className: 'deleteAccountModal',
+                    title: 'Really delete account?',
+                    content: (
+                      <span>
+                        Last chance to back out, are you really sure you want to delete your account
+                        and all included files and proofs?
+                      </span>
+                    ),
+                    okText: 'Delete',
+                    okType: 'danger',
+                    cancelText: 'Cancel',
+                    onOk() {
+                      api
+                        .deleteAccount()
+                        .then((result) => {
+                          Log.info(`Account deleted: ${result}`);
+                          openNotificationWithIcon('success', 'Success', 'Account deleted.');
+                          history.push('/login');
+                        })
+                        .catch((error) => {
+                          Log.error(`Error deleting account: ${error}`);
+                          openNotificationWithIcon(
+                            'warning',
+                            'Error',
+                            'Failed to delete account, please contact support.',
+                          );
+                        });
+                    },
+                    onCancel() {},
+                  });
+                },
+                onCancel() {},
+              });
+            }}
+          >
+            <Icon type="delete" twoToneColor="#cc4f46" style={{ marginRight: '8px' }} />
+            Delete Account
+          </span>
+        </Menu.Item>
+      </Menu>
+    );
 
     return (
       <div className="homeButtons">
-        {
-          <Tooltip content="Getting Started Guide" position={Position.BOTTOM}>
-            <a
-              className="leftButton"
-              href="https://provendb.readme.io/docs/getting-started-with-provendocs"
-              target="__blank"
-              style={{ 'text-decoration': 'none' }}
-              onClick={() => {
-                ReactGA.event({
-                  category: GA_CATEGORIES.TOPBAR,
-                  action: 'Click: #gettingStartedGuide',
-                  label: 'Button',
-                });
-              }}
-            >
-              <InfoIcon className="leftButton" />
-            </a>
-          </Tooltip>
-        }
-        <Tooltip content="Logout" position={Position.BOTTOM}>
-          <a className="leftButton" href="/api/logout" style={{ 'text-decoration': 'none' }}>
-            <LogoutIcon />
-          </a>
-        </Tooltip>
-        <div className="vr" />
-        {avatar}
-        <span className="emailAddress">{userDetails && userDetails.email}</span>
+        <Dropdown
+          className="userMenuBtn"
+          overlay={userMenu}
+          placement="bottomRight"
+          overlayClassName="dropdownUser"
+          // onClick={this.handleAvatarClick}
+        >
+          <Button style={{ marginLeft: 8 }}>
+            {avatar}
+            {userDetails && userDetails.email}
+            <Icon type="down" />
+          </Button>
+        </Dropdown>
       </div>
     );
   };
@@ -388,3 +481,5 @@ export default class TopNavBar extends React.Component<Props, State> {
     );
   }
 }
+
+export default withRouter(TopNavBar);

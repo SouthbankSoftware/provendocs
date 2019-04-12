@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-05T11:43:45+11:00
+ * @Last modified time: 2019-04-12T13:06:59+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -115,6 +115,18 @@
       flex-direction: row;
       justify-items: flex-end;
       align-items: center;
+
+      .ant-btn {
+        width: auto;
+        background-color: rgba(256, 256, 256, 0);
+        border: none;
+        color: white;
+        opacity: 0.5;
+      }
+
+      .ant-btn:hover {
+        opacity: 1;
+      }
 
       svg {
         width: 15px;
@@ -214,4 +226,14 @@
   padding-left: 7%;
   padding-right: 7%;
   margin-bottom: 0px;
+}
+
+.deleteAccountModal {
+  .ant-modal-confirm-btns {
+    flex-direction: row !important;
+
+    .ant-btn-danger {
+      background-color: #cc4f46 !important;
+    }
+  }
 }
