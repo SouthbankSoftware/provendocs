@@ -258,17 +258,40 @@ export default class ViewFileThumb extends React.Component<Props, State> {
   renderFileProofStatus = (file: Object) => {
     const { proofInfo } = file;
     if (!proofInfo) {
-      return <PendingIcon className="pendingIcon" />;
+      return (
+        <Tooltip position={Position.TOP} content="Proof in progress">
+          <PendingIcon className="pendingIcon" />
+        </Tooltip>
+      );
     }
     switch (proofInfo) {
       case PROOF_STATUS.FAILED:
-        return <CrossIcon className="crossIcon" />;
+        return (
+          <Tooltip
+            position={Position.TOP}
+            content="Something went wrong while proving your document"
+          >
+            <CrossIcon className="crossIcon" />
+          </Tooltip>
+        );
       case PROOF_STATUS.VALID:
-        return <TickIcon className="tickIcon" />;
+        return (
+          <Tooltip position={Position.TOP} content="Your document has been proven.">
+            <TickIcon className="tickIcon" />
+          </Tooltip>
+        );
       case PROOF_STATUS.PENDING:
-        return <PendingIcon className="pendingIcon" />;
+        return (
+          <Tooltip position={Position.TOP} content="Proof in progress">
+            <PendingIcon className="pendingIcon" />
+          </Tooltip>
+        );
       case PROOF_STATUS.SUBMITTED:
-        return <PendingIcon className="pendingIcon" />;
+        return (
+          <Tooltip position={Position.TOP} content="Proof in progress">
+            <PendingIcon className="pendingIcon" />
+          </Tooltip>
+        );
       default:
         return <CrossIcon className="crossIcon" />;
     }
@@ -326,8 +349,8 @@ export default class ViewFileThumb extends React.Component<Props, State> {
     return (
       <React.Fragment>
         {this.renderFileByType(file, selectedClass)}
-        {this.renderFileProofStatus(file)}
         {this.renderFileTypeFooter(file)}
+        {this.renderFileProofStatus(file)}
       </React.Fragment>
     );
   }
