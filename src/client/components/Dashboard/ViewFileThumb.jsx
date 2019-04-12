@@ -35,6 +35,7 @@ import TickIcon from '../../style/icons/pages/dashboard/tick-icon.svg';
 import PDFIcon from '../../style/icons/pages/dashboard/pdf-document-icon.svg';
 import ImageIcon from '../../style/icons/pages/dashboard/img-icon.svg';
 import DocumentIcon from '../../style/icons/pages/dashboard/document-icon.svg';
+import EmailIcon from '../../style/icons/pages/dashboard/mail-icon.svg';
 import WordDocumentIcon from '../../style/icons/pages/dashboard/word-thumbnail-icon.svg';
 import ExcelDocumentIcon from '../../style/icons/pages/dashboard/excel-thumbnail-icon.svg';
 import QuestionMarkIcon from '../../style/icons/pages/dashboard/question-mark-icon.svg';
@@ -239,7 +240,7 @@ export default class ViewFileThumb extends React.Component<Props, State> {
         {file.content !== '' && className !== 'email' && (
           <img src={file.content} alt={file.fileName} />
         )}
-        {file.content !== '' && className === 'email' && <DocumentIcon className="docIcon" />}
+        {file.content !== '' && className === 'email' && <EmailIcon className="docIcon" />}
         {file.content === '' && className === 'pdf' && <PDFIcon className="pdfIcon" />}
         {file.content === ''
           && (className === 'jpeg' || className === 'png' || className === 'svg') && (
