@@ -118,7 +118,7 @@ function addFrontPage(doc, proof, file, user) {
     let newFinalDate = '';
 
     if (file.provenAt) {
-      dateString = String(new Date(file.provenAt));
+      dateString = new Date(file.provenAt).toUTCString();
       date = new Date(Date.parse(file.provenAt));
       newFinalDate = date.toISOString().replace(/[-:.Z]/g, '');
     }
@@ -271,7 +271,7 @@ function addSecondPage(doc, proof, file, user) {
       let finalUploadDate = '';
 
       if (file.uploadedAt) {
-        dateString = String(new Date(file.uploadedAt));
+        dateString = new Date(file.uploadedAt).toUTCString();
         uploadDate = new Date(Date.parse(file.uploadedAt));
         finalUploadDate = uploadDate.toISOString().replace(/[-:.Z]/g, '');
       }
@@ -393,7 +393,7 @@ function addSecondPage(doc, proof, file, user) {
       let newFinalDate = '';
 
       if (file.provenAt) {
-        provenDateString = String(new Date(file.provenAt));
+        provenDateString = new Date(file.provenAt).toUTCString();
         date = new Date(Date.parse(file.provenAt));
         newFinalDate = date.toISOString().replace(/[-:.Z]/g, '');
       }
@@ -404,7 +404,6 @@ function addSecondPage(doc, proof, file, user) {
         .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
         .text(`${proof.documentProof.btcTransaction}`, {
           continued: true,
-
           link: `https://live.blockcypher.com/btc/tx/${proof.documentProof.btcTransaction}/`,
         })
         .fillColor('#595b60')

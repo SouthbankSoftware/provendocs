@@ -108,6 +108,8 @@ type State = {
   forgetLoading: boolean;
 };
 
+const offset = new Date().getTimezoneOffset();
+
 export default class ViewFiles extends React.Component<Props, State> {
   constructor() {
     super();
@@ -259,7 +261,9 @@ export default class ViewFiles extends React.Component<Props, State> {
               </Tooltip>
             </span>
             <span className={`fileSize ${validClass}`}>
-              <Timestamp time={file.uploadedAt} format="full" />
+              <Tooltip content={<Timestamp relative time={file.uploadedAt} />} position={Position.TOP}>
+                <Timestamp time={file.uploadedAt} format="full" />
+              </Tooltip>
             </span>
             <div className="fileButtons">
               <FileHistoryButton onClickCallback={this._onClickHistory} file={file} />
@@ -349,7 +353,9 @@ export default class ViewFiles extends React.Component<Props, State> {
             <span className="number">{`${versions.length - key}: `}</span>
             <span className="fileName">{file.document.name}</span>
             <span className="fileDate">
-              <Timestamp time={file.document.uploadedAt} format="full" />
+              <Tooltip content={<Timestamp relative time={file.uploadedAt} />} position={Position.TOP}>
+                <Timestamp time={file.document.uploadedAt} format="full" />
+              </Tooltip>
             </span>
             <div className="commentButton">
               <CommentIcon
@@ -432,6 +438,9 @@ export default class ViewFiles extends React.Component<Props, State> {
       .filter(filterFunc)
       .sort(sortFunc)
       .forEach((file, key) => {
+        console.log(file.uploadedAt);
+        console.log(new Date(file.uploadedAt.toString()));
+
         const validClass = 'valid';
 
         let selectedClass = '';
@@ -455,12 +464,16 @@ export default class ViewFiles extends React.Component<Props, State> {
             </div>
             <span className="fileName">
               <Tooltip content={file.name} position={Position.TOP}>
-                {_.truncate(file.name, { length: 16 })}
+                {file.name}
               </Tooltip>
             </span>
             <span className="fileDate">
-              <Timestamp time={file.uploadedAt} format="date" />
-              <Timestamp time={file.uploadedAt} format="time" />
+              <Tooltip content={<Timestamp relative time={file.uploadedAt} relativeTo={Date.now()} />} position={Position.TOP}>
+                <div>
+                  <Timestamp time={file.uploadedAt} format="date" />
+                  <Timestamp time={file.uploadedAt} format="time" />
+                </div>
+              </Tooltip>
             </span>
             <div className="fileButtons">
               <FileHistoryButton onClickCallback={this._onClickHistory} file={file} />

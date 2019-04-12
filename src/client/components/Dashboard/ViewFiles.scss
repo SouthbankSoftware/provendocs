@@ -392,8 +392,8 @@
   }
 
   .Grid-cell {
-    width: 113px;
-    height: 214px;
+    width: 145.9px;
+    height: 275px;
     margin-right: 15px;
     border-radius: 9px;
     border: 1px solid rgba(256, 256, 256, 0.15);
@@ -403,7 +403,7 @@
       padding-left: 12px;
       padding-right: 12px;
       width: 100%;
-      height: 124.9px;
+      height: 160.2px;
       box-shadow: none;
       background-image: none;
       cursor: pointer;
@@ -606,8 +606,8 @@
       svg {
         z-index: 1;
         position: relative;
-        left: 75px;
-        top: -130px;
+        left: 108px;
+        top: -165px;
         min-width: 20px;
         height: 16px;
       }
@@ -617,7 +617,7 @@
         position: relative;
         top: -32px;
         min-width: 20px;
-        height: 14px;
+        height: 17px;
         background-color: $steel-grey;
         font-size: 10px;
         font-weight: bold;
@@ -695,15 +695,25 @@
     }
 
     .fileName {
-      height: 10px;
-      margin-bottom: 6px;
-      margin-top: 8px;
+      height: 20px;
+      margin-bottom: 10px;
+      margin-top: 16px;
       display: flex;
       justify-content: center;
       font-family: Roboto;
-      font-size: 10px;
+      font-size: 12px;
       color: $white;
       text-align: center;
+
+      span {
+        width: 100%;
+        text-align: center;
+        padding-left: 5px;
+        padding-right: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
     }
 
     .fileDate {
@@ -714,7 +724,7 @@
       align-items: center;
       justify-content: center;
       height: 12px;
-      font-size: 8px;
+      font-size: 10px;
       font-weight: normal;
       font-style: normal;
       font-stretch: normal;
@@ -722,7 +732,11 @@
       letter-spacing: 0.1px;
       text-align: center;
       color: $white;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
+
+      span {
+        margin-right: 2px;
+      }
     }
 
     .fileButtons {
