@@ -18,8 +18,8 @@
  *
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
- * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-03T09:18:20+11:00
+ * @Last modified by:   wahaj
+ * @Last modified time: 2019-04-12T13:17:18+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -227,13 +227,13 @@
   }
 
   .microsoftButton {
+
     background-color: $microsoft_button_background;
     opacity: 0.5;
   }
 
   .facebookButton {
     background-color: $facebook_button_background;
-    opacity: 0.5;
   }
 
   .defaultButton {
