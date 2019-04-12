@@ -108,8 +108,6 @@ type State = {
   forgetLoading: boolean;
 };
 
-const offset = new Date().getTimezoneOffset();
-
 export default class ViewFiles extends React.Component<Props, State> {
   constructor() {
     super();
