@@ -903,6 +903,7 @@ class Dashboard extends React.Component<Props, State> {
           currentPage={PAGES.DASHBOARD}
           isAuthenticated
           onEarlyAccess={null}
+          history={history}
         />
         <div className="AppBody">
           <Modal

@@ -439,9 +439,6 @@ export default class ViewFiles extends React.Component<Props, State> {
       .filter(filterFunc)
       .sort(sortFunc)
       .forEach((file, key) => {
-        console.log(file.uploadedAt);
-        console.log(new Date(file.uploadedAt.toString()));
-
         const validClass = 'valid';
 
         let selectedClass = '';
