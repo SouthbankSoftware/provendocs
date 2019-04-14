@@ -29,7 +29,7 @@ import { withRouter } from 'react-router';
 import {
   Steps, Button, Input, Form, Modal,
 } from 'antd';
-import MouseIcon from '../../style/icons/pages/landing-page/mouse-icon.svg';
+import LandingAnimation from '../../style/icons/pages/landing-page/proven-docs-animation.gif';
 import UserSignUpIcon from '../../style/icons/pages/landing-page/user-sign-up-icon.svg';
 import UploadFilesIcon from '../../style/icons/pages/landing-page/upload-files-icon.svg';
 import BlockchainIcon from '../../style/icons/pages/landing-page/blockchain-icon.svg';
@@ -204,7 +204,10 @@ class HomePage extends React.Component<Props, State> {
                 </div>
               </div>
               <div className="heroRight">
-                <MonitorIcon />
+                <div className="monitorWrapper">
+                  <MonitorIcon />
+                  <img src={LandingAnimation} alt="ProvenDocs In Action" className="pdocsGif" />
+                </div>
               </div>
             </div>
             <div className="snap section howDoesItWorkSection" style={sectionStyle}>
