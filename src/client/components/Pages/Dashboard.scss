@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-12T09:27:02+10:00
+ * @Last modified time: 2019-04-12T14:44:22+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -197,7 +197,13 @@
         width: 100%;
 
         .extraTabContent {
-          .fileSizeInfo {}
+          .fileSizeInfo {
+            opacity: 0.5;
+          }
+
+          .fileSizeInfo:hover {
+            opacity: 1;
+          }
         }
 
         .bp3-tab-panel {
@@ -256,7 +262,11 @@
             opacity: 0.5;
             height: 15px;
             width: 15px;
-            fill: white;
+            fill: white !important;
+
+            .cls-1 {
+              fill: white !important;
+            }
           }
 
           svg:hover {

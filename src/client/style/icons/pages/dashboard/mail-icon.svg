@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49.029 36.344">
+    <defs>
+        <style>
+            .cls-1{fill:#cacbcc}.cls-2{fill:#dedfe0}.cls-3{fill:#eceff1}.cls-4{fill:#8f8376}.cls-5{fill:#fff}
+        </style>
+    </defs>
+    <g id="mail-icon" transform="translate(-644.18 -640.269)">
+        <g id="Group_3019" data-name="Group 3019" transform="translate(649.768 640.269)">
+            <g id="Group_3020" data-name="Group 3020">
+                <g id="Group_3020-2" data-name="Group 3020">
+                    <path id="Path_12160" d="M0 0v30.254h43.442V0z" class="cls-1" data-name="Path 12160"/>
+                    <path id="Path_12161" d="M24.048 21.7a3.437 3.437 0 0 1-4.577 0l-1.629-1.4C12.722 24.8 0 34.806 0 34.806h43.442S30.72 24.8 25.677 20.3z" class="cls-2" data-name="Path 12161" transform="translate(0 -4.552)"/>
+                    <path id="Path_12162" d="M0 0l19.394 17.144a3.437 3.437 0 0 0 4.577 0L43.442 0z" class="cls-3" data-name="Path 12162"/>
+                </g>
+            </g>
+        </g>
+        <path id="Path_12160-2" d="M32.893 255.076a1.375 1.375 0 0 1-1.371 1.371H1.371A1.375 1.375 0 0 1 0 255.076v-13.705A1.375 1.375 0 0 1 1.371 240h30.152a1.375 1.375 0 0 1 1.371 1.371z" class="cls-4" data-name="Path 12160" transform="translate(644.18 418.795)"/>
+        <path id="Path_12161-2" d="M90.04 417.37H64v1.371h26.04a1.375 1.375 0 0 0 1.371-1.371V416a1.375 1.375 0 0 1-1.371 1.37z" class="cls-2" data-name="Path 12161" transform="translate(585.662 257.871)"/>
+        <path id="Path_12162-2" d="M110.756 57.186v4.075a.76.76 0 0 1-.793.758.685.685 0 0 1-.663-.758v-6.2a.726.726 0 0 1 .663-.758.9.9 0 0 1 .689.4l2.43 3.274 2.516-3.395a.717.717 0 0 1 1.258.482v6.2a.685.685 0 0 1-.663.758.693.693 0 0 1-.706-.758v-4.078l-1.828 2.314a.727.727 0 0 1-1.258 0z" class="cls-5" data-name="Path 12162" transform="translate(538.947 609.058)"/>
+        <path id="Path_12163" d="M73.8 54.866a.729.729 0 0 1 1.456 0v6.289a.729.729 0 0 1-1.456 0z" class="cls-5" data-name="Path 12163" transform="translate(591.38 609.173)"/>
+        <path id="Path_12164" d="M0 .674A.692.692 0 0 1 .7 0a.677.677 0 0 1 .657.674v5.539h3.007a.731.731 0 1 1 0 1.452H.7a.67.67 0 0 1-.7-.674V.674z" class="cls-5" data-name="Path 12164" transform="translate(668.196 663.358)"/>
+        <path id="Path_12165" d="M.444 7.77A.789.789 0 0 1 .088 6.7L3.276.474a.755.755 0 0 1 1.381 0l3.135 6.237c.452.869-.886 1.555-1.286.686l-.486-.982H1.912l-.478.985a.841.841 0 0 1-.99.37zm4.777-2.823L3.97 2.2 2.6 4.947z" class="cls-5" data-name="Path 12165" transform="translate(656.705 663.334)"/>
+    </g>
+</svg>

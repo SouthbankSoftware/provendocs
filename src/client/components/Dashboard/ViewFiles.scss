@@ -109,6 +109,11 @@
       padding-left: 24px;
       padding-right: 24px;
 
+      .bp3-popover-wrapper {
+        height: 15px;
+        width: unset;
+      }
+
       svg {
         width: 15px;
         min-width: 15px;
@@ -449,7 +454,7 @@
           top: 0px;
           left: 0px;
           min-width: unset;
-          width: 34px;
+          width: 54px;
           height: 100%;
           padding-top: 20%;
           padding-bottom: 20%;
@@ -500,7 +505,7 @@
           top: 0px;
           left: 0px;
           min-width: unset;
-          width: 34px;
+          width: 54px;
           height: 100%;
           padding-top: 20%;
           padding-bottom: 20%;
@@ -555,7 +560,7 @@
           top: 0px;
           left: 0px;
           min-width: unset;
-          width: 34px;
+          width: 54px;
           height: 100%;
           padding-top: 20%;
           padding-bottom: 20%;
@@ -603,19 +608,30 @@
         opacity: 0.8;
       }
 
-      svg {
+      .bp3-popover-wrapper {
         z-index: 1;
         position: relative;
         left: 108px;
-        top: -165px;
+        top: -184px;
         min-width: 20px;
-        height: 16px;
+        height: 20px;
+
+        .bp3-popover-target {
+          width: unset;
+          height: unset;
+        }
+
+        svg {
+          height: 20px;
+        }
       }
+
+
 
       .fileTypeFooter {
         z-index: 1;
         position: relative;
-        top: -32px;
+        top: -17px;
         min-width: 20px;
         height: 17px;
         background-color: $steel-grey;
