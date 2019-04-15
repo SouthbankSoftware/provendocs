@@ -24,7 +24,6 @@
 
 import React from 'react';
 import ReactGA from 'react-ga';
-import Particles from 'react-particles-js';
 import { withRouter } from 'react-router';
 import {
   Steps, Button, Input, Form, Modal,
@@ -43,7 +42,6 @@ import MonitorIcon from '../../style/icons/pages/landing-page/monitor-vector.svg
 import TickIcon from '../../style/icons/pages/landing-page/tick-icon.svg';
 import { TopNavBar, Footer } from '../index';
 import { PAGES } from '../../common/constants';
-import ParticleConfig from '../../common/particles';
 import HOW_DOES_IT_WORK_STEPS from '../../common/landing_content';
 import { checkAuthentication } from '../../common/authentication';
 import api from '../../common/api';
@@ -178,7 +176,6 @@ class HomePage extends React.Component<Props, State> {
         <div className="AppBody">
           <div className="mainPanel homePage">
             <div className="snap section heroSection" id="home" style={sectionStyle}>
-              <Particles className="particles" params={ParticleConfig} style={sectionStyle} />
               <div className="heroLeft">
                 <span className="heroText">Prove it forever with ProvenDocs.</span>
                 <span className="heroSubtitle">
