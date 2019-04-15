@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-12T13:06:59+10:00
+ * @Last modified time: 2019-04-15T08:42:09+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -36,6 +36,7 @@
   max-height: 76px;
   padding-top: 21px;
   padding-bottom: 21px;
+  overflow-x: scroll;
 
   @media screen and (max-width: 420px) {
     display: none;

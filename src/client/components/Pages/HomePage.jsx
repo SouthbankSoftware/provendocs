@@ -24,12 +24,11 @@
 
 import React from 'react';
 import ReactGA from 'react-ga';
-import Particles from 'react-particles-js';
 import { withRouter } from 'react-router';
 import {
   Steps, Button, Input, Form, Modal,
 } from 'antd';
-import MouseIcon from '../../style/icons/pages/landing-page/mouse-icon.svg';
+import LandingAnimation from '../../style/icons/pages/landing-page/proven-docs-animation.gif';
 import UserSignUpIcon from '../../style/icons/pages/landing-page/user-sign-up-icon.svg';
 import UploadFilesIcon from '../../style/icons/pages/landing-page/upload-files-icon.svg';
 import BlockchainIcon from '../../style/icons/pages/landing-page/blockchain-icon.svg';
@@ -39,10 +38,10 @@ import StatDocumentIcon from '../../style/icons/pages/landing-page/clipboard-ico
 import PropertyIcon from '../../style/icons/pages/landing-page/property-icon.svg';
 import CalculatorIcon from '../../style/icons/pages/landing-page/calculator-icon.svg';
 import IllustrationIcon from '../../style/icons/pages/landing-page/illustration-home.svg';
+import MonitorIcon from '../../style/icons/pages/landing-page/monitor-vector.svg';
 import TickIcon from '../../style/icons/pages/landing-page/tick-icon.svg';
 import { TopNavBar, Footer } from '../index';
 import { PAGES } from '../../common/constants';
-import ParticleConfig from '../../common/particles';
 import HOW_DOES_IT_WORK_STEPS from '../../common/landing_content';
 import { checkAuthentication } from '../../common/authentication';
 import api from '../../common/api';
@@ -51,14 +50,14 @@ import './HomePage.scss';
 
 const { Step } = Steps;
 
-type Props = { privacyOpen: boolean; location: any; match: any; history: any; form: any };
+type Props = { privacyOpen: boolean, location: any, match: any, history: any, form: any };
 type State = {
-  privacyOpen: boolean;
-  howDoesItWorkCurrentStep: number;
-  sectionHeight: number;
-  isAuthenticated: boolean;
-  dlgVisible: boolean;
-  dlgSuccess: boolean;
+  privacyOpen: boolean,
+  howDoesItWorkCurrentStep: number,
+  sectionHeight: number,
+  isAuthenticated: boolean,
+  dlgVisible: boolean,
+  dlgSuccess: boolean,
 };
 class HomePage extends React.Component<Props, State> {
   constructor() {
@@ -177,14 +176,14 @@ class HomePage extends React.Component<Props, State> {
         <div className="AppBody">
           <div className="mainPanel homePage">
             <div className="snap section heroSection" id="home" style={sectionStyle}>
-              <Particles className="particles" params={ParticleConfig} style={sectionStyle} />
-              <span className="heroText">Prove it forever with ProvenDocs.</span>
-              <span className="heroSubtitle">
-                The integrity, ownership and creation date of your documents are reliably stored on
-                the Blockchain. The content of the documents can be private or shared.
-              </span>
-              <div className="heroButtons">
-                {/*  <a
+              <div className="heroLeft">
+                <span className="heroText">Prove it forever with ProvenDocs.</span>
+                <span className="heroSubtitle">
+                  The integrity, ownership and creation date of your documents are reliably stored
+                  on the Blockchain. The content of the documents can be private or shared.
+                </span>
+                <div className="heroButtons">
+                  {/*  <a
                   className="watchVideoButton button"
                   href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
                   target="_blank"
@@ -194,14 +193,18 @@ class HomePage extends React.Component<Props, State> {
                     <span>Watch Video</span>
                   </div>
                 </a> */}
-                <a className="findOutMoreButton button" href="/signup">
-                  <div className="button-text">
-                    <span>Get Proving!</span>
-                  </div>
-                </a>
+                  <a className="findOutMoreButton button" href="/signup">
+                    <div className="button-text">
+                      <span>Get Proving!</span>
+                    </div>
+                  </a>
+                </div>
               </div>
-              <div className="mouseIcon">
-                <MouseIcon />
+              <div className="heroRight">
+                <div className="monitorWrapper">
+                  <MonitorIcon />
+                  <img src={LandingAnimation} alt="ProvenDocs In Action" className="pdocsGif" />
+                </div>
               </div>
             </div>
             <div className="snap section howDoesItWorkSection" style={sectionStyle}>

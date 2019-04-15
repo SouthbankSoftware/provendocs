@@ -1,0 +1,39 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 558.932 445.333">
+  <defs>
+    <style>
+            .cls-1{fill:url(#linear-gradient)}.cls-2{fill:#28292a}.cls-3{fill:url(#linear-gradient-2)}.cls-4{fill:url(#linear-gradient-3)}.cls-5{fill:#3b3c3d}.cls-6{fill:#fff;opacity:.15}
+        </style>
+    <linearGradient id="linear-gradient" x1=".084" x2=".916" y1="1.103" y2="-.103" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#969696"/>
+      <stop offset=".6" stop-color="#e9e9ea"/>
+      <stop offset="1" stop-color="#dddee0"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1=".499" x2=".499" y1="1" y2=".001" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#a4a4a4"/>
+      <stop offset=".113" stop-color="#8d9092"/>
+      <stop offset=".204" stop-color="#bcbec1"/>
+      <stop offset=".454" stop-color="#fff"/>
+      <stop offset="1" stop-color="#969696"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-3" x2="1" y1=".49" y2=".49" gradientUnits="objectBoundingBox">
+      <stop offset=".011" stop-color="#1f1f1f"/>
+      <stop offset=".051" stop-color="#848484"/>
+      <stop offset=".546" stop-color="#fff"/>
+      <stop offset=".796" stop-color="#bcbec1"/>
+      <stop offset=".887" stop-color="#8d9092"/>
+      <stop offset=".948" stop-color="#a0a2a4"/>
+      <stop offset="1" stop-color="#393939"/>
+    </linearGradient>
+  </defs>
+  <g id="monitor-vector" transform="translate(18480.563 3642.333)">
+    <path id="Subtraction_11" d="M546.088 385.5H12.843A12.874 12.874 0 0 1 0 372.654V12.843A12.874 12.874 0 0 1 12.843 0h533.245a12.875 12.875 0 0 1 12.844 12.843v359.811a12.875 12.875 0 0 1-12.844 12.846zM20.649 17.91v297.2h517.988V17.91z" class="cls-1" data-name="Subtraction 11" transform="translate(-18480.563 -3642.333)"/>
+    <path id="Subtraction_10" d="M558.932 334.723H0V12.843A12.874 12.874 0 0 1 12.843 0h533.245a12.875 12.875 0 0 1 12.844 12.843v321.879zM20.649 17.91v297.2h517.988V17.91z" class="cls-2" data-name="Subtraction 10" transform="translate(-18480.563 -3642.333)"/>
+    <g id="Group_2955" data-name="Group 2955" transform="translate(-18295.58 -3256.836)">
+      <path id="Path_12117" d="M374.567 443.949c-.9-.2-19.016-3.684-20.111-4.182-1.195-.5-2.788-.9-3.186-1.892-4.679-11.35-7.965-50.676-7.965-50.676H218.058s-3.385 39.227-7.965 50.676c-.5 1-1.991 1.394-3.186 1.892-1.1.5-19.215 3.883-20.111 4.182-.9.6-.8.8-.8.8h189.567c-.199-.003-.1-.501-.996-.8z" class="cls-3" data-name="Path 12117" transform="translate(-185.801 -387.2)"/>
+      <path id="Rectangle_2406" d="M0 0h189.563v1.294H0z" class="cls-4" data-name="Rectangle 2406" transform="translate(0 57.546)"/>
+      <path id="Rectangle_2407" d="M0 0h187.87v.996H0z" class="cls-5" data-name="Rectangle 2407" transform="translate(.896 58.84)"/>
+    </g>
+    <path id="Path_12166" d="M547.92 0H406.942L280.7 334.722h280.063V12.843A12.875 12.875 0 0 0 547.92 0z" class="cls-6" data-name="Path 12166" transform="translate(-18482.797 -3642.333)"/>
+  </g>
+</svg>

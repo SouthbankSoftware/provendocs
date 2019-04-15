@@ -243,15 +243,22 @@ export default class ViewFiles extends React.Component<Props, State> {
             }}
           >
             {file.proofInfo && file.proofInfo === PROOF_STATUS.FAILED && (
-              <CrossIcon className="crossIcon" />
+              <Tooltip position={Position.TOP} content="Something went wrong while proving your document.">
+                <CrossIcon className="crossIcon" />
+              </Tooltip>
             )}
             {file.proofInfo && file.proofInfo === PROOF_STATUS.VALID && (
-              <TickIcon className="tickIcon" />
+              <Tooltip position={Position.TOP} content="Your document has been proven.">
+                <TickIcon className="tickIcon" />
+              </Tooltip>
+
             )}
             {file.proofInfo
               && (file.proofInfo === PROOF_STATUS.PENDING
                 || file.proofInfo === PROOF_STATUS.SUBMITTED) && (
-                <PendingIcon className="pendingIcon" />
+                  <Tooltip position={Position.TOP} content="Your document is not yet proven.">
+                    <PendingIcon className="pendingIcon" />
+                  </Tooltip>
             )}
             <span className="fileName">
               <Tooltip content={file.name} position={Position.TOP}>
@@ -333,19 +340,25 @@ export default class ViewFiles extends React.Component<Props, State> {
               {reverseStatusArray[key]
                 && reverseStatusArray[key].status
                 && reverseStatusArray[key].status === PROOF_STATUS.FAILED && (
-                  <CrossIcon className="crossIcon" />
+                  <Tooltip position={Position.TOP} content="Something went wrong proving your document.">
+                    <CrossIcon className="crossIcon" />
+                  </Tooltip>
               )}
               {reverseStatusArray[key]
                 && reverseStatusArray[key].status
                 && reverseStatusArray[key].status === PROOF_STATUS.VALID && (
-                  <TickIcon className="tickIcon" />
+                  <Tooltip position={Position.TOP} content="Your document has been proven.">
+                    <TickIcon className="tickIcon" />
+                  </Tooltip>
               )}
               {reverseStatusArray[key]
                 && reverseStatusArray[key].status
                 && (reverseStatusArray[key].status === PROOF_STATUS.PENDING
                   || reverseStatusArray[key].status === PROOF_STATUS.SUBMITTED
                   || reverseStatusArray[key].status === PROOF_STATUS.UNPROVEN) && (
-                  <PendingIcon className="pendingIcon" />
+                    <Tooltip position={Position.TOP} content="Proof in progress">
+                      <PendingIcon className="pendingIcon" />
+                    </Tooltip>
               )}
             </div>
             <span className="number">{`${versions.length - key}: `}</span>
