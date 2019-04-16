@@ -161,10 +161,6 @@ class Dashboard extends React.Component<Props, State> {
     );
   }
 
-  _setAuthenticated = (authenticated: bool) => {
-    this.setState({isAuthenticated: authenticated});
-  }
-
   componentDidMount() {
     const { history } = this.props;
     window.addEventListener('resize', this._updateDimensions);
@@ -302,6 +298,10 @@ class Dashboard extends React.Component<Props, State> {
     newSize.height = height;
     newSize.width = width;
     this.setState({ size: newSize });
+  };
+
+  _setAuthenticated = (authenticated: boolean) => {
+    this.setState({ isAuthenticated: authenticated });
   };
 
   _swapLHSTab = (uploadComplete: boolean) => {
