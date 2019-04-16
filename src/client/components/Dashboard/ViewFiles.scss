@@ -724,8 +724,6 @@
       span {
         width: 100%;
         text-align: center;
-        padding-left: 5px;
-        padding-right: 10px;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
@@ -780,9 +778,7 @@
       }
 
       .bp3-popover-wrapper {
-        width: 10px;
-        height: 10px;
-        margin-right: 10px;
+        margin-left: 10px;
       }
 
       .bp3-popover-target {
