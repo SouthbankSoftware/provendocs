@@ -162,7 +162,7 @@
     "start": "npm run clean-dist && npm run build-server && npm run webpack-prod && node bin/www",
     "start:log": "npm run clean-dist && npm run build-server && npm run webpack-prod && nodemon --exec babel-node -- bin/www > ~/tmp/provendocs.log",
     "build": "npm run clean-dist && npm run build-server && npm run webpack-prod",
-    "build-server": "yarn babel src/server --out-dir dist --copy-files && cp -r src/server/helpers/workers/certificate dist/helpers/certificate && mkdir -p dist/helpers/certificates && mkdir -p dist/helpers/archives  && mkdir -p dist/uploads && mkdir -p dist/helpers/uploads",
+    "build-server": "yarn babel src/server --out-dir dist --copy-files && mkdir -p dist/public && cp -r docs/litepaper_web dist/public/litepaper && cp -r src/server/helpers/workers/certificate dist/helpers/certificate && mkdir -p dist/helpers/certificates && mkdir -p dist/helpers/archives  && mkdir -p dist/uploads && mkdir -p dist/helpers/uploads",
     "clean-dist": "rm -f -r -d dist",
     "webpack-prod": "cross-env NODE_ENV=production webpack",
     "server-dev": "cross-env NODE_ENV=development nodemon --exec babel-node -- src/server/index.js && mkdir dist/uploads",

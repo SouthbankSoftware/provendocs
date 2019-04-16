@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54.752 70.351">
+    <defs>
+        <style>
+            .cls-1{fill:#c1bca4}.cls-2{fill:#ebe9d9}.cls-3{fill:#cdc7ac}
+        </style>
+    </defs>
+    <g id="versions-icon" transform="translate(-460.725 -8057.734)">
+        <path id="Union_12" d="M6.937 64.954h-.013A7.072 7.072 0 0 1 0 57.748V7.206A7.082 7.082 0 0 1 6.937 0h34.4a7.082 7.082 0 0 1 6.937 7.206v50.542a7.072 7.072 0 0 1-6.924 7.206z" class="cls-1" data-name="Union 12" transform="translate(460.724 8057.734)"/>
+        <g id="Group_3210" data-name="Group 3210" transform="translate(465.238 8063.13)">
+            <path id="Path_12327" d="M50.238 19.347v38.4a7.209 7.209 0 0 1-7.206 7.206H7.218A7.22 7.22 0 0 1 0 57.749V7.206A7.22 7.22 0 0 1 7.218 0h23.673z" class="cls-2" data-name="Path 12327"/>
+            <path id="Path_12328" d="M19.031 19.347H7.093A7.153 7.153 0 0 1 0 12.141V0" class="cls-3" data-name="Path 12328" transform="translate(31.207)"/>
+            <g id="Group_3209" data-name="Group 3209" transform="translate(9.929 23.314)">
+                <path id="Path_11642" d="M163.562 211.287h-29.269a.993.993 0 0 1 0-1.987h29.268a.993.993 0 0 1 0 1.987z" class="cls-3" data-name="Path 11642" transform="translate(-133.3 -197.71)"/>
+                <path id="Path_11644" d="M163.562 120.287h-29.269a.993.993 0 0 1 0-1.987h29.268a.993.993 0 0 1 0 1.987z" class="cls-3" data-name="Path 11644" transform="translate(-133.3 -118.3)"/>
+                <path id="Path_11645" d="M163.562 165.787h-29.269a.993.993 0 0 1 0-1.987h29.268a.993.993 0 0 1 0 1.987z" class="cls-3" data-name="Path 11645" transform="translate(-133.3 -158.005)"/>
+            </g>
+        </g>
+    </g>
+</svg>
