@@ -161,6 +161,10 @@ class Dashboard extends React.Component<Props, State> {
     );
   }
 
+  _setAuthenticated = (authenticated: bool) => {
+    this.setState({isAuthenticated: authenticated});
+  }
+
   componentDidMount() {
     const { history } = this.props;
     window.addEventListener('resize', this._updateDimensions);
@@ -900,6 +904,7 @@ class Dashboard extends React.Component<Props, State> {
       <div className="App">
         <TopNavBar
           userDetailsCallback={this._setUserDetails}
+          isAuthenticatedCallback={this._setAuthenticated}
           currentPage={PAGES.DASHBOARD}
           isAuthenticated
           onEarlyAccess={null}
@@ -941,10 +946,7 @@ class Dashboard extends React.Component<Props, State> {
           </Modal>
           <div className="mainPanel dashboard">
             <div className="pageTitle">
-              <div className="left">
-                <ViewDocsIcon />
-                <span className="title"> Dashboard </span>
-              </div>
+              <div className="left" />
               <div className="right" />
             </div>
             <div className="lowerGroup" id="lowerGroup">

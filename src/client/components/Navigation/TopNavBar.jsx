@@ -50,6 +50,7 @@ const { confirm } = Modal;
 
 type Props = {
   userDetailsCallback: any,
+  isAuthenticatedCallback: any,
   currentPage: string,
   isAuthenticated: boolean,
   onEarlyAccess: Function | null,
@@ -148,7 +149,7 @@ class TopNavBar extends React.Component<Props, State> {
 
   _renderDashboardTopNav = () => {
     const { userDetails } = this.state;
-    const { history } = this.props;
+    const { history, isAuthenticatedCallback } = this.props;
     let avatar = <div />;
     switch (userDetails.provider) {
       case OAUTH_PROVIDERS.GOOGLE:
@@ -202,16 +203,16 @@ class TopNavBar extends React.Component<Props, State> {
               });
               confirm({
                 className: 'deleteAccountModal',
-                title: 'Are you sure you want to delete your account?',
+                title: 'Are you sure you want to wipe your account?',
                 content: (
                   <span>
                     This action is
                     {' '}
                     <bold>permanent</bold>
-                    , after deleting your account you will not be able to view your proofs or files.
+                    , you will still be able to login after deleting your account but you will not be able to view your proofs or files.
                     <br />
                     {' '}
-We suggest you download a proof archive for each ofyour files before
+We suggest you download a proof archive for each of your files before
                     deleting your account.
                   </span>
                 ),
@@ -224,20 +225,20 @@ We suggest you download a proof archive for each ofyour files before
                     title: 'Really delete account?',
                     content: (
                       <span>
-                        Last chance to back out, are you really sure you want to delete your account
-                        and all included files and proofs?
+                        Last chance to back out, are you really sure you want to delete all your files and proofs?
                       </span>
                     ),
                     okText: 'Delete',
                     okType: 'danger',
                     cancelText: 'Cancel',
                     onOk() {
+                      isAuthenticatedCallback(false);
                       api
                         .deleteAccount()
                         .then((result) => {
                           Log.info(`Account deleted: ${result}`);
                           openNotificationWithIcon('success', 'Success', 'Account deleted.');
-                          history.push('/login');
+                          history.push('/');
                         })
                         .catch((error) => {
                           Log.error(`Error deleting account: ${error}`);
@@ -246,6 +247,7 @@ We suggest you download a proof archive for each ofyour files before
                             'Error',
                             'Failed to delete account, please contact support.',
                           );
+                          isAuthenticatedCallback(true);
                         });
                     },
                     onCancel() {},

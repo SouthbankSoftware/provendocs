@@ -24,16 +24,16 @@
 import winston from 'winston';
 import uuidv4 from 'uuid/v4';
 import fs from 'fs';
-import path from 'path';
-
 import createArchiveForDocument from '../helpers/archiveBuilder';
 import { getUserDetails } from '../helpers/userHelpers';
 import {
   getHistoricalFile,
   getVersionProofForFile,
   getDocumentProofForFile,
+  forgetAllFilesForUser,
+  clearStorageForUser,
 } from '../helpers/mongoAPI';
-import { LOG_LEVELS, STACKDRIVER_SEVERITY } from '../common/constants';
+import { DOMAINS, LOG_LEVELS, STACKDRIVER_SEVERITY } from '../common/constants';
 import { generalFormat } from '../modules/winston.config';
 
 const { MongoClient } = require('mongodb');
@@ -259,6 +259,9 @@ module.exports = (app: any) => {
       });
   });
 
+  /**
+   * Clear a users Thumbnails, forget all their files and wipe their storage usage.
+   */
   app.get('/api/util/deleteAccount/', (req, res) => {
     const reqId = uuidv4();
     logger.log({
@@ -267,29 +270,76 @@ module.exports = (app: any) => {
       message: '[REQUEST] -> Delete account.',
       reqId,
     });
-    // Get User
+
     getUserDetails(req, res, app.get('jwtSecret'))
       .then((user) => {
         logger.log({
-          level: LOG_LEVELS.INFO,
-          severity: STACKDRIVER_SEVERITY.INFO,
-          message: 'Found user for deletion',
-          userId: user._id,
+          level: LOG_LEVELS.DEBUG,
+          severity: STACKDRIVER_SEVERITY.DEBUG,
+          message: 'Got user Details',
+          user,
           reqId,
         });
-        // @TODO -> Add actual account deletion logic.
-        res.status(200).send({ ok: 1 });
+        forgetAllFilesForUser(user._id)
+          .then(() => {
+            logger.log({
+              level: LOG_LEVELS.INFO,
+              severity: STACKDRIVER_SEVERITY.INFO,
+              message: 'User Files Forgotten',
+              reqId,
+            });
+            clearStorageForUser(user._id)
+              .then(() => {
+                logger.log({
+                  level: LOG_LEVELS.INFO,
+                  severity: STACKDRIVER_SEVERITY.INFO,
+                  message: 'User Storage Deleted',
+                  reqId,
+                });
+                res.cookie('AuthToken', '', {
+                  expires: new Date(),
+                  httpOnly: true,
+                });
+                res.cookie('RefreshToken', '', {
+                  expires: new Date(),
+                  httpOnly: true,
+                });
+                res.status(200).send(true);
+              })
+              .catch((clearStorageErr) => {
+                logger.log({
+                  level: LOG_LEVELS.INFO,
+                  severity: STACKDRIVER_SEVERITY.INFO,
+                  message: 'Failed to delete storage for user.',
+                  clearStorageErr,
+                  errMSg: clearStorageErr.message,
+                  reqId,
+                });
+                res.status(400).send({ ok: 0, error: 'Failed to delete storage for user.' });
+              });
+          })
+          .catch((deleteUserErr) => {
+            logger.log({
+              level: LOG_LEVELS.INFO,
+              severity: STACKDRIVER_SEVERITY.INFO,
+              message: 'Failed to delete user.',
+              deleteUserErr,
+              errMSg: deleteUserErr.message,
+              reqId,
+            });
+            res.status(400).send({ ok: 0, error: 'Failed to delete user.' });
+          });
       })
-      .catch((error) => {
+      .catch((getUserErr) => {
         logger.log({
-          level: LOG_LEVELS.INFO,
-          severity: STACKDRIVER_SEVERITY.INFO,
-          message: 'Failed to authenticate user for deletion.',
-          error,
-          errMsg: error.message,
+          level: LOG_LEVELS.DEBUG,
+          severity: STACKDRIVER_SEVERITY.DEBUG,
+          message: 'Failed to get user details',
+          getUserErr,
+          errMsg: getUserErr.message,
           reqId,
         });
-        res.status(400).send({ ok: 0, error: 'Failed to authenticate user to delete.' });
+        res.status(400).send({ ok: 0, error: 'Failed to find user for token.' });
       });
   });
 };

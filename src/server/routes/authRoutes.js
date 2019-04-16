@@ -74,6 +74,7 @@ module.exports = (app) => {
       expires: new Date(),
       httpOnly: true,
     });
+    console.log(`!!! -> ${DOMAINS.PROVENDOCS}`);
     res.redirect(`${DOMAINS.API}/auth/logout?redirectURL=${DOMAINS.PROVENDOCS}`);
   });
   app.get('/api/loginSucceeded', (req, res) => {
