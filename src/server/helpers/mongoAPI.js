@@ -2103,3 +2103,193 @@ export const forgetFile = (fileId: string, userId: string) => new Promise<void>(
     });
   }
 });
+
+/**
+ * Forgets all the files a user has uploaded, effectively forgettign the user.
+ * @param {string} userId - The ID of the user to forget all documents for.
+ * @returns {Promise<void>} true if succeeded, object with error if failed.
+ */
+export const forgetAllFilesForUser = (userId: string) => new Promise<void>((resolve, reject) => {
+  logger.log({
+    level: LOG_LEVELS.DEBUG,
+    severity: STACKDRIVER_SEVERITY.DEBUG,
+    message: 'Driver Client Status:',
+    isConnected: dbObject.serverConfig.isConnected(),
+  });
+  const _deleteThumbnails = () => {
+    logger.log({
+      level: LOG_LEVELS.DEBUG,
+      severity: STACKDRIVER_SEVERITY.DEBUG,
+      message: 'Deleting Thumbnails generated for file',
+      userId,
+    });
+
+    const thumbCollection = dbObject.collection(`thumbs_${userId}_pdbignore`);
+    const queryFilter = {};
+
+    thumbCollection.deleteMany(
+      queryFilter,
+      { promoteLongs: false },
+      (deleteError, deleteResult) => {
+        if (deleteError) {
+          logger.log({
+            level: LOG_LEVELS.ERROR,
+            severity: STACKDRIVER_SEVERITY.ERROR,
+            message: 'Error Deleting Thumbnails',
+            deleteError,
+          });
+          reject(deleteError);
+        } else {
+          logger.log({
+            level: LOG_LEVELS.DEBUG,
+            severity: STACKDRIVER_SEVERITY.DEBUG,
+            message: 'Deleted Thumbnails',
+            deleteResult,
+          });
+        }
+      },
+    );
+  };
+
+  const collection = dbObject.collection(`files_${userId}`);
+  const filter = {};
+  logger.log({
+    level: LOG_LEVELS.DEBUG,
+    severity: STACKDRIVER_SEVERITY.DEBUG,
+    message: 'Forgetting all documents for user.',
+    userId,
+    collection: `files_${userId}`,
+  });
+
+  if (!collection) {
+    reject(new Error('Failed to get collection'));
+  } else {
+    // First, delete the documents (so that it does not exist in the current version).
+    collection.deleteMany(filter, { promoteLongs: false }, (deleteError, deleteResult) => {
+      if (deleteError) {
+        logger.log({
+          level: LOG_LEVELS.ERROR,
+          severity: STACKDRIVER_SEVERITY.ERROR,
+          message: 'Error Deleting Documents',
+          deleteError,
+        });
+        reject(deleteError);
+      } else {
+        logger.log({
+          level: LOG_LEVELS.DEBUG,
+          severity: STACKDRIVER_SEVERITY.DEBUG,
+          message: 'Result of deleting documents (for forget)',
+          deleteResult,
+        });
+        _deleteThumbnails();
+
+        // Secondly, prepare a forget for the documents (to get the forget password).
+        dbObject.command(
+          {
+            forget: {
+              prepare: {
+                collection: `files_${userId}`,
+                filter,
+              },
+            },
+          },
+          (prepareError, prepareResult) => {
+            if (prepareError) {
+              logger.log({
+                level: LOG_LEVELS.ERROR,
+                severity: STACKDRIVER_SEVERITY.ERROR,
+                message: 'Error Preparing Forget',
+                prepareError,
+              });
+              reject(prepareError);
+            } else {
+              logger.log({
+                level: LOG_LEVELS.DEBUG,
+                severity: STACKDRIVER_SEVERITY.DEBUG,
+                message: 'Result of preparing document (for forget)',
+                prepareResult,
+              });
+              const { password, forgetId } = prepareResult;
+              dbObject.command(
+                {
+                  forget: {
+                    execute: {
+                      forgetId,
+                      password,
+                    },
+                  },
+                },
+                (executeError, executeResult) => {
+                  if (executeError) {
+                    logger.log({
+                      level: LOG_LEVELS.ERROR,
+                      severity: STACKDRIVER_SEVERITY.ERROR,
+                      message: 'Error executing Forget',
+                      executeError,
+                    });
+                    reject(executeError);
+                  } else {
+                    logger.log({
+                      level: LOG_LEVELS.DEBUG,
+                      severity: STACKDRIVER_SEVERITY.DEBUG,
+                      message: 'Result of executing forget',
+                      executeResult,
+                    });
+                    resolve(executeResult);
+                  }
+                },
+              );
+            }
+          },
+        );
+      }
+    });
+  }
+});
+
+/**
+ * Deletes all storage entries for a user, effectively resetting their storage entirely.
+ * @param {string} userId - The ID of the user to clear all storage for.
+ * @returns {Promise<Object>} - An object containing ok and an error if applicable.
+ */
+export const clearStorageForUser = (userId: string) => new Promise<Object>((resolve, reject) => {
+  logger.log({
+    level: LOG_LEVELS.DEBUG,
+    severity: STACKDRIVER_SEVERITY.DEBUG,
+    message: 'Driver Client Status:',
+    isConnected: dbObject.serverConfig.isConnected(),
+  });
+  logger.log({
+    level: LOG_LEVELS.DEBUG,
+    severity: STACKDRIVER_SEVERITY.DEBUG,
+    message: 'Wiping storage for user: ',
+    userId,
+  });
+
+  const filter = { _id: userId };
+  const collection = dbObject.collection(COLLECTION_NAMES.USER_INFO);
+
+  if (!collection) {
+    reject(new Error('Failed to get collection'));
+  } else {
+    collection.deleteMany(filter, { promoteLongs: false }, (deleteError, deleteResult) => {
+      if (deleteError) {
+        logger.log({
+          level: LOG_LEVELS.ERROR,
+          severity: STACKDRIVER_SEVERITY.ERROR,
+          message: 'Error Deleting storage Documents',
+          deleteError,
+        });
+        reject(deleteError);
+      } else {
+        logger.log({
+          level: LOG_LEVELS.DEBUG,
+          severity: STACKDRIVER_SEVERITY.DEBUG,
+          message: 'Result of deleting storgae document',
+          deleteResult,
+        });
+        resolve({ ok: 1 });
+      }
+    });
+  }
+});

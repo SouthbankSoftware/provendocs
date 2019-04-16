@@ -300,6 +300,10 @@ class Dashboard extends React.Component<Props, State> {
     this.setState({ size: newSize });
   };
 
+  _setAuthenticated = (authenticated: boolean) => {
+    this.setState({ isAuthenticated: authenticated });
+  };
+
   _swapLHSTab = (uploadComplete: boolean) => {
     const { lhsTabSelected } = this.state;
     // const { viewDocs } = this.refs;
@@ -900,6 +904,7 @@ class Dashboard extends React.Component<Props, State> {
       <div className="App">
         <TopNavBar
           userDetailsCallback={this._setUserDetails}
+          isAuthenticatedCallback={this._setAuthenticated}
           currentPage={PAGES.DASHBOARD}
           isAuthenticated
           onEarlyAccess={null}
@@ -941,10 +946,7 @@ class Dashboard extends React.Component<Props, State> {
           </Modal>
           <div className="mainPanel dashboard">
             <div className="pageTitle">
-              <div className="left">
-                <ViewDocsIcon />
-                <span className="title"> Dashboard </span>
-              </div>
+              <div className="left" />
               <div className="right" />
             </div>
             <div className="lowerGroup" id="lowerGroup">
