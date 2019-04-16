@@ -51,5 +51,6 @@ uploads/*
 !src/server/helpers/uploads/README.md
 
 !uploads/README.md
-
+!docs/provendb-litepaper.pdf
 \.storybook/
+

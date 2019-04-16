@@ -22,6 +22,7 @@
  * @Last modified time: 2019-04-03T09:18:20+11:00
  */
 export { default as Dashboard } from './Dashboard';
+export { default as Downloads } from './Downloads';
 export { default as SharedDocument } from './SharedDocument';
 export { default as LoginPage } from './LoginPage';
 export { default as RegistrationPage } from './RegistrationPage';

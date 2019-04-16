@@ -1,0 +1,95 @@
+@import "../../style/global_colors.scss";
+
+.App.download {
+  .AppBody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .downloadsPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    overflow-y: scroll;
+    width: 50%;
+    max-width: 75%;
+
+    .downloadsHeader {
+      color: white;
+      font-size: 60px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 57px;
+      margin-bottom: 57px;
+      align-self: center;
+    }
+
+    hr {
+      width: 100%;
+      opacity: 0.2;
+    }
+
+    .downloadable {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      margin-bottom: 57px;
+      margin-top: 39px;
+      padding-left: 39px;
+      padding-right: 39px;
+
+      .downloadsSubHeader {
+        color: white;
+        font-size: 25px;
+        font-weight: bold;
+        text-align: left;
+        width: auto;
+        height: auto;
+      }
+
+      .downloadDescription {
+        color: white;
+        font-size: 16px;
+        opacity: 0.7;
+        text-align: left;
+        margin-bottom: 39px;
+      }
+
+      .downloadOSRadio {
+        margin-bottom: 20px;
+
+        .ant-radio-button-wrapper {
+          background-color: $dusk_blue;
+          border-color: $dusk_blue;
+          color: white;
+        }
+
+        .ant-radio-button-wrapper-checked {
+          color: white;
+          background-color: $tealish;
+          border-color: $tealish;
+        }
+
+        .ant-radio-button-wrapper:not(:first-child)::before {
+          opacity: 0.2;
+        }
+      }
+
+      .downloadButtons {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+
+        .ant-btn {
+          width: 125px;
+          margin-right: 35px;
+          border: none;
+        }
+      }
+    }
+  }
+}

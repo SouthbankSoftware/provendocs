@@ -469,6 +469,13 @@ We suggest you download a proof archive for each of your files before
             >
               <span className="aboutLabel">Documentation</span>
             </a>
+            <Link
+              className="link downloadsLink"
+              to={{ pathname: '/Downloads', search: '' }}
+              style={{ textDecoration: 'none' }}
+            >
+              <span className=" button-text">Downloads</span>
+            </Link>
           </div>
         </div>
         <div className="rightButtons">

@@ -33,6 +33,7 @@ import {
   RegistrationPage,
   LoginPage,
   LandingPage,
+  Downloads,
 } from '../components/Pages';
 import '../style/global_styles.scss';
 
@@ -45,6 +46,7 @@ const Routes = () => (
       <Route path="/landing/:page" component={LandingPage} />
       <Route path="/dashboard/" component={Dashboard} />
       <Route path="/home/" component={Dashboard} />
+      <Route path="/downloads/" component={Downloads} />
       <Route path="/privacy" component={() => <HomePage privacyOpen />} />
       <Route path="/eula" component={() => <RegistrationPage eulaIsOpen />} />
       <Route path="/security" component={() => <RegistrationPage securityIsOpen />} />
