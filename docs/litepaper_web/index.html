@@ -53,8 +53,8 @@
 			<li><a href="#" data-nav-section="features">Features</a></li>
 			<li><a href="#" data-nav-section="provendocs">ProvenDocs: A ProvenDB application</a></li>
 		</ul>
-		<div class="btn btn-menu">Join Early Access</div>
-		<div class="btn btn-menu-outline">Download Litepaper</div>
+		<a href="https://provendocs.com" target="__blank" class="btn btn-menu-outline">Join Early Access</a>
+		<a href="https://github.com/SouthbankSoftware/provendocs/raw/develop/docs/provendb-litepaper.pdf" target="__blank" class="btn btn-menu-outline">Download Litepaper</a>
 	</div>
 	
 
@@ -67,7 +67,7 @@
 							<div class="col-md-6 fh5co-text">
 								<img class="to-animate intro-animate-1 provendb-logo-2" src="images/provendb-logo-1.svg">
 								<p class="to-animate intro-animate-2">Join our early access program!</p>
-								<p class="to-animate intro-animate-3"><a href="#" class="btn btn-outline btn-md">Watch Video</a><a href="#" class="btn btn-primary btn-md">Join Early Access</a></p>
+								<p class="to-animate intro-animate-3"><a href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw/videos" target="__blank" class="btn btn-outline btn-md">Watch Video</a><a href="https://provendocs.com" target="__blank" class="btn btn-primary btn-md">Join Early Access</a></p>
 							</div>
 
 						</div>
@@ -200,7 +200,7 @@
 											<div class="col-md-8 col-md-offset-2 fh5co-section-heading text-center">
 												<h2 class="fh5co-lead to-animate; fh5co-colored">Join early access!</h2>
 												<p class="fh5co-sub to-animate; fh5co-colored-2">Join today and be among the first people to try ProvenDB.</p>
-												<div class="to-animate"><a href="#" class="btn btn-navy">Join Early Access</a></div>
+												<div class="to-animate"><a href="https://provendocs.com" target="__blank" class="btn btn-navy">Join Early Access</a></div>
 											</div>
 										</div>
 									</div>
@@ -271,7 +271,7 @@
 											<div class="col-md-8 col-md-offset-2 fh5co-section-heading text-center">
 												<h2 class="fh5co-lead to-animate; fh5co-colored">ProvenDB Video</h2>
 												<p class="fh5co-sub to-animate; fh5co-colored-2">Watch ProvenDB presentation?</p>
-												<div class="to-animate"><a href="#" class="btn btn-navy">Watch Video</a></div>
+												<div class="to-animate"><a href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw/videos" target="__blank" class="btn btn-navy">Watch Video</a></div>
 											</div>
 										</div>
 									</div>
@@ -333,7 +333,7 @@
 									<span class="slide-accordion-icon-toggle active"><i class="icon-arrow-down"></i></span>
 									<h3>Why use ProvenDB?</h3>
 
-									<div class="slide-body" style="display: block;">
+									<div class="slide-body open" style="display: block;">
 											<div class="col-md-3 col-sm-6 text-center fh5co-text-wrap">
 												<div class="fh5co-text">
 													<img class="provendb-icon" src="images/certificate-icon.svg">
@@ -367,7 +367,7 @@
 								<div class="slide-accordion" data-section="provendb-useful-for">
 									<span class="slide-accordion-icon-toggle"><i class="icon-arrow-down"></i></span>
 									<h3>ProvenDB is particularly useful for:</h3>
-									<div class="slide-body">
+									<div class="slide-body open">
 										<div class="col-md-4 col-sm-6 text-center fh5co-text-wrap">
 											<div class="fh5co-text">
 												<img class="provendb-icon" src="images/desktop-document-icon.svg">
@@ -430,7 +430,7 @@
 											<div class="col-md-8 col-md-offset-2 fh5co-section-heading text-center">
 												<h2 class="fh5co-lead to-animate; fh5co-colored">Subscribe to ProvenDB</h2>
 												<p class="fh5co-sub to-animate; fh5co-colored-2">Join our mailing list to get the latest news, and announcements.</p>
-												<div class="to-animate"><a href="#" class="btn btn-navy">Subscribe</a></div>
+												<div class="to-animate"><a href="https://provendocs.com/subscribe" target="__blank" class="btn btn-navy">Subscribe</a></div>
 											</div>
 										</div>
 									</div>
@@ -465,7 +465,7 @@
 									<span class="slide-accordion-icon-toggle active"><i class="icon-arrow-down"></i></span>
 									<h3>What is a hash?</h3>
 
-									<div class="slide-body" style="display: block;">
+									<div class="slide-body open" style="display: block;">
 										<p>A hash is a mathematical “signature” of a document - a digital fingerprint. The chances of two documents having the same hash are infinitesimally small. Hashes are far, far more precise proofs of document identity than DNA or fingerprints.</p>
 									</div>
 								</div>
@@ -474,7 +474,7 @@
 									<span class="slide-accordion-icon-toggle"><i class="icon-arrow-down"></i></span>
 									<h3>Blockchain proofs</h3>
 
-									<div class="slide-body">
+									<div class="slide-body open">
 										<p>ProvenDB can generate proofs for a database version or a single document. Although only the hash for a complete version is anchored on the Blockchain, ProvenDB can supply a Merkle tree path which provides cryptographic proof that a given document was included within the Blockchain hash. In this way, users of ProvenDB may obtain proofs for individual documents that can be validated without the need to access any other documents within the database.</p>
 									</div>
 								</div>
@@ -482,7 +482,7 @@
 								<div class="slide-accordion" data-section="architecture">
 									<span class="slide-accordion-icon-toggle"><i class="icon-arrow-down"></i></span>
 									<h3>Architecture</h3>
-									<div class="slide-body">
+									<div class="slide-body open">
 									<div class="col-md-7">
 										<p>ProvenDB presents a MongoDB compatible API to the database user. Every change to the database creates a new logical version within the database. The user can view the older versions at any time.<br><br>The database user requests a proof be placed on the Blockchain for a specific version. This proof can be used to prove the timestamp of the entire version or any document in that version.</p>
 									</div>
@@ -497,7 +497,7 @@
 								<div class="slide-accordion" data-section="performance">
 									<span class="slide-accordion-icon-toggle"><i class="icon-arrow-down"></i></span>
 									<h3>Performance and Economics</h3>
-									<div class="slide-body">
+									<div class="slide-body open">
 										<p>Blockchain is sometimes called “the world’s worst database”; it offers truly terrible transactional throughput and storage costs. For instance, the Ethereum Blockchain can process only 15 transactions per second with a storage cost of hundreds of thousands or millions of dollars per Gigabyte.<br><br>The architecture of ProvenDB results in a penalty on storage overhead and throughout. However, this overhead is trivial compared to that of the Blockchain. While ProvenDB might be marginally slower and more expensive than a traditional database server, it is massively faster and cheaper than the Blockchain. ProvenDB offers a perfect compromise between the two technologies:</p>
 										
 									<img class="performance-diagram" src="images/performance-diagram.svg">
@@ -523,7 +523,7 @@
 											<div class="col-md-8 col-md-offset-2 fh5co-section-heading text-center">
 												<h2 class="fh5co-lead to-animate; fh5co-colored">Download Litepaper</h2>
 												<p class="fh5co-sub to-animate; fh5co-colored-2">Download a copy of our free litepaper.</p>
-												<div class="to-animate"><a href="#" class="btn btn-navy">Download</a></div>
+												<div class="to-animate"><a href="https://github.com/SouthbankSoftware/provendocs/raw/develop/docs/provendb-litepaper.pdf" target="__blank" class="btn btn-navy">Download</a></div>
 											</div>
 										</div>
 									</div>
@@ -658,7 +658,7 @@
 											<div class="col-md-8 col-md-offset-2 fh5co-section-heading text-center">
 												<h2 class="fh5co-lead to-animate; fh5co-colored">Join early access!</h2>
 												<p class="fh5co-sub to-animate; fh5co-colored-2">Join today and be among the first people to try ProvenDB.</p>
-												<div class="to-animate"><a href="#" class="btn btn-navy">Join Early Access</a></div>
+												<div class="to-animate"><a href="https://provendocs.com" target="__blank" class="btn btn-navy">Join Early Access</a></div>
 											</div>
 										</div>
 									</div>

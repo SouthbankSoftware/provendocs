@@ -41,6 +41,7 @@ const Routes = () => (
   <BrowserRouter>
     <Switch>
       <Route exact path="/" component={HomePage} />
+      <Route exact path="/subscribe" component={() => <HomePage subscribe />} />
       <Route exact path="/logout" component={HomePage} />
       <Route path="/landing" component={LandingPage} />
       <Route path="/landing/:page" component={LandingPage} />
