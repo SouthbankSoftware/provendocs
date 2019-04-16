@@ -22,6 +22,12 @@
  * @Last modified time: 2019-04-10T14:36:38+10:00
  */
 
+export const DOWNLOAD_LINKS = {
+  VERIFY_DOCS: 'https://provendb.readme.io/docs/provendb-verify',
+  LITEPAPER: 'https://github.com/Southbanksoftware/provendocs/docs/litepaper.pdf',
+  LITEPAPER_DOCS: 'https://provendocs.com/litepaper',
+};
+
 export const PAGES = {
   HOME: 'home',
   APP: 'app',

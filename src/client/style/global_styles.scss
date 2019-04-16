@@ -186,6 +186,34 @@ h3 {
 
 //// ===    ===     === ////
 //// ===    Buttons     === ////
+.antbtn {
+  border: none;
+
+  span {
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+  }
+
+  i {
+    fill: white;
+    color: white;
+  }
+}
+
+.antbtn:hover {
+  opacity: 0.7;
+
+}
+
+.antbtn.teal {
+  background-color: $tealish;
+}
+
+.antbtn.navy {
+  background-color: $dusk-blue;
+}
+
 .button {
   background: unset;
   border: 1px solid white;
