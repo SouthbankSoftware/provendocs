@@ -50,7 +50,14 @@ import './HomePage.scss';
 
 const { Step } = Steps;
 
-type Props = { privacyOpen: boolean, location: any, match: any, history: any, form: any };
+type Props = {
+  privacyOpen: boolean,
+  location: any,
+  match: any,
+  history: any,
+  form: any,
+  subscribe: boolean,
+};
 type State = {
   privacyOpen: boolean,
   howDoesItWorkCurrentStep: number,
@@ -74,7 +81,12 @@ class HomePage extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { privacyOpen } = this.props;
+    const { privacyOpen, subscribe } = this.props;
+    if (subscribe) {
+      this.setState({
+        dlgVisible: true,
+      });
+    }
     this.setState({ privacyOpen });
     window.addEventListener('resize', this.updateDimensions);
     checkAuthentication().then((response: any) => {
@@ -246,16 +258,16 @@ class HomePage extends React.Component<Props, State> {
                   </div>
                   <div className="bottom">
                     <div className="sectionButtons">
-                      {/*  <a
+                      <a
                         className="lightpaper tealish whiteBorder button"
-                        href="/litePaper"
+                        href="/litepaper"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
                         <div className="button-text">
                           <span>Litepaper</span>
                         </div>
-                      </a> */}
+                      </a>
                       {/*   <a
                         className="watchVideo dark button"
                         href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
@@ -339,16 +351,16 @@ class HomePage extends React.Component<Props, State> {
                 </div>
               </div>
               <div className="sectionButtons">
-                {/*   <a
+                <a
                   className="lightpaper dark whiteBorder button"
-                  href="/litePaper"
+                  href="/litepaper"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <div className="button-text">
                     <span>Litepaper</span>
                   </div>
-                </a> */}
+                </a>
                 {/*  <a
                   className="watchVideo tealish button"
                   href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
@@ -420,7 +432,7 @@ class HomePage extends React.Component<Props, State> {
                 </div>
               </div>
               <div className="sectionButtons">
-                {/*                 <a
+                <a
                   className="lightPaper button"
                   href="/lightPaper"
                   target="_blank"
@@ -429,7 +441,7 @@ class HomePage extends React.Component<Props, State> {
                   <div className="button-text">
                     <span>Litepaper</span>
                   </div>
-                </a> */}
+                </a>
                 {/*  <a
                   className="watchVideo dark button"
                   href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
@@ -475,7 +487,6 @@ class HomePage extends React.Component<Props, State> {
                   <br />
                 </span>
                 <h3 className="subscribe"> Subscribe to our mailing list </h3>
-
                 <Button
                   type="primary"
                   htmlType="submit"

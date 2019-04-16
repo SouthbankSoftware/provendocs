@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 757.089 304.565">
+    <defs>
+        <style>
+            .cls-1,.cls-2,.cls-3{fill:#0f374f}.cls-1{font-size:15px;font-family:Roboto-Medium,Roboto;font-weight:500}.cls-1,.cls-2,.cls-3,.cls-4{opacity:.5}.cls-2,.cls-3{font-size:14px;font-weight:300}.cls-2{font-family:Roboto-LightItalic,Roboto;font-style:italic}.cls-3{font-family:Roboto-Light,Roboto}.cls-4{fill:none;stroke:#0f374f;stroke-width:.709px;stroke-dasharray:2.104 1.395}.cls-10,.cls-5{fill:#984081}.cls-5,.cls-6,.cls-7{opacity:.9}.cls-6,.cls-8{fill:#ce7869}.cls-7,.cls-9{fill:#36afd0}
+        </style>
+    </defs>
+    <g id="performance-diagram" transform="translate(-263.888 -5369)">
+        <text id="Transaction_Rate" class="cls-1" data-name="Transaction Rate" transform="translate(263.888 5433.844)">
+            <tspan x="0" y="0">Transaction Rate</tspan>
+        </text>
+        <text id="Cost_GB" class="cls-1" data-name="Cost/GB" transform="translate(325.766 5559.789)">
+            <tspan x="0" y="0">Cost/GB</tspan>
+        </text>
+        <text id="_1" class="cls-2" data-name="1" transform="translate(403.817 5634.5)">
+            <tspan x="0" y="0">1</tspan>
+        </text>
+        <text id="_10" class="cls-2" data-name="10" transform="translate(484.169 5634.5)">
+            <tspan x="0" y="0">10</tspan>
+        </text>
+        <text id="DBMS" class="cls-3" transform="translate(744.468 5669.565)">
+            <tspan x="0" y="0">DBMS</tspan>
+        </text>
+        <text id="Relative_rate_cost_logarithmic_scale_" class="cls-2" data-name="Relative rate/cost (logarithmic scale)" transform="translate(407.468 5669.565)">
+            <tspan x="0" y="0">Relative rate/cost (logarithmic scale)</tspan>
+        </text>
+        <text id="ProvenDB" class="cls-3" transform="translate(835.111 5669.565)">
+            <tspan x="0" y="0">ProvenDB</tspan>
+        </text>
+        <text id="Blockchain" class="cls-3" transform="translate(953.546 5669.565)">
+            <tspan x="0" y="0">Blockchain</tspan>
+        </text>
+        <text id="_100" class="cls-2" data-name="100" transform="translate(562.42 5634.495)">
+            <tspan x="0" y="0">100</tspan>
+        </text>
+        <text id="_1000" class="cls-2" data-name="1000" transform="translate(642.788 5634.495)">
+            <tspan x="0" y="0">1000</tspan>
+        </text>
+        <text id="_10000" class="cls-2" data-name="10000" transform="translate(722.069 5634.495)">
+            <tspan x="0" y="0">10000</tspan>
+        </text>
+        <text id="_100000" class="cls-2" data-name="100000" transform="translate(802.214 5634.495)">
+            <tspan x="0" y="0">100000</tspan>
+        </text>
+        <text id="_1000000" class="cls-2" data-name="1000000" transform="translate(880.472 5634.495)">
+            <tspan x="0" y="0">1000000</tspan>
+        </text>
+        <text id="_10000000" class="cls-2" data-name="10000000" transform="translate(959.977 5634.495)">
+            <tspan x="0" y="0">10000000</tspan>
+        </text>
+        <path id="Line_73" d="M0 0v239.891" class="cls-4" data-name="Line 73" transform="translate(827.65 5369)"/>
+        <path id="Line_74" d="M0 0v239.891" class="cls-4" data-name="Line 74" transform="translate(995.272 5369)"/>
+        <path id="Line_75" d="M0 0v239.891" class="cls-4" data-name="Line 75" transform="translate(911.461 5369)"/>
+        <path id="Line_76" d="M0 0v239.891" class="cls-4" data-name="Line 76" transform="translate(743.661 5369)"/>
+        <path id="Line_77" d="M0 0v239.891" class="cls-4" data-name="Line 77" transform="translate(576.039 5369)"/>
+        <path id="Line_78" d="M0 0v239.891" class="cls-4" data-name="Line 78" transform="translate(492.228 5369)"/>
+        <path id="Line_79" d="M0 0v239.891" class="cls-4" data-name="Line 79" transform="translate(408.062 5369)"/>
+        <path id="Line_80" d="M0 0v239.891" class="cls-4" data-name="Line 80" transform="translate(659.85 5369)"/>
+        <path id="Rectangle_2603" d="M0 0h588.631v25.214H0z" class="cls-5" data-name="Rectangle 2603" transform="translate(407.352 5564.855)"/>
+        <path id="Rectangle_2606" d="M0 0h86.475v25.214H0z" class="cls-5" data-name="Rectangle 2606" transform="translate(407.352 5438.783)"/>
+        <path id="Rectangle_2609" d="M0 0h335.422v25.214H0z" class="cls-6" data-name="Rectangle 2609" transform="translate(407.352 5514.426)"/>
+        <path id="Rectangle_2612" d="M0 0h421.186v25.214H0z" class="cls-6" data-name="Rectangle 2612" transform="translate(407.352 5388.532)"/>
+        <path id="Rectangle_2615" d="M0 0h392.598v25.214H0z" class="cls-7" data-name="Rectangle 2615" transform="translate(407.352 5539.641)"/>
+        <path id="Rectangle_2618" d="M0 0h392.598v25.214H0z" class="cls-7" data-name="Rectangle 2618" transform="translate(407.352 5413.747)"/>
+        <path id="Path_12039" d="M94.323 194.346a8.523 8.523 0 1 0-8.523-8.523 8.642 8.642 0 0 0 8.523 8.523" class="cls-8" data-name="Path 12039" transform="translate(632.552 5479.095)"/>
+        <path id="Path_12040" d="M145.423 194.346a8.523 8.523 0 1 0-8.523-8.523 8.525 8.525 0 0 0 8.523 8.523" class="cls-9" data-name="Path 12040" transform="translate(672.188 5479.095)"/>
+        <path id="Path_12041" d="M212.123 194.346a8.523 8.523 0 1 0-8.523-8.523 8.525 8.525 0 0 0 8.523 8.523" class="cls-10" data-name="Path 12041" transform="translate(723.924 5479.095)"/>
+    </g>
+</svg>
