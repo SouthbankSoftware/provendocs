@@ -24,6 +24,7 @@
 
 export const DOWNLOAD_LINKS = {
   VERIFY_DOCS: 'https://provendb.readme.io/docs/provendb-verify',
+  VERIFY_LATEST: (env: string, os: string) => `https://storage.googleapis.com/provendb-${env}/provendb-verify/provendb-verify_${os}`,
   LITEPAPER: 'https://github.com/Southbanksoftware/provendocs/docs/litepaper.pdf',
   LITEPAPER_DOCS: 'https://provendocs.com/litepaper',
 };
@@ -112,4 +113,17 @@ export const GA_CATEGORIES = {
   HOMEPAGE: 'HomePage',
   REGISTER: 'Register',
   TOPBAR: 'Topbar',
+};
+
+export const ENVIRONMENT = {
+  PROD: 'prd',
+  DEV: 'dev',
+  TEST: 'tst',
+  STAGING: 'stg',
+};
+
+export const OS = {
+  MAC: 'darwin_amd64',
+  LINUX: 'linux_amd64',
+  WINDOWS: 'windows_amd64',
 };

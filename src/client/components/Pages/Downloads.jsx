@@ -24,26 +24,50 @@
 import React from 'react';
 import ReactGA from 'react-ga';
 import { withRouter } from 'react-router';
-import { Button } from 'antd';
+import { Button, Radio } from 'antd';
 import { TopNavBar, Footer } from '..';
-import { PAGES, DOWNLOAD_LINKS } from '../../common/constants';
+import {
+  PAGES, DOWNLOAD_LINKS, ENVIRONMENT, OS,
+} from '../../common/constants';
 import { checkAuthentication } from '../../common/authentication';
 import './DownloadsPage.scss';
 
 type Props = {};
 type State = {
   isAuthenticated: boolean,
+  os: string,
+  env: string,
 };
+
+const RadioGroup = Radio.Group;
+const RadioButton = Radio.Button;
 
 class Downloads extends React.Component<Props, State> {
   constructor() {
     super();
     this.state = {
       isAuthenticated: false,
+      os: OS.WINDOWS,
+      env: ENVIRONMENT.PROD,
     };
   }
 
   componentDidMount() {
+    console.log(process.env.PROVENDOCS_ENV);
+    switch (process.env.PROVENDOCS_ENV) {
+      case ENVIRONMENT.STAGING:
+        this.setState({ env: ENVIRONMENT.STAGING });
+        break;
+      case ENVIRONMENT.DEV:
+        this.setState({ env: ENVIRONMENT.DEV });
+        break;
+      case ENVIRONMENT.TEST:
+        this.setState({ env: ENVIRONMENT.TEST });
+        break;
+      default:
+        break;
+    }
+
     checkAuthentication().then((response: any) => {
       if (response.status === 200) {
         this.setState({ isAuthenticated: true });
@@ -52,8 +76,14 @@ class Downloads extends React.Component<Props, State> {
     ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
+  _changeOSRadio = (event: Object) => {
+    console.log(event);
+    this.setState({ os: event.target.value });
+  };
+
   render() {
-    const { isAuthenticated } = this.state;
+    const { isAuthenticated, env, os } = this.state;
+
     return (
       <div className="App download">
         <TopNavBar
@@ -70,11 +100,29 @@ class Downloads extends React.Component<Props, State> {
               <span className="downloadDescription">
                 The verify tool can be used to verify proof archives downloaded from ProvenDocs.
                 This tool functions offline and does not depend on ProvenDocs or ProvenDB to
-                function, allowing you to be sure your document is proven on the blockchain
+                function, allowing you to be sure your document is proven on the blockchain.
+                <br />
+                <br />
+                Please make sure to download the tool for your desired operating system.
               </span>
+              <div className="downloadOSRadio">
+                <RadioGroup onChange={this._changeOSRadio} defaultValue={OS.WINDOWS} size="medium">
+                  <RadioButton value={OS.WINDOWS}>Windows</RadioButton>
+                  <RadioButton value={OS.MAC}>Mac OS</RadioButton>
+                  <RadioButton value={OS.LINUX}>Linux</RadioButton>
+                </RadioGroup>
+              </div>
               <div className="downloadButtons">
-                <Button href={} className="teal antbtn">Documentation</Button>
-                <Button className="navy antbtn">Download</Button>
+                <Button
+                  href={DOWNLOAD_LINKS.VERIFY_LATEST(env, os)}
+                  target="__blank"
+                  className="teal antbtn"
+                >
+                  Download
+                </Button>
+                <Button href={DOWNLOAD_LINKS.VERIFY_DOCS} target="__blank" className="navy antbtn">
+                  Documentation
+                </Button>
               </div>
             </div>
             <hr />
@@ -85,8 +133,16 @@ class Downloads extends React.Component<Props, State> {
                 blockchain enabled database that Provendocs is built on.
               </span>
               <div className="downloadButtons">
-                <Button className="teal antbtn">Read</Button>
-                <Button className="navy antbtn">Download</Button>
+                <Button href={DOWNLOAD_LINKS.LITEPAPER} target="__blank" className="teal antbtn">
+                  Download
+                </Button>
+                <Button
+                  href={DOWNLOAD_LINKS.LITEPAPER_DOCS}
+                  target="__blank"
+                  className="navy antbtn"
+                >
+                  Read
+                </Button>
               </div>
             </div>
           </div>
