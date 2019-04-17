@@ -2291,6 +2291,13 @@ h3 {
             padding-right: 39px;
             padding-top: 37px;
 
+            a {
+              color: $dusk-blue;
+            }
+            a:hover {
+              color: $tealish;
+            }
+
             .anticon-question-circle {
               display: none;
             }

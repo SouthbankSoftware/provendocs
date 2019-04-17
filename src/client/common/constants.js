@@ -27,7 +27,7 @@ export const DOWNLOAD_LINKS = {
   VERIFY_LATEST: (env: string, os: string) => `https://storage.googleapis.com/provendb-${env}/provendb-verify/provendb-verify_${os}`,
   LITEPAPER:
     'https://github.com/SouthbankSoftware/provendocs/raw/develop/docs/provendb-litepaper.pdf',
-  LITEPAPER_DOCS: 'https://provendocs.com/litepaper',
+  LITEPAPER_DOCS: 'https://provendb.com/litepaper',
 };
 
 export const PAGES = {

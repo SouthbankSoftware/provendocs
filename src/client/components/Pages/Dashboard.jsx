@@ -840,7 +840,7 @@ class Dashboard extends React.Component<Props, State> {
                     </div>
                   ),
                   content:
-                    'Would you like to download your fully\npackaged blockchain proof?\nYou may need to enable pop-ups.',
+                    (<span>You are about to download an archive containing your document, its proof and its metadata.<br/> You can use <a href="https://provendocs.com/downloads" target="__blank">ProvenDB-Verify</a> to validate the proof of your document without ProvenDocs.<br/>For information on validating your archive, see the <a href="https://provendb.readme.io/docs/provendb-verify" target="__blank">documentation.</a></span>),
                   okText: 'Download',
                   okType: 'success',
                   cancelText: 'Cancel',
