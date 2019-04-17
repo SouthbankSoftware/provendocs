@@ -260,7 +260,7 @@ class HomePage extends React.Component<Props, State> {
                     <div className="sectionButtons">
                       <a
                         className="lightpaper tealish whiteBorder button"
-                        href="/litepaper"
+                        href="https://provendb.com/litepaper"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -353,7 +353,7 @@ class HomePage extends React.Component<Props, State> {
               <div className="sectionButtons">
                 <a
                   className="lightpaper dark whiteBorder button"
-                  href="/litepaper"
+                  href="https://provendb.com/litepaper"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -434,7 +434,7 @@ class HomePage extends React.Component<Props, State> {
               <div className="sectionButtons">
                 <a
                   className="lightPaper button"
-                  href="/lightPaper"
+                  href="https://provendb.com/litePaper"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
