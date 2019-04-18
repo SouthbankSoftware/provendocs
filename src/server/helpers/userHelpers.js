@@ -257,6 +257,10 @@ export const getUserDetails = (req: any, res: any, secret: Object) => new Promis
               provider
               githubID
               googleID
+              facebookID
+              pictureURL
+              language
+              gender
           }
         }
         `;
@@ -342,6 +346,47 @@ export const createUser = (user: Object) => new Promise<any>((resolve, reject) =
     });
 });
 
+export const updateUser = (user: Object) => new Promise<any>((resolve, reject) => {
+  const endpoint = `http://${DOMAINS.INTERNAL_API}/query`;
+  const graphQLClient = new GraphQLClient(endpoint);
+  const query = `
+          mutation{
+            updateUser(
+              userID: "${user.id}"
+              ${user.name && user.name !== '' ? `name: "${user.name}"` : ''}
+              ${user.gender && user.gender !== '' ? `gender: "${user.gender}"` : ''}
+              ${user.language && user.language !== '' ? `language: "${user.language}"` : ''}
+              ) {
+              success
+            }
+          }
+        `;
+  logger.log({
+    level: LOG_LEVELS.INFO,
+    severity: STACKDRIVER_SEVERITY.INFO,
+    message: 'updateUser',
+    query,
+  });
+  graphQLClient
+    .request(query)
+    .then((data: Object) => {
+      resolve(data.updateUser);
+    })
+    .catch((err) => {
+      logger.log({
+        level: LOG_LEVELS.INFO,
+        severity: STACKDRIVER_SEVERITY.INFO,
+        message: 'updateUser err',
+        err,
+      });
+      if (err.response.errors[0]) {
+        const errMsg = err.response.errors[0].message;
+        reject(new Error(errMsg));
+      }
+      reject(new Error('graphql query failed.'));
+    });
+});
+
 export const validateUser = (user: Object) => new Promise<any>((resolve, reject) => {
   const endpoint = `${DOMAINS.INTERNAL_API}/query`;
   const graphQLClient = new GraphQLClient(endpoint);
@@ -372,13 +417,14 @@ export const validateUser = (user: Object) => new Promise<any>((resolve, reject)
     });
 });
 
-export const confirmUserViaEmail = (userID: string) => new Promise<any>((resolve, reject) => {
+export const confirmUserViaEmail = (userID: string, email: string) => new Promise<any>((resolve, reject) => {
   const endpoint = `${DOMAINS.INTERNAL_API}/query`;
   const graphQLClient = new GraphQLClient(endpoint);
   const query = `
   mutation{
     updateUser(
       userID:"${userID}", 
+      ${email && email !== '' ? `email: "${email}"` : ''}
       activated:true) {
       success
     }
@@ -398,7 +444,7 @@ export const confirmUserViaEmail = (userID: string) => new Promise<any>((resolve
     });
 });
 
-export const resetPassword = (user: Object) => new Promise<string>((resolve, reject) => {
+export const resetPassword = (user: Object) => new Promise<any>((resolve, reject) => {
   const endpoint = `${DOMAINS.INTERNAL_API}/query`;
   const graphQLClient = new GraphQLClient(endpoint);
   const query = `
