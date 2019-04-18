@@ -49,14 +49,14 @@ import './TopNavBar.scss';
 const { confirm } = Modal;
 
 type Props = {
-  userDetailsCallback: any,
-  isAuthenticatedCallback: any,
-  currentPage: string,
-  isAuthenticated: boolean,
-  onEarlyAccess: Function | null,
-  history: any,
+  userDetailsCallback: any;
+  isAuthenticatedCallback: any;
+  currentPage: string;
+  isAuthenticated: boolean;
+  onEarlyAccess: Function | null;
+  history: any;
 };
-type State = { currentPage: string, userDetails: Object };
+type State = { currentPage: string; userDetails: Object };
 class TopNavBar extends React.Component<Props, State> {
   constructor() {
     super();
@@ -152,8 +152,15 @@ class TopNavBar extends React.Component<Props, State> {
     const { history, isAuthenticatedCallback } = this.props;
     let avatar = <div />;
     switch (userDetails.provider) {
+      case OAUTH_PROVIDERS.FACEBOOK:
+        avatar = <Avatar facebookId={userDetails.facebookID} size="25" round />;
+        break;
       case OAUTH_PROVIDERS.GOOGLE:
-        avatar = <Avatar googleId={userDetails.googleID} size="25" round />;
+        if (userDetails.pictureURL) {
+          avatar = <Avatar src={userDetails.pictureURL} size="25" round />;
+        } else {
+          avatar = <Avatar name={userDetails.name} size="25" round />;
+        }
         break;
       case OAUTH_PROVIDERS.GITHUB:
         avatar = <Avatar githubHandle={userDetails.githubID} size="25" round />;
@@ -209,7 +216,8 @@ class TopNavBar extends React.Component<Props, State> {
                     This action is
                     {' '}
                     <bold>permanent</bold>
-                    , you will still be able to login after deleting your account but you will not be able to view your proofs or files.
+                    , you will still be able to login after deleting your account but you will not
+                    be able to view your proofs or files.
                     <br />
                     {' '}
 We suggest you download a proof archive for each of your files before
@@ -225,7 +233,8 @@ We suggest you download a proof archive for each of your files before
                     title: 'Really delete account?',
                     content: (
                       <span>
-                        Last chance to back out, are you really sure you want to delete all your files and proofs?
+                        Last chance to back out, are you really sure you want to delete all your
+                        files and proofs?
                       </span>
                     ),
                     okText: 'Delete',
@@ -287,8 +296,15 @@ We suggest you download a proof archive for each of your files before
     const { userDetails } = this.state;
     let avatar = <div />;
     switch (userDetails.provider) {
+      case OAUTH_PROVIDERS.FACEBOOK:
+        avatar = <Avatar facebookId={userDetails.facebookID} size="25" round />;
+        break;
       case OAUTH_PROVIDERS.GOOGLE:
-        avatar = <Avatar googleId={userDetails.googleID} size="25" round />;
+        if (userDetails.pictureURL) {
+          avatar = <Avatar src={userDetails.pictureURL} size="25" round />;
+        } else {
+          avatar = <Avatar name={userDetails.name} size="25" round />;
+        }
         break;
       case OAUTH_PROVIDERS.GITHUB:
         avatar = <Avatar githubHandle={userDetails.githubID} size="25" round />;

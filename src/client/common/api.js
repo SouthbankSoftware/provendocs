@@ -58,6 +58,12 @@ export default {
     password,
     activated,
   }),
+  updateUser: (id: string, name: string, gender: string, language: string) => axios.post('/api/updateUser', {
+    id,
+    name,
+    gender,
+    language,
+  }),
   authUser: (email: string, password: string) => axios.post('/api/authUser', {
     email,
     password,

@@ -27,6 +27,7 @@ import rp from 'request-promise';
 import {
   getUserDetails,
   createUser,
+  updateUser,
   validateUser,
   verifyTokenFromUserModule,
   confirmUserViaEmail,
@@ -173,6 +174,7 @@ module.exports = (app) => {
   });
 
   app.get('/api/loginFailed', (req, res) => {
+    const { reason, userID } = req.query;
     res.cookie('AuthToken', '', {
       expires: new Date(),
       httpOnly: true,
@@ -181,7 +183,30 @@ module.exports = (app) => {
       expires: new Date(),
       httpOnly: true,
     });
-    res.redirect('/loginFailed');
+    let url = `/loginFailed?reason=${reason}`;
+    if (userID && userID !== '') {
+      const b64userID = Buffer.from(userID).toString('base64');
+      url = `${url}&userID=${b64userID}`;
+    }
+    res.redirect(url);
+  });
+
+  app.get('/api/signupFailed', (req, res) => {
+    const { reason, userID } = req.query;
+    res.cookie('AuthToken', '', {
+      expires: new Date(),
+      httpOnly: true,
+    });
+    res.cookie('RefreshToken', '', {
+      expires: new Date(),
+      httpOnly: true,
+    });
+    let url = `/signupFailed?reason=${reason}`;
+    if (userID && userID !== '') {
+      const b64userID = Buffer.from(userID).toString('base64');
+      url = `${url}&userID=${b64userID}`;
+    }
+    res.redirect(url);
   });
 
   app.get('/api/authenticate', (req, res) => {
@@ -232,6 +257,16 @@ module.exports = (app) => {
 
   app.post('/api/createUser', (req, res) => {
     createUser(req.body)
+      .then((response) => {
+        res.status(200).send(JSON.stringify(response));
+      })
+      .catch((error) => {
+        res.status(400).send(error.message);
+      });
+  });
+
+  app.post('/api/updateUser', (req, res) => {
+    updateUser(req.body)
       .then((response) => {
         res.status(200).send(JSON.stringify(response));
       })
@@ -314,7 +349,30 @@ module.exports = (app) => {
   app.get('/api/verifyUser', (req, res) => {
     const { userID } = req.query;
     const decUserID = Buffer.from(userID, 'base64').toString();
-    confirmUserViaEmail(decUserID)
+    confirmUserViaEmail(decUserID, '')
+      .then((response) => {
+        if (response.success) {
+          res.redirect('/signup/emailConfirm');
+        } else {
+          res.redirect('/signupFailed');
+        }
+      })
+      .catch((emailVerifyError) => {
+        const returnObj = {
+          level: LOG_LEVELS.ERROR,
+          severity: STACKDRIVER_SEVERITY.ERROR,
+          message: 'Failed to verify User via email.',
+          emailVerifyError,
+        };
+        logger.log(returnObj);
+        res.redirect('/signupFailed');
+      });
+  });
+
+  app.get('/api/verifyUserEmail', (req, res) => {
+    const { userID, email } = req.query;
+    const decUserID = Buffer.from(userID, 'base64').toString();
+    confirmUserViaEmail(decUserID, email)
       .then((response) => {
         if (response.success) {
           res.redirect('/signup/emailConfirm');
@@ -338,7 +396,7 @@ module.exports = (app) => {
     resetPassword(req.body)
       .then((response) => {
         const { success, newPassword } = response;
-        if (success) {
+        if (success && newPassword) {
           sendResetPasswordEmail(req.body.email, newPassword)
             .then((resEmail) => {
               res.status(200).send(resEmail);

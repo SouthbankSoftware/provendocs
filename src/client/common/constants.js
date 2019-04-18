@@ -116,6 +116,16 @@ export const GA_CATEGORIES = {
   TOPBAR: 'Topbar',
 };
 
+export const STATUS_CODES = {
+  SUCCESS: '2000',
+  FAILED: '4000',
+  NOTACTIVATED: '4001',
+  NOEMAIL: '4002',
+  INVALIDPASSWORD: '4003',
+  USERNOTFOUND: '4004',
+  SIGNUPFAILED: '4005',
+};
+
 export const ENVIRONMENT = {
   PROD: 'prd',
   DEV: 'dev',
