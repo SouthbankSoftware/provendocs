@@ -870,18 +870,18 @@ class Dashboard extends React.Component<Props, State> {
                       You are about to download an archive containing your document, its proof and
                       its metadata.
                       <br />
-                      {' '}
-You can use
-                      {' '}
-                      <a href={process.env.PROVENDOCS_ENV === ENVIRONMENT.PROD || !process.env.PROVENDOCS_ENV ? 'https://provendocs.com/downloads' : `https://${process.env.PROVENDOCS_ENV}.provendocs.com/downloads`} target="__blank">
+
+                      You can use
+                     <a href={process.env.PROVENDOCS_ENV === ENVIRONMENT.PROD || !process.env.PROVENDOCS_ENV ? 'https://provendocs.com/downloads' : `https://${process.env.PROVENDOCS_ENV}.provendocs.com/downloads`} target="__blank">
                         ProvenDB-Verify
                       </a>
-                      {' '}
                       to validate the proof of your document without ProvenDocs.
                       <br />
                       For information on validating your archive, see the
-                      {' '}
-                      <a href="https://provendb.readme.io/docs/provendb-verify" target="__blank">
+                      <a
+                        href="https://provendocs.readme.io/docs/validating-an-exported-document"
+                        target="__blank"
+                      >
                         documentation.
                       </a>
                     </span>

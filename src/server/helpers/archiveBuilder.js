@@ -131,7 +131,7 @@ const getReadMeString = (
        Validate the data using the following command:
           provendb-verify --in "${name}.proof.zip"
 
-       See  https://provendb.readme.io/docs/provendb-verify for more information
+       See  https://provendocs.readme.io/docs/validating-an-exported-document for more information
    
    OR:
    
