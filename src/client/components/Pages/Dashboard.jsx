@@ -141,7 +141,7 @@ class Dashboard extends React.Component<Props, State> {
       proofReady: false,
       firstUploadDialogueOpen: false,
       firstProofDialogueOpen: false,
-      shareDialogIsOpen: false
+      shareDialogIsOpen: false,
       matchingFiles: [],
       failedFiles: [],
       size: { width: 400, height: 200 },
