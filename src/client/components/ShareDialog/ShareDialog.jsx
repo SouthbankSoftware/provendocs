@@ -30,6 +30,7 @@ import Log from '../../common/log';
 // $FlowFixMe
 import './ShareDialog.scss';
 import { openNotificationWithIcon } from '../../common/util';
+import { ENVIRONMENT } from '../../common/constants';
 
 const urlEncryptionKey = process.env.PROVENDOCS_SECRET || 'mySecretHere';
 const cryptr = new Cryptr(urlEncryptionKey);
@@ -77,7 +78,13 @@ class ShareDialog extends React.Component<Props, State> {
         userInformation._id
       }-${file._provendb_metadata.minVersion.toString()}`,
     );
-    const pdocsLink = `https://provendocs.com/share/${link}`;
+    let pdocsLink;
+    if (process.env.PROVENDOCS_ENV === ENVIRONMENT.PROD || !process.env.PROVENDOCS_ENV) {
+      pdocsLink = `https://provendocs.com/share/${link}`;
+    } else {
+      pdocsLink = `https://${process.env.PROVENDOCS_ENV}.provendocs.com/share/${link}`;
+    }
+
     return (
       <div className="shareProofDialogueWrapper">
         <Icon className="heroIcon" type="link" />

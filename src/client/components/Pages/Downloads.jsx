@@ -31,6 +31,7 @@ import {
 } from '../../common/constants';
 import { checkAuthentication } from '../../common/authentication';
 import './DownloadsPage.scss';
+import { Log } from '../../common';
 
 type Props = {};
 type State = {
@@ -53,7 +54,6 @@ class Downloads extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    console.log(process.env.PROVENDOCS_ENV);
     switch (process.env.PROVENDOCS_ENV) {
       case ENVIRONMENT.STAGING:
         this.setState({ env: ENVIRONMENT.STAGING });
@@ -65,6 +65,7 @@ class Downloads extends React.Component<Props, State> {
         this.setState({ env: ENVIRONMENT.TEST });
         break;
       default:
+        Log.info('PROVENDOCS_ENV variable not set, defaulting to prod.');
         break;
     }
 
@@ -77,7 +78,6 @@ class Downloads extends React.Component<Props, State> {
   }
 
   _changeOSRadio = (event: Object) => {
-    console.log(event);
     this.setState({ os: event.target.value });
   };
 

@@ -32,6 +32,7 @@ import { decodeFile } from './fileHelpers';
 import createPDF from './certificateBuilder';
 import { STACKDRIVER_SEVERITY, LOG_LEVELS, DOMAINS } from '../common/constants';
 import { certificateAPIFormat } from '../modules/winston.config';
+import { ENVIRONMENT } from '../../client/common/constants';
 
 const urlEncryptionKey = process.env.PROVENDOCS_SECRET || 'mySecretHere';
 const EJSON = require('mongodb-extjson');
@@ -76,10 +77,10 @@ const getReadMeString = (
     }-${fileInformation._provendb_metadata.minVersion.toString()}`,
   );
   let cliDownload = `${DOMAINS.PROVENDOCS}/downloads`;
-  if (process.env.PROVENDOCS_ENV === 'TEST') {
+  if (process.env.PROVENDOCS_ENV === ENVIRONMENT.PROD || !process.env.PROVENDOCS_ENV) {
     cliDownload = 'https://provendocs.com/downloads';
-  } else if (process.env.PROVENDOCS_ENV === 'DEV') {
-    cliDownload = 'http://localhost:3000/downloads';
+  } else {
+    cliDownload = `https://${process.env.PROVENDOCS_ENV}.provendocs.com/downloads`;
   }
 
   const uploadedAtDate = String(new Date(uploadedAt)); // get it into same format as submitted date

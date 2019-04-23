@@ -20,7 +20,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-04-09T15:19:41+10:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-10T15:26:37+10:00
+ * @Last modified time: 2019-04-23T16:21:13+10:00
  */
 
 import React from 'react';
@@ -32,7 +32,7 @@ import HashIcon from '../../style/icons/pages/dashboard/hash-icon.svg';
 import BlockIcon from '../../style/icons/pages/dashboard/box-icon.svg';
 // $FlowFixMe
 import './ProofDiagram.scss';
-import { PROOF_STATUS } from '../../common/constants';
+import { PROOF_STATUS, ENVIRONMENT } from '../../common/constants';
 import { Loading } from '../Common';
 
 const urlEncryptionKey = process.env.PROVENDOCS_SECRET || 'mySecretHere';
@@ -119,7 +119,11 @@ class ProofDiagram extends React.Component<Props, State> {
           userDetails._id
         }-${file._provendb_metadata.minVersion.toString()}`,
       );
-      pdocsLink = `https://provendocs.com/share/${link}`;
+      if (process.env.PROVENDOCS_ENV === ENVIRONMENT.PROD || !process.env.PROVENDOCS_ENV) {
+        pdocsLink = `https://provendocs.com/share/${link}`;
+      } else {
+        pdocsLink = `https://${process.env.PROVENDOCS_ENV}.provendocs.com/share/${link}`;
+      }
     }
 
     let provenDateString = 'UNKNOWN';

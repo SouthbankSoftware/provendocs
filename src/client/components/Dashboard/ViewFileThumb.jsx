@@ -103,14 +103,11 @@ export default class ViewFileThumb extends React.Component<Props, State> {
     if (nextProps.file && nextProps.file.name !== file.name) {
       // New file, update state.
       nextProps.file.isLoading = true;
-      console.log('Setting State to: ', nextProps.file.name);
       this.setState({ file: nextProps.file });
       this.state.file = nextProps.file;
       const newFile = nextProps.file;
       this._getFilePreview(newFile)
         .then((previewResult) => {
-          console.log('Fetched for: ', newFile.name);
-          console.log('Current: ', this.state.file.name);
           if (newFile.name !== this.state.file.name) {
             // A new file has been selected, disregard result of this fetch.
             Log.trace(

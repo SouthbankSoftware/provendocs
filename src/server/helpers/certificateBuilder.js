@@ -28,16 +28,18 @@ import rimraf from 'rimraf';
 import winston from 'winston';
 import { LOG_LEVELS, STACKDRIVER_SEVERITY } from '../common/constants';
 import { certificateAPIFormat } from '../modules/winston.config';
+import { ENVIRONMENT } from '../../client/common/constants';
 
 // $FlowFixMe
 const { Worker } = require('worker_threads'); // eslint-disable-line
 
 let uri = 'https://provendocs.com';
-if (process.env.PROVENDOCS_ENV === 'TEST') {
-  uri = 'https://provendocs-test.com';
-} else if (process.env.PROVENDOCS_ENV === 'DEV') {
-  uri = 'localhost:3000';
+if (process.env.PROVENDOCS_ENV === ENVIRONMENT.PROD || !process.env.PROVENDOCS_ENV) {
+  uri = 'https://provendocs.com';
+} else {
+  uri = `https://${process.env.PROVENDOCS_ENV}.provendocs.com`;
 }
+
 const urlEncryptionKey = process.env.PROVENDOCS_SECRET || 'mySecretHere';
 const logger = winston.createLogger({
   transports: [

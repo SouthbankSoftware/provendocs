@@ -45,7 +45,7 @@ import {
   TabbedPanel, EmailProofButton, NewFileUpload, ViewFiles,
 } from '../Dashboard/index';
 import {
-  PAGES, ANTD_BUTTON_TYPES, GA_CATEGORIES, PROOF_STATUS,
+  PAGES, ANTD_BUTTON_TYPES, GA_CATEGORIES, PROOF_STATUS, ENVIRONMENT,
 } from '../../common/constants';
 import { checkAuthentication } from '../../common/authentication';
 import { Loading } from '../Common';
@@ -214,7 +214,6 @@ class Dashboard extends React.Component<Props, State> {
                 }
               })
               .catch((err) => {
-                console.log(err);
                 Log.error(`Error fetching files size: ${err}`);
                 openNotificationWithIcon(
                   'error',
@@ -874,7 +873,7 @@ class Dashboard extends React.Component<Props, State> {
                       {' '}
 You can use
                       {' '}
-                      <a href="https://provendocs.com/downloads" target="__blank">
+                      <a href={process.env.PROVENDOCS_ENV === ENVIRONMENT.PROD || !process.env.PROVENDOCS_ENV ? 'https://provendocs.com/downloads' : `https://${process.env.PROVENDOCS_ENV}.provendocs.com/downloads`} target="__blank">
                         ProvenDB-Verify
                       </a>
                       {' '}

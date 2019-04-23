@@ -92,9 +92,10 @@ export const LOG_LEVELS = {
 };
 
 export const ENV_TYPES = {
-  DEV: 'DEV',
-  PROD: 'PROD',
-  TEST: 'TEST',
+  PROD: 'prd',
+  DEV: 'dev',
+  TEST: 'tst',
+  STAGING: 'stg',
 };
 
 export const STACKDRIVER_SEVERITY = {
