@@ -1,4 +1,4 @@
-/* @flow
+/*
  * provendocs
  * Copyright (C) 2019  Southbank Software Ltd.
  *
@@ -19,11 +19,12 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-03T09:18:20+11:00
+ * @Last modified time: 2019-04-24T09:27:54+10:00
  */
 import React, { Suspense } from 'react';
 import { hot, setConfig } from 'react-hot-loader';
 import { Spin, Icon } from 'antd';
+import { Helmet } from 'react-helmet';
 
 import api from './common/api';
 
@@ -76,6 +77,12 @@ class App extends React.Component<Props, State> {
 
   render() {
     const { status } = this.state;
+    let grsfID = 'x803x6';
+    if (process.env.PROVENDOCS_ENV === 'dev' || process.env.PROVENDOCS_ENV === 'tst') {
+      grsfID = 'lc1xl2';
+    } else if (process.env.PROVENDOCS_ENV === 'stg') {
+      grsfID = 'hyrcag';
+    }
     if (status) {
       return (
         <Suspense
@@ -104,6 +111,13 @@ class App extends React.Component<Props, State> {
             </div>
 )}
         >
+          <Helmet>
+            <script type="text/javascript">
+              {`(function(g,r,s,f){g.growsurf={};
+                g.grsfSettings={campaignId: '${grsfID}',version:"1.0.0"};s=r.getElementsByTagName("head")[0];f=r.createElement("script");f.async=1;f.src="https://growsurf.com/growsurf.js"+"?v="+g.grsfSettings.version;f.setAttribute("grsf-campaign", g.grsfSettings.campaignId);!g.grsfInit?s.appendChild(f):"";})(window,document);
+              `}
+            </script>
+          </Helmet>
           <DefaultRoutes />
         </Suspense>
       );

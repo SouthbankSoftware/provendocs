@@ -100,12 +100,19 @@ class RegisterationPage extends React.Component<Props, State> {
             if (window && window.growsurf && window.growsurf.getParticipantById) {
               window.growsurf
                 .getParticipantById(token)
-                .then(() => {
-                  this.setState({ hasReferralToken: true });
-                  this.setState({ loading: false });
+                .then((res) => {
+                  console.log(res);
+                  if (!res) {
+                    this.setState({ hasReferralToken: false });
+                    this.setState({ loading: false });
+                  } else {
+                    this.setState({ hasReferralToken: true });
+                    this.setState({ loading: false });
+                  }
                 })
                 .catch((getParticipantErr) => {
                   Log.error(getParticipantErr);
+                  this.setState({ hasReferralToken: false });
                   this.setState({ loading: false });
                 });
               clearInterval(checkGrowsurfInterval);
