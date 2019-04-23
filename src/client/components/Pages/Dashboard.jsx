@@ -93,29 +93,29 @@ export const RHS_STAGES = {
 
 type Props = { history: any };
 type State = {
-  isAuthenticated: boolean;
-  storageUsed: number;
-  documentsUsed: number;
-  storageLimit: number;
-  documentsLimit: number;
-  userDetails: Object;
-  comment: string;
-  allUploadsInvalid: boolean;
-  commentTags: Array<string>;
-  lhsTabSelected: string;
-  rhsTabSelected: string;
-  fileSelected: any;
-  fileVersion: number;
-  rhsStage: string;
-  proofReady: boolean;
-  firstUploadDialogueOpen: boolean;
-  firstProofDialogueOpen: boolean;
-  storageLimitReached: boolean;
-  shareDialogIsOpen: boolean;
-  matchingFiles: Array<Object>;
-  failedFiles: Array<string>;
-  size: Object;
-  checkAll: boolean;
+  isAuthenticated: boolean,
+  storageUsed: number,
+  documentsUsed: number,
+  storageLimit: number,
+  documentsLimit: number,
+  userDetails: Object,
+  comment: string,
+  allUploadsInvalid: boolean,
+  commentTags: Array<string>,
+  lhsTabSelected: string,
+  rhsTabSelected: string,
+  fileSelected: any,
+  fileVersion: number,
+  rhsStage: string,
+  proofReady: boolean,
+  firstUploadDialogueOpen: boolean,
+  firstProofDialogueOpen: boolean,
+  storageLimitReached: boolean,
+  shareDialogIsOpen: boolean,
+  matchingFiles: Array<Object>,
+  failedFiles: Array<string>,
+  size: Object,
+  checkAll: boolean,
 };
 
 Log.setSource('Dashboard');
@@ -141,7 +141,7 @@ class Dashboard extends React.Component<Props, State> {
       proofReady: false,
       firstUploadDialogueOpen: false,
       firstProofDialogueOpen: false,
-      shareDialogIsOpen: false,
+      shareDialogIsOpen: false
       matchingFiles: [],
       failedFiles: [],
       size: { width: 400, height: 200 },
