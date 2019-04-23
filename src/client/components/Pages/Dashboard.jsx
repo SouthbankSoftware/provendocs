@@ -141,7 +141,7 @@ class Dashboard extends React.Component<Props, State> {
       proofReady: false,
       firstUploadDialogueOpen: false,
       firstProofDialogueOpen: false,
-      shareDialogIsOpen: false,
+      shareDialogIsOpen: false
       matchingFiles: [],
       failedFiles: [],
       size: { width: 400, height: 200 },
@@ -839,8 +839,26 @@ class Dashboard extends React.Component<Props, State> {
                       <span>Download Package</span>
                     </div>
                   ),
-                  content:
-                    (<span>You are about to download an archive containing your document, its proof and its metadata.<br/> You can use <a href="https://provendocs.com/downloads" target="__blank">ProvenDB-Verify</a> to validate the proof of your document without ProvenDocs.<br/>For information on validating your archive, see the <a href="https://provendb.readme.io/docs/provendb-verify" target="__blank">documentation.</a></span>),
+                  content: (
+                    <span>
+                      You are about to download an archive containing your document, its proof and
+                      its metadata.
+                      <br />
+                      You can use
+                      <a href="https://provendocs.com/downloads" target="__blank">
+                        ProvenDB-Verify
+                      </a>
+                      to validate the proof of your document without ProvenDocs.
+                      <br />
+                      For information on validating your archive, see the
+                      <a
+                        href="https://provendocs.readme.io/docs/validating-an-exported-document"
+                        target="__blank"
+                      >
+                        documentation.
+                      </a>
+                    </span>
+                  ),
                   okText: 'Download',
                   okType: 'success',
                   cancelText: 'Cancel',

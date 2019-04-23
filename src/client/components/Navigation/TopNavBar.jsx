@@ -180,7 +180,7 @@ class TopNavBar extends React.Component<Props, State> {
         <Menu.Item key="logout">
           <a
             className="leftButton"
-            href="https://provendb.readme.io/docs/getting-started-with-provendocs"
+            href="https://provendocs.readme.io/docs/getting-started"
             target="__blank"
             style={{ 'text-decoration': 'none' }}
             onClick={() => {
@@ -454,7 +454,7 @@ We suggest you download a proof archive for each of your files before
             )}
             {currentPage !== PAGES.HOME && currentPage !== PAGES.LANDING && <div className="vr" />}
             <a
-              href="https://provendb.readme.io/v1.0/discuss"
+              href="https://provendocs.readme.io/discuss"
               className="link supportLink"
               style={{ textDecoration: 'none' }}
               target="_blank"
@@ -470,7 +470,7 @@ We suggest you download a proof archive for each of your files before
               <span className="aboutLabel">Support</span>
             </a>
             <a
-              href="https://provendb.readme.io/docs/features"
+              href="https://provendocs.readme.io/docs"
               className="link supportLink"
               style={{ textDecoration: 'none' }}
               target="_blank"
