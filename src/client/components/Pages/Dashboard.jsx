@@ -872,7 +872,7 @@ class Dashboard extends React.Component<Props, State> {
                       <br />
 
                       You can use
-                     <a href={process.env.PROVENDOCS_ENV === ENVIRONMENT.PROD || !process.env.PROVENDOCS_ENV ? 'https://provendocs.com/downloads' : `https://${process.env.PROVENDOCS_ENV}.provendocs.com/downloads`} target="__blank">
+                      <a href={process.env.PROVENDOCS_ENV === ENVIRONMENT.PROD || !process.env.PROVENDOCS_ENV ? 'https://provendocs.com/downloads' : `https://${process.env.PROVENDOCS_ENV}.provendocs.com/downloads`} target="__blank">
                         ProvenDB-Verify
                       </a>
                       to validate the proof of your document without ProvenDocs.
