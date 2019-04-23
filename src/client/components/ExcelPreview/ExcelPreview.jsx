@@ -67,13 +67,12 @@ export default class ExcelPreview extends React.Component<Props, State> {
 
   componentDidMount() {
     const { excelData } = this.props;
-    console.log('Excel Data: ', excelData);
     this._parseExcelData(excelData);
   }
 
   componentWillReceiveProps(props: Object) {
     const { excelData } = props;
-    console.log('Excel Data: ', excelData);
+
     this._parseExcelData(excelData);
   }
 

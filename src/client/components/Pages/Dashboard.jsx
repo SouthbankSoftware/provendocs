@@ -45,7 +45,7 @@ import {
   TabbedPanel, EmailProofButton, NewFileUpload, ViewFiles,
 } from '../Dashboard/index';
 import {
-  PAGES, ANTD_BUTTON_TYPES, GA_CATEGORIES, PROOF_STATUS,
+  PAGES, ANTD_BUTTON_TYPES, GA_CATEGORIES, PROOF_STATUS, ENVIRONMENT,
 } from '../../common/constants';
 import { checkAuthentication } from '../../common/authentication';
 import { Loading } from '../Common';
@@ -174,16 +174,42 @@ class Dashboard extends React.Component<Props, State> {
               .then((res) => {
                 Log.info(res);
                 if (res.status === 200) {
-                  if (res.data[0]) {
-                    this.setState({ storageUsed: res.data[0].storageUsed });
-                    this.setState({ documentsUsed: res.data[0].documentsUsed });
-                    this.setState({ storageLimit: res.data[0].storageLimit });
-                    this.setState({ documentsLimit: res.data[0].documentsLimit });
+                  if (res.data.filesSize[0]) {
+                    const checkGrowsurfInterval = setInterval(() => {
+                      if (window && window.growsurf && window.growsurf.getParticipantById) {
+                        window.growsurf
+                          .addParticipant(res.data.email)
+                          .then((participant) => {
+                            Log.info(`Added participant to Growsurf: ${participant}.`);
+                          })
+                          .catch((growSurfErr) => {
+                            Log.error(`Error adding participant: ${JSON.stringify(growSurfErr)}`);
+                          });
+                        clearInterval(checkGrowsurfInterval);
+                      }
+                    }, 1000);
+                    this.setState({ storageUsed: res.data.filesSize[0].storageUsed });
+                    this.setState({ documentsUsed: res.data.filesSize[0].documentsUsed });
+                    this.setState({ storageLimit: res.data.filesSize[0].storageLimit });
+                    this.setState({ documentsLimit: res.data.filesSize[0].documentsLimit });
                   } else {
-                    this.setState({ storageUsed: res.data.storageUsed });
-                    this.setState({ documentsUsed: res.data.documentsUsed });
-                    this.setState({ storageLimit: res.data.storageLimit });
-                    this.setState({ documentsLimit: res.data.documentsLimit });
+                    const checkGrowsurfInterval = setInterval(() => {
+                      if (window && window.growsurf && window.growsurf.getParticipantById) {
+                        window.growsurf
+                          .addParticipant(res.data.email)
+                          .then((participant) => {
+                            Log.info(`Added participant to Growsurf: ${participant}.`);
+                          })
+                          .catch((growSurfErr) => {
+                            Log.error(`Error adding participant: ${JSON.stringify(growSurfErr)}`);
+                          });
+                        clearInterval(checkGrowsurfInterval);
+                      }
+                    }, 1000);
+                    this.setState({ storageUsed: res.data.filesSize.storageUsed });
+                    this.setState({ documentsUsed: res.data.filesSize.documentsUsed });
+                    this.setState({ storageLimit: res.data.filesSize.storageLimit });
+                    this.setState({ documentsLimit: res.data.filesSize.documentsLimit });
                   }
                 }
               })
@@ -844,8 +870,9 @@ class Dashboard extends React.Component<Props, State> {
                       You are about to download an archive containing your document, its proof and
                       its metadata.
                       <br />
+
                       You can use
-                      <a href="https://provendocs.com/downloads" target="__blank">
+                     <a href={process.env.PROVENDOCS_ENV === ENVIRONMENT.PROD || !process.env.PROVENDOCS_ENV ? 'https://provendocs.com/downloads' : `https://${process.env.PROVENDOCS_ENV}.provendocs.com/downloads`} target="__blank">
                         ProvenDB-Verify
                       </a>
                       to validate the proof of your document without ProvenDocs.

@@ -44,18 +44,19 @@ import {
 } from '../helpers/mongoAPI';
 import { sendSharedFileEmail, sendEmailProofCopyEmail } from '../helpers/sendgrid';
 import {
-  LOG_LEVELS, STACKDRIVER_SEVERITY, MIMETYPES, ENV_TYPES,
+  LOG_LEVELS, STACKDRIVER_SEVERITY, MIMETYPES,
 } from '../common/constants';
 import createPDF from '../helpers/certificateBuilder';
 import { generalFormat } from '../modules/winston.config';
+import { ENVIRONMENT } from '../../client/common/constants';
 
 const urlEncryptionKey = process.env.PROVENDOCS_SECRET || 'mySecretHere';
 const cryptr = new Cryptr(urlEncryptionKey);
 let uri = 'https://provendocs.com';
-if (process.env.PROVENDOCS_ENV === ENV_TYPES.TEST) {
-  uri = 'https://provendocs-test.com';
-} else if (process.env.PROVENDOCS_ENV === ENV_TYPES.DEV) {
-  uri = 'localhost:3000';
+if (process.env.PROVENDOCS_ENV === ENVIRONMENT.PROD || !process.env.PROVENDOCS_ENV) {
+  uri = 'https://provendocs.com';
+} else {
+  uri = `https://${process.env.PROVENDOCS_ENV}.provendocs.com`;
 }
 
 module.exports = (app: any) => {

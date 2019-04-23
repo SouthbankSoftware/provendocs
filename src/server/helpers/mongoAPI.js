@@ -857,10 +857,12 @@ export const getOrCreateStorageUsage = (userId: string) => new Promise<Object>((
                 message: 'Storage Documents Inserted',
                 insertResult,
               });
+              newDocument.new = true;
               resolve(newDocument);
             }
           });
         } else {
+          result.new = false;
           resolve(result);
         }
       }
@@ -1770,6 +1772,53 @@ export const getFileThumbnail = (fileId: string, userId: string) => new Promise<
   }
 });
 
+export const getIsReferralRequired = () => new Promise<Object>((resolve) => {
+  logger.log({
+    level: LOG_LEVELS.DEBUG,
+    severity: STACKDRIVER_SEVERITY.DEBUG,
+    message: 'Driver Client Status:',
+    isConnected: dbObject.serverConfig.isConnected(),
+  });
+  const collection = dbObject.collection(COLLECTION_NAMES.CONFIG_INFO);
+  const queryFilter = {};
+  const projectionFilter = { referralRequired: 1 };
+  if (collection) {
+    collection
+      .find(queryFilter, { promoteLongs: false })
+      .project(projectionFilter)
+      .limit(1)
+      .toArray((queryError, result) => {
+        if (queryError) {
+          logger.log({
+            level: LOG_LEVELS.ERROR,
+            severity: STACKDRIVER_SEVERITY.ERROR,
+            message: 'Error finding documents in config collection, assume referral is required.',
+            queryError,
+          });
+          resolve({ referralRequired: true });
+        } else if (result && result[0]) {
+          logger.log({
+            level: LOG_LEVELS.DEBUG,
+            severity: STACKDRIVER_SEVERITY.DEBUG,
+            message: 'Result of get referral required',
+            result,
+          });
+          resolve(result[0]);
+        } else {
+          logger.log({
+            level: LOG_LEVELS.DEBUG,
+            severity: STACKDRIVER_SEVERITY.DEBUG,
+            message: 'Result of get referral required',
+            result,
+          });
+          resolve({ referralRequired: true });
+        }
+      });
+  } else {
+    resolve({ referralRequired: true });
+  }
+});
+
 export const createNewProof = () => new Promise<boolean>((resolve) => {
   debouncedSubmitProof();
   resolve(true);
@@ -2291,5 +2340,74 @@ export const clearStorageForUser = (userId: string) => new Promise<Object>((reso
         resolve({ ok: 1 });
       }
     });
+  }
+});
+
+export const setStorageForUser = (userId: string, newStorageLimit: number, newDocsLimit: number) => new Promise<Object>((resolve, reject) => {
+  logger.log({
+    level: LOG_LEVELS.DEBUG,
+    severity: STACKDRIVER_SEVERITY.DEBUG,
+    message: 'Driver Client Status:',
+    isConnected: dbObject.serverConfig.isConnected(),
+  });
+  // If the connection to ProvenDB has failed for some reason, try to reconnect it before failing.
+  if (!(dbObject && dbObject.serverConfig && dbObject.serverConfig.isConnected())) {
+    // Not connected, try reconnect.
+    connectToProvenDB()
+      .then(() => {
+        logger.log({
+          level: LOG_LEVELS.DEBUG,
+          severity: STACKDRIVER_SEVERITY.DEBUG,
+          message: 'Reconnected to ProvenDB:',
+          isConnected: dbObject.serverConfig.isConnected(),
+        });
+      })
+      .catch((err) => {
+        logger.log({
+          level: LOG_LEVELS.ERROR,
+          severity: STACKDRIVER_SEVERITY.ERROR,
+          message: 'Failed to reconnect to ProvenDB on second try.',
+          err,
+        });
+        reject(err);
+          return; //eslint-disable-line
+      });
+  }
+  const collection = dbObject.collection(COLLECTION_NAMES.USER_INFO);
+  const filter = { _id: userId };
+  const update = {
+    $set: {
+      documentsLimit: newDocsLimit,
+      storageLimit: newStorageLimit,
+    },
+  };
+  if (collection) {
+    collection.updateOne(filter, update, (error, count, status) => {
+      if (error) {
+        logger.log({
+          level: LOG_LEVELS.ERROR,
+          severity: STACKDRIVER_SEVERITY.ERROR,
+          message: 'Error updating documents.',
+          error,
+        });
+        reject(error);
+      } else {
+        logger.log({
+          level: LOG_LEVELS.DEBUG,
+          severity: STACKDRIVER_SEVERITY.DEBUG,
+          message: 'Documents updated',
+          count,
+          status,
+        });
+        resolve(true);
+      }
+    });
+  } else {
+    logger.log({
+      level: LOG_LEVELS.ERROR,
+      severity: STACKDRIVER_SEVERITY.ERROR,
+      message: 'Error getting collection.',
+    });
+    reject(new Error({ message: 'Error getting collection!' }));
   }
 });

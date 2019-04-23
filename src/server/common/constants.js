@@ -47,6 +47,7 @@ export const EXTENSIONS = {
 export const COLLECTION_NAMES = {
   SHARING_INFO: 'file_sharing_pdbignore',
   USER_INFO: 'user_info_pdbignore',
+  CONFIG_INFO: 'app_config_pdbignore',
 };
 
 export const STORAGE_LIMITS = {
@@ -91,9 +92,10 @@ export const LOG_LEVELS = {
 };
 
 export const ENV_TYPES = {
-  DEV: 'DEV',
-  PROD: 'PROD',
-  TEST: 'TEST',
+  PROD: 'prd',
+  DEV: 'dev',
+  TEST: 'tst',
+  STAGING: 'stg',
 };
 
 export const STACKDRIVER_SEVERITY = {
@@ -113,4 +115,10 @@ export const ERROR_CODES = {
   FAILED_TO_READ_FILE: 1002,
   FAILED_TO_WRITE_FILE: 1003,
   MAMMOTH_DOCX_2_HTML_ERROR: 1004,
+};
+
+export const REFERRAL_EVENTS = {
+  NEW_PARTICIPANT_ADDED: 'NEW_PARTICIPANT_ADDED',
+  PARTICIPANT_REACHED_A_GOAL: 'PARTICIPANT_REACHED_A_GOAL',
+  CAMPAIGN_ENDED: 'CAMPAIGN_ENDED',
 };

@@ -81,7 +81,15 @@ class HomePage extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { privacyOpen, subscribe } = this.props;
+    const { privacyOpen, subscribe, location } = this.props;
+    const { search } = location;
+    if (search) {
+      // Check if referred, if so set local storage refferer for later.
+      const grsfMatch = search.match(/\?grsf=(.*)/);
+      if (grsfMatch && grsfMatch[0] && grsfMatch[1]) {
+        localStorage.setItem('provendocs_referral_code', grsfMatch[1]);
+      }
+    }
     if (subscribe) {
       this.setState({
         dlgVisible: true,

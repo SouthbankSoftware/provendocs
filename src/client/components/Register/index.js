@@ -29,3 +29,4 @@ export { default as EmailSignupSuccess } from './EmailSignupSuccess';
 export { default as Register } from './Register';
 export { default as RegisterFailed } from './RegisterFailed';
 export { default as RegisterSuccess } from './RegisterSuccess';
+export { default as EnterRefferalCode } from './EnterReferralCode';
