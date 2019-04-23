@@ -15,7 +15,19 @@
   <div id="root"></div>
   <!-- Dependencies -->
   <script type="text/javascript">
-    (function(g,r,s,f){g.growsurf={};g.grsfSettings={campaignId:"x803x6",version:"1.0.0"};s=r.getElementsByTagName("head")[0];f=r.createElement("script");f.async=1;f.src="https://growsurf.com/growsurf.js"+"?v="+g.grsfSettings.version;f.setAttribute("grsf-campaign", g.grsfSettings.campaignId);!g.grsfInit?s.appendChild(f):"";})(window,document);
+    (function(g,r,s,f){g.growsurf={};
+    var env= '<%= process.env.userId%>';
+    var envId= 'x803x6';
+    if(env === 'prd') {
+      envId= 'x803x6';
+    } else if (env === 'dev') {
+      envId= 'lc1xl2';
+    } else if (env === 'tst') {
+      envId= 'lc1xl2';
+    } else if (env === 'stg') {
+      envId= 'hyrcag';
+    }
+    g.grsfSettings={campaignId: envId,version:"1.0.0"};s=r.getElementsByTagName("head")[0];f=r.createElement("script");f.async=1;f.src="https://growsurf.com/growsurf.js"+"?v="+g.grsfSettings.version;f.setAttribute("grsf-campaign", g.grsfSettings.campaignId);!g.grsfInit?s.appendChild(f):"";})(window,document);
   </script>
   <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/16.8.0/umd/react.production.min.js"></script>
   <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.8.0/umd/react-dom.production.min.js"></script>

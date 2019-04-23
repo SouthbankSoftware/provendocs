@@ -44,16 +44,15 @@ import {
 } from '../helpers/mongoAPI';
 import { sendSharedFileEmail, sendEmailProofCopyEmail } from '../helpers/sendgrid';
 import {
-  LOG_LEVELS, STACKDRIVER_SEVERITY, MIMETYPES,
+  LOG_LEVELS, STACKDRIVER_SEVERITY, MIMETYPES, ENVIRONMENTS,
 } from '../common/constants';
 import createPDF from '../helpers/certificateBuilder';
 import { generalFormat } from '../modules/winston.config';
-import { ENVIRONMENT } from '../../client/common/constants';
 
 const urlEncryptionKey = process.env.PROVENDOCS_SECRET || 'mySecretHere';
 const cryptr = new Cryptr(urlEncryptionKey);
 let uri = 'https://provendocs.com';
-if (process.env.PROVENDOCS_ENV === ENVIRONMENT.PROD || !process.env.PROVENDOCS_ENV) {
+if (process.env.PROVENDOCS_ENV === ENVIRONMENTS.PROD || !process.env.PROVENDOCS_ENV) {
   uri = 'https://provendocs.com';
 } else {
   uri = `https://${process.env.PROVENDOCS_ENV}.provendocs.com`;

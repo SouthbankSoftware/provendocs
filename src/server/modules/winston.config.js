@@ -24,12 +24,12 @@
 import winston from 'winston';
 // eslint-disable-next-line
 import colors from 'colors';
-import { ENV_TYPES } from '../common/constants';
+import { ENVIRONMENTS } from '../common/constants';
 
-const LOG_TYPE = process.env.PROVENDOCS_LOG_TYPE || ENV_TYPES.PROD;
+const LOG_TYPE = process.env.PROVENDOCS_LOG_TYPE || ENVIRONMENTS.PROD;
 
 let baseFormat;
-if (LOG_TYPE === ENV_TYPES.PROD) {
+if (LOG_TYPE === ENVIRONMENTS.PROD) {
   baseFormat = winston.format.combine(winston.format.timestamp());
 } else {
   baseFormat = winston.format.combine(
@@ -41,7 +41,7 @@ if (LOG_TYPE === ENV_TYPES.PROD) {
 
 const newWinstonFormat = (sectionLabel: string, colorizedLabel: any) => winston.format.combine(
   baseFormat,
-  LOG_TYPE === ENV_TYPES.PROD
+  LOG_TYPE === ENVIRONMENTS.PROD
     ? winston.format.label({ label: sectionLabel })
     : winston.format.label({ label: colorizedLabel }),
   winston.format.printf((info) => {
@@ -50,7 +50,7 @@ const newWinstonFormat = (sectionLabel: string, colorizedLabel: any) => winston.
     } = info;
 
     const ts = timestamp.slice(0, 19).replace('T', ' ');
-    if (LOG_TYPE === ENV_TYPES.PROD) {
+    if (LOG_TYPE === ENVIRONMENTS.PROD) {
       return `{"code": ${code
           || '"none"'}, "severity": "${severity}", "message": "${message}", "ts": "${ts}", "label": "${label}", "level": "${level}", "args": ${
         Object.keys(args).length ? JSON.stringify(args, null, null) : '"none"'

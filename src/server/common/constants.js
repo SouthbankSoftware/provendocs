@@ -91,7 +91,7 @@ export const LOG_LEVELS = {
   ERROR: 'error',
 };
 
-export const ENV_TYPES = {
+export const ENVIRONMENTS = {
   PROD: 'prd',
   DEV: 'dev',
   TEST: 'tst',

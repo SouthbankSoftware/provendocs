@@ -30,9 +30,10 @@ import eol from 'eol';
 
 import { decodeFile } from './fileHelpers';
 import createPDF from './certificateBuilder';
-import { STACKDRIVER_SEVERITY, LOG_LEVELS, DOMAINS } from '../common/constants';
+import {
+  STACKDRIVER_SEVERITY, LOG_LEVELS, DOMAINS, ENVIRONMENTS,
+} from '../common/constants';
 import { certificateAPIFormat } from '../modules/winston.config';
-import { ENVIRONMENT } from '../../client/common/constants';
 
 const urlEncryptionKey = process.env.PROVENDOCS_SECRET || 'mySecretHere';
 const EJSON = require('mongodb-extjson');
@@ -77,7 +78,7 @@ const getReadMeString = (
     }-${fileInformation._provendb_metadata.minVersion.toString()}`,
   );
   let cliDownload = `${DOMAINS.PROVENDOCS}/downloads`;
-  if (process.env.PROVENDOCS_ENV === ENVIRONMENT.PROD || !process.env.PROVENDOCS_ENV) {
+  if (process.env.PROVENDOCS_ENV === ENVIRONMENTS.PROD || !process.env.PROVENDOCS_ENV) {
     cliDownload = 'https://provendocs.com/downloads';
   } else {
     cliDownload = `https://${process.env.PROVENDOCS_ENV}.provendocs.com/downloads`;
