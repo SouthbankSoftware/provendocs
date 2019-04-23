@@ -93,29 +93,29 @@ export const RHS_STAGES = {
 
 type Props = { history: any };
 type State = {
-  isAuthenticated: boolean,
-  storageUsed: number,
-  documentsUsed: number,
-  storageLimit: number,
-  documentsLimit: number,
-  userDetails: Object,
-  comment: string,
-  allUploadsInvalid: boolean,
-  commentTags: Array<string>,
-  lhsTabSelected: string,
-  rhsTabSelected: string,
-  fileSelected: any,
-  fileVersion: number,
-  rhsStage: string,
-  proofReady: boolean,
-  firstUploadDialogueOpen: boolean,
-  firstProofDialogueOpen: boolean,
-  storageLimitReached: boolean,
-  shareDialogIsOpen: boolean,
-  matchingFiles: Array<Object>,
-  failedFiles: Array<string>,
-  size: Object,
-  checkAll: boolean,
+  isAuthenticated: boolean;
+  storageUsed: number;
+  documentsUsed: number;
+  storageLimit: number;
+  documentsLimit: number;
+  userDetails: Object;
+  comment: string;
+  allUploadsInvalid: boolean;
+  commentTags: Array<string>;
+  lhsTabSelected: string;
+  rhsTabSelected: string;
+  fileSelected: any;
+  fileVersion: number;
+  rhsStage: string;
+  proofReady: boolean;
+  firstUploadDialogueOpen: boolean;
+  firstProofDialogueOpen: boolean;
+  storageLimitReached: boolean;
+  shareDialogIsOpen: boolean;
+  matchingFiles: Array<Object>;
+  failedFiles: Array<string>;
+  size: Object;
+  checkAll: boolean;
 };
 
 Log.setSource('Dashboard');
@@ -839,8 +839,26 @@ class Dashboard extends React.Component<Props, State> {
                       <span>Download Package</span>
                     </div>
                   ),
-                  content:
-                    (<span>You are about to download an archive containing your document, its proof and its metadata.<br/> You can use <a href="https://provendocs.com/downloads" target="__blank">ProvenDB-Verify</a> to validate the proof of your document without ProvenDocs.<br/>For information on validating your archive, see the <a href="https://provendb.readme.io/docs/provendb-verify" target="__blank">documentation.</a></span>),
+                  content: (
+                    <span>
+                      You are about to download an archive containing your document, its proof and
+                      its metadata.
+                      <br />
+                      You can use
+                      <a href="https://provendocs.com/downloads" target="__blank">
+                        ProvenDB-Verify
+                      </a>
+                      to validate the proof of your document without ProvenDocs.
+                      <br />
+                      For information on validating your archive, see the
+                      <a
+                        href="https://provendocs.readme.io/docs/validating-an-exported-document"
+                        target="__blank"
+                      >
+                        documentation.
+                      </a>
+                    </span>
+                  ),
                   okText: 'Download',
                   okType: 'success',
                   cancelText: 'Cancel',
