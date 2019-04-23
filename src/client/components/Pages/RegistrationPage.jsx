@@ -34,32 +34,44 @@ import {
   EmailConfirmed,
   EmailResend,
   EmailResendSuccess,
+  EnterRefferalCode,
 } from '../Register';
 import { TopNavBar, Footer } from '../index';
 import { PAGES } from '../../common/constants';
 import { checkAuthentication } from '../../common/authentication';
+import { api, Log } from '../../common';
 // $FlowFixMe
 import './LoginSignup.scss';
+import { Loading } from '../Common';
 
-type State = { loggedIn: boolean };
+type State = {
+  loggedIn: boolean,
+  hasReferralToken: boolean,
+  isReferralRequired: boolean,
+  loading: boolean,
+};
 type Props = {
-  signedUp: boolean;
-  eulaIsOpen: boolean;
-  securityIsOpen: boolean;
-  signUpFailed: boolean;
-  history: any;
-  location: any;
-  match: any;
+  signedUp: boolean,
+  eulaIsOpen: boolean,
+  securityIsOpen: boolean,
+  signUpFailed: boolean,
+  history: any,
+  location: any,
+  match: any,
 };
 class RegisterationPage extends React.Component<Props, State> {
   constructor() {
     super();
     this.state = {
       loggedIn: false,
+      hasReferralToken: false,
+      isReferralRequired: true,
+      loading: true,
     };
   }
 
   componentWillMount() {
+    Log.setSource('RegistrationPage');
     const { loggedIn } = this.state;
     checkAuthentication()
       .then((response: Object) => {
@@ -75,6 +87,39 @@ class RegisterationPage extends React.Component<Props, State> {
           this.setState({ loggedIn: false });
         }
       });
+
+    // Check if referral code is needed:
+    api.isReferralRequired().then((result) => {
+      if (result.data.referralRequired) {
+        this.setState({ isReferralRequired: true });
+
+        // Check if they have a refferal token.
+        const token = localStorage.getItem('provendocs_referral_code');
+        if (token) {
+          const checkGrowsurfInterval = setInterval(() => {
+            if (window && window.growsurf && window.growsurf.getParticipantById) {
+              window.growsurf
+                .getParticipantById(token)
+                .then(() => {
+                  this.setState({ hasReferralToken: true });
+                  this.setState({ loading: false });
+                })
+                .catch((getParticipantErr) => {
+                  Log.error(getParticipantErr);
+                  this.setState({ loading: false });
+                });
+              clearInterval(checkGrowsurfInterval);
+            }
+          }, 1000);
+        } else {
+          this.setState({ hasReferralToken: false });
+          this.setState({ loading: false });
+        }
+      } else {
+        this.setState({ isReferralRequired: false });
+        this.setState({ loading: false });
+      }
+    });
   }
 
   componentDidMount() {}
@@ -90,20 +135,41 @@ class RegisterationPage extends React.Component<Props, State> {
     const {
       location: { pathname },
       match: { path },
+      signedUp,
+      signUpFailed,
     } = this.props;
-
+    const {
+      loggedIn, hasReferralToken, isReferralRequired, loading,
+    } = this.state;
     let page = 'default';
     const pagePath = pathname.replace(path, '').replace(/\//g, '');
     if (pagePath !== '') {
       page = pagePath;
     }
-    const { loggedIn } = this.state;
-    const { signedUp, signUpFailed } = this.props;
     if (signedUp || signUpFailed) {
       page = 'none';
     }
+    if (!hasReferralToken && isReferralRequired) {
+      page = 'noReferralToken';
+    }
     if (loggedIn) {
       return <Redirect to="/dashboard" />;
+    }
+
+    if (loading) {
+      return (
+        <div className="App">
+          <TopNavBar currentPage={PAGES.REGISTER} isAuthenticated={loggedIn} />
+          <div className="AppBody">
+            <div className="mainPanel">
+              <div className="loginSignupRoot">
+                <Loading isFullScreen={false} />
+              </div>
+            </div>
+          </div>
+          <Footer currentPage={PAGES.HOME} privacyOpen={false} />
+        </div>
+      );
     }
 
     return (
@@ -120,10 +186,11 @@ class RegisterationPage extends React.Component<Props, State> {
               {page === 'emailConfirm' && <EmailConfirmed />}
               {page === 'emailResend' && <EmailResend />}
               {page === 'emailResendSuccess' && <EmailResendSuccess />}
+              {page === 'noReferralToken' && <EnterRefferalCode />}
             </div>
           </div>
         </div>
-        <Footer currentPage={PAGES.HOME} />
+        <Footer currentPage={PAGES.HOME} privacyOpen={false} />
       </div>
     );
   }

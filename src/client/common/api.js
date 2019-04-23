@@ -138,4 +138,5 @@ export default {
   sendEmailProof: (fileName: string, version: string | number, toEmail: string) => axios.get(`/api/sendEmailProof/${fileName}/${version}/${toEmail}`),
   postEmailSubscribe: (values: Object) => axios.post('/api/sendConfirmation', values),
   deleteAccount: () => axios.get('/api/util/deleteAccount'),
+  isReferralRequired: () => axios.get('/api/util/isReferralRequired'),
 };

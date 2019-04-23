@@ -2294,6 +2294,7 @@ h3 {
             a {
               color: $dusk-blue;
             }
+
             a:hover {
               color: $tealish;
             }
@@ -2518,4 +2519,79 @@ h3 {
       flex-direction: row !important;
     }
   }
+}
+
+/*GrowSurf Styling */
+.grsf-global label {
+  font-size: 12px !important;
+  font-family: "Roboto", arial, sans-serif !important;
+}
+
+.grsf-global input,
+.grsf-global textarea {
+  font-size: 15px !important;
+  font-family: "Roboto", arial, sans-serif !important;
+  font-weight: 400 !important;
+}
+
+.grsf-global button,
+.grsf-global .btn {
+  text-transform: capitalize !important;
+  border-radius: 50px !important;
+  margin-left: 7px !important;
+}
+
+.grsf-global a,
+.grsf-global .link {
+  font-weight: 900 !important;
+}
+
+.grsf-global .grsf-widget .grsf-widget-inner {
+  font-size: 13px !important;
+  border-radius: 50px !important;
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+  margin-bottom: 20px !important;
+  margin-left: 10px !important;
+}
+
+.grsf-global .grsf-rewards .grsf-rewards-inner ul.grsf-rewards-list li.grsf-reward .grsf-reward-inner .grsf-reward-info-container .grsf-reward-title {
+  color: rgb(135, 155, 167) !important;
+  line-height: normal !important;
+  font-size: 15px !important;
+}
+
+.grsf-global .grsf-share .grsf-copy-link .grsf-copy-link-button-container button.grsf-copy-link-button {
+  font-size: 15px !important;
+}
+
+.grsf-global .grsf-share .grsf-share-buttons .grsf-share-button .grsf-share-button-text {
+  font-size: 15px !important;
+}
+
+.grsf-global .grsf-rewards .grsf-rewards-inner ul.grsf-rewards-list li.grsf-reward .grsf-reward-inner .grsf-reward-info-container .grsf-reward-details .grsf-reward-goal .grsf-reward-goal-inner {
+  font-size: 13px !important;
+  border-radius: 50px !important;
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+}
+
+.grsf-global .grsf-rewards .grsf-rewards-inner ul.grsf-rewards-list li.grsf-reward .grsf-reward-inner .grsf-reward-info-container .grsf-reward-details ul.grsf-reward-progress li.grsf-reward-progress-block {
+  margin: 4px !important;
+}
+
+.grsf-global .grsf-rewards .grsf-rewards-inner ul.grsf-rewards-list li.grsf-reward .grsf-reward-max {
+  font-size: 12px !important;
+}
+
+.grsf-window-header {
+  h3 {
+    width: unset;
+    height: unset;
+  }
+}
+
+.grsf-window-main-content-top-inner {
+  padding: 0px 45px !important;
+  padding-top: calc(45px + 20px) !important;
 }

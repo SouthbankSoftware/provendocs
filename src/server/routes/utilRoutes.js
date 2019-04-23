@@ -25,15 +25,23 @@ import winston from 'winston';
 import uuidv4 from 'uuid/v4';
 import fs from 'fs';
 import createArchiveForDocument from '../helpers/archiveBuilder';
-import { getUserDetails } from '../helpers/userHelpers';
+import { getUserDetails, getUserFromEmail } from '../helpers/userHelpers';
 import {
   getHistoricalFile,
   getVersionProofForFile,
   getDocumentProofForFile,
   forgetAllFilesForUser,
   clearStorageForUser,
+  setStorageForUser,
+  getIsReferralRequired,
 } from '../helpers/mongoAPI';
-import { DOMAINS, LOG_LEVELS, STACKDRIVER_SEVERITY } from '../common/constants';
+import validateSignature from '../helpers/growsurfHelpers';
+import {
+  LOG_LEVELS,
+  STACKDRIVER_SEVERITY,
+  REFERRAL_EVENTS,
+  STORAGE_LIMITS,
+} from '../common/constants';
 import { generalFormat } from '../modules/winston.config';
 
 const { MongoClient } = require('mongodb');
@@ -137,6 +145,7 @@ module.exports = (app: any) => {
               level: LOG_LEVELS.INFO,
               severity: STACKDRIVER_SEVERITY.INFO,
               message: 'Got File Details',
+              // $FlowFixMe
               name: fileInfo.name,
               reqId,
             });
@@ -341,5 +350,145 @@ module.exports = (app: any) => {
         });
         res.status(400).send({ ok: 0, error: 'Failed to find user for token.' });
       });
+  });
+
+  /**
+   * WebHook for when a new referral event is triggered from GrowSurf.
+   */
+  app.post('/api/util/referralEvent', (req, res) => {
+    const reqId = uuidv4();
+    const { body } = req;
+    const signature = req.get('GrowSurf-Signature');
+
+    logger.log({
+      level: LOG_LEVELS.INFO,
+      severity: STACKDRIVER_SEVERITY.INFO,
+      message: '[WEBHOOK] -> New referral Event Triggered',
+      reqId,
+      body: req.body,
+      header: req.headers,
+    });
+    try {
+      // Validate the signature
+      validateSignature(body, signature);
+      switch (body.event) {
+        case REFERRAL_EVENTS.CAMPAIGN_ENDED:
+          logger.log({
+            level: LOG_LEVELS.WARN,
+            severity: STACKDRIVER_SEVERITY.WARNING,
+            message: 'Referral campaign has ended.',
+            reqId,
+            body,
+          });
+          res.status(200).send(true);
+          break;
+        case REFERRAL_EVENTS.NEW_PARTICIPANT_ADDED:
+          logger.log({
+            level: LOG_LEVELS.DEBUG,
+            severity: STACKDRIVER_SEVERITY.DEBUG,
+            message: 'New participant added to referral campaign.',
+            reqId,
+            body,
+          });
+          res.status(200).send(true);
+          break;
+        case REFERRAL_EVENTS.PARTICIPANT_REACHED_A_GOAL:
+          logger.log({
+            level: LOG_LEVELS.DEBUG,
+            severity: STACKDRIVER_SEVERITY.DEBUG,
+            message: 'Referrel participant reached a goal:',
+            reqId,
+            body,
+          });
+          const { data } = body;
+          const { participant, reward } = data;
+          if (participant.referralCount <= reward.limit) {
+            // 1gb + 500gb for each additional participant up to 5.
+            const newDataLimit = STORAGE_LIMITS.DEFAULT_SIZE + 500000000 * participant.referralCount;
+            const newDocsLimit = STORAGE_LIMITS.DEFAULT_DOCUMENTS + 20 * participant.referralCount;
+
+            getUserFromEmail(participant.email)
+              .then((userDetails) => {
+                logger.log({
+                  level: LOG_LEVELS.DEBUG,
+                  severity: STACKDRIVER_SEVERITY.DEBUG,
+                  message: 'Got user details for referrel award.',
+                  reqId,
+                  userDetails,
+                });
+                setStorageForUser(userDetails.user_id, newDataLimit, newDocsLimit)
+                  .then((setStorageResult) => {
+                    logger.log({
+                      level: LOG_LEVELS.DEBUG,
+                      severity: STACKDRIVER_SEVERITY.DEBUG,
+                      message: 'Participant has recieved referral award.',
+                      reqId,
+                      participant,
+                      setStorageResult,
+                    });
+                    res.status(200).send(true);
+                  })
+                  .catch((setStorageErr) => {
+                    logger.log({
+                      level: LOG_LEVELS.ERROR,
+                      severity: STACKDRIVER_SEVERITY.ERROR,
+                      message: 'Failed to reward user for referral.',
+                      reqId,
+                      setStorageErr,
+                      errMsg: setStorageErr.message,
+                    });
+                    res.status(400).end();
+                  });
+              })
+              .catch((getUserDetailsErr) => {
+                logger.log({
+                  level: LOG_LEVELS.ERROR,
+                  severity: STACKDRIVER_SEVERITY.ERROR,
+                  message: 'Failed to get user details for referrel.',
+                  reqId,
+                  getUserDetailsErr,
+                  errMsg: getUserDetailsErr.message,
+                });
+                res.status(400).end();
+              });
+          } else {
+            logger.log({
+              level: LOG_LEVELS.DEBUG,
+              severity: STACKDRIVER_SEVERITY.DEBUG,
+              message: 'Participant has already reached goal limit.',
+              reqId,
+              participant,
+            });
+            res.status(200).send(true);
+          }
+
+          break;
+        default:
+          logger.log({
+            level: LOG_LEVELS.DEBUG,
+            severity: STACKDRIVER_SEVERITY.DEBUG,
+            message: 'Unrecognised Growsurf Event',
+            reqId,
+            body,
+          });
+          res.status(200).send(true);
+          break;
+      }
+    } catch (err) {
+      logger.log({
+        level: LOG_LEVELS.WARN,
+        severity: STACKDRIVER_SEVERITY.WARNING,
+        message: 'Growsurf Referral event failed validation.',
+        reqId,
+        err,
+      });
+      res.status(400).end();
+    }
+  });
+
+  app.get('/api/util/isReferralRequired', (req, res) => {
+    getIsReferralRequired().then((result) => {
+      res.status(200).send(result);
+    });
   });
 };

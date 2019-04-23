@@ -174,20 +174,47 @@ class Dashboard extends React.Component<Props, State> {
               .then((res) => {
                 Log.info(res);
                 if (res.status === 200) {
-                  if (res.data[0]) {
-                    this.setState({ storageUsed: res.data[0].storageUsed });
-                    this.setState({ documentsUsed: res.data[0].documentsUsed });
-                    this.setState({ storageLimit: res.data[0].storageLimit });
-                    this.setState({ documentsLimit: res.data[0].documentsLimit });
+                  if (res.data.filesSize[0]) {
+                    const checkGrowsurfInterval = setInterval(() => {
+                      if (window && window.growsurf && window.growsurf.getParticipantById) {
+                        window.growsurf
+                          .addParticipant(res.data.email)
+                          .then((participant) => {
+                            Log.info(`Added participant to Growsurf: ${participant}.`);
+                          })
+                          .catch((growSurfErr) => {
+                            Log.error(`Error adding participant: ${JSON.stringify(growSurfErr)}`);
+                          });
+                        clearInterval(checkGrowsurfInterval);
+                      }
+                    }, 1000);
+                    this.setState({ storageUsed: res.data.filesSize[0].storageUsed });
+                    this.setState({ documentsUsed: res.data.filesSize[0].documentsUsed });
+                    this.setState({ storageLimit: res.data.filesSize[0].storageLimit });
+                    this.setState({ documentsLimit: res.data.filesSize[0].documentsLimit });
                   } else {
-                    this.setState({ storageUsed: res.data.storageUsed });
-                    this.setState({ documentsUsed: res.data.documentsUsed });
-                    this.setState({ storageLimit: res.data.storageLimit });
-                    this.setState({ documentsLimit: res.data.documentsLimit });
+                    const checkGrowsurfInterval = setInterval(() => {
+                      if (window && window.growsurf && window.growsurf.getParticipantById) {
+                        window.growsurf
+                          .addParticipant(res.data.email)
+                          .then((participant) => {
+                            Log.info(`Added participant to Growsurf: ${participant}.`);
+                          })
+                          .catch((growSurfErr) => {
+                            Log.error(`Error adding participant: ${JSON.stringify(growSurfErr)}`);
+                          });
+                        clearInterval(checkGrowsurfInterval);
+                      }
+                    }, 1000);
+                    this.setState({ storageUsed: res.data.filesSize.storageUsed });
+                    this.setState({ documentsUsed: res.data.filesSize.documentsUsed });
+                    this.setState({ storageLimit: res.data.filesSize.storageLimit });
+                    this.setState({ documentsLimit: res.data.filesSize.documentsLimit });
                   }
                 }
               })
               .catch((err) => {
+                console.log(err);
                 Log.error(`Error fetching files size: ${err}`);
                 openNotificationWithIcon(
                   'error',
@@ -839,8 +866,27 @@ class Dashboard extends React.Component<Props, State> {
                       <span>Download Package</span>
                     </div>
                   ),
-                  content:
-                    (<span>You are about to download an archive containing your document, its proof and its metadata.<br/> You can use <a href="https://provendocs.com/downloads" target="__blank">ProvenDB-Verify</a> to validate the proof of your document without ProvenDocs.<br/>For information on validating your archive, see the <a href="https://provendb.readme.io/docs/provendb-verify" target="__blank">documentation.</a></span>),
+                  content: (
+                    <span>
+                      You are about to download an archive containing your document, its proof and
+                      its metadata.
+                      <br />
+                      {' '}
+You can use
+                      {' '}
+                      <a href="https://provendocs.com/downloads" target="__blank">
+                        ProvenDB-Verify
+                      </a>
+                      {' '}
+                      to validate the proof of your document without ProvenDocs.
+                      <br />
+                      For information on validating your archive, see the
+                      {' '}
+                      <a href="https://provendb.readme.io/docs/provendb-verify" target="__blank">
+                        documentation.
+                      </a>
+                    </span>
+                  ),
                   okText: 'Download',
                   okType: 'success',
                   cancelText: 'Cancel',
