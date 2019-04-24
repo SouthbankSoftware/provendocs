@@ -172,7 +172,7 @@ export default class ViewProof extends React.Component<Props, State> {
       case STATES.LOADING:
         return (
           <div className="viewProof subWrapper">
-            <div className="contentWrapper loading">
+            <div className="contentWrapper loading proofLoading">
               <Loading isFullScreen={false} message="Fetching Document Proof..." />
             </div>
           </div>

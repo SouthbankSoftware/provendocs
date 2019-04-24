@@ -116,6 +116,7 @@ export default {
   getFullFileForUserFromHistory: (fileName: string, version: number) => axios.get(`/api/fullFileFromHistory/${fileName}/${version}`),
   getProofForUser: (fileId: string) => axios.get(`/api/proof/${fileId}`),
   getHistoricalProofInfoForUser: (fileName: string, version: number) => axios.get(`/api/historicalProofInfo/${fileName}/${version}`),
+  getHistoricalFileId: (fileName: string, fileVersion: number) => axios.get(`api/historicalFileId/${fileName}/${fileVersion}`),
   downloadProofArchiveForFile: (fileName: string, version: number) => window.open(`/api/util/getArchive/${fileName}/${version}`),
   downloadFile: (file: Object) => window.open(`/api/file/inline/${file._id}#view=fitH`),
   downloadHistoricalFile: (fileName: string, version: number) => window.open(`/api/historicalFile/download/${fileName}/${version}`),

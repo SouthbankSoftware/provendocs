@@ -373,7 +373,7 @@ export default class ViewFiles extends React.Component<Props, State> {
             <div className="commentButton">
               <CommentIcon
                 className={`commentIcon enabled_${
-                  file.comment.length > 0 || file.tags[0].length > 0 ? 'true' : 'false'
+                  (file.comment && file.comment.length > 0) || (file.tags && file.tags[0] && file.tags[0].length > 0) ? 'true' : 'false'
                 }`}
                 onClick={() => this._onClickComment(file.document)}
               />
