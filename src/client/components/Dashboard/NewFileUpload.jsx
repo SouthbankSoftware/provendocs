@@ -443,7 +443,8 @@ class NewFileUpload extends React.Component<Props, State> {
               updateSpaceUsedCallback(res.data[0].storageUsed, res.data[0].documentsUsed);
             })
             .catch((err) => {
-              Log.error(`Error fetching files size: ${err}`);
+              Log.error('Error fetching files size: ');
+              console.error(err);
               openNotificationWithIcon(
                 'error',
                 'Upload Error',

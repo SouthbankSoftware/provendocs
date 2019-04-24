@@ -22,9 +22,24 @@
  * @Last modified time: 2019-04-10T14:36:38+10:00
  */
 
+export const ENVIRONMENT = {
+  PROD: 'prd',
+  DEV: 'dev',
+  TEST: 'tst',
+  STAGING: 'stg',
+};
+
+export const OS = {
+  MAC: 'darwin_amd64',
+  LINUX: 'linux_amd64',
+  WINDOWS: 'windows_amd64',
+};
+
 export const DOWNLOAD_LINKS = {
   VERIFY_DOCS: 'https://provendb.readme.io/docs/provendb-verify',
-  VERIFY_LATEST: (env: string, os: string) => `https://storage.googleapis.com/provendb-${env}/provendb-verify/provendb-verify_${os}`,
+  VERIFY_LATEST: (env: string, os: string) => `https://storage.googleapis.com/provendb-${env}/provendb-verify/provendb-verify_${os}${
+    os === OS.WINDOWS ? '.exe' : ''
+  }`,
   LITEPAPER:
     'https://github.com/SouthbankSoftware/provendocs/raw/develop/docs/provendb-litepaper.pdf',
   LITEPAPER_DOCS: 'https://provendb.com/litepaper',
@@ -125,17 +140,4 @@ export const STATUS_CODES = {
   INVALIDPASSWORD: '4003',
   USERNOTFOUND: '4004',
   SIGNUPFAILED: '4005',
-};
-
-export const ENVIRONMENT = {
-  PROD: 'prd',
-  DEV: 'dev',
-  TEST: 'tst',
-  STAGING: 'stg',
-};
-
-export const OS = {
-  MAC: 'darwin_amd64',
-  LINUX: 'linux_amd64',
-  WINDOWS: 'windows_amd64',
 };

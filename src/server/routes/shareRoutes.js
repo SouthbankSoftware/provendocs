@@ -364,7 +364,7 @@ module.exports = (app: any) => {
                 .catch((getFileInfoErr) => {
                   const returnObj = {
                     level: LOG_LEVELS.WARN,
-                    severity: STACKDRIVER_SEVERITY.WARN,
+                    severity: STACKDRIVER_SEVERITY.WARNING,
                     message: 'Failed to get file info',
                     fileId,
                     getFileInfoErr,
@@ -664,8 +664,8 @@ module.exports = (app: any) => {
               })
               .catch((getSharedFileErr) => {
                 const returnObj = {
-                  level: LOG_LEVELS.WARNING,
-                  severity: STACKDRIVER_SEVERITY.WARN,
+                  level: LOG_LEVELS.WARN,
+                  severity: STACKDRIVER_SEVERITY.WARNING,
                   message: 'Unable to find matching file for link:',
                   getSharedFileErr,
                   link,

@@ -78,10 +78,8 @@ class ViewDocument extends React.Component<Props, State> {
         // Do nothing yet.
         this.setState({ currentState: STATES.FILE_PREVIEW });
       } else {
-        console.log('Fetch file...');
         this._fetchFile()
           .then((data) => {
-            console.log('Fetched file:', data);
             if (file.mimetype === MIMETYPES.EMAIL) {
               if (data.data.subject || data.data.from || data.data.to) {
                 const {

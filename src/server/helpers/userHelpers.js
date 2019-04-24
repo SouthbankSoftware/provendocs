@@ -68,8 +68,8 @@ export const resetTokenCookies = (req: Object, res: Object) => {
 };
 function checkStatus(res) {
   logger.log({
-    level: LOG_LEVELS.INFO,
-    severity: STACKDRIVER_SEVERITY.INFO,
+    level: LOG_LEVELS.DEBUG,
+    severity: STACKDRIVER_SEVERITY.DEBUG,
     message: 'checkStatus',
     res,
   });
@@ -111,8 +111,8 @@ export const verifyTokenFromUserModule = (req: Object, res: Object, jwtSecret: O
           .then((result) => {
             result.json().then((jsonResponse) => {
               logger.log({
-                level: LOG_LEVELS.INFO,
-                severity: STACKDRIVER_SEVERITY.INFO,
+                level: LOG_LEVELS.DEBUG,
+                severity: STACKDRIVER_SEVERITY.DEBUG,
                 message: 'jsonResponse',
                 jsonResponse,
               });
@@ -176,9 +176,9 @@ export const verifyTokenFromUserModule = (req: Object, res: Object, jwtSecret: O
  */
 export const getUserFromToken = (req: any, res: any, secret: Object) => new Promise<any>((resolve, reject) => {
   logger.log({
-    level: LOG_LEVELS.INFO,
-    severity: STACKDRIVER_SEVERITY.INFO,
-    message: 'getUserFromToken: ',
+    level: LOG_LEVELS.DEBUG,
+    severity: STACKDRIVER_SEVERITY.DEBUG,
+    message: 'getUserFromToken',
     cookies: req.cookies,
   });
   if (req.cookies && req.cookies.AuthToken && req.cookies.RefreshToken) {
@@ -196,15 +196,15 @@ export const getUserFromToken = (req: any, res: any, secret: Object) => new Prom
           verifyTokenFromUserModule(req, res, secret)
             .then((result) => {
               logger.log({
-                level: LOG_LEVELS.INFO,
-                severity: STACKDRIVER_SEVERITY.INFO,
+                level: LOG_LEVELS.DEBUG,
+                severity: STACKDRIVER_SEVERITY.DEBUG,
                 message: 'verifyTokenFromUserModule: ',
                 result,
               });
               jwt.verify(result.auth_token, secret, (errVerify, decodedNewToken) => {
                 logger.log({
-                  level: LOG_LEVELS.INFO,
-                  severity: STACKDRIVER_SEVERITY.INFO,
+                  level: LOG_LEVELS.DEBUG,
+                  severity: STACKDRIVER_SEVERITY.DEBUG,
                   message: 'jwt.verify.newToken: ',
                   decodedNewToken,
                   errVerify,
