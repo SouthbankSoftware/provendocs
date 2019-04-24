@@ -798,6 +798,14 @@
         opacity: 1;
       }
 
+      .enabled_false {
+        opacity: 0.2;
+      }
+
+      .enabled_false:hover {
+        opacity: 0.2;
+      }
+
       .forgetIcon:hover {
         fill: $pale_red;
       }
