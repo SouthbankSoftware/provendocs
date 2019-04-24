@@ -69,7 +69,8 @@ const getReadMeString = (
   try {
     const { name, uploadedAt, _id } = fileInformation;
     const { email } = userInformation;
-    const { btcBlockNumber, btcTransaction, details } = proofInformation;
+    const { btcBlockNumber, btcTransaction } = proofInformation;
+    const { details } = versionProof;
     const { btcTxnConfirmed } = details;
     const proofHash = versionProof.hash;
     const { hash } = fileInformation._provendb_metadata;
@@ -85,7 +86,9 @@ const getReadMeString = (
       cliDownload = `https://${process.env.PROVENDOCS_ENV}.provendocs.com/downloads`;
     }
 
-    const uploadedAtDate = String(new Date(uploadedAt)); // get it into same format as submitted date
+    // @TODO -> Conver tthese to GMT!
+    // const uploadedAtDate = String(new Date(uploadedAt));
+    // const provenAtDate = String(new Date(btcTxnConfirmed));
     const readMeText = `
    Summary
    -------
@@ -94,7 +97,7 @@ const getReadMeString = (
    proof for the document "${name}".
    
    "${name}" was uploaded to ProvenDocs on
-             ${uploadedAtDate} 
+             ${uploadedAt} 
              by ${email}
    and proved to the Bitcoin blockchain  at 
              ${btcTxnConfirmed}.
@@ -146,7 +149,7 @@ const getReadMeString = (
 
     return eol.crlf(readMeText); // Windows format CRLF
   } catch (e) {
-    return 'Unable to create README for this proof. Please contact Support';
+    return `Unable to create README for this proof due to error: ${e}. Please contact Support`;
   }
 };
 
