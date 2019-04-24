@@ -96,6 +96,7 @@ export const DOMAINS = {
   PROVENDOCS: 'https://provendocs.com',
   API: 'https://api.provendb.com',
   PROVENDB: 'https://provendb.com',
+  PROVENDOCS_ENV: 'prd',
 };
 
 export const PROOF_STATUS = {

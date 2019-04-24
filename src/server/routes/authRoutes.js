@@ -63,7 +63,7 @@ module.exports = (app) => {
       || (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://localhost:8888');
     urls.API = process.env.API_URL || 'http://localhost:8080';
     urls.INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:8080';
-
+    urls.PROVENDOCS_ENV = process.env.PROVENDOCS_ENV || 'dev';
     res.status(200).send(JSON.stringify(urls));
   });
   app.get('/api/logout', (req, res) => {

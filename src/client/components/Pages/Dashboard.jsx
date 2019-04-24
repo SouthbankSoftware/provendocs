@@ -45,7 +45,12 @@ import {
   TabbedPanel, EmailProofButton, NewFileUpload, ViewFiles,
 } from '../Dashboard/index';
 import {
-  PAGES, ANTD_BUTTON_TYPES, GA_CATEGORIES, PROOF_STATUS, ENVIRONMENT,
+  PAGES,
+  ANTD_BUTTON_TYPES,
+  GA_CATEGORIES,
+  PROOF_STATUS,
+  ENVIRONMENT,
+  DOMAINS,
 } from '../../common/constants';
 import { checkAuthentication } from '../../common/authentication';
 import { Loading } from '../Common';
@@ -870,9 +875,15 @@ class Dashboard extends React.Component<Props, State> {
                       You are about to download an archive containing your document, its proof and
                       its metadata.
                       <br />
-
                       You can use
-                      <a href={process.env.PROVENDOCS_ENV === ENVIRONMENT.PROD || !process.env.PROVENDOCS_ENV ? 'https://provendocs.com/downloads' : `https://${process.env.PROVENDOCS_ENV}.provendocs.com/downloads`} target="__blank">
+                      <a
+                        href={
+                          DOMAINS.PROVENDOCS_ENV === ENVIRONMENT.PROD || !DOMAINS.PROVENDOCS_ENV
+                            ? 'https://provendocs.com/downloads'
+                            : `https://${DOMAINS.PROVENDOCS_ENV}.provendocs.com/downloads`
+                        }
+                        target="__blank"
+                      >
                         ProvenDB-Verify
                       </a>
                       to validate the proof of your document without ProvenDocs.

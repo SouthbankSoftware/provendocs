@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-24T09:27:54+10:00
+ * @Last modified time: 2019-04-24T10:47:22+10:00
  */
 import React, { Suspense } from 'react';
 import { hot, setConfig } from 'react-hot-loader';
@@ -27,6 +27,7 @@ import { Spin, Icon } from 'antd';
 import { Helmet } from 'react-helmet';
 
 import api from './common/api';
+import { DOMAINS } from './common/constants';
 
 type Props = {};
 
@@ -59,6 +60,17 @@ class App extends React.Component<Props, State> {
 
   componentWillMount() {
     api
+      .getServiceUrls()
+      .then((res) => {
+        if (res.data.PROVENDOCS_ENV) {
+          DOMAINS.PROVENDOCS_ENV = res.data.PROVENDOCS_ENV;
+        }
+      })
+      .catch((getServiceUrlsErr) => {
+        console.error(getServiceUrlsErr);
+      });
+
+    api
       .checkStatus()
       .then(() => {
         const { status } = this.state;
@@ -78,9 +90,9 @@ class App extends React.Component<Props, State> {
   render() {
     const { status } = this.state;
     let grsfID = 'x803x6';
-    if (process.env.PROVENDOCS_ENV === 'dev' || process.env.PROVENDOCS_ENV === 'tst') {
+    if (DOMAINS.PROVENDOCS_ENV === 'dev' || DOMAINS.PROVENDOCS_ENV === 'tst') {
       grsfID = 'lc1xl2';
-    } else if (process.env.PROVENDOCS_ENV === 'stg') {
+    } else if (DOMAINS.PROVENDOCS_ENV === 'stg') {
       grsfID = 'hyrcag';
     }
     if (status) {
