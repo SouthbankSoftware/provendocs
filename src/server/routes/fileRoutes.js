@@ -153,8 +153,8 @@ module.exports = (app: any) => {
         getFileInformation(fileId, user._id, false, true)
           .then((fileInfo: Array<Object>) => {
             logger.log({
-              level: LOG_LEVELS.INFO,
-              severity: STACKDRIVER_SEVERITY.INFO,
+              level: LOG_LEVELS.DEBUG,
+              severity: STACKDRIVER_SEVERITY.DEBUG,
               message: 'File Metadata: ',
               hasMetadata: fileInfo[0]._provendb_metadata,
               reqId,
@@ -168,8 +168,8 @@ module.exports = (app: any) => {
             getFileThumbnail(fileId, user._id)
               .then((result) => {
                 logger.log({
-                  level: LOG_LEVELS.INFO,
-                  severity: STACKDRIVER_SEVERITY.INFO,
+                  level: LOG_LEVELS.DEBUG,
+                  severity: STACKDRIVER_SEVERITY.DEBUG,
                   message: 'File Thumbnail Loaded: ',
                   success: result && result.binaryData ? 'true' : 'false',
                 });
@@ -193,8 +193,8 @@ module.exports = (app: any) => {
               })
               .catch((getThumbnailError) => {
                 logger.log({
-                  level: LOG_LEVELS.ERROR,
-                  severity: STACKDRIVER_SEVERITY.ERROR,
+                  level: LOG_LEVELS.WARN,
+                  severity: STACKDRIVER_SEVERITY.WARN,
                   message: 'Failed to get file thumbnail, requesting new thumbnail.',
                   getThumbnailError,
                 });
@@ -243,8 +243,9 @@ module.exports = (app: any) => {
                       })
                       .catch((getThumbnailErrorAgain) => {
                         logger.log({
-                          level: LOG_LEVELS.ERROR,
-                          severity: STACKDRIVER_SEVERITY.ERROR,
+                          level: LOG_LEVELS.WARN,
+                          severity: STACKDRIVER_SEVERITY.WARNING,
+
                           message: 'Failed to get file thumbnail again.',
                           getThumbnailErrorAgain,
                         });
@@ -705,8 +706,8 @@ module.exports = (app: any) => {
       getOrCreateStorageUsage(user._id)
         .then((filesSize) => {
           logger.info({
-            level: LOG_LEVELS.INFO,
-            severity: STACKDRIVER_SEVERITY.INFO,
+            level: LOG_LEVELS.DEBUG,
+            severity: STACKDRIVER_SEVERITY.DEBUG,
             message: 'Success in getting file sizes.',
             filesSize,
             reqId,
@@ -714,6 +715,13 @@ module.exports = (app: any) => {
           // New user, get email and send back for GrowSurf.
           getUserDetails(req, res, app.get('jwtSecret'))
             .then((userDetails) => {
+              logger.info({
+                level: LOG_LEVELS.INFO,
+                severity: STACKDRIVER_SEVERITY.INFO,
+                message: 'Success in getting file sizes and user..',
+                filesSize,
+                reqId,
+              });
               res.status(200).send({ filesSize, email: userDetails.email });
             })
             .catch((userDetailsErr) => {

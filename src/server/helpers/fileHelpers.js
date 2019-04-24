@@ -214,12 +214,6 @@ export const convertToBinary = (files: Object) => new Promise<Array<Object>>((re
 
     compressFile(path)
       .then((encodedFile: Buffer) => {
-        logger.log({
-          level: LOG_LEVELS.INFO,
-          severity: STACKDRIVER_SEVERITY.INFO,
-          message: 'Size of compressed file buffer',
-          fileBufferLength: encodedFile.length,
-        });
         binaryFiles.push({ file, encodedFile });
         logger.log({
           level: LOG_LEVELS.DEBUG,
@@ -267,12 +261,6 @@ export const convertSingleToBinary = (file: Object) => new Promise<Buffer>((reso
 
   compressFile(path)
     .then((fileBuffer: Buffer) => {
-      logger.log({
-        level: LOG_LEVELS.INFO,
-        severity: STACKDRIVER_SEVERITY.INFO,
-        message: 'Size of compressed file buffer',
-        fileBufferLength: fileBuffer.length,
-      });
       resolve(fileBuffer);
     })
     .catch((err) => {

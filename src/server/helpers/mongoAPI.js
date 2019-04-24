@@ -1882,8 +1882,8 @@ export const getFileVersionCount = (fileId: string, userId: string) => new Promi
   const projection = { _id: 1 };
   const collection = dbObject.collection(`files_${userId}`);
   logger.log({
-    level: LOG_LEVELS.INFO,
-    severity: STACKDRIVER_SEVERITY.INFO,
+    level: LOG_LEVELS.DEBUG,
+    severity: STACKDRIVER_SEVERITY.DEBUG,
     message: 'Filter:',
     filter,
     isConnected: dbObject.serverConfig.isConnected(),
