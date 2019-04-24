@@ -52,6 +52,7 @@ export default {
         reject(error);
       });
   }),
+  getServiceUrls: () => axios.get('/api/serviceUrls'),
   createUser: (name: string, email: string, password: string, activated: boolean) => axios.post('/api/createUser', {
     name,
     email,

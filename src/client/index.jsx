@@ -26,30 +26,43 @@ import React from 'react';
 import ReactGA from 'react-ga';
 import ReactDOM from 'react-dom';
 import App from './App';
-import { ENVIRONMENT } from './common/constants';
+
+import { ENVIRONMENT, DOMAINS } from './common/constants';
+import { api } from './common';
 
 const googleAnalytics = {
   gaOptions: { cookieDomain: 'auto' },
 };
-switch (process.env.PROVENDOCS_ENV) {
-  case ENVIRONMENT.PROD:
-    ReactGA.initialize('UA-101162043-7', googleAnalytics);
-    break;
-  case ENVIRONMENT.DEV:
-    googleAnalytics.debug = true;
-    ReactGA.initialize('UA-101162043-10', googleAnalytics);
-    break;
-  case ENVIRONMENT.STAGING:
-    googleAnalytics.debug = true;
-    ReactGA.initialize('UA-101162043-11', googleAnalytics);
-    break;
-  case ENVIRONMENT.TEST:
-    googleAnalytics.debug = true;
-    ReactGA.initialize('UA-101162043-12', googleAnalytics);
-    break;
-  default:
-    ReactGA.initialize('UA-101162043-7', googleAnalytics);
-    break;
-}
 
-ReactDOM.render(<App />, document.getElementById('root'));
+api
+  .getServiceUrls()
+  .then((res) => {
+    if (res.data.PROVENDOCS_ENV) {
+      DOMAINS.PROVENDOCS_ENV = res.data.PROVENDOCS_ENV;
+    }
+    switch (res.data.PROVENDOCS_ENV || DOMAINS.PROVENDOCS_ENV) {
+      case ENVIRONMENT.PROD:
+        ReactGA.initialize('UA-101162043-7', googleAnalytics);
+        break;
+      case ENVIRONMENT.DEV:
+        googleAnalytics.debug = true;
+        ReactGA.initialize('UA-101162043-10', googleAnalytics);
+        break;
+      case ENVIRONMENT.STAGING:
+        googleAnalytics.debug = true;
+        ReactGA.initialize('UA-101162043-11', googleAnalytics);
+        break;
+      case ENVIRONMENT.TEST:
+        googleAnalytics.debug = true;
+        ReactGA.initialize('UA-101162043-12', googleAnalytics);
+        break;
+      default:
+        ReactGA.initialize('UA-101162043-7', googleAnalytics);
+        break;
+    }
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  })
+  .catch((getServiceUrlsErr) => {
+    console.error(getServiceUrlsErr);
+  });

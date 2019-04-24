@@ -27,7 +27,7 @@ import { withRouter } from 'react-router';
 import { Button, Radio } from 'antd';
 import { TopNavBar, Footer } from '..';
 import {
-  PAGES, DOWNLOAD_LINKS, ENVIRONMENT, OS,
+  PAGES, DOWNLOAD_LINKS, ENVIRONMENT, OS, DOMAINS,
 } from '../../common/constants';
 import { checkAuthentication } from '../../common/authentication';
 import './DownloadsPage.scss';
@@ -54,7 +54,7 @@ class Downloads extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    switch (process.env.PROVENDOCS_ENV) {
+    switch (DOMAINS.PROVENDOCS_ENV) {
       case ENVIRONMENT.STAGING:
         this.setState({ env: ENVIRONMENT.STAGING });
         break;
