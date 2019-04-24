@@ -66,26 +66,27 @@ const getReadMeString = (
   proofInformation: Object,
   versionProof: Object,
 ) => {
-  const { name, uploadedAt, _id } = fileInformation;
-  const { email } = userInformation;
-  const { btcBlockNumber, btcTransaction } = proofInformation;
-  const { submitted } = versionProof;
-  const proofHash = versionProof.hash;
-  const { hash } = fileInformation._provendb_metadata;
-  const url = cryptr.encrypt(
-    `${_id.toString()}-${
-      userInformation._id
-    }-${fileInformation._provendb_metadata.minVersion.toString()}`,
-  );
-  let cliDownload = `${DOMAINS.PROVENDOCS}/downloads`;
-  if (process.env.PROVENDOCS_ENV === ENVIRONMENTS.PROD || !process.env.PROVENDOCS_ENV) {
-    cliDownload = 'https://provendocs.com/downloads';
-  } else {
-    cliDownload = `https://${process.env.PROVENDOCS_ENV}.provendocs.com/downloads`;
-  }
+  try {
+    const { name, uploadedAt, _id } = fileInformation;
+    const { email } = userInformation;
+    const { btcBlockNumber, btcTransaction, details } = proofInformation;
+    const { btcTxnConfirmed } = details;
+    const proofHash = versionProof.hash;
+    const { hash } = fileInformation._provendb_metadata;
+    const url = cryptr.encrypt(
+      `${_id.toString()}-${
+        userInformation._id
+      }-${fileInformation._provendb_metadata.minVersion.toString()}`,
+    );
+    let cliDownload = `${DOMAINS.PROVENDOCS}/downloads`;
+    if (process.env.PROVENDOCS_ENV === ENVIRONMENTS.PROD || !process.env.PROVENDOCS_ENV) {
+      cliDownload = 'https://provendocs.com/downloads';
+    } else {
+      cliDownload = `https://${process.env.PROVENDOCS_ENV}.provendocs.com/downloads`;
+    }
 
-  const uploadedAtDate = String(new Date(uploadedAt)); // get it into same format as submitted date
-  const readMeText = `
+    const uploadedAtDate = String(new Date(uploadedAt)); // get it into same format as submitted date
+    const readMeText = `
    Summary
    -------
    
@@ -96,7 +97,7 @@ const getReadMeString = (
              ${uploadedAtDate} 
              by ${email}
    and proved to the Bitcoin blockchain  at 
-             ${submitted}.
+             ${btcTxnConfirmed}.
    
    The bitcoin blockchain proof details are:
    
@@ -143,7 +144,10 @@ const getReadMeString = (
    ProvenDocs is powered by ProvenDB.  See https://provendb.com for more information.
    `;
 
-  return eol.crlf(readMeText); // Windows format CRLF
+    return eol.crlf(readMeText); // Windows format CRLF
+  } catch (e) {
+    return 'Unable to create README for this proof. Please contact Support';
+  }
 };
 
 /**
