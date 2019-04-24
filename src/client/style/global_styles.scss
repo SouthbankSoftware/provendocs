@@ -1914,6 +1914,7 @@ h3 {
       .bp3-tag {
         margin-right: 5px;
         margin-left: 5px;
+        margin-bottom: 5px;
       }
     }
 
@@ -2293,6 +2294,8 @@ h3 {
 
             a {
               color: $dusk-blue;
+              margin-left: 5px;
+              margin-right: 5px;
             }
 
             a:hover {

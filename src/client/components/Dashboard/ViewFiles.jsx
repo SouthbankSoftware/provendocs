@@ -274,7 +274,9 @@ export default class ViewFiles extends React.Component<Props, State> {
               <FileHistoryButton onClickCallback={this._onClickHistory} file={file} />
               <Tooltip content="See Document Comments.">
                 <CommentIcon
-                  className="commentIcon"
+                  className={`commentIcon enabled_${
+                    file.comment.length > 0 || file.tags[0].length > 0 ? 'true' : 'false'
+                  }`}
                   onClick={() => {
                     ReactGA.event({
                       category: GA_CATEGORIES.DASHBOARD,
@@ -370,7 +372,9 @@ export default class ViewFiles extends React.Component<Props, State> {
             </span>
             <div className="commentButton">
               <CommentIcon
-                className="commentIcon"
+                className={`commentIcon enabled_${
+                  (file.comment && file.comment.length > 0) || (file.tags && file.tags[0] && file.tags[0].length > 0) ? 'true' : 'false'
+                }`}
                 onClick={() => this._onClickComment(file.document)}
               />
             </div>

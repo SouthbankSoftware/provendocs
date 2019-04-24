@@ -116,14 +116,15 @@ export default {
   getFullFileForUserFromHistory: (fileName: string, version: number) => axios.get(`/api/fullFileFromHistory/${fileName}/${version}`),
   getProofForUser: (fileId: string) => axios.get(`/api/proof/${fileId}`),
   getHistoricalProofInfoForUser: (fileName: string, version: number) => axios.get(`/api/historicalProofInfo/${fileName}/${version}`),
+  getHistoricalFileId: (fileName: string, fileVersion: number) => axios.get(`api/historicalFileId/${fileName}/${fileVersion}`),
   downloadProofArchiveForFile: (fileName: string, version: number) => window.open(`/api/util/getArchive/${fileName}/${version}`),
   downloadFile: (file: Object) => window.open(`/api/file/inline/${file._id}#view=fitH`),
   downloadHistoricalFile: (fileName: string, version: number) => window.open(`/api/historicalFile/download/${fileName}/${version}`),
   getListOfDuplicates: (fileList: Array<Object>) => {
-    const fd = new FormData();
+    const fd = [];
     _.forEach(fileList, (file) => {
       if (file) {
-        fd.append('files[]', file, file.originalname);
+        fd.push({ originalname: file.name });
       }
     });
     return axios.post('/api/getListOfDuplicates', fd);

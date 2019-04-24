@@ -1523,6 +1523,7 @@ export const getHistoricalFile = (
   userId: string,
   version: string,
   fileId: string | null,
+  noBinary?: boolean,
 ) => new Promise<Array<Object>>((resolve, reject) => {
   logger.log({
     level: LOG_LEVELS.DEBUG,
@@ -1563,6 +1564,11 @@ export const getHistoricalFile = (
       name: fileName,
     };
   }
+  const projection: any = {};
+
+  if (noBinary === true) {
+    projection.binaryData = false;
+  }
 
   logger.log({
     level: LOG_LEVELS.DEBUG,
@@ -1583,7 +1589,7 @@ export const getHistoricalFile = (
     } else {
       const collection = dbObject.collection(collectionName);
       if (collection) {
-        collection.find(filter, { promoteLongs: false }).toArray((queryError, result) => {
+        collection.find(filter, { promoteLongs: false }, projection).toArray((queryError, result) => {
           if (queryError) {
             logger.log({
               level: LOG_LEVELS.ERROR,

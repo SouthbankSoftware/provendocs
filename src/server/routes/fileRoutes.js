@@ -562,6 +562,62 @@ module.exports = (app: any) => {
   });
 
   /**
+   * Simple route to get the ID for a historical file, since fileHistory does not contain Ids.
+   * @param {string} fileName - The name of the file for preview.
+   * @param {number} version - The version at which to fetch the file.
+   * @returns {Response} 200 and file ID if it exists.
+   * @returns {Resposne} 400 and an error if any error occurs during the process.
+   */
+  app.get('/api/historicalFileId/:fileName/:version', (req, res) => {
+    const { fileName, version } = req.params;
+    const { AuthToken } = req.cookies;
+    const reqId = uuidv4();
+    logger.log({
+      level: LOG_LEVELS.INFO,
+      severity: STACKDRIVER_SEVERITY.INFO,
+      message: '[REQUEST] -> Getting ID for historical file:',
+      fileName,
+      version,
+      AuthToken,
+      reqId,
+    });
+    getUserFromToken(req, res, app.get('jwtSecret'))
+      .then((user) => {
+        logger.log({
+          level: LOG_LEVELS.DEBUG,
+          severity: STACKDRIVER_SEVERITY.DEBUG,
+          message: 'Found user from token:',
+          userId: user._id,
+          reqId,
+        });
+        getHistoricalFile(fileName, user._id, version, null, true).then(
+          (fileInfo: Array<Object>) => {
+            logger.log({
+              level: LOG_LEVELS.DEBUG,
+              severity: STACKDRIVER_SEVERITY.DEBUG,
+              message: 'File info fetched at version',
+              fileName: fileInfo[0].name,
+              fileVersion: fileInfo[0]._provendb_metadata.minVersion,
+              reqId,
+            });
+            res.status(200).send(fileInfo[0]);
+          },
+        );
+      })
+      .catch((err) => {
+        const returnObject = {
+          level: LOG_LEVELS.WARN,
+          severity: STACKDRIVER_SEVERITY.WARNING,
+          message: 'Failed to get user',
+          err,
+          reqId,
+        };
+        logger.log(returnObject);
+        res.status(401).send(returnObject);
+      });
+  });
+
+  /**
    * Get the historical file either for download or for inline display (PDF)
    * @param {'email' | 'download'} type - Either inline or download.
    * @param {string} fileName - The id of the file for preview.

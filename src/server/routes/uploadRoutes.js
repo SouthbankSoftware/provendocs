@@ -602,14 +602,15 @@ module.exports = (app: any) => {
    * @returns {Resposne} 400 and an error if any error occurs during the process.
    */
   app.post('/api/getListOfDuplicates/', upload.any(), (req, res) => {
-    const { files } = req;
+    const { body } = req;
     const reqId = uuidv4();
-    if (files.length === 0) {
+    if (!body || body.length <= 0) {
       logger.log({
         level: LOG_LEVELS.INFO,
         severity: STACKDRIVER_SEVERITY.INFO,
         message: 'No documents to check.',
         reqId,
+        body: req.body,
       });
       res.status(200).send({ uploadComplete: true });
     } else {
@@ -621,11 +622,11 @@ module.exports = (app: any) => {
             severity: STACKDRIVER_SEVERITY.INFO,
             message: '[REQUEST] -> Check duplicates for user',
             user,
-            files,
+            body,
             reqId,
           });
           // Check if any of the files exist first:
-          checkForDuplicates(files, user._id, false).then((matchingFiles) => {
+          checkForDuplicates(body, user._id, false).then((matchingFiles) => {
             logger.log({
               level: LOG_LEVELS.DEBUG,
               severity: STACKDRIVER_SEVERITY.DEBUG,

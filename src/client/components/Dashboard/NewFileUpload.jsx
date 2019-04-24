@@ -42,6 +42,8 @@ const STAGES = {
   FILES_EXCEEDING: 'files_exceeding',
   DOCUMENT_MATCHING: 'document_matching',
   LOADING: 'loading',
+  LOADING_ONE: 'loading_one',
+  LOADING_TWO: 'loading_two',
   FILE_SUMMARY: 'fileSummary',
   COMMENT: 'comment',
   CONFLICT_RESOLUTION: 'conflictResolution',
@@ -189,7 +191,7 @@ class NewFileUpload extends React.Component<Props, State> {
         } else {
           // No conflicts, so check for duplicates:
           updateRHSState(RHS_STAGES.LOADING);
-          this.setState({ currentStage: STAGES.LOADING });
+          this.setState({ currentStage: STAGES.LOADING_ONE });
           api
             .getListOfDuplicates(fileList)
             .then((result) => {
@@ -253,7 +255,7 @@ class NewFileUpload extends React.Component<Props, State> {
         if (fileList.length > 0) {
           // Determine duplicates:
           updateRHSState(RHS_STAGES.LOADING);
-          this.setState({ currentStage: STAGES.LOADING });
+          this.setState({ currentStage: STAGES.LOADING_ONE });
           api
             .getListOfDuplicates(fileList)
             .then((result) => {
@@ -356,7 +358,7 @@ class NewFileUpload extends React.Component<Props, State> {
         } else {
           // No conflicts, so check for duplicates:
           updateRHSState(RHS_STAGES.LOADING);
-          this.setState({ currentStage: STAGES.LOADING });
+          this.setState({ currentStage: STAGES.LOADING_ONE });
           api
             .getListOfDuplicates(fileList)
             .then((result) => {
@@ -430,7 +432,7 @@ class NewFileUpload extends React.Component<Props, State> {
 
     // Upload non duplicates
     this.setState({ currentStage: STAGES.LOADING });
-    setStageCallback(STAGES.LOADING);
+    setStageCallback(STAGES.LOADING_TWO);
     api
       .uploadFiles(fileList, true, comment, commentTags)
       .then((uploadRes) => {
@@ -440,7 +442,13 @@ class NewFileUpload extends React.Component<Props, State> {
             .then((res) => {
               Log.info('File Size Result: ');
               Log.info(res);
-              updateSpaceUsedCallback(res.data[0].storageUsed, res.data[0].documentsUsed);
+              if (res && res.data[0]) {
+                updateSpaceUsedCallback(res.data[0].storageUsed, res.data[0].documentsUsed);
+              } else if (res && res.data) {
+                updateSpaceUsedCallback(res.data.storageUsed, res.data.documentsUsed);
+              } else {
+                console.error('No File Size info for user: ', res);
+              }
             })
             .catch((err) => {
               Log.error('Error fetching files size: ');
@@ -475,7 +483,13 @@ class NewFileUpload extends React.Component<Props, State> {
             .then((res) => {
               Log.info('File Size Result: ');
               Log.info(res);
-              updateSpaceUsedCallback(res.data[0].storageUsed, res.data[0].documentsUsed);
+              if (res && res.data[0]) {
+                updateSpaceUsedCallback(res.data[0].storageUsed, res.data[0].documentsUsed);
+              } else if (res && res.data) {
+                updateSpaceUsedCallback(res.data.storageUsed, res.data.documentsUsed);
+              } else {
+                console.error('No File Size info for user: ', res);
+              }
             })
             .catch((err) => {
               Log.error(`Failed to fetch file size with error: ${err}`);
@@ -770,7 +784,23 @@ class NewFileUpload extends React.Component<Props, State> {
         return (
           <div className=" newFileUpload subWrapper">
             <div className="contentWrapper">
-              <Loading isFullScreen={false} message="Files uploading..." />
+              <Loading isFullScreen={false} message="Uploading your documents to ProvenDocs..." />
+            </div>
+          </div>
+        );
+      case STAGES.LOADING_ONE:
+        return (
+          <div className=" newFileUpload subWrapper">
+            <div className="contentWrapper">
+              <Loading isFullScreen={false} message="Checking your documents for duplicates..." />
+            </div>
+          </div>
+        );
+      case STAGES.LOADING_TWO:
+        return (
+          <div className=" newFileUpload subWrapper">
+            <div className="contentWrapper">
+              <Loading isFullScreen={false} message="Uploading your documents to ProvenDocs..." />
             </div>
           </div>
         );

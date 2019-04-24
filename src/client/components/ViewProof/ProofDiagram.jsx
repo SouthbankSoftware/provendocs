@@ -20,7 +20,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-04-09T15:19:41+10:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-24T10:37:21+10:00
+ * @Last modified time: 2019-04-24T16:05:10+10:00
  */
 
 import React from 'react';
@@ -34,6 +34,7 @@ import BlockIcon from '../../style/icons/pages/dashboard/box-icon.svg';
 import './ProofDiagram.scss';
 import { PROOF_STATUS, ENVIRONMENT, DOMAINS } from '../../common/constants';
 import { Loading } from '../Common';
+import { api } from '../../common';
 
 const urlEncryptionKey = process.env.PROVENDOCS_SECRET || 'mySecretHere';
 const cryptr = new Cryptr(urlEncryptionKey);
@@ -66,6 +67,12 @@ class ProofDiagram extends React.Component<Props, State> {
     this.setState({ file });
     this.setState({ proofInformation });
     this.setState({ userDetails });
+    if (!file._id) {
+      // Historical File, go fetch id.
+      api.getHistoricalFileId(file.name, file._provendb_metadata.minVersion).then((resultFile) => {
+        this.setState({ file: resultFile.data });
+      });
+    }
   }
 
   componentWillReceiveProps(props: Object) {
@@ -78,13 +85,19 @@ class ProofDiagram extends React.Component<Props, State> {
       this.setState({ file: props.file });
       this.setState({ proofInformation: props.proofInformation });
       this.setState({ userDetails: props.userDetails });
+      if (!file._id) {
+        // Historical File, go fetch id.
+        api.getHistoricalFileId(file.name, file.__provendb_metadata.minVersion).then((resultFile) => {
+          this.setState({ file: resultFile.data });
+        });
+      }
     }
   }
 
   render() {
     const { proofInformation, file, userDetails } = this.state;
-    if (!file._id) {
-      return <Loading isFullScreen={false} />;
+    if (!file._id || !file._provendb_metadata) {
+      return <Loading isFullScreen={false} message="Fetching proof information..." />;
     }
 
     const documentStep = (
