@@ -1564,11 +1564,11 @@ export const getHistoricalFile = (
       name: fileName,
     };
   }
-  let projection: any = {};
+  const projection: any = {};
 
-  if(noBinary === true) {
+  if (noBinary === true) {
     projection.binaryData = false;
-  } 
+  }
 
   logger.log({
     level: LOG_LEVELS.DEBUG,
