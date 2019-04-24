@@ -79,7 +79,7 @@ export default class Login extends React.Component<Props, State> {
     const { eulaIsOpen } = this.state;
     const apiLoginURL = `${DOMAINS.API}/auth/signup?redirectURL=${
       DOMAINS.PROVENDOCS
-    }/api/signup&provider=`;
+    }/api/signup&app=provendocs&provider=`;
     return (
       <div className="loginSignupRoot">
         <Modal

@@ -45,7 +45,7 @@ export default class Login extends React.Component<Props, State> {
   render() {
     const apiLoginURL = `${DOMAINS.API}/auth/login?redirectURL=${
       DOMAINS.PROVENDOCS
-    }/api/login&provider=`;
+    }/api/login&app=provendocs&provider=`;
 
     return (
       <div className="pageCenter">
