@@ -120,10 +120,10 @@ export default {
   downloadFile: (file: Object) => window.open(`/api/file/inline/${file._id}#view=fitH`),
   downloadHistoricalFile: (fileName: string, version: number) => window.open(`/api/historicalFile/download/${fileName}/${version}`),
   getListOfDuplicates: (fileList: Array<Object>) => {
-    const fd = new FormData();
+    const fd = [];
     _.forEach(fileList, (file) => {
       if (file) {
-        fd.append('files[]', file, file.originalname);
+        fd.push({ originalname: file.name });
       }
     });
     return axios.post('/api/getListOfDuplicates', fd);
