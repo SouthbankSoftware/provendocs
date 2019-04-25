@@ -565,9 +565,11 @@ class Dashboard extends React.Component<Props, State> {
       .then(() => {
         if (fileSelected) {
           if (fileSelected._provendb_metadata) {
-            window.open(`/api/util/getArchive/${fileSelected.name}/${fileVersion}`);
+            window.location.assign(`/api/util/getArchive/${fileSelected.name}/${fileVersion}`);
+            // window.open(`/api/util/getArchive/${fileSelected.name}/${fileVersion}`);
           } else {
-            window.open(`/api/util/getArchive/${fileSelected.name}/${fileVersion}`);
+            window.location.assign(`/api/util/getArchive/${fileSelected.name}/${fileVersion}`);
+            // window.open(`/api/util/getArchive/${fileSelected.name}/${fileVersion}`);
           }
         }
       })
