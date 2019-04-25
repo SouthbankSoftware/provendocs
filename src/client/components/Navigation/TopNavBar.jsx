@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* @flow
  * provendocs
  * Copyright (C) 2019  Southbank Software Ltd.
@@ -43,6 +44,7 @@ import {
 } from '../../common/constants';
 import { openNotificationWithIcon } from '../../common/util';
 import { Log, api } from '../../common';
+import PasswordManager from './PasswordManager';
 // $FlowFixMe
 import './TopNavBar.scss';
 
@@ -56,7 +58,7 @@ type Props = {
   onEarlyAccess: Function | null;
   history: any;
 };
-type State = { currentPage: string; userDetails: Object };
+type State = { currentPage: string; userDetails: Object; showChangePassword: boolean };
 class TopNavBar extends React.Component<Props, State> {
   constructor() {
     super();
@@ -64,6 +66,7 @@ class TopNavBar extends React.Component<Props, State> {
     this.state = {
       currentPage: PAGES.DASHBOARD,
       userDetails: {},
+      showChangePassword: false,
     };
   }
 
@@ -169,6 +172,7 @@ class TopNavBar extends React.Component<Props, State> {
         avatar = <Avatar name={userDetails.name} size="25" round />;
         break;
     }
+
     const userMenu = (
       <Menu>
         <Menu.Item key="logout">
@@ -177,7 +181,7 @@ class TopNavBar extends React.Component<Props, State> {
             Log Out
           </a>
         </Menu.Item>
-        <Menu.Item key="logout">
+        <Menu.Item key="gettingStarted">
           <a
             className="leftButton"
             href="https://provendocs.readme.io/docs/getting-started"
@@ -195,7 +199,29 @@ class TopNavBar extends React.Component<Props, State> {
             Getting Started
           </a>
         </Menu.Item>
-        <Menu.Item key="logout">
+        {userDetails.provider === 'email' && (
+          <Menu.Item key="changePassword">
+            <span
+              className="leftButton"
+              style={{ 'text-decoration': 'none' }}
+              key="deleteAccount"
+              role="button"
+              tabIndex={0}
+              onClick={() => {
+                ReactGA.event({
+                  category: GA_CATEGORIES.TOPBAR,
+                  action: 'Click: #changePassword',
+                  label: 'Button',
+                });
+                this.setState({ showChangePassword: true });
+              }}
+            >
+              <Icon type="form" twoToneColor="#cc4f46" style={{ marginRight: '8px' }} />
+              Change Password
+            </span>
+          </Menu.Item>
+        )}
+        <Menu.Item key="deleteAccount">
           <span
             className="leftButton"
             style={{ 'text-decoration': 'none' }}
@@ -345,8 +371,13 @@ We suggest you download a proof archive for each of your files before
     );
   };
 
+  _hideChangePassword = () => {
+    console.log('showChangePassword');
+    this.setState({ showChangePassword: false });
+  };
+
   render() {
-    const { currentPage } = this.state;
+    const { currentPage, showChangePassword, userDetails } = this.state;
     return (
       <div className={`topNavigationRoot ${currentPage}`}>
         <div className="leftButtons">
@@ -502,6 +533,11 @@ We suggest you download a proof archive for each of your files before
           {currentPage === PAGES.DASHBOARD && this._renderDashboardTopNav()}
           {currentPage === PAGES.SHARED && this._renderSharedTopNav()}
         </div>
+        <PasswordManager
+          user={userDetails}
+          showChangePassword={showChangePassword}
+          handleCancel={this._hideChangePassword}
+        />
       </div>
     );
   }
