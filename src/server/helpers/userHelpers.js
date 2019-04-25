@@ -323,7 +323,8 @@ export const createUser = (user: Object) => new Promise<any>((resolve, reject) =
               email: "${user.email}", 
               name:"${user.name}", 
               password:"${user.password}", 
-              activated:${user.activated}
+              activated:${user.activated},
+              app:"provendocs"
               ) {
               success
               userID
@@ -346,9 +347,13 @@ export const createUser = (user: Object) => new Promise<any>((resolve, reject) =
     });
 });
 
-export const updateUser = (user: Object) => new Promise<any>((resolve, reject) => {
-  const endpoint = `http://${DOMAINS.INTERNAL_API}/query`;
-  const graphQLClient = new GraphQLClient(endpoint);
+export const updateUser = (user: Object, token: string) => new Promise<any>((resolve, reject) => {
+  const endpoint = `${DOMAINS.INTERNAL_API}/query`;
+  const graphQLClient = new GraphQLClient(endpoint, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   const query = `
           mutation{
             updateUser(
@@ -387,6 +392,49 @@ export const updateUser = (user: Object) => new Promise<any>((resolve, reject) =
     });
 });
 
+export const deleteUser = (user: Object, token: string) => new Promise<any>((resolve, reject) => {
+  const endpoint = `${DOMAINS.INTERNAL_API}/query`;
+  const graphQLClient = new GraphQLClient(endpoint, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const query = `
+          mutation{
+            deleteUser(
+              userID: "${user.id}",
+              app: "provendocs"
+              ) {
+              success
+            }
+          }
+        `;
+  logger.log({
+    level: LOG_LEVELS.INFO,
+    severity: STACKDRIVER_SEVERITY.INFO,
+    message: 'deleteUser',
+    query,
+  });
+  graphQLClient
+    .request(query)
+    .then((data: Object) => {
+      resolve(data.deleteUser);
+    })
+    .catch((err) => {
+      logger.log({
+        level: LOG_LEVELS.INFO,
+        severity: STACKDRIVER_SEVERITY.INFO,
+        message: 'deleteUser err',
+        err,
+      });
+      if (err.response.errors[0]) {
+        const errMsg = err.response.errors[0].message;
+        reject(new Error(errMsg));
+      }
+      reject(new Error('graphql query failed.'));
+    });
+});
+
 export const validateUser = (user: Object) => new Promise<any>((resolve, reject) => {
   const endpoint = `${DOMAINS.INTERNAL_API}/query`;
   const graphQLClient = new GraphQLClient(endpoint);
@@ -394,7 +442,8 @@ export const validateUser = (user: Object) => new Promise<any>((resolve, reject)
           query{
             validateUser(
               email: "${user.email}", 
-              password:"${user.password}", 
+              password:"${user.password}",
+              app:"provendocs" 
               ) {
               success
               userID
@@ -461,6 +510,38 @@ export const resetPassword = (user: Object) => new Promise<any>((resolve, reject
     .request(query)
     .then((data: Object) => {
       resolve(data.resetPassword);
+    })
+    .catch((err) => {
+      if (err.response.errors[0]) {
+        const errMsg = err.response.errors[0].message;
+        reject(new Error(errMsg));
+      }
+      reject(new Error('graphql query failed.'));
+    });
+});
+
+export const updatePassword = (reqBody: Object, token: string) => new Promise<any>((resolve, reject) => {
+  const endpoint = `${DOMAINS.INTERNAL_API}/query`;
+  const graphQLClient = new GraphQLClient(endpoint, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const query = `
+          mutation{
+            updatePassword(
+              email: "${reqBody.email}", 
+              currentPassword: "${reqBody.currentPassword}", 
+              newPassword: "${reqBody.newPassword}", 
+              ) {
+              success
+            }
+          }
+        `;
+  graphQLClient
+    .request(query)
+    .then((data: Object) => {
+      resolve(data.updatePassword);
     })
     .catch((err) => {
       if (err.response.errors[0]) {

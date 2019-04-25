@@ -32,6 +32,7 @@ import {
   verifyTokenFromUserModule,
   confirmUserViaEmail,
   resetPassword,
+  updatePassword,
 } from '../helpers/userHelpers';
 import { findOrCreateIndex } from '../helpers/mongoAPI';
 import {
@@ -266,7 +267,8 @@ module.exports = (app) => {
   });
 
   app.post('/api/updateUser', (req, res) => {
-    updateUser(req.body)
+    const { AuthToken } = req.cookies;
+    updateUser(req.body, AuthToken)
       .then((response) => {
         res.status(200).send(JSON.stringify(response));
       })
@@ -389,6 +391,30 @@ module.exports = (app) => {
         };
         logger.log(returnObj);
         res.redirect('/signupFailed');
+      });
+  });
+
+  app.post('/api/updatePassword', (req, res) => {
+    const { AuthToken } = req.cookies;
+    updatePassword(req.body, AuthToken)
+      .then((response) => {
+        const { success } = response;
+        if (success) {
+          res.status(200).send(true);
+        } else {
+          res.status(400).send(false);
+        }
+      })
+      .catch((err) => {
+        const returnObj = {
+          level: LOG_LEVELS.ERROR,
+          severity: STACKDRIVER_SEVERITY.ERROR,
+          message: 'Failed to update password.',
+          err: err.message,
+          toEmail: req.body.email,
+        };
+        logger.log(returnObj);
+        res.status(400).send(err.message);
       });
   });
 
