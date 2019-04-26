@@ -27,6 +27,7 @@ import React from 'react';
 import ReactGA from 'react-ga';
 import autobind from 'autobind-decorator';
 import Timestamp from 'react-timestamp';
+import { AutoSizer, List } from 'react-virtualized';
 import {
   Position, Tooltip, Dialog, Tag, Intent,
 } from '@blueprintjs/core';
@@ -243,7 +244,10 @@ export default class ViewFiles extends React.Component<Props, State> {
             }}
           >
             {file.proofInfo && file.proofInfo === PROOF_STATUS.FAILED && (
-              <Tooltip position={Position.TOP} content="Something went wrong while proving your document.">
+              <Tooltip
+                position={Position.TOP}
+                content="Something went wrong while proving your document."
+              >
                 <CrossIcon className="crossIcon" />
               </Tooltip>
             )}
@@ -251,14 +255,13 @@ export default class ViewFiles extends React.Component<Props, State> {
               <Tooltip position={Position.TOP} content="Your document has been proven.">
                 <TickIcon className="tickIcon" />
               </Tooltip>
-
             )}
             {file.proofInfo
               && (file.proofInfo === PROOF_STATUS.PENDING
                 || file.proofInfo === PROOF_STATUS.SUBMITTED) && (
-                  <Tooltip position={Position.TOP} content="Your document is not yet proven.">
-                    <PendingIcon className="pendingIcon" />
-                  </Tooltip>
+                <Tooltip position={Position.TOP} content="Your document is not yet proven.">
+                  <PendingIcon className="pendingIcon" />
+                </Tooltip>
             )}
             <span className="fileName">
               <Tooltip content={file.name} position={Position.TOP}>
@@ -266,7 +269,10 @@ export default class ViewFiles extends React.Component<Props, State> {
               </Tooltip>
             </span>
             <span className={`fileSize ${validClass}`}>
-              <Tooltip content={<Timestamp relative time={file.uploadedAt} />} position={Position.TOP}>
+              <Tooltip
+                content={<Timestamp relative time={file.uploadedAt} />}
+                position={Position.TOP}
+              >
                 <Timestamp time={file.uploadedAt} format="full" />
               </Tooltip>
             </span>
@@ -342,7 +348,10 @@ export default class ViewFiles extends React.Component<Props, State> {
               {reverseStatusArray[key]
                 && reverseStatusArray[key].status
                 && reverseStatusArray[key].status === PROOF_STATUS.FAILED && (
-                  <Tooltip position={Position.TOP} content="Something went wrong proving your document.">
+                  <Tooltip
+                    position={Position.TOP}
+                    content="Something went wrong proving your document."
+                  >
                     <CrossIcon className="crossIcon" />
                   </Tooltip>
               )}
@@ -358,22 +367,28 @@ export default class ViewFiles extends React.Component<Props, State> {
                 && (reverseStatusArray[key].status === PROOF_STATUS.PENDING
                   || reverseStatusArray[key].status === PROOF_STATUS.SUBMITTED
                   || reverseStatusArray[key].status === PROOF_STATUS.UNPROVEN) && (
-                    <Tooltip position={Position.TOP} content="Proof in progress">
-                      <PendingIcon className="pendingIcon" />
-                    </Tooltip>
+                  <Tooltip position={Position.TOP} content="Proof in progress">
+                    <PendingIcon className="pendingIcon" />
+                  </Tooltip>
               )}
             </div>
             <span className="number">{`${versions.length - key}: `}</span>
             <span className="fileName">{file.document.name}</span>
             <span className="fileDate">
-              <Tooltip content={<Timestamp relative time={file.uploadedAt} />} position={Position.TOP}>
+              <Tooltip
+                content={<Timestamp relative time={file.uploadedAt} />}
+                position={Position.TOP}
+              >
                 <Timestamp time={file.document.uploadedAt} format="full" />
               </Tooltip>
             </span>
             <div className="commentButton">
               <CommentIcon
                 className={`commentIcon enabled_${
-                  (file.comment && file.comment.length > 0) || (file.tags && file.tags[0] && file.tags[0].length > 0) ? 'true' : 'false'
+                  (file.comment && file.comment.length > 0)
+                  || (file.tags && file.tags[0] && file.tags[0].length > 0)
+                    ? 'true'
+                    : 'false'
                 }`}
                 onClick={() => this._onClickComment(file.document)}
               />
@@ -418,11 +433,75 @@ export default class ViewFiles extends React.Component<Props, State> {
   }
 
   @autobind
-  _renderFilePreview() {
+  _renderFilePreview(file: any, fileSelected: any, key: any) {
+    const validClass = 'valid';
+
+    let selectedClass = '';
+    if (fileSelected && fileSelected.name === file.name) {
+      selectedClass = 'selected';
+    }
+    return (
+      <div className={`Grid-cell ${selectedClass}`} key={`cell-${key}`}>
+        <div
+          onClick={() => {
+            // this._selectFileAtIndex(key);
+            this._selectFileWithName(file.name);
+          }}
+          className={`filePreview ${validClass}`}
+          role="button"
+          tabIndex={0}
+        >
+          <ViewFileThumb file={file} selectedClass={selectedClass} />
+        </div>
+        <span className="fileName">
+          <Tooltip content={file.name} position={Position.TOP}>
+            {file.name}
+          </Tooltip>
+        </span>
+        <span className="fileDate">
+          <Tooltip
+            content={<Timestamp relative time={file.uploadedAt} relativeTo={Date.now()} />}
+            position={Position.TOP}
+          >
+            <div>
+              <Timestamp time={file.uploadedAt} format="date" />
+              <Timestamp time={file.uploadedAt} format="time" />
+            </div>
+          </Tooltip>
+        </span>
+        <div className="fileButtons">
+          <FileHistoryButton onClickCallback={this._onClickHistory} file={file} />
+          <Tooltip content="See Upload Comments.">
+            <CommentIcon
+              className={`commentIcon enabled_${
+                file.comment.length > 0 || file.tags[0].length > 0 ? 'true' : 'false'
+              }`}
+              onClick={() => {
+                if (file.comment || file.tags) {
+                  this._onClickComment(file);
+                }
+              }}
+            />
+          </Tooltip>
+          <Tooltip content="Forget Document">
+            <ForgetIcon
+              className="forgetIcon"
+              onClick={() => {
+                this._onClickForget(file);
+              }}
+            />
+          </Tooltip>
+        </div>
+      </div>
+    );
+  }
+
+  @autobind
+  _renderFilePreviewsGrid() {
     const {
       fileList, fileSelected, currentFilter, currentSort,
     } = this.state;
-    const cells = [];
+    // const cells = [];
 
     let filterFunc;
     if (currentFilter === FILTERS.SHOW_ALL) {
@@ -450,71 +529,56 @@ export default class ViewFiles extends React.Component<Props, State> {
     }
 
     // Assume all files are below 16mb.
-    fileList
-      .filter(filterFunc)
-      .sort(sortFunc)
-      .forEach((file, key) => {
-        const validClass = 'valid';
+    // fileList
+    //   .filter(filterFunc)
+    //   .sort(sortFunc)
+    //   .forEach((file, key) => {
 
-        let selectedClass = '';
-        if (fileSelected && fileSelected.name === file.name) {
-          selectedClass = 'selected';
-        }
-        // If any files is over 16mb, it is invalid and they cannot proceed.
-        cells.push(
-          // eslint-disable-next-line
-          <div className={`Grid-cell ${selectedClass}`} key={`cell-${key}`}>
-            <div
-              onClick={() => {
-                // this._selectFileAtIndex(key);
-                this._selectFileWithName(file.name);
-              }}
-              className={`filePreview ${validClass}`}
-              role="button"
-              tabIndex={0}
-            >
-              <ViewFileThumb file={file} selectedClass={selectedClass} />
-            </div>
-            <span className="fileName">
-              <Tooltip content={file.name} position={Position.TOP}>
-                {file.name}
-              </Tooltip>
-            </span>
-            <span className="fileDate">
-              <Tooltip content={<Timestamp relative time={file.uploadedAt} relativeTo={Date.now()} />} position={Position.TOP}>
-                <div>
-                  <Timestamp time={file.uploadedAt} format="date" />
-                  <Timestamp time={file.uploadedAt} format="time" />
-                </div>
-              </Tooltip>
-            </span>
-            <div className="fileButtons">
-              <FileHistoryButton onClickCallback={this._onClickHistory} file={file} />
-              <Tooltip content="See Upload Comments.">
-                <CommentIcon
-                  className={`commentIcon enabled_${
-                    file.comment.length > 0 || file.tags[0].length > 0 ? 'true' : 'false'
-                  }`}
-                  onClick={() => {
-                    if (file.comment || file.tags) {
-                      this._onClickComment(file);
+    //     // If any files is over 16mb, it is invalid and they cannot proceed.
+    //     cells.push(
+    //       this._renderFilePreview(file, fileSelected, key)
+    //     );
+    //   });
+    // return <div className="Grid">{cells}</div>;
+
+    const previewsList = fileList.filter(filterFunc).sort(sortFunc);
+    return (
+      <div className="Grid">
+        <AutoSizer>
+          {({ height, width }) => {
+            console.log('height:', height, 'width:', width);
+            const itemsPerRow = Math.floor(width / 160) || 1;
+            const rowCount = Math.ceil(previewsList.length / itemsPerRow);
+            return (
+              <div>
+                <List
+                  width={width}
+                  height={height}
+                  rowCount={rowCount}
+                  rowHeight={305}
+                  overscanRowCount={0}
+                  rowRenderer={({ index, key, style }) => {
+                    const items = [];
+                    const fromIndex = index * itemsPerRow;
+                    const toIndex = Math.min(fromIndex + itemsPerRow, previewsList.length);
+                    // eslint-disable-next-line no-plusplus
+                    for (let i = fromIndex; i < toIndex; i++) {
+                      const file = previewsList[i];
+                      items.push(this._renderFilePreview(file, fileSelected, key));
                     }
+                    return (
+                      <div className="Grid-row" key={key} style={style}>
+                        {items}
+                      </div>
+                    );
                   }}
                 />
-              </Tooltip>
-              <Tooltip content="Forget Document">
-                <ForgetIcon
-                  className="forgetIcon"
-                  onClick={() => {
-                    this._onClickForget(file);
-                  }}
-                />
-              </Tooltip>
-            </div>
-          </div>,
-        );
-      });
-    return <div className="Grid">{cells}</div>;
+              </div>
+            );
+          }}
+        </AutoSizer>
+      </div>
+    );
   }
 
   @autobind
@@ -734,7 +798,6 @@ export default class ViewFiles extends React.Component<Props, State> {
         </div>
       </Dialog>
     );
-
 
     const forgetDialog = (
       <Dialog
@@ -978,7 +1041,7 @@ export default class ViewFiles extends React.Component<Props, State> {
                 </div>
                 <div className="files">
                   {currentView === VIEWS.LIST_VIEW && this._renderFileList()}
-                  {currentView === VIEWS.PREVIEW_VIEW && this._renderFilePreview()}
+                  {currentView === VIEWS.PREVIEW_VIEW && this._renderFilePreviewsGrid()}
                 </div>
               </div>
             </div>

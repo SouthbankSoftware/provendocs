@@ -396,6 +396,11 @@
     }
   }
 
+  .Grid-row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   .Grid-cell {
     width: 145.9px;
     height: 275px;
