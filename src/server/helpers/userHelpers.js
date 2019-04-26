@@ -467,30 +467,40 @@ export const validateUser = (user: Object) => new Promise<any>((resolve, reject)
 });
 
 export const confirmUserViaEmail = (userID: string, email: string) => new Promise<any>((resolve, reject) => {
-  const endpoint = `${DOMAINS.INTERNAL_API}/query`;
-  const graphQLClient = new GraphQLClient(endpoint);
-  const query = `
-  mutation{
-    updateUser(
-      userID:"${userID}", 
-      ${email && email !== '' ? `email: "${email}"` : ''}
-      activated:true) {
-      success
-    }
-  }
-        `;
-  graphQLClient
-    .request(query)
-    .then((data: Object) => {
-      resolve(data.updateUser);
-    })
-    .catch((err) => {
-      if (err.response.errors[0]) {
-        const errMsg = err.response.errors[0].message;
-        reject(new Error(errMsg));
-      }
-      reject(new Error('graphql query failed.'));
+  try {
+    logger.log({
+      level: LOG_LEVELS.DEBUG,
+      severity: STACKDRIVER_SEVERITY.DEBUG,
+      message: 'Request to activate user from email:',
+      userID,
+      email,
+      secret: process.env.PROVENDOCS_SECRET,
     });
+    const endpoint = `${DOMAINS.INTERNAL_API}/api/activateuser?userID=${userID}${
+      email && email !== '' ? `&email=${email}` : ''
+    }`;
+    rp({
+      uri: endpoint,
+      headers: {
+        // $FlowFixMe
+        Authorization: `Bearer ${process.env.PROVENDOCS_SECRET}`,
+      },
+      json: true,
+    })
+      .then((res) => {
+        logger.log({
+          level: LOG_LEVELS.DEBUG,
+          message: 'Result of activate user from email:',
+          res,
+        });
+        resolve(res);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  } catch (error) {
+    reject(error);
+  }
 });
 
 export const resetPassword = (user: Object) => new Promise<any>((resolve, reject) => {
