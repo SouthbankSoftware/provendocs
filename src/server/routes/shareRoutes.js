@@ -485,7 +485,6 @@ module.exports = (app: any) => {
                             documentProofs,
                             reqId,
                           });
-                          console.log(documentProofs);
                           res.status(200).send({
                             fileName: fileInfo[0].name,
                             fileId: fileInfo[0]._id,

@@ -413,60 +413,59 @@ class NewFileUpload extends React.Component<Props, State> {
       // filesFoundMatchingCallback,
     } = this.props;
     const { fileList, matchingFiles } = this.state;
-    const dupeFiles = [];
-    for (let fileIndex = 0; fileIndex < fileList.length; fileIndex += 1) {
-      for (let matchingIndex = 0; matchingIndex < matchingFiles.length; matchingIndex += 1) {
-        if (fileList[fileIndex].name === matchingFiles[matchingIndex].name) {
-          if (matchingFiles[matchingIndex].isDupe === false) {
-            // If we have a dupe for file A, but it has been marked as not a duplicate,
-            // modify the file name in uploads list, but don't update it as a duplicate.
-          } else {
-            // If we have a dupe entry for file A, and file A has been marked as a dupe,
-            // move it from the fileList to duplicateList.
-            dupeFiles.push(fileList[fileIndex]);
-            fileList.splice(fileIndex, 1);
-          }
-        }
+    const dupeUploads = [];
+    console.log('File list: ', fileList);
+    console.log('matchingFiles: ', matchingFiles);
+    const match = _.intersectionBy(fileList, matchingFiles, 'name');
+    const nonDupeUploads = _.xorBy(fileList, matchingFiles, 'name');
+    console.log('Init Non Dupes: ', nonDupeUploads);
+    console.log('Init Dupes: ', match);
+
+    match.forEach((val) => {
+      if (!matchingFiles[_.findIndex(matchingFiles, { name: val.name })].isDupe) {
+        // Value has been marked as a new document.
+        nonDupeUploads.push(val);
+      } else {
+        dupeUploads.push(val);
       }
-    }
+    });
 
     // Upload non duplicates
     this.setState({ currentStage: STAGES.LOADING });
     setStageCallback(STAGES.LOADING_TWO);
     api
-      .uploadFiles(fileList, true, comment, commentTags)
+      .uploadFiles(nonDupeUploads, true, comment, commentTags)
       .then((uploadRes) => {
         if (uploadRes.data.uploadComplete === true) {
-          api
-            .getFileSizeForUser()
-            .then((res) => {
-              Log.info('File Size Result: ');
-              Log.info(res);
-              if (res && res.data[0]) {
-                updateSpaceUsedCallback(res.data[0].storageUsed, res.data[0].documentsUsed);
-              } else if (res && res.data) {
-                updateSpaceUsedCallback(res.data.storageUsed, res.data.documentsUsed);
-              } else {
-                console.error('No File Size info for user: ', res);
-              }
-            })
-            .catch((err) => {
-              Log.error('Error fetching files size: ');
-              console.error(err);
-              openNotificationWithIcon(
-                'error',
-                'Upload Error',
-                'Failed to fetch size of files, sorry!',
-              );
-              this.setState({ currentStage: STAGES.ERROR });
-            });
-
           // Upload Duplicates
           api
-            .uploadNewVersions(dupeFiles, comment, commentTags)
+            .uploadNewVersions(dupeUploads, comment, commentTags)
             .then(() => {
               this.onClickCancel();
               swapTabCallback(true);
+              api
+                .getFileSizeForUser()
+                .then((res) => {
+                  Log.info('File Size Result: ');
+                  Log.info(res);
+                  if (res && res.data.filesSize && res.data.filesSize[0]) {
+                    updateSpaceUsedCallback(res.data.filesSize[0].storageUsed, res.data.filesSize[0].documentsUsed);
+                  } else if (res && res.data) {
+                    updateSpaceUsedCallback(res.data.storageUsed, res.data.documentsUsed);
+                  } else {
+                    console.error('No File Size info for user: ', res);
+                  }
+                })
+                .catch((err) => {
+                  Log.error('Error fetching files size: ');
+                  console.error(err);
+                  openNotificationWithIcon(
+                    'error',
+                    'Upload Error',
+                    'Failed to fetch size of files, sorry!',
+                  );
+                  this.setState({ currentStage: STAGES.ERROR });
+                });
             })
             .catch((err) => {
               Log.error(`Failed to upload files with error: ${err}`);
@@ -478,32 +477,9 @@ class NewFileUpload extends React.Component<Props, State> {
               this.setState({ currentStage: STAGES.ERROR });
             });
         } else {
-          api
-            .getFileSizeForUser()
-            .then((res) => {
-              Log.info('File Size Result: ');
-              Log.info(res);
-              if (res && res.data[0]) {
-                updateSpaceUsedCallback(res.data[0].storageUsed, res.data[0].documentsUsed);
-              } else if (res && res.data) {
-                updateSpaceUsedCallback(res.data.storageUsed, res.data.documentsUsed);
-              } else {
-                console.error('No File Size info for user: ', res);
-              }
-            })
-            .catch((err) => {
-              Log.error(`Failed to fetch file size with error: ${err}`);
-              openNotificationWithIcon(
-                'error',
-                'Upload Error',
-                'Failed to check your files size, sorry!',
-              );
-              this.setState({ currentStage: STAGES.ERROR });
-            });
-
           // Upload Duplicates
           api
-            .uploadNewVersions(dupeFiles, '', [])
+            .uploadNewVersions(dupeUploads, '', [])
             .then(() => {
               openNotificationWithIcon(
                 'success',
@@ -512,6 +488,29 @@ class NewFileUpload extends React.Component<Props, State> {
               );
               this.onClickCancel();
               swapTabCallback(true);
+              api
+                .getFileSizeForUser()
+                .then((res) => {
+                  Log.info('File Size Result: ');
+                  Log.info(res);
+                  if (res && res.data.filesSize && res.data.filesSize[0]) {
+                    updateSpaceUsedCallback(res.data.filesSize[0].storageUsed, res.data.filesSize[0].documentsUsed);
+                  } else if (res && res.data) {
+                    updateSpaceUsedCallback(res.data.storageUsed, res.data.documentsUsed);
+                  } else {
+                    console.error('No File Size info for user: ', res);
+                  }
+                })
+                .catch((err) => {
+                  Log.error('Error fetching files size: ');
+                  console.error(err);
+                  openNotificationWithIcon(
+                    'error',
+                    'Upload Error',
+                    'Failed to fetch size of files, sorry!',
+                  );
+                  this.setState({ currentStage: STAGES.ERROR });
+                });
             })
             .catch((err) => {
               Log.error(`Failed to upload files with err: ${err}`);
