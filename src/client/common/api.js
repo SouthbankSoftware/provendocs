@@ -72,6 +72,7 @@ export default {
     email,
     password,
   }),
+  checkUserExists: (email: string) => axios.get(`/api/checkUserExists?email=${email}`),
   sendVerificationEmail: (toEmail: string, verifyLink: string) => axios.post('/api/sendVerifyEmail', {
     toEmail,
     verifyLink,

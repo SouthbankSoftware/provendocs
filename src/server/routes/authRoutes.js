@@ -33,6 +33,7 @@ import {
   confirmUserViaEmail,
   resetPassword,
   updatePassword,
+  getUserFromEmail,
 } from '../helpers/userHelpers';
 import { findOrCreateIndex } from '../helpers/mongoAPI';
 import {
@@ -345,6 +346,38 @@ module.exports = (app) => {
       })
       .catch(() => {
         res.status(400).send(false);
+      });
+  });
+
+  app.get('/api/checkUserExists', (req, res) => {
+    const { email } = req.query;
+    const result = {
+      found: false,
+      provider: '',
+    };
+    getUserFromEmail(email)
+      .then((userDetails) => {
+        logger.log({
+          level: LOG_LEVELS.DEBUG,
+          severity: STACKDRIVER_SEVERITY.DEBUG,
+          message: 'Got user details for oauth email',
+          userDetails,
+        });
+        if (userDetails && userDetails.email === email) {
+          result.found = true;
+          result.provider = userDetails.provider;
+        }
+        res.status(200).send(result);
+      })
+      .catch((checkUserError) => {
+        const returnObj = {
+          level: LOG_LEVELS.DEBUG,
+          severity: STACKDRIVER_SEVERITY.DEBUG,
+          message: 'Failed to find email in checkUserExists.',
+          checkUserError,
+        };
+        logger.log(returnObj);
+        res.status(200).send(result);
       });
   });
 

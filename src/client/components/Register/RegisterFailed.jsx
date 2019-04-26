@@ -28,7 +28,7 @@ import { Link } from 'react-router-dom';
 import QueryString from 'query-string';
 import { Form, Input, Button } from 'antd';
 import { STATUS_CODES, DOMAINS } from '../../common/constants';
-import { api } from '../../common';
+import { api, Log } from '../../common';
 import ErrorIcon from '../../style/icons/pages/login-signup-pages/error-icon.svg';
 
 type Props = {
@@ -72,16 +72,34 @@ class RegisterFailed extends React.Component<Props, State> {
     const { userID } = this.state;
     form.validateFields((err, values) => {
       if (!err) {
-        const verifyLink = `${DOMAINS.PROVENDOCS}/api/verifyUserEmail?userID=${userID}&email=${
-          values.email
-        }`;
-        api.sendVerificationEmail(values.email, verifyLink).then((resVerifyEmail) => {
-          if (resVerifyEmail) {
-            history.push(`/signup/emailSuccess?userID=${userID}`);
-          } else {
-            history.push(`/signupFailed?reason=${STATUS_CODES.FAILED}`);
-          }
-        });
+        api
+          .checkUserExists(values.email)
+          .then((response) => {
+            if (!response.data.found) {
+              const verifyLink = `${
+                DOMAINS.PROVENDOCS
+              }/api/verifyUserEmail?userID=${userID}&email=${values.email}`;
+              api.sendVerificationEmail(values.email, verifyLink).then((resVerifyEmail) => {
+                if (resVerifyEmail) {
+                  history.push(`/signup/emailSuccess?userID=${userID}`);
+                } else {
+                  history.push(`/signupFailed?reason=${STATUS_CODES.FAILED}`);
+                }
+              });
+            } else {
+              this.setState({
+                errForm: `This email address is already in our database with a ${
+                  response.data.provider
+                } based account. Try logging in instead or provide a different email.`,
+              });
+            }
+          })
+          .catch((errCheckUser) => {
+            this.setState({
+              errForm: 'Unable to add email address to the account. Contact Support.',
+            });
+            Log.error(JSON.stringify(errCheckUser));
+          });
       }
     });
   };
