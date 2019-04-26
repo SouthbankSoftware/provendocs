@@ -50,7 +50,7 @@ export default class EmailConfirmed extends React.Component<Props, State> {
           <div className="footerLinks footerLinkSingleButton">
             <Link
               className="linkBtn primaryButton"
-              to={{ pathname: '/login/email', search: '' }}
+              to={{ pathname: '/login', search: '' }}
               style={{ textDecoration: 'none', width: '200px' }}
             >
               <div className="button-text">

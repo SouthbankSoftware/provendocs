@@ -18,8 +18,8 @@
  *
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
- * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-21T13:31:29+10:00
+ * @Last modified by:   wahaj
+ * @Last modified time: 2019-04-26T09:53:40+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -221,6 +221,7 @@
     height: 14px;
     margin-right: 20px;
   }
+
 }
 
 .topNavigationRoot.home {
@@ -235,6 +236,130 @@
 
     .ant-btn-danger {
       background-color: #cc4f46 !important;
+    }
+  }
+}
+
+.changePasswordModal {
+  width: 420px !important;
+  height: 500px;
+  border-radius: 11px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  background-color: $white;
+
+  .ant-modal-content {
+    border-radius: 11px;
+
+    .ant-modal-close {
+      top: 10px;
+      right: 10px;
+
+      .ant-modal-close-x {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 24px;
+        background-color: $white-two;
+      }
+    }
+
+    .ant-modal-header {
+      border-radius: 11px;
+      background-color: $white;
+      padding-top: 1px !important;
+      border: unset;
+
+      .ant-modal-title {
+        font-family: Roboto;
+        font-size: 20px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 2;
+        letter-spacing: normal;
+        text-align: center; // color: $steel;
+        margin-top: 35px;
+      }
+    }
+
+    .ant-modal-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 0px;
+      padding-bottom: 20px !important;
+
+      .dlgText {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.15;
+        letter-spacing: normal;
+        text-align: center;
+        color: $blue-grey;
+        margin-bottom: 27px;
+      }
+
+      .ant-input {
+        width: 260px;
+        height: 40px;
+        border-radius: 20px;
+        background-color: $white;
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1;
+        letter-spacing: normal;
+        text-align: left;
+        color: $blue-grey;
+      }
+    }
+
+    .ant-modal-footer {
+      .primaryButton {
+        width: 150px;
+        // height: 40px;
+        border: unset;
+        // border-radius: 20px;
+        background-color: $tealish;
+
+        &:visited {
+          background-color: $tealish;
+        }
+
+        &:hover,
+        &:focus {
+          background-color: lighten($color: $tealish, $amount: 10)
+        }
+
+        &:active {
+          background-color: darken($color: $tealish, $amount: 10)
+        }
+      }
+
+      .secondaryButton {
+        width: 130px;
+        border: unset;
+        color: $white;
+        background-color: $dusk-blue;
+
+        &:visited {
+          background-color: $dusk-blue;
+        }
+
+        &:hover,
+        &:focus {
+          background-color: lighten($color: $dusk-blue, $amount: 10)
+        }
+
+        &:active {
+          background-color: darken($color: $dusk-blue, $amount: 10)
+        }
+      }
     }
   }
 }

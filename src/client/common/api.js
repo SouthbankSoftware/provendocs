@@ -65,6 +65,9 @@ export default {
     gender,
     language,
   }),
+  deleteUser: (id: string) => axios.post('/api/deleteUser', {
+    id,
+  }),
   authUser: (email: string, password: string) => axios.post('/api/authUser', {
     email,
     password,
@@ -78,6 +81,11 @@ export default {
   }),
   resetPassword: (email: string) => axios.post('/api/resetPassword', {
     email,
+  }),
+  updatePassword: (email: String, currentPassword: String, newPassword: String) => axios.post('/api/updatePassword', {
+    email,
+    currentPassword,
+    newPassword,
   }),
   getNumberOfFileVersions: (fileId: string) => axios.get(`/api/numFileVersions/${fileId}`),
   getFileHistoryForUser: (fileName: string) => axios.get(`/api/fileHistory/${fileName}`),

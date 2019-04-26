@@ -25,7 +25,7 @@ import winston from 'winston';
 import uuidv4 from 'uuid/v4';
 import fs from 'fs';
 import createArchiveForDocument from '../helpers/archiveBuilder';
-import { getUserDetails, getUserFromEmail } from '../helpers/userHelpers';
+import { deleteUser, getUserDetails, getUserFromEmail } from '../helpers/userHelpers';
 import {
   getHistoricalFile,
   getVersionProofForFile,
@@ -305,15 +305,38 @@ module.exports = (app: any) => {
                   message: 'User Storage Deleted',
                   reqId,
                 });
-                res.cookie('AuthToken', '', {
-                  expires: new Date(),
-                  httpOnly: true,
-                });
-                res.cookie('RefreshToken', '', {
-                  expires: new Date(),
-                  httpOnly: true,
-                });
-                res.status(200).send(true);
+
+                const { AuthToken } = req.cookies;
+                deleteUser({ id: user._id }, AuthToken)
+                  .then((response) => {
+                    logger.log({
+                      level: LOG_LEVELS.INFO,
+                      severity: STACKDRIVER_SEVERITY.INFO,
+                      message: 'User Deleted',
+                      reqId,
+                      response,
+                    });
+                    res.cookie('AuthToken', '', {
+                      expires: new Date(),
+                      httpOnly: true,
+                    });
+                    res.cookie('RefreshToken', '', {
+                      expires: new Date(),
+                      httpOnly: true,
+                    });
+                    res.status(200).send(true);
+                  })
+                  .catch((usrDelError) => {
+                    logger.log({
+                      level: LOG_LEVELS.INFO,
+                      severity: STACKDRIVER_SEVERITY.INFO,
+                      message: 'Failed to delete user.',
+                      usrDelError,
+                      errMSg: usrDelError.message,
+                      reqId,
+                    });
+                    res.status(400).send(usrDelError.message);
+                  });
               })
               .catch((clearStorageErr) => {
                 logger.log({
