@@ -149,4 +149,6 @@ export default {
   postEmailSubscribe: (values: Object) => axios.post('/api/sendConfirmation', values),
   deleteAccount: () => axios.get('/api/util/deleteAccount'),
   isReferralRequired: () => axios.get('/api/util/isReferralRequired'),
+  encryptLink: (fileId: string, fileVersion: number) => axios.get(`/api/util/encryptLink/${fileId}/${fileVersion}`),
+  decryptLink: (link: string) => axios.get(`/api/util/decryptLink/${link}`),
 };

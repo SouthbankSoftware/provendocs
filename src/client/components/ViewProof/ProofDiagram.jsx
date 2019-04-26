@@ -20,12 +20,11 @@
  * @Author: Michael Harrison
  * @Date:   2019-04-09T15:19:41+10:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-24T16:05:10+10:00
+ * @Last modified time: 2019-04-26T11:50:17+10:00
  */
 
 import React from 'react';
 import { Icon, Tooltip } from 'antd';
-import Cryptr from 'cryptr';
 // Icons:
 import DocumentIcon from '../../style/icons/pages/dashboard/document-new-icon.svg';
 import HashIcon from '../../style/icons/pages/dashboard/hash-icon.svg';
@@ -35,9 +34,6 @@ import './ProofDiagram.scss';
 import { PROOF_STATUS, ENVIRONMENT, DOMAINS } from '../../common/constants';
 import { Loading } from '../Common';
 import { api } from '../../common';
-
-const urlEncryptionKey = process.env.PROVENDOCS_CRYPT_KEY || 'mySecretHere';
-const cryptr = new Cryptr(urlEncryptionKey);
 
 type Props = {
   proofInformation: Object,
@@ -49,6 +45,7 @@ type State = {
   proofInformation: Object,
   file: Object,
   userDetails: Object,
+  link: string,
 };
 
 class ProofDiagram extends React.Component<Props, State> {
@@ -57,6 +54,7 @@ class ProofDiagram extends React.Component<Props, State> {
     this.state = {
       proofInformation: {},
       file: {},
+      link: '',
       userDetails: {},
     };
   }
@@ -71,7 +69,27 @@ class ProofDiagram extends React.Component<Props, State> {
       // Historical File, go fetch id.
       api.getHistoricalFileId(file.name, file._provendb_metadata.minVersion).then((resultFile) => {
         this.setState({ file: resultFile.data });
+        api
+          .encryptLink(
+            resultFile.data._id,
+            resultFile.data._provendb_metadata.minVersion.toString(),
+          )
+          .then((link) => {
+            this.setState({ link: link.data });
+          })
+          .catch((encryptErr) => {
+            console.error(encryptErr);
+          });
       });
+    } else {
+      api
+        .encryptLink(file._id, file._provendb_metadata.minVersion.toString())
+        .then((link) => {
+          this.setState({ link: link.data });
+        })
+        .catch((encryptErr) => {
+          console.error(encryptErr);
+        });
     }
   }
 
@@ -89,13 +107,35 @@ class ProofDiagram extends React.Component<Props, State> {
         // Historical File, go fetch id.
         api.getHistoricalFileId(file.name, file.__provendb_metadata.minVersion).then((resultFile) => {
           this.setState({ file: resultFile.data });
+          api
+            .encryptLink(
+              resultFile.data._id,
+              resultFile.data._provendb_metadata.minVersion.toString(),
+            )
+            .then((link) => {
+              this.setState({ link: link.data });
+            })
+            .catch((encryptErr) => {
+              console.error(encryptErr);
+            });
         });
+      } else {
+        api
+          .encryptLink(file._id, file._provendb_metadata.minVersion.toString())
+          .then((link) => {
+            this.setState({ link: link.data });
+          })
+          .catch((encryptErr) => {
+            console.error(encryptErr);
+          });
       }
     }
   }
 
   render() {
-    const { proofInformation, file, userDetails } = this.state;
+    const {
+      proofInformation, file, userDetails, link,
+    } = this.state;
     if (!file._id || !file._provendb_metadata) {
       return <Loading isFullScreen={false} message="Fetching proof information..." />;
     }
@@ -127,11 +167,6 @@ class ProofDiagram extends React.Component<Props, State> {
 
     let pdocsLink = null;
     if (userDetails._id) {
-      const link = cryptr.encrypt(
-        `${file._id.toString()}-${
-          userDetails._id
-        }-${file._provendb_metadata.minVersion.toString()}`,
-      );
       if (DOMAINS.PROVENDOCS_ENV === ENVIRONMENT.PROD || !DOMAINS.PROVENDOCS_ENV) {
         pdocsLink = `https://provendocs.com/share/${link}`;
       } else {
@@ -160,7 +195,7 @@ class ProofDiagram extends React.Component<Props, State> {
               </div>
               <div className="right">
                 {pdocsLink && (
-                  <Tooltip placement="topLeft" title={pdocsLink}>
+                  <Tooltip placement="topLeft" title={pdocsLink || 'Please wait...'}>
                     <a href={pdocsLink} target="_blank" rel="noopener noreferrer">
                       Permanent link to ProvenDocs
                     </a>
