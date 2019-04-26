@@ -49,7 +49,7 @@ import {
 import createPDF from '../helpers/certificateBuilder';
 import { generalFormat } from '../modules/winston.config';
 
-const urlEncryptionKey = process.env.PROVENDOCS_SECRET || 'mySecretHere';
+const urlEncryptionKey = process.env.PROVENDOCS_CRYPT_KEY || 'mySecretHere';
 const cryptr = new Cryptr(urlEncryptionKey);
 let uri = 'https://provendocs.com';
 if (process.env.PROVENDOCS_ENV === ENVIRONMENTS.PROD || !process.env.PROVENDOCS_ENV) {

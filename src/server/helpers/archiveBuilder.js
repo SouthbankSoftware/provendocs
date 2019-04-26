@@ -35,7 +35,7 @@ import {
 } from '../common/constants';
 import { certificateAPIFormat } from '../modules/winston.config';
 
-const urlEncryptionKey = process.env.PROVENDOCS_SECRET || 'mySecretHere';
+const urlEncryptionKey = process.env.PROVENDOCS_CRYPT_KEY || 'mySecretHere';
 const EJSON = require('mongodb-extjson');
 
 const cryptr = new Cryptr(urlEncryptionKey);

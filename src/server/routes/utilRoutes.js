@@ -24,6 +24,7 @@
 import winston from 'winston';
 import uuidv4 from 'uuid/v4';
 import fs from 'fs';
+import Cryptr from 'cryptr';
 import createArchiveForDocument from '../helpers/archiveBuilder';
 import { deleteUser, getUserDetails, getUserFromEmail } from '../helpers/userHelpers';
 import {
@@ -45,6 +46,9 @@ import {
 import { generalFormat } from '../modules/winston.config';
 
 const { MongoClient } = require('mongodb');
+
+const urlEncryptionKey = process.env.PROVENDOCS_CRYPT_KEY || 'mySecretHere';
+const cryptr = new Cryptr(urlEncryptionKey);
 
 module.exports = (app: any) => {
   const logger = winston.createLogger({
@@ -513,5 +517,79 @@ module.exports = (app: any) => {
     getIsReferralRequired().then((result) => {
       res.status(200).send(result);
     });
+  });
+
+  app.get('/api/util/encryptLink/:fileId/:fileVersion', (req, res) => {
+    const { fileId, fileVersion } = req.params;
+    const reqId = uuidv4();
+    logger.log({
+      level: LOG_LEVELS.INFO,
+      severity: STACKDRIVER_SEVERITY.INFO,
+      message: '[REQUEST] -> Create encrypted link for file.',
+      reqId,
+    });
+    // Get User
+    getUserDetails(req, res, app.get('jwtSecret'))
+      .then((user) => {
+        logger.log({
+          level: LOG_LEVELS.DEBUG,
+          severity: STACKDRIVER_SEVERITY.DEBUG,
+          message: 'Got user Details',
+          user,
+          reqId,
+        });
+        const url = cryptr.encrypt(`${fileId.toString()}-${user._id}-${fileVersion.toString()}`);
+        res.status(200).send(url);
+      })
+      .catch((getUserDetailsErr) => {
+        const returnObj = {
+          level: LOG_LEVELS.WARN,
+          severity: STACKDRIVER_SEVERITY.WARNING,
+          message: 'Failed to get User:',
+          getUserDetailsErr,
+          errMsg: getUserDetailsErr.message,
+          reqId,
+        };
+        logger.log(returnObj);
+        res.status(404).send(returnObj);
+      });
+  });
+
+  app.get('/api/util/decryptLink/:link', (req, res) => {
+    const { link } = req.params;
+    const reqId = uuidv4();
+    logger.log({
+      level: LOG_LEVELS.INFO,
+      severity: STACKDRIVER_SEVERITY.INFO,
+      message: '[REQUEST] -> Decrypt a link.',
+      link,
+      reqId,
+    });
+    // Get User
+    getUserDetails(req, res, app.get('jwtSecret'))
+      .then((user) => {
+        logger.log({
+          level: LOG_LEVELS.DEBUG,
+          severity: STACKDRIVER_SEVERITY.DEBUG,
+          message: 'Got user Details',
+          user,
+          reqId,
+        });
+        const fileInfo = cryptr.decrypt(link);
+        res.status(200).send(fileInfo);
+      })
+      .catch((getUserDetailsErr) => {
+        const returnObj = {
+          level: LOG_LEVELS.WARN,
+          severity: STACKDRIVER_SEVERITY.WARNING,
+          message: 'Failed to get User:',
+          link,
+          getUserDetailsErr,
+          errMsg: getUserDetailsErr.message,
+          reqId,
+        };
+        logger.log(returnObj);
+        res.status(404).send(returnObj);
+      });
   });
 };

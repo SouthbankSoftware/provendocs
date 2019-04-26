@@ -23,7 +23,6 @@
  */
 import React from 'react';
 import { withRouter } from 'react-router';
-import Cryptr from 'cryptr';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Icon, Button } from 'antd';
 import Log from '../../common/log';
@@ -31,18 +30,16 @@ import Log from '../../common/log';
 import './ShareDialog.scss';
 import { openNotificationWithIcon } from '../../common/util';
 import { ENVIRONMENT, DOMAINS } from '../../common/constants';
-
-const urlEncryptionKey = process.env.PROVENDOCS_SECRET || 'mySecretHere';
-const cryptr = new Cryptr(urlEncryptionKey);
+import { api } from '../../common';
+import { Loading } from '../Common';
 
 type Props = {
   file: Object,
-  userDetails: Object,
 };
 
 type State = {
   file: Object,
-  userInformation: Object,
+  link: string,
 };
 
 Log.setSource('ShareDialog');
@@ -52,32 +49,40 @@ class ShareDialog extends React.Component<Props, State> {
     super();
     this.state = {
       file: {},
-      userInformation: {},
+      link: '',
     };
   }
 
   componentDidMount() {
     this.setState({ file: this.props.file });
-    this.setState({ userInformation: this.props.userDetails });
+    api
+      .encryptLink(this.props.file._id, this.props.file._provendb_metadata.minVersion.toString())
+      .then((link) => {
+        this.setState({ link: link.data });
+      })
+      .catch((encryptErr) => {
+        console.error(encryptErr);
+      });
   }
 
   componentWillReceiveProps(nextProps: Object) {
-    const { file, userDetails } = nextProps;
-    console.log('NextProps: ', nextProps);
+    const { file } = nextProps;
     this.setState({ file });
-    this.setState({ userInformation: userDetails });
+    api
+      .encryptLink(file._id, file._provendb_metadata.minVersion.toString())
+      .then((link) => {
+        this.setState({ link: link.data });
+      })
+      .catch((encryptErr) => {
+        console.error(encryptErr);
+      });
   }
 
   render() {
-    const { file, userInformation } = this.state;
+    const { file, link } = this.state;
     if (file && !file._id) {
       return <div />;
     }
-    const link = cryptr.encrypt(
-      `${file._id.toString()}-${
-        userInformation._id
-      }-${file._provendb_metadata.minVersion.toString()}`,
-    );
     let pdocsLink;
     if (DOMAINS.PROVENDOCS_ENV === ENVIRONMENT.PROD || !DOMAINS.PROVENDOCS_ENV) {
       pdocsLink = `https://provendocs.com/share/${link}`;
@@ -89,20 +94,29 @@ class ShareDialog extends React.Component<Props, State> {
       <div className="shareProofDialogueWrapper">
         <Icon className="heroIcon" type="link" />
         <h2 className="title">Share Proof</h2>
-        <span className="subtitle">
-          Below is a link allowing others to view this document along with its proof.
-        </span>
-        <div className="hr" />
-        <span className="publicLink">{pdocsLink}</span>
-        <CopyToClipboard text={pdocsLink}>
-          <Button
-            onClick={() => {
-              openNotificationWithIcon('success', 'Copied.', 'Link has been copied to clipboard.');
-            }}
-          >
-            Copy to Clipboard
-          </Button>
-        </CopyToClipboard>
+        {link !== '' && (
+          <React.Fragment>
+            <span className="subtitle">
+              Below is a link allowing others to view this document along with its proof.
+            </span>
+            <div className="hr" />
+            <span className="publicLink">{pdocsLink}</span>
+            <CopyToClipboard text={pdocsLink}>
+              <Button
+                onClick={() => {
+                  openNotificationWithIcon(
+                    'success',
+                    'Copied.',
+                    'Link has been copied to clipboard.',
+                  );
+                }}
+              >
+                Copy to Clipboard
+              </Button>
+            </CopyToClipboard>
+          </React.Fragment>
+        )}
+        {link === '' && <Loading />}
       </div>
     );
   }

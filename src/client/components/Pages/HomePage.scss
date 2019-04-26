@@ -19,20 +19,20 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-16T15:01:51+10:00
+ * @Last modified time: 2019-04-26T10:14:37+10:00
  */
 
 @import "../../style/global_colors.scss";
 
 .homePage {
-  scroll-snap-type: mandatory;
-  scroll-snap-points-y: repeat(3rem);
-  scroll-snap-type: y mandatory;
+  // scroll-snap-type: mandatory;
+  // scroll-snap-points-y: repeat(3rem);
+  // scroll-snap-type: y mandatory;
   background-color: $dusk-blue;
 
-  .snap {
+  /* .snap {
     scroll-snap-align: start;
-  }
+  } */
 
   .section {
     display: flex;
