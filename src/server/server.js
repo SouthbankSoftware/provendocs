@@ -69,7 +69,9 @@ MongoClient.connect(process.env.PROVENDOCS_URI, {
           pDocsEnv: process.env.PROVENDOCS_ENV || 'dev (default)',
           signupEnv: process.env.SIGNUP_ENV,
           nodeEnv: process.env.NODE_ENV,
+          encryptionKey: process.env.PROVENDOCS_CRYPT_KEY || 'Undefined',
           sharedSecret: process.env.PROVENDOCS_SECRET || 'Undefined',
+          growsurfSecret: process.env.GROWSURF_SECRET || 'Undefined',
         },
         provendb: {
           uri: process.env.PROVENDOCS_URI,

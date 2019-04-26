@@ -39,7 +39,7 @@ if (process.env.PROVENDOCS_ENV === ENVIRONMENTS.PROD || !process.env.PROVENDOCS_
   uri = `https://${process.env.PROVENDOCS_ENV}.provendocs.com`;
 }
 
-const urlEncryptionKey = process.env.PROVENDOCS_SECRET || 'mySecretHere';
+const urlEncryptionKey = process.env.PROVENDOCS_CRYPT_KEY || 'mySecretHere';
 const logger = winston.createLogger({
   transports: [
     new winston.transports.Console({

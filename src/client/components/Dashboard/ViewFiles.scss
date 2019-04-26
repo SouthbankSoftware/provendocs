@@ -424,6 +424,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        overflow: hidden;
 
         div.ant-spin {
           display: flex;
@@ -497,7 +498,6 @@
         height: 100%;
         width: 100%;
         padding-top: 0px;
-        overflow-y: scroll;
         background-color: unset;
 
         svg {

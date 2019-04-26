@@ -32,7 +32,7 @@ import './ShareDialog.scss';
 import { openNotificationWithIcon } from '../../common/util';
 import { ENVIRONMENT, DOMAINS } from '../../common/constants';
 
-const urlEncryptionKey = process.env.PROVENDOCS_SECRET || 'mySecretHere';
+const urlEncryptionKey = process.env.PROVENDOCS_CRYPT_KEY || 'mySecretHere';
 const cryptr = new Cryptr(urlEncryptionKey);
 
 type Props = {

@@ -7,6 +7,8 @@ export PROVENDOCS_URI="mongodb://${yourUserName}:${yourPassword}@${yourProvenDoc
 ## Required for Authentication
 ```bash
 export PROVENDOCS_SECRET="${YOUR_AUTHENTICATION_SECRET_HERE}"    # Secret used for trust of API Gateway.
+export PROVENDOCS_CRYPT_KEY="${YOUR_ENCRYPTION_SECRET_HERE}"     # Secret used for encrypting and decrypting share links.
+export GROWSURF_SECRET="${GROWSURF_SECRET_HERE}"                 # Secret used for encrypting and decrypting share links.
 export USER_MODULE_URL="localhost:8000"                          # URL of User Module.
 export API_URL="localhost:8080"                                  # URL of API Gateway.
 export INTERNAL_API_URL="localhost:8080"                         # Internal API location.

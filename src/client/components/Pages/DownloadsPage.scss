@@ -14,8 +14,6 @@
     justify-content: flex-start;
     align-items: flex-start;
     overflow-y: scroll;
-    width: 50%;
-    max-width: 75%;
 
     .downloadsHeader {
       color: white;
@@ -28,7 +26,7 @@
     }
 
     hr {
-      width: 100%;
+      width: 50%;
       opacity: 0.2;
     }
 
@@ -40,6 +38,8 @@
       margin-top: 39px;
       padding-left: 39px;
       padding-right: 39px;
+      width: 50%;
+      align-self: center;
 
       .downloadsSubHeader {
         color: white;

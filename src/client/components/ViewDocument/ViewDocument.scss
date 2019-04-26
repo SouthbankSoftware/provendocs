@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-11T12:39:27+10:00
+ * @Last modified time: 2019-04-26T10:55:32+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -232,7 +232,7 @@
         }
 
         .value {
-          overflow: scroll;
+          overflow: auto;
           white-space: pre-wrap;
           width: 100%;
           height: 80%;

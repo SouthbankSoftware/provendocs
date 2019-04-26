@@ -36,7 +36,7 @@ import { PROOF_STATUS, ENVIRONMENT, DOMAINS } from '../../common/constants';
 import { Loading } from '../Common';
 import { api } from '../../common';
 
-const urlEncryptionKey = process.env.PROVENDOCS_SECRET || 'mySecretHere';
+const urlEncryptionKey = process.env.PROVENDOCS_CRYPT_KEY || 'mySecretHere';
 const cryptr = new Cryptr(urlEncryptionKey);
 
 type Props = {
