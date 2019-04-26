@@ -141,8 +141,6 @@ export const doesUploadExceedRemainingStorage = (
   if (totalFilesNumber + storage.documentsUsed > storage.documentsLimit) {
     resolve({ exceed: true });
   } else {
-    console.log(files);
-    console.log(email);
     if (files.length < 1) {
       // Email only.
       totalFilesSize = sizeof(email);

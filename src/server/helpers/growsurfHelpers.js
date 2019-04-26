@@ -17,7 +17,7 @@ const validateSignature = function (body, signature) {
   const hash = parts[1].split('=')[1];
   // Generate hash
   const message = `${timestamp}.${JSON.stringify(body)}`;
-  const expected = CryptoJS.HmacSHA256(message, process.env.GROWSURF_SECRET).toString();
+  const expected = CryptoJS.HmacSHA256(message, process.env.PROVENDOCS_CRYPT_KEY).toString();
 
   // Validate/Compare
   if (expected === hash) {
