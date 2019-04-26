@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-24T10:47:22+10:00
+ * @Last modified time: 2019-04-26T11:16:22+10:00
  */
 import React, { Suspense } from 'react';
 import { hot, setConfig } from 'react-hot-loader';
@@ -89,11 +89,13 @@ class App extends React.Component<Props, State> {
 
   render() {
     const { status } = this.state;
-    let grsfID = 'x803x6';
+    let grsfID = 'lc1xl2';
     if (DOMAINS.PROVENDOCS_ENV === 'dev' || DOMAINS.PROVENDOCS_ENV === 'tst') {
       grsfID = 'lc1xl2';
     } else if (DOMAINS.PROVENDOCS_ENV === 'stg') {
       grsfID = 'hyrcag';
+    } else if (DOMAINS.PROVENDOCS_ENV === 'prd') {
+      grsfID = 'x803x6';
     }
     if (status) {
       return (
