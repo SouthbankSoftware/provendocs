@@ -47,7 +47,7 @@ function addHeader(doc, file) {
       .fillColor('#595b60')
       .fontSize(9)
       .font(Path.join(__dirname, 'certificate/Roboto-Light.ttf'))
-      .text('info@provendocs.com', 415, 50, { width: 140, align: 'right', opacity: 0.8 });
+      .text('support@provendb.com', 415, 50, { width: 140, align: 'right', opacity: 0.8 });
 
     // Add underline.
     doc

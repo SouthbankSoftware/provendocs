@@ -467,7 +467,7 @@ Prove files on the block chain
                 <span className="bodyText">
                   Level 3, 20 Queen St Melbourne, VIC 3000
                   <br />
-                  info@provendocs.com
+                  support@provendb.com
                   <br />
                   <br />
                 </span>
