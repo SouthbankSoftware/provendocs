@@ -53,17 +53,17 @@ import './Landing.scss';
 const { Step } = Steps;
 
 type Props = {
-  location: any;
-  match: any;
-  history: any;
-  form: any;
+  location: any,
+  match: any,
+  history: any,
+  form: any,
 };
 type State = {
-  howDoesItWorkCurrentStep: number;
-  sectionHeight: number;
-  isAuthenticated: boolean;
-  dlgVisible: boolean;
-  dlgSuccess: boolean;
+  howDoesItWorkCurrentStep: number,
+  sectionHeight: number,
+  isAuthenticated: boolean,
+  dlgVisible: boolean,
+  dlgSuccess: boolean,
 };
 class LandingPage extends React.Component<Props, State> {
   constructor() {
@@ -190,7 +190,7 @@ class LandingPage extends React.Component<Props, State> {
               <div className="heroButtons">
                 <a
                   className="watchVideoButton dark button"
-                  href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
+                  href="https://www.youtube.com/watch?v=NSJmy6naMkE"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -252,7 +252,7 @@ class LandingPage extends React.Component<Props, State> {
                     <div className="sectionButtons">
                       <a
                         className="watchVideo button"
-                        href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
+                        href="https://www.youtube.com/watch?v=NSJmy6naMkE"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -342,7 +342,7 @@ Prove files on the block chain
               <div className="sectionButtons">
                 <a
                   className="watchVideo button"
-                  href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
+                  href="https://www.youtube.com/watch?v=NSJmy6naMkE"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -421,7 +421,7 @@ Prove files on the block chain
               <div className="sectionButtons">
                 <a
                   className="watchVideo button"
-                  href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
+                  href="https://www.youtube.com/watch?v=NSJmy6naMkE"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -467,7 +467,7 @@ Prove files on the block chain
                 <span className="bodyText">
                   Level 3, 20 Queen St Melbourne, VIC 3000
                   <br />
-                  info@provendocs.com
+                  support@provendb.com
                   <br />
                   <br />
                 </span>

@@ -203,16 +203,16 @@ class HomePage extends React.Component<Props, State> {
                   on the Blockchain. The content of the documents can be private or shared.
                 </span>
                 <div className="heroButtons">
-                  {/*  <a
+                    <a
                   className="watchVideoButton button"
-                  href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
+                  href="https://www.youtube.com/watch?v=NSJmy6naMkE"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <div className="button-text">
                     <span>Watch Video</span>
                   </div>
-                </a> */}
+                </a> 
                   <a className="findOutMoreButton button" href="/signup">
                     <div className="button-text">
                       <span>Get Proving!</span>
@@ -276,16 +276,16 @@ class HomePage extends React.Component<Props, State> {
                           <span>Litepaper</span>
                         </div>
                       </a>
-                      {/*   <a
+                         <a
                         className="watchVideo dark button"
-                        href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
+                        href="https://www.youtube.com/watch?v=NSJmy6naMkE"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
                         <div className="button-text">
                           <span>Watch Video</span>
                         </div>
-                      </a> */}
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -369,16 +369,16 @@ class HomePage extends React.Component<Props, State> {
                     <span>Litepaper</span>
                   </div>
                 </a>
-                {/*  <a
+                  <a
                   className="watchVideo tealish button"
-                  href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
+                  href="https://www.youtube.com/watch?v=NSJmy6naMkE"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <div className="button-text">
                     <span>Watch Video</span>
                   </div>
-                </a> */}
+                </a>
               </div>
             </div>
             <div className="snap section whatSection" style={sectionStyle}>
@@ -450,16 +450,16 @@ class HomePage extends React.Component<Props, State> {
                     <span>Litepaper</span>
                   </div>
                 </a>
-                {/*  <a
+                  <a
                   className="watchVideo dark button"
-                  href="https://www.youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
+                  href="https://www.youtube.com/watch?v=NSJmy6naMkE"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <div className="button-text">
                     <span>Watch Video</span>
                   </div>
-                </a> */}
+                </a>
               </div>
             </div>
             <div className="snap section aboutSection">
@@ -490,7 +490,7 @@ class HomePage extends React.Component<Props, State> {
                 <span className="bodyText">
                   Level 3, 20 Queen St Melbourne, VIC 3000
                   <br />
-                  info@provendocs.com
+                  support@provendb.com
                   <br />
                   <br />
                 </span>
