@@ -43,6 +43,7 @@ import { api, Log } from '../../common';
 // $FlowFixMe
 import './LoginSignup.scss';
 import { Loading } from '../Common';
+import { openNotificationWithIcon } from '../../common/util';
 
 type State = {
   loggedIn: boolean,
@@ -89,19 +90,94 @@ class RegisterationPage extends React.Component<Props, State> {
       });
 
     // Check if referral code is needed:
-    api.isReferralRequired().then((result) => {
-      if (result.data.referralRequired) {
-        this.setState({ isReferralRequired: true });
+    console.log('Checking if Referrel code is required...');
+    api
+      .isReferralRequired()
+      .then((result) => {
+        console.log('Is Refferel code required: ', result);
+        if (result.data.referralRequired) {
+          this.setState({ isReferralRequired: true });
 
+          // Check if they have a refferal token.
+          const token = localStorage.getItem('provendocs_referral_code');
+          if (token) {
+            let count = 0;
+            const checkGrowsurfInterval = setInterval(() => {
+              count += 1;
+              if (count > 20) {
+                console.error(
+                  'Failed to validate referrel participant in 20000ms, please contact support.',
+                );
+                openNotificationWithIcon(
+                  'error',
+                  'Failed to check refferal.',
+                  'Sorry, we were unable to validate your referral link in a timely manor, please make sure you have navigated here via a referral link or contact support.',
+                );
+                clearInterval(checkGrowsurfInterval);
+                this.setState({ loading: false });
+                this.setState({ hasReferralToken: false });
+              }
+              if (window && window.growsurf && window.growsurf.getParticipantById) {
+                console.log('Growsurf initialized, checking participant ID.');
+                window.growsurf
+                  .getParticipantById(token)
+                  .then((res) => {
+                    console.log('Got Growsurf Participant.');
+                    if (!res) {
+                      this.setState({ hasReferralToken: false });
+                      this.setState({ loading: false });
+                    } else {
+                      this.setState({ hasReferralToken: true });
+                      this.setState({ loading: false });
+                    }
+                  })
+                  .catch((getParticipantErr) => {
+                    Log.error(getParticipantErr);
+                    this.setState({ hasReferralToken: false });
+                    this.setState({ loading: false });
+                  });
+                clearInterval(checkGrowsurfInterval);
+              } else {
+                console.log('Waiting for GrowSurf, wait counter: ', count, ' / 20');
+              }
+            }, 1000);
+          } else {
+            this.setState({ hasReferralToken: false });
+            this.setState({ loading: false });
+          }
+        } else {
+          this.setState({ isReferralRequired: false });
+          this.setState({ loading: false });
+        }
+      })
+      .catch((isRefRequiredErr) => {
+        console.error('IsRefRequired Err: ', isRefRequiredErr);
+        this.setState({ isReferralRequired: true });
         // Check if they have a refferal token.
         const token = localStorage.getItem('provendocs_referral_code');
         if (token) {
+          let count = 0;
           const checkGrowsurfInterval = setInterval(() => {
+            count += 1;
+            if (count > 20) {
+              console.error(
+                'Failed to validate referrel participant in 20000ms, please contact support.',
+              );
+              openNotificationWithIcon(
+                'error',
+                'Failed to check refferal.',
+                'Sorry, we were unable to validate your referral link in a timely manor, please make sure you have navigated here via a referral link or contact support.',
+              );
+              clearInterval(checkGrowsurfInterval);
+              this.setState({ loading: false });
+              this.setState({ hasReferralToken: false });
+            }
             if (window && window.growsurf && window.growsurf.getParticipantById) {
+              console.log('Growsurf initialized, checking participant ID.');
               window.growsurf
                 .getParticipantById(token)
                 .then((res) => {
-                  console.log(res);
+                  console.log('Got Growsurf Participant.');
                   if (!res) {
                     this.setState({ hasReferralToken: false });
                     this.setState({ loading: false });
@@ -116,17 +192,15 @@ class RegisterationPage extends React.Component<Props, State> {
                   this.setState({ loading: false });
                 });
               clearInterval(checkGrowsurfInterval);
+            } else {
+              console.log('Waiting for GrowSurf, wait counter: ', count, ' / 20');
             }
           }, 1000);
         } else {
           this.setState({ hasReferralToken: false });
           this.setState({ loading: false });
         }
-      } else {
-        this.setState({ isReferralRequired: false });
-        this.setState({ loading: false });
-      }
-    });
+      });
   }
 
   componentDidMount() {}
