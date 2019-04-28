@@ -21,7 +21,7 @@ _Build and Deploy:_ [![provendocs-deploy-build](https://concourse.provendb.com/a
 
 **NOTE** - ProvenDocs is still very much a work in progress, please be patient with us!
 
-*More information and detailed documentation for ProvenDocs Application can be found on the **[ProvenDB ReadMe.IO](https://provendb.readme.io/docs)***
+*More information and detailed documentation for ProvenDocs Application can be found on the **[ProvenDocs ReadMe.IO](https://provendocs.readme.io/docs)***
 
 *More information and detailed documentation for ProvenDocs Source Code can be found **[here](./src/README.md)***
 
@@ -48,7 +48,7 @@ This repository exists to serve as an example of the kind of application we beli
   - [**Local Installation**](#local-installation)
   - [**Running ProvenDocs**](#running-provendocs)
 - [**Contributing**](#contributing)
-- [**Feedback**](#feedback)
+- [**Support and Feedback**](#support-and-feedback)
 - [**Related Projects**](#related-projects)
 - [**License**](#license)
 
@@ -87,10 +87,16 @@ There are a number of environment variables required to run ProvenDocs on your l
 2. Open chrome and navigate to `localhost:3000`
 
 # **Contributing**
-If you wish to contribute to **ProvenDocs**, there are issues listed on **[GitHub Issues](https://github.com/SouthbankSoftware/provendocs/issues)** that are good for beginners to contribute to. You can also contact us at **developer@provendocs.com** to ask about our contribution guidelines and strategy.
+If you wish to contribute to **ProvenDocs**, there are issues listed on **[GitHub Issues](https://github.com/SouthbankSoftware/provendocs/issues)** that are good for beginners to contribute to. You can also contact us at **support@provendb.com** to ask about our contribution guidelines and strategy. We plan to fully document this strategy in an upcoming release.
 
-# **Feedback** 
-All feedback can be given as [GitHub Issues](https://github.com/SouthbankSoftware/provendocs/issues), we currently have templates for
+# **Support and Feedback** 
+
+To get help, request features or simply to tell us what you think, please submit feedback to one of the following places:
+
+- [ReadMe.io](https://provendocs.readme.io/docs): For help using the application, general feedback and bug reports. 
+- [Github](https://github.com/SouthbankSoftware/provendocs/issues): For feature suggestions, documentation suggestions and bug reports.
+
+All feedback on the code or open source project itself can be given as [GitHub Issues](https://github.com/SouthbankSoftware/provendocs/issues), we currently have templates for
 - **Questions** - Ask questions and get help or advice relevant to ProvenDocs.
 - **Feature Requests** - Ask for new features or functionality to be added to ProvenDocs.
 - **Bug Report** - If you run into a bug in the product, please let us know right away so we can fix it!
