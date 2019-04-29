@@ -160,7 +160,7 @@ export default class Footer extends React.Component<Props, State> {
                 <MediumIcon />
               </a>
               <a
-                href="https://youtube.com/channel/UCHU81AKOjYEEWE2bcmeF6hw"
+                href="https://rebrand.ly/vw2nck"
                 className="youtubeLink"
                 style={{ textDecoration: 'none' }}
                 target="_blank"
