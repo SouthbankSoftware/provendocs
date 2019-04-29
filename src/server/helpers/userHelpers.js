@@ -120,10 +120,12 @@ export const verifyTokenFromUserModule = (req: Object, res: Object, jwtSecret: O
                 res.cookie('AuthToken', jsonResponse.auth_token, {
                   // expires: new Date(Date.now() + 86400000), // Token has actual expiry of 15 mins but the cookie has to be present to give the token back
                   httpOnly: true,
+                  sameSite: true,
                 });
                 res.cookie('RefreshToken', jsonResponse.refresh_token, {
                   expires: new Date(Date.now() + 259200000),
                   httpOnly: true,
+                  sameSite: true,
                 });
                 logger.log({
                   level: LOG_LEVELS.INFO,
