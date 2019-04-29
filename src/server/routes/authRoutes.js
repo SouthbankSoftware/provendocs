@@ -84,10 +84,12 @@ module.exports = (app) => {
     res.cookie('AuthToken', authToken, {
       // expires: new Date(Date.now() + 86400000),
       httpOnly: true,
+      sameSite: true,
     });
     res.cookie('RefreshToken', refreshToken, {
       expires: new Date(Date.now() + 259200000),
       httpOnly: true,
+      sameSite: true,
     });
     res.redirect('/dashboard');
   });
@@ -97,10 +99,12 @@ module.exports = (app) => {
     res.cookie('AuthToken', authToken, {
       expires: new Date(Date.now() + 90000),
       httpOnly: true,
+      sameSite: true,
     });
     res.cookie('RefreshToken', refreshToken, {
       expires: new Date(Date.now() + 25920000),
       httpOnly: true,
+      sameSite: true,
     });
 
     const customReqest = {
