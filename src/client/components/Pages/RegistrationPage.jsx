@@ -97,14 +97,13 @@ class RegisterationPage extends React.Component<Props, State> {
         console.log('Is Refferel code required: ', result);
         if (result.data.referralRequired) {
           this.setState({ isReferralRequired: true });
-
           // Check if they have a refferal token.
           const token = localStorage.getItem('provendocs_referral_code');
           if (token) {
             let count = 0;
             const checkGrowsurfInterval = setInterval(() => {
               count += 1;
-              if (count > 20) {
+              if (count > 10) {
                 console.error(
                   'Failed to validate referrel participant in 20000ms, please contact support.',
                 );
@@ -115,7 +114,7 @@ class RegisterationPage extends React.Component<Props, State> {
                 );
                 clearInterval(checkGrowsurfInterval);
                 this.setState({ loading: false });
-                this.setState({ hasReferralToken: false });
+                this.setState({ hasReferralToken: true });
               }
               if (window && window.growsurf && window.growsurf.getParticipantById) {
                 console.log('Growsurf initialized, checking participant ID.');
@@ -142,7 +141,7 @@ class RegisterationPage extends React.Component<Props, State> {
               }
             }, 1000);
           } else {
-            this.setState({ hasReferralToken: false });
+            this.setState({ hasReferralToken: true });
             this.setState({ loading: false });
           }
         } else {

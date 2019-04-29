@@ -205,7 +205,7 @@ class HomePage extends React.Component<Props, State> {
                 <div className="heroButtons">
                   <a
                     className="watchVideoButton button"
-                    href="https://www.youtube.com/watch?v=NSJmy6naMkE"
+                    href="https://rebrand.ly/vw2nck"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -278,7 +278,7 @@ class HomePage extends React.Component<Props, State> {
                       </a>
                       <a
                         className="watchVideo dark button"
-                        href="https://www.youtube.com/watch?v=NSJmy6naMkE"
+                        href="https://rebrand.ly/vw2nck"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -371,7 +371,7 @@ class HomePage extends React.Component<Props, State> {
                 </a>
                 <a
                   className="watchVideo tealish button"
-                  href="https://www.youtube.com/watch?v=NSJmy6naMkE"
+                  href="https://rebrand.ly/vw2nck"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -452,7 +452,7 @@ class HomePage extends React.Component<Props, State> {
                 </a>
                 <a
                   className="watchVideo dark button"
-                  href="https://www.youtube.com/watch?v=NSJmy6naMkE"
+                  href="https://rebrand.ly/vw2nck"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
