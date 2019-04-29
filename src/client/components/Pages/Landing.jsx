@@ -190,7 +190,7 @@ class LandingPage extends React.Component<Props, State> {
               <div className="heroButtons">
                 <a
                   className="watchVideoButton dark button"
-                  href="https://www.youtube.com/watch?v=NSJmy6naMkE"
+                  href="https://rebrand.ly/vw2nck"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -252,7 +252,7 @@ class LandingPage extends React.Component<Props, State> {
                     <div className="sectionButtons">
                       <a
                         className="watchVideo button"
-                        href="https://www.youtube.com/watch?v=NSJmy6naMkE"
+                        href="https://rebrand.ly/vw2nck"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -342,7 +342,7 @@ Prove files on the block chain
               <div className="sectionButtons">
                 <a
                   className="watchVideo button"
-                  href="https://www.youtube.com/watch?v=NSJmy6naMkE"
+                  href="https://rebrand.ly/vw2nck"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -421,7 +421,7 @@ Prove files on the block chain
               <div className="sectionButtons">
                 <a
                   className="watchVideo button"
-                  href="https://www.youtube.com/watch?v=NSJmy6naMkE"
+                  href="https://rebrand.ly/vw2nck"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
