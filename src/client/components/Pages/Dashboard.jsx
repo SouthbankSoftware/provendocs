@@ -177,6 +177,7 @@ class Dashboard extends React.Component<Props, State> {
             api
               .getFileSizeForUser()
               .then((res) => {
+                Log.info('Get files size result: ');
                 Log.info(res);
                 if (res.status === 200) {
                   if (res.data.filesSize[0]) {
@@ -280,10 +281,47 @@ class Dashboard extends React.Component<Props, State> {
     api
       .getFileSizeForUser()
       .then((res) => {
-        this.setState({ storageUsed: res.data[0].storageUsed });
-        this.setState({ documentsUsed: res.data[0].documentsUsed });
-        this.setState({ storageLimit: res.data[0].storageLimit });
-        this.setState({ documentsLimit: res.data[0].documentsLimit });
+        Log.info('Get files size result: ');
+        Log.info(res);
+        if (res.status === 200) {
+          if (res.data.filesSize[0]) {
+            const checkGrowsurfInterval = setInterval(() => {
+              if (window && window.growsurf && window.growsurf.getParticipantById) {
+                window.growsurf
+                  .addParticipant(res.data.email)
+                  .then((participant) => {
+                    Log.info(`Added participant to Growsurf: ${participant}.`);
+                  })
+                  .catch((growSurfErr) => {
+                    Log.error(`Error adding participant: ${JSON.stringify(growSurfErr)}`);
+                  });
+                clearInterval(checkGrowsurfInterval);
+              }
+            }, 1000);
+            this.setState({ storageUsed: res.data.filesSize[0].storageUsed });
+            this.setState({ documentsUsed: res.data.filesSize[0].documentsUsed });
+            this.setState({ storageLimit: res.data.filesSize[0].storageLimit });
+            this.setState({ documentsLimit: res.data.filesSize[0].documentsLimit });
+          } else {
+            const checkGrowsurfInterval = setInterval(() => {
+              if (window && window.growsurf && window.growsurf.getParticipantById) {
+                window.growsurf
+                  .addParticipant(res.data.email)
+                  .then((participant) => {
+                    Log.info(`Added participant to Growsurf: ${participant}.`);
+                  })
+                  .catch((growSurfErr) => {
+                    Log.error(`Error adding participant: ${JSON.stringify(growSurfErr)}`);
+                  });
+                clearInterval(checkGrowsurfInterval);
+              }
+            }, 1000);
+            this.setState({ storageUsed: res.data.filesSize.storageUsed });
+            this.setState({ documentsUsed: res.data.filesSize.documentsUsed });
+            this.setState({ storageLimit: res.data.filesSize.storageLimit });
+            this.setState({ documentsLimit: res.data.filesSize.documentsLimit });
+          }
+        }
       })
       .catch((err) => {
         Log.error(`Error fetching files size: ${err}`);
