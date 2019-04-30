@@ -112,6 +112,7 @@
     "file2html-text": "^0.2.0",
     "flash": "^1.1.0",
     "flow-bin": "^0.77.0",
+    "helmet": "^3.16.0",
     "html-webpack-plugin": "^3.2.0",
     "husky": "0.14.3",
     "jest": "^23.6.0",

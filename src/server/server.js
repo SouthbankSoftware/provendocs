@@ -23,6 +23,7 @@
  */
 
 import express from 'express';
+import helmet from 'helmet';
 import path from 'path';
 import winston from 'winston';
 import expressWinston from 'express-winston';
@@ -37,6 +38,7 @@ const { MongoClient } = require('mongodb');
 const swaggerDocument = require('./swagger.json');
 
 const app = express();
+app.use(helmet());
 const jwtSecret = process.env.JWT_SECRET || 'provendbjwtsecret';
 const logger = winston.createLogger({
   transports: [
