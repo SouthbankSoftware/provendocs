@@ -327,8 +327,6 @@ class Dashboard extends React.Component<Props, State> {
             const checkGrowsurfInterval = setInterval(() => {
               console.log('Checking Growsurf is initialized: ', count, ' / 10');
               if (count > 10) {
-                // Try readding Growsurf:
-                // If we can't load Growsurf in 10 seconds, give up.
                 console.error(
                   'Failed to validate referrel participant in 20000ms, please contact support.',
                 );
