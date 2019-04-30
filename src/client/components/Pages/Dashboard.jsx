@@ -177,21 +177,55 @@ class Dashboard extends React.Component<Props, State> {
             api
               .getFileSizeForUser()
               .then((res) => {
-                Log.info('Get files size result: ');
-                Log.info(res);
+                console.info(`Get files size result: ${res.status}`);
                 if (res.status === 200) {
                   if (res.data.filesSize[0]) {
+                    // GROWSURF`
+                    let count = 0;
                     const checkGrowsurfInterval = setInterval(() => {
+                      console.log('Checking Growsurf is initialized: ', count, ' / 20');
                       if (window && window.growsurf && window.growsurf.getParticipantById) {
+                        console.log('Growsurf avaliable.');
                         window.growsurf
                           .addParticipant(res.data.email)
-                          .then((participant) => {
-                            Log.info(`Added participant to Growsurf: ${participant}.`);
+                          .then(() => {
+                            console.log('Added participant to Growsurf.');
                           })
                           .catch((growSurfErr) => {
-                            Log.error(`Error adding participant: ${JSON.stringify(growSurfErr)}`);
+                            console.error(
+                              `Error adding participant: ${JSON.stringify(growSurfErr)}`,
+                            );
                           });
                         clearInterval(checkGrowsurfInterval);
+                      } else {
+                        if (count === 5) {
+                          console.error(
+                            'Failed to validate referrel participant in 5000ms, triggering load window event....',
+                          );
+                          const evt = document.createEvent('Event');
+                          evt.initEvent('load', false, false);
+                          window.dispatchEvent(evt);
+                        } else if (count === 10) {
+                          console.error(
+                            'Failed to validate referrel participant in 10000ms, triggering load window event....',
+                          );
+                          const evt = document.createEvent('Event');
+                          evt.initEvent('load', false, false);
+                          window.dispatchEvent(evt);
+                        } else if (count === 15) {
+                          console.error(
+                            'Failed to validate referrel participant in 15000ms, triggering load window event....',
+                          );
+                          const evt = document.createEvent('Event');
+                          evt.initEvent('load', false, false);
+                          window.dispatchEvent(evt);
+                        } else if (count > 20) {
+                          console.error(
+                            'Failed to validate referrel participant in 20000ms, Giving up :(',
+                          );
+                          clearInterval(checkGrowsurfInterval);
+                        }
+                        count += 1;
                       }
                     }, 1000);
                     this.setState({ storageUsed: res.data.filesSize[0].storageUsed });
@@ -204,10 +238,12 @@ class Dashboard extends React.Component<Props, State> {
                         window.growsurf
                           .addParticipant(res.data.email)
                           .then((participant) => {
-                            Log.info(`Added participant to Growsurf: ${participant}.`);
+                            console.info(`Added participant to Growsurf: ${participant}.`);
                           })
                           .catch((growSurfErr) => {
-                            Log.error(`Error adding participant: ${JSON.stringify(growSurfErr)}`);
+                            console.error(
+                              `Error adding participant: ${JSON.stringify(growSurfErr)}`,
+                            );
                           });
                         clearInterval(checkGrowsurfInterval);
                       }
@@ -220,7 +256,7 @@ class Dashboard extends React.Component<Props, State> {
                 }
               })
               .catch((err) => {
-                Log.error(`Error fetching files size: ${err}`);
+                console.error(`Error fetching files size: ${err}`);
                 openNotificationWithIcon(
                   'error',
                   'File List Error',
@@ -231,6 +267,8 @@ class Dashboard extends React.Component<Props, State> {
         } else if (response.response.status === 400) {
           this.setState({ isAuthenticated: true });
           history.push('/login/expired');
+        } else {
+          console.log(`Result of checkAuth: ${JSON.stringify(response)}`);
         }
       })
       .catch(() => {
@@ -285,7 +323,17 @@ class Dashboard extends React.Component<Props, State> {
         Log.info(res);
         if (res.status === 200) {
           if (res.data.filesSize[0]) {
+            let count = 0;
             const checkGrowsurfInterval = setInterval(() => {
+              console.log('Checking Growsurf is initialized: ', count, ' / 10');
+              if (count > 10) {
+                // Try readding Growsurf:
+                // If we can't load Growsurf in 10 seconds, give up.
+                console.error(
+                  'Failed to validate referrel participant in 20000ms, please contact support.',
+                );
+                clearInterval(checkGrowsurfInterval);
+              }
               if (window && window.growsurf && window.growsurf.getParticipantById) {
                 window.growsurf
                   .addParticipant(res.data.email)
@@ -296,6 +344,8 @@ class Dashboard extends React.Component<Props, State> {
                     Log.error(`Error adding participant: ${JSON.stringify(growSurfErr)}`);
                   });
                 clearInterval(checkGrowsurfInterval);
+              } else {
+                count += 1;
               }
             }, 1000);
             this.setState({ storageUsed: res.data.filesSize[0].storageUsed });
@@ -308,10 +358,10 @@ class Dashboard extends React.Component<Props, State> {
                 window.growsurf
                   .addParticipant(res.data.email)
                   .then((participant) => {
-                    Log.info(`Added participant to Growsurf: ${participant}.`);
+                    console.log(`Added participant to Growsurf: ${participant}.`);
                   })
                   .catch((growSurfErr) => {
-                    Log.error(`Error adding participant: ${JSON.stringify(growSurfErr)}`);
+                    console.error(`Error adding participant: ${JSON.stringify(growSurfErr)}`);
                   });
                 clearInterval(checkGrowsurfInterval);
               }

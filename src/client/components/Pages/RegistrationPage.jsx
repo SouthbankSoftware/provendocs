@@ -102,22 +102,9 @@ class RegisterationPage extends React.Component<Props, State> {
           if (token) {
             let count = 0;
             const checkGrowsurfInterval = setInterval(() => {
-              count += 1;
-              if (count > 10) {
-                console.error(
-                  'Failed to validate referrel participant in 20000ms, please contact support.',
-                );
-                openNotificationWithIcon(
-                  'error',
-                  'Failed to check refferal.',
-                  'Sorry, we were unable to validate your referral link in a timely manor, please make sure you have navigated here via a referral link or contact support.',
-                );
-                clearInterval(checkGrowsurfInterval);
-                this.setState({ loading: false });
-                this.setState({ hasReferralToken: true });
-              }
+              console.log('Checking Growsurf is initialized: ', count, ' / 20');
               if (window && window.growsurf && window.growsurf.getParticipantById) {
-                console.log('Growsurf initialized, checking participant ID.');
+                console.log('Growsurf avaliable');
                 window.growsurf
                   .getParticipantById(token)
                   .then((res) => {
@@ -137,7 +124,32 @@ class RegisterationPage extends React.Component<Props, State> {
                   });
                 clearInterval(checkGrowsurfInterval);
               } else {
-                console.log('Waiting for GrowSurf, wait counter: ', count, ' / 20');
+                if (count === 5) {
+                  console.error(
+                    'Failed to validate referrel participant in 5000ms, triggering load window event....',
+                  );
+                  const evt = document.createEvent('Event');
+                  evt.initEvent('load', false, false);
+                  window.dispatchEvent(evt);
+                } else if (count === 10) {
+                  console.error(
+                    'Failed to validate referrel participant in 10000ms, triggering load window event....',
+                  );
+                  const evt = document.createEvent('Event');
+                  evt.initEvent('load', false, false);
+                  window.dispatchEvent(evt);
+                } else if (count === 15) {
+                  console.error(
+                    'Failed to validate referrel participant in 15000ms, triggering load window event....',
+                  );
+                  const evt = document.createEvent('Event');
+                  evt.initEvent('load', false, false);
+                  window.dispatchEvent(evt);
+                } else if (count > 20) {
+                  console.error('Failed to validate referrel participant in 20000ms, Giving up :(');
+                  clearInterval(checkGrowsurfInterval);
+                }
+                count += 1;
               }
             }, 1000);
           } else {
