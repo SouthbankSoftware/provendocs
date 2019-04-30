@@ -101,6 +101,12 @@ class HomePage extends React.Component<Props, State> {
       if (response.status === 200) {
         this.setState({ isAuthenticated: true });
       }
+    }).catch((checkAuthErr) => {
+      if (checkAuthErr.response.status === 400) {
+        console.log('Not logged in.');
+      } else {
+        console.error(`Auth check failed with reponse: ${checkAuthErr}`);
+      }
     });
     ReactGA.pageview(window.location.pathname + window.location.search);
   }

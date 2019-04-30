@@ -546,7 +546,6 @@ export default class ViewFiles extends React.Component<Props, State> {
       <div className="Grid">
         <AutoSizer>
           {({ height, width }) => {
-            console.log('height:', height, 'width:', width);
             const itemsPerRow = Math.floor(width / 160) || 1;
             const rowCount = Math.ceil(previewsList.length / itemsPerRow);
             return (
