@@ -37,7 +37,7 @@ import './Footer.scss';
 
 type State = { privacyOpen: boolean };
 
-type Props = { currentPage: string, privacyOpen: boolean };
+type Props = { currentPage: string; privacyOpen: boolean };
 export default class Footer extends React.Component<Props, State> {
   constructor() {
     super();
@@ -76,9 +76,8 @@ export default class Footer extends React.Component<Props, State> {
             </Modal>
             <div className="spacer" />
             <div className="centerContent">
-              <span className="copyright">
-                &copy; 2019 Southbank Software. All rights reserved.
-              </span>
+              <span className="copyright">&copy; 2019 Southbank Software.</span>
+              <span className="copyright">&nbsp;All rights reserved.</span>
             </div>
 
             <Button
@@ -169,7 +168,8 @@ export default class Footer extends React.Component<Props, State> {
                 <YoutubeIcon />
               </a>
             </div>
-            <span className="copyright">&copy; 2019 Southbank Software. All rights reserved.</span>
+            <span className="copyright">&copy; 2019 Southbank Software.</span>
+            <span className="copyright">&nbsp;All rights reserved.</span>
           </div>
 
           <Button

@@ -18,8 +18,8 @@
  *
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
- * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-03T09:18:20+11:00
+ * @Last modified by:   wahaj
+ * @Last modified time: 2019-05-01T15:00:58+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -37,8 +37,16 @@
   min-height: 60px;
   max-height: 60px;
 
+  @media screen and (max-width: 420px) {
+    justify-content: center;
+  }
+
   .spacer {
     width: 126px;
+
+    @media screen and (max-width: 420px) {
+      display: none;
+    }
   }
 
   .centerContent {

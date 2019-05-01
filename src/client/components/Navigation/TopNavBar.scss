@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   wahaj
- * @Last modified time: 2019-04-26T09:53:40+10:00
+ * @Last modified time: 2019-05-01T16:54:38+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -38,16 +38,16 @@
   padding-bottom: 21px;
   overflow-x: auto;
 
-  @media screen and (max-width: 420px) {
-    display: none;
-  }
-
   .appLogo {
     width: 262px;
     height: 33px;
     margin-right: 15px;
     display: flex;
     align-items: center;
+
+    // @media screen and (max-width: 420px) {
+  //   width: 100px;
+  // }
 
     .docsLogo {
       width: 100px;
@@ -58,6 +58,10 @@
     .provendbLogo {
       width: 144px;
       height: 14px;
+
+      // @media screen and (max-width: 420px) {
+  //   display: none;
+  // }
     }
 
     svg {
@@ -104,12 +108,20 @@
       .link:hover {
         opacity: 1;
       }
+
+      @media screen and (max-width: 1024px) {
+        display: none;
+      }
     }
   }
 
   .rightButtons {
     float: right;
     margin-left: auto;
+
+    @media screen and (max-width: 420px) {
+      display: none;
+    }
 
     .homeButtons {
       display: flex;
@@ -123,6 +135,12 @@
         border: none;
         color: white;
         opacity: 0.5;
+      }
+
+      .ant-btn>span {
+        @media screen and (max-width: 420px) {
+          display: none;
+        }
       }
 
       .ant-btn:hover {
