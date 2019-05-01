@@ -51,20 +51,20 @@ import './HomePage.scss';
 const { Step } = Steps;
 
 type Props = {
-  privacyOpen: boolean,
-  location: any,
-  match: any,
-  history: any,
-  form: any,
-  subscribe: boolean,
+  privacyOpen: boolean;
+  location: any;
+  match: any;
+  history: any;
+  form: any;
+  subscribe: boolean;
 };
 type State = {
-  privacyOpen: boolean,
-  howDoesItWorkCurrentStep: number,
-  sectionHeight: number,
-  isAuthenticated: boolean,
-  dlgVisible: boolean,
-  dlgSuccess: boolean,
+  privacyOpen: boolean;
+  howDoesItWorkCurrentStep: number;
+  sectionHeight: number;
+  isAuthenticated: boolean;
+  dlgVisible: boolean;
+  dlgSuccess: boolean;
 };
 class HomePage extends React.Component<Props, State> {
   constructor() {
@@ -97,17 +97,19 @@ class HomePage extends React.Component<Props, State> {
     }
     this.setState({ privacyOpen });
     window.addEventListener('resize', this.updateDimensions);
-    checkAuthentication().then((response: any) => {
-      if (response.status === 200) {
-        this.setState({ isAuthenticated: true });
-      }
-    }).catch((checkAuthErr) => {
-      if (checkAuthErr.response.status === 400) {
-        console.log('Not logged in.');
-      } else {
-        console.error(`Auth check failed with reponse: ${checkAuthErr}`);
-      }
-    });
+    checkAuthentication()
+      .then((response: any) => {
+        if (response.status === 200) {
+          this.setState({ isAuthenticated: true });
+        }
+      })
+      .catch((checkAuthErr) => {
+        if (checkAuthErr.response.status === 400) {
+          console.log('Not logged in.');
+        } else {
+          console.error(`Auth check failed with reponse: ${checkAuthErr}`);
+        }
+      });
     ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
@@ -233,7 +235,7 @@ class HomePage extends React.Component<Props, State> {
                 </div>
               </div>
             </div>
-            <div className="snap section howDoesItWorkSection" style={sectionStyle}>
+            <div className="snap section howDoesItWorkSection">
               <div className="sectionTitle" id="howItWorks">
                 How does ProvenDocs work?
               </div>
@@ -297,7 +299,7 @@ class HomePage extends React.Component<Props, State> {
                 </div>
               </div>
             </div>
-            <div className="snap section howSection" style={sectionStyle}>
+            <div className="snap section howSection">
               <div className="sectionTitle" id="howToUseIt">
                 How do I use it?
               </div>
@@ -387,7 +389,7 @@ class HomePage extends React.Component<Props, State> {
                 </a>
               </div>
             </div>
-            <div className="snap section whatSection" style={sectionStyle}>
+            <div className="snap section whatSection">
               <div className="sectionTitle" id="whatToUseItFor">
                 What can I use it for?
               </div>
