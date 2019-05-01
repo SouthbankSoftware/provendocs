@@ -30,6 +30,7 @@ import expressWinston from 'express-winston';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import swaggerUi from 'swagger-ui-express';
+import { createNewProofIfDoesntExist } from './helpers/mongoAPI';
 import { LOG_LEVELS, STACKDRIVER_SEVERITY } from './common/constants';
 import { routingLogFormat, generalFormat } from './modules/winston.config';
 
@@ -63,7 +64,7 @@ MongoClient.connect(process.env.PROVENDOCS_URI, {
     logger.log({
       level: LOG_LEVELS.INFO,
       severity: STACKDRIVER_SEVERITY.INFO,
-      message: 'ProvenDocs is now connected to ProvenDB and running.',
+      message: 'ProvenDocs is now connected to ProvenDB and running, starting submitproof loop.',
       config: {
         provendocs: {
           runningOnPort: process.env.PROVENDOCS_PORT || '8888 (default)',
@@ -82,6 +83,25 @@ MongoClient.connect(process.env.PROVENDOCS_URI, {
         },
       },
     });
+    setInterval(() => {
+      createNewProofIfDoesntExist()
+        .then(() => {
+          logger.log({
+            level: LOG_LEVELS.INFO,
+            severity: STACKDRIVER_SEVERITY.INFO,
+            message: 'Proof exists for this version, or was submitted',
+          });
+        })
+        .catch((createNewProofIfDoesntExistErr) => {
+          logger.log({
+            level: LOG_LEVELS.ERROR,
+            severity: STACKDRIVER_SEVERITY.ERROR,
+            message: 'Failed to create new proof if it doesnte exist.',
+            createNewProofIfDoesntExistErr,
+            errMsg: createNewProofIfDoesntExistErr.message,
+          });
+        });
+    }, 1000 * 60 * 60); // Try and debounce a proof every 60 minutes.
   })
   .catch(error => logger.log({
     level: LOG_LEVELS.ERROR,
