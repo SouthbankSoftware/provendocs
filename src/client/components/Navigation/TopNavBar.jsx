@@ -51,14 +51,14 @@ import './TopNavBar.scss';
 const { confirm } = Modal;
 
 type Props = {
-  userDetailsCallback: any;
-  isAuthenticatedCallback: any;
-  currentPage: string;
-  isAuthenticated: boolean;
-  onEarlyAccess: Function | null;
-  history: any;
+  userDetailsCallback: any,
+  isAuthenticatedCallback: any,
+  currentPage: string,
+  isAuthenticated: boolean,
+  onEarlyAccess: Function | null,
+  history: any,
 };
-type State = { currentPage: string; userDetails: Object; showChangePassword: boolean };
+type State = { currentPage: string, userDetails: Object, showChangePassword: boolean };
 class TopNavBar extends React.Component<Props, State> {
   constructor() {
     super();
@@ -516,13 +516,15 @@ We suggest you download a proof archive for each of your files before
             >
               <span className="aboutLabel">Documentation</span>
             </a>
-            <Link
-              className="link downloadsLink"
-              to={{ pathname: '/Downloads', search: '' }}
-              style={{ textDecoration: 'none' }}
-            >
-              <span className=" button-text">Downloads</span>
-            </Link>
+            {currentPage !== PAGES.IE_REDIRECT && (
+              <Link
+                className="link downloadsLink"
+                to={{ pathname: '/Downloads', search: '' }}
+                style={{ textDecoration: 'none' }}
+              >
+                <span className=" button-text">Downloads</span>
+              </Link>
+            )}
           </div>
         </div>
         <div className="rightButtons">

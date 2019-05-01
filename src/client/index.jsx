@@ -25,6 +25,7 @@
 import React from 'react';
 import ReactGA from 'react-ga';
 import ReactDOM from 'react-dom';
+import IEPage from './components/Pages/Status/IERedirect';
 import App from './App';
 
 import { ENVIRONMENT, DOMAINS } from './common/constants';
@@ -34,35 +35,41 @@ const googleAnalytics = {
   gaOptions: { cookieDomain: 'auto' },
 };
 
-api
-  .getServiceUrls()
-  .then((res) => {
-    if (res.data.PROVENDOCS_ENV) {
-      DOMAINS.PROVENDOCS_ENV = res.data.PROVENDOCS_ENV;
-    }
-    switch (res.data.PROVENDOCS_ENV || DOMAINS.PROVENDOCS_ENV) {
-      case ENVIRONMENT.PROD:
-        ReactGA.initialize('UA-101162043-7', googleAnalytics);
-        break;
-      case ENVIRONMENT.DEV:
-        googleAnalytics.debug = true;
-        ReactGA.initialize('UA-101162043-10', googleAnalytics);
-        break;
-      case ENVIRONMENT.STAGING:
-        googleAnalytics.debug = true;
-        ReactGA.initialize('UA-101162043-11', googleAnalytics);
-        break;
-      case ENVIRONMENT.TEST:
-        googleAnalytics.debug = true;
-        ReactGA.initialize('UA-101162043-12', googleAnalytics);
-        break;
-      default:
-        ReactGA.initialize('UA-101162043-7', googleAnalytics);
-        break;
-    }
+const isIE = /* @cc_on!@ */ false || !!document.documentMode;
+if (isIE) {
+  ReactGA.initialize('UA-101162043-7', googleAnalytics);
+  ReactDOM.render(<IEPage />, document.getElementById('root'));
+} else {
+  api
+    .getServiceUrls()
+    .then((res) => {
+      if (res.data.PROVENDOCS_ENV) {
+        DOMAINS.PROVENDOCS_ENV = res.data.PROVENDOCS_ENV;
+      }
+      switch (res.data.PROVENDOCS_ENV || DOMAINS.PROVENDOCS_ENV) {
+        case ENVIRONMENT.PROD:
+          ReactGA.initialize('UA-101162043-7', googleAnalytics);
+          break;
+        case ENVIRONMENT.DEV:
+          googleAnalytics.debug = true;
+          ReactGA.initialize('UA-101162043-10', googleAnalytics);
+          break;
+        case ENVIRONMENT.STAGING:
+          googleAnalytics.debug = true;
+          ReactGA.initialize('UA-101162043-11', googleAnalytics);
+          break;
+        case ENVIRONMENT.TEST:
+          googleAnalytics.debug = true;
+          ReactGA.initialize('UA-101162043-12', googleAnalytics);
+          break;
+        default:
+          ReactGA.initialize('UA-101162043-7', googleAnalytics);
+          break;
+      }
 
-    ReactDOM.render(<App />, document.getElementById('root'));
-  })
-  .catch((getServiceUrlsErr) => {
-    console.error(getServiceUrlsErr);
-  });
+      ReactDOM.render(<App />, document.getElementById('root'));
+    })
+    .catch((getServiceUrlsErr) => {
+      console.error(getServiceUrlsErr);
+    });
+}

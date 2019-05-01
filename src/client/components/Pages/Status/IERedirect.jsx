@@ -19,13 +19,16 @@
  * @Author: Michael Harrison
  * @Date:   2019-05-01T14:06:40+10:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-05-01T14:10:05+10:00
+ * @Last modified time: 2019-05-02T08:45:07+10:00
  */
 
 import React from 'react';
 import ReactGA from 'react-ga';
-import { GA_CATEGORIES } from '../../../common/constants';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import SadIcon from '../../../style/icons/pages/status-pages/user-sad-404-icon.svg';
+import { PAGES, GA_CATEGORIES } from '../../../common/constants';
 import './IERedirect.scss';
+import { Footer, TopNavBar } from '../..';
 
 type Props = {};
 type State = {};
@@ -39,9 +42,9 @@ export default class IERedirect extends React.Component<Props, State> {
   componentDidMount() {
     const pagePath = window.location.pathname + window.location.search;
     ReactGA.event({
-      category: GA_CATEGORIES.PAGE_404,
-      action: `visit page:${pagePath}`,
-      label: 'Button',
+      category: GA_CATEGORIES.IE_REDIRECT,
+      action: 'internet explorer redirect',
+      label: 'redirect',
     });
     ReactGA.pageview(pagePath);
   }
@@ -50,24 +53,35 @@ export default class IERedirect extends React.Component<Props, State> {
 
   render() {
     return (
-      <div className="App">
-        <div className="AppBody">
-          <div className="mainPanel notFound">
-            <div className="heroSection">
-              <span className="heroText">Sorry! We dont current support your browser.</span>
-              <span className="heroSubtitle">
-                Your browser is not currently supported by ProvenDocs, please contact support at
-                {' '}
-                <a href="https://provendb.readme.io/discuss">our support channel</a>
-                {' '}
-or email us at
-                {' '}
-                <a href="mainto:support@provendb.com">support@provendb.com</a>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <BrowserRouter>
+        <Switch>
+          <Route
+            path="*"
+            component={() => (
+              <div className="App">
+                <TopNavBar currentPage={PAGES.IE_REDIRECT} />
+                <div className="AppBody">
+                  <div className="mainPanel ie_redirect">
+                    <div className="heroSection">
+                      <SadIcon className="heroImage" />
+                      <span className="heroText">Sorry!</span>
+                      <span className="heroSubtitle">
+                        Your browser is not currently supported by ProvenDocs, please try navigating
+                        here in a different browser. If you are unable to use another browser please
+                        contact support at
+                        <a href="https://provendb.readme.io/discuss"> our support channel </a>
+                        or email us at
+                        <a href="mainto:support@provendb.com"> support@provendb.com </a>
+                      </span>
+                    </div>
+                    <Footer currentPage={PAGES.HOME} />
+                  </div>
+                </div>
+              </div>
+            )}
+          />
+        </Switch>
+      </BrowserRouter>
     );
   }
 }
