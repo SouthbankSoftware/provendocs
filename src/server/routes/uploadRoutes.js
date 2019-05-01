@@ -823,7 +823,7 @@ module.exports = (app: any) => {
 
                         reqId,
                       };
-                      sendEmailUploadFailedEmail(getUserResult.email, subject);
+                      sendEmailUploadFailedEmail(getUserResult.email, subject, attachments.length);
                       res.status(404).send(returnObj);
                     });
                 });

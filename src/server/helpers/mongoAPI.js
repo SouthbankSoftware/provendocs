@@ -115,7 +115,7 @@ const debouncedSubmitProof = _.debounce(
     logger.log({
       level: LOG_LEVELS.DEBUG,
       severity: STACKDRIVER_SEVERITY.DEBUG,
-      message: 'Started Debounced function...',
+      message: 'Started Debounced function (submit proof)...',
     });
     if (!dbObject) {
       logger.log({
@@ -207,6 +207,88 @@ const submitProof = () => new Promise<boolean>((resolve, reject) => {
       });
     }
   });
+});
+
+export const createNewProofIfDoesntExist = () => new Promise<boolean>((resolve, reject) => {
+  logger.log({
+    level: LOG_LEVELS.INFO,
+    severity: STACKDRIVER_SEVERITY.INFO,
+    message: 'Submitting new proof (if one doesnt already exist)',
+  });
+  if (!dbObject) {
+    logger.log({
+      level: LOG_LEVELS.ERROR,
+      severity: STACKDRIVER_SEVERITY.CRITICAL,
+      message: 'No Database Object -> Connection to ProvenDB failed!',
+    });
+    reject(new Error('No database object.'));
+  } else {
+    // First get the current version.
+    dbObject.command({ getVersion: 1 }, (error, res) => {
+      if (error || !res || res.ok !== 1) {
+        logger.log({
+          level: LOG_LEVELS.ERROR,
+          severity: STACKDRIVER_SEVERITY.ERROR,
+          message: 'Failed to submitProof with error:',
+          error,
+          errMsg: error.message,
+        });
+        reject(new Error(error.message));
+      } else {
+        const { version } = res;
+        // Now see if a proof exists for that version (and hasn't failed)
+        const command = { getProof: version };
+        dbObject.command(command, {}, (commandError, commandRes) => {
+          if (commandError) {
+            logger.log({
+              level: LOG_LEVELS.ERROR,
+              severity: STACKDRIVER_SEVERITY.ERROR,
+              message: 'Failed to getProof with error:',
+              version,
+              commandError,
+              errMsg: commandError.message,
+            });
+            reject(new Error(commandError.message));
+          } else {
+            logger.log({
+              level: LOG_LEVELS.DEBUG,
+              severity: STACKDRIVER_SEVERITY.DEBUG,
+              message: 'Got proof for version',
+              version,
+              commandRes,
+            });
+            if (
+              commandRes
+                && commandRes.proofs
+                && commandRes.proofs[0]
+                && commandRes.proofs[0].status
+                && _.includes(
+                  ['valid', 'pending', 'submitted'],
+                  commandRes.proofs[0].status.toLowerCase(),
+                )
+            ) {
+              logger.log({
+                level: LOG_LEVELS.DEBUG,
+                severity: STACKDRIVER_SEVERITY.DEBUG,
+                message: 'Proof exists, do nothing for another hour.',
+              });
+              // A valid, pending or submitted proof exists for this version, don't submit a new one.
+              resolve(true);
+            } else {
+              logger.log({
+                level: LOG_LEVELS.DEBUG,
+                severity: STACKDRIVER_SEVERITY.DEBUG,
+                message: 'No valid, pending or submitted proof exists for version, debouncing a new one.',
+                version,
+              });
+              debouncedSubmitProof();
+              resolve(true);
+            }
+          }
+        });
+      }
+    });
+  }
 });
 
 export const updateStorage = (newStorageUsed: number, newDocumentsUsed: number, userId: string) => new Promise<boolean>((resolve, reject) => {
@@ -677,6 +759,7 @@ export const uploadAttachments = (
                 });
               } else {
                 logger.log({ level: LOG_LEVELS.DEBUG, message: 'Document inserted.' });
+                debouncedSubmitProof(); // Debounce a submitproof just in case.
               }
             },
           );
@@ -1589,27 +1672,29 @@ export const getHistoricalFile = (
     } else {
       const collection = dbObject.collection(collectionName);
       if (collection) {
-        collection.find(filter, { promoteLongs: false }, projection).toArray((queryError, result) => {
-          if (queryError) {
-            logger.log({
-              level: LOG_LEVELS.ERROR,
-              severity: STACKDRIVER_SEVERITY.ERROR,
-              message: 'Failed to query files for historical file',
-              queryError,
-            });
-            reject(queryError);
-          } else if (result[0]) {
-            resolve(result);
-          } else {
-            logger.log({
-              level: LOG_LEVELS.ERROR,
-              severity: STACKDRIVER_SEVERITY.ERROR,
-              message: 'Found no matching files.',
-              queryError,
-            });
-            reject(new Error("Didn't find any file."));
-          }
-        });
+        collection
+          .find(filter, { promoteLongs: false }, projection)
+          .toArray((queryError, result) => {
+            if (queryError) {
+              logger.log({
+                level: LOG_LEVELS.ERROR,
+                severity: STACKDRIVER_SEVERITY.ERROR,
+                message: 'Failed to query files for historical file',
+                queryError,
+              });
+              reject(queryError);
+            } else if (result[0]) {
+              resolve(result);
+            } else {
+              logger.log({
+                level: LOG_LEVELS.ERROR,
+                severity: STACKDRIVER_SEVERITY.ERROR,
+                message: 'Found no matching files.',
+                queryError,
+              });
+              reject(new Error("Didn't find any file."));
+            }
+          });
       } else {
         reject(new Error('Couldnt get collection'));
       }
