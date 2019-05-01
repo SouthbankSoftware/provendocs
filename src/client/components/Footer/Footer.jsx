@@ -172,7 +172,7 @@ export default class Footer extends React.Component<Props, State> {
             <span className="copyright">&copy; 2019 Southbank Software. All rights reserved.</span>
           </div>
 
-          {currentPage != PAGES.IE_REDIRECT && (
+          {currentPage !== PAGES.IE_REDIRECT && (
             <Button
               className="privacyLink"
               type="normal"
