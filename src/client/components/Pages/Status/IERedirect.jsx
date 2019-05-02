@@ -18,8 +18,8 @@
  *
  * @Author: Michael Harrison
  * @Date:   2019-05-01T14:06:40+10:00
- * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-05-02T11:10:40+10:00
+ * @Last modified by:   wahaj
+ * @Last modified time: 2019-05-02T12:09:05+10:00
  */
 
 import React from 'react';
@@ -28,7 +28,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import SadIcon from '../../../style/icons/pages/status-pages/user-sad-404-icon.svg';
 import { PAGES, GA_CATEGORIES } from '../../../common/constants';
 import './IERedirect.scss';
-import { Footer, TopNavBar } from '../..';
+import { TopNavBar } from '../..';
 
 type Props = {};
 type State = {};
