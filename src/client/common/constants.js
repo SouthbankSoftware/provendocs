@@ -54,6 +54,7 @@ export const PAGES = {
   SUPPORT: 'support',
   LANDING: 'landing',
   SHARED: 'shared',
+  IE_REDIRECT: 'ie_redirect',
 };
 
 export const ANTD_BUTTON_TYPES = {
@@ -130,6 +131,7 @@ export const GA_CATEGORIES = {
   HOMEPAGE: 'HomePage',
   REGISTER: 'Register',
   TOPBAR: 'Topbar',
+  IE_REDIRECT: 'Internet Explorer Redirect',
 };
 
 export const STATUS_CODES = {
