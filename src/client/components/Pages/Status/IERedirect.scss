@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-05-02T08:44:26+10:00
+ * @Last modified time: 2019-05-02T11:12:33+10:00
  */
 @import "../../../style/global_styles.scss";
 @import "../../../style/global_colors.scss";
@@ -35,6 +35,10 @@
     justify-content: center;
     align-content: center;
     align-items: center;
+    padding-bottom: 40px;
+    padding-top: 40px;
+    padding-left: 5px;
+    padding-right: 5px;
 
     .heroImage {
       width: 30%;
@@ -60,7 +64,6 @@
     .heroSubtitle {
       align-self: center;
       justify-content: center;
-      width: 427px;
       opacity: 0.7;
       font-size: 16px;
       font-weight: normal;
