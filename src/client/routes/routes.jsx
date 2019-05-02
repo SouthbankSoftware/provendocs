@@ -26,6 +26,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import NotFound from '../components/Pages/Status/404';
+import MobilePage from '../components/Pages/Status/mobile';
 import {
   SharedDocument,
   Dashboard,
@@ -59,6 +60,8 @@ const Routes = () => (
       <Route path="/signup/:page" component={RegistrationPage} />
       <Route exact path="/signupFailed" component={() => <RegistrationPage signUpFailed />} />
       <Route exact path="/signupSuccess" component={() => <LoginPage signedUp />} />
+      <Route path="/mobile" component={MobilePage} />
+      <Route path="/mobile/:page" component={MobilePage} />
       <Route path="*" component={NotFound} />
     </Switch>
   </BrowserRouter>

@@ -18,38 +18,27 @@
  *
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
- * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-05-02T11:12:33+10:00
+ * @Last modified by:   wahaj
+ * @Last modified time: 2019-05-02T11:37:10+10:00
  */
-@import "../../../style/global_styles.scss";
 @import "../../../style/global_colors.scss";
 
-.ie_redirect {
+.mobile {
   height: auto !important;
 
   .heroSection {
-    background-color: $flat-blue;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-content: center;
-    align-items: center;
-    padding-bottom: 40px;
-    padding-top: 40px;
-    padding-left: 5px;
-    padding-right: 5px;
-
-    .heroImage {
-      width: 30%;
-    }
+    padding-bottom: 100px;
 
     .heroText {
       display: flex;
       align-self: center;
       justify-content: center;
-      width: 715px;
-      font-size: 60px;
+      font-size: 30px;
       font-weight: bold;
       font-style: normal;
       font-stretch: normal;
@@ -57,13 +46,15 @@
       letter-spacing: 1.8px;
       text-align: center;
       color: #ffffff;
-      margin-top: 30px;
-      margin-bottom: 15px;
     }
 
     .heroSubtitle {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       align-self: center;
       justify-content: center;
+      margin: 20px;
       opacity: 0.7;
       font-size: 16px;
       font-weight: normal;
@@ -73,16 +64,6 @@
       letter-spacing: normal;
       text-align: center;
       color: #ffffff;
-
-      a {
-        color: white;
-        text-decoration: underline;
-      }
-
-      a:hover {
-        color: white;
-        opacity: 0.5;
-      }
     }
   }
 }

@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   wahaj
- * @Last modified time: 2019-05-01T16:54:38+10:00
+ * @Last modified time: 2019-05-02T11:08:47+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -45,9 +45,9 @@
     display: flex;
     align-items: center;
 
-    // @media screen and (max-width: 420px) {
-  //   width: 100px;
-  // }
+    @media screen and (max-width: 420px) {
+      width: 100px;
+    }
 
     .docsLogo {
       width: 100px;
@@ -59,9 +59,9 @@
       width: 144px;
       height: 14px;
 
-      // @media screen and (max-width: 420px) {
-  //   display: none;
-  // }
+      @media screen and (max-width: 420px) {
+        display: none;
+      }
     }
 
     svg {
@@ -119,9 +119,9 @@
     float: right;
     margin-left: auto;
 
-    @media screen and (max-width: 420px) {
-      display: none;
-    }
+    // @media screen and (max-width: 420px) {
+  //   display: none;
+  // }
 
     .homeButtons {
       display: flex;

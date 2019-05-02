@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-05-01T14:06:40+10:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-05-02T08:45:07+10:00
+ * @Last modified time: 2019-05-02T11:10:40+10:00
  */
 
 import React from 'react';
@@ -74,7 +74,6 @@ export default class IERedirect extends React.Component<Props, State> {
                         <a href="mainto:support@provendb.com"> support@provendb.com </a>
                       </span>
                     </div>
-                    <Footer currentPage={PAGES.HOME} />
                   </div>
                 </div>
               </div>
