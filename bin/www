@@ -1,6 +1,6 @@
 var app = require('../dist/server');
 var port = process.env.PROVENDOCS_PORT || 8888
-app.listen(port, function() {
+app.listen(port, '0.0.0.0', function() {
     console.log('__________________________________________________')
     console.log('\n\n ___                        ___');
     console.log('| _ \\_ _ _____ _____ _ _   |   \\ ___  __ ___   ');
