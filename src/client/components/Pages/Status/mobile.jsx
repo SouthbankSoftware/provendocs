@@ -139,8 +139,8 @@ coming soon!
                 <br />
               </span>
               <span className="heroSubtitle">
-                Sorry, currently we only support desktop browsers. Mobile browsers support is in the
-                works and will be there soon.
+                Sorry, currently we only support desktop browsers. Mobile browser support is in the
+                works and will be here soon.
                 <br />
                 <br />
                 {' '}
