@@ -37,14 +37,14 @@ import TickIcon from '../../../style/icons/pages/landing-page/tick-icon.svg';
 import './mobile.scss';
 
 type Props = {
-  location: any;
-  match: any;
-  history: any;
-  form: any;
+  location: any,
+  match: any,
+  history: any,
+  form: any,
 };
 type State = {
-  dlgVisible: boolean;
-  dlgSuccess: boolean;
+  dlgVisible: boolean,
+  dlgSuccess: boolean,
 };
 
 class MobilePage extends React.Component<Props, State> {
@@ -131,30 +131,10 @@ class MobilePage extends React.Component<Props, State> {
         <div className="AppBody">
           <div className="mainPanel mobile">
             <div className="heroSection">
-              <span className="heroText">
-                Mobile Support
-                <br />
-                {' '}
-coming soon!
-                <br />
-              </span>
               <span className="heroSubtitle">
-                Sorry, currently we only support desktop browsers. Mobile browser support is in the
-                works and will be here soon.
+                Sorry, currently we only support desktop browsers. Please navigate to ProvenDocs on
+                a desktop browser. Mobile browser support is in the works and will be here soon.
                 <br />
-                <br />
-                {' '}
-Subscribe to our mailing list to keep getting the latest updates.
-                <br />
-                <br />
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="antdButton"
-                  onClick={this.showModal}
-                >
-                  Subscribe
-                </Button>
               </span>
             </div>
             <Footer currentPage={PAGES.HOME} />
