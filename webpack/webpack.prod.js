@@ -1,4 +1,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
+// const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const commonPaths = require('./paths');
 
@@ -9,6 +11,17 @@ module.exports = {
     path: commonPaths.outputPath,
     publicPath: '/',
     chunkFilename: '[name].[chunkhash].js',
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
+  stats: {
+    colors: true,
+    modules: true,
+    reasons: true,
+    errorDetails: true,
   },
   module: {
     rules: [
@@ -46,9 +59,15 @@ module.exports = {
       root: commonPaths.root,
     }),
     new MiniCssExtractPlugin({
-      filename: `${commonPaths.cssFolder}/[name].css`,
-      chunkFilename: '[id].css',
+      filename: `${commonPaths.cssFolder}/[name].[contenthash:8].css`,
+      chunkFilename: '[id].[contenthash:8].chunk.css',
     }),
+    new CompressionPlugin({
+      test: /\.jsx?$|\.css$|\.(scss|sass)$|\.html$/,
+      threshold: 10240,
+    }),
+    // Minimizing style for production
+    // new OptimizeCssAssetsPlugin(),
   ],
   devtool: 'source-map',
 };

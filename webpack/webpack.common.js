@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const LoadablePlugin = require('@loadable/webpack-plugin');
 const commonPaths = require('./paths');
 
 const envKeys = Object.keys(process.env).reduce((prev, next) => {
@@ -59,24 +60,7 @@ module.exports = {
       },
       {
         test: /\.(svg)$/i,
-        use: [
-          {
-            loader: 'babel-loader',
-          },
-          {
-            loader: 'react-svg-loader',
-            query: {
-              svgo: {
-                plugins: [
-                  {
-                    removeTitle: false,
-                  },
-                ],
-                floatPrecision: 2,
-              },
-            },
-          },
-        ],
+        use: ['@svgr/webpack'],
       },
     ],
   },
@@ -91,6 +75,7 @@ module.exports = {
       baseUrl: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : '/',
       template: commonPaths.templatePath,
     }),
+    new LoadablePlugin({ filename: 'stats.json', writeToDisk: true }),
     new webpack.DefinePlugin(envKeys),
   ],
   externals: {
