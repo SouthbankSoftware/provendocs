@@ -449,7 +449,10 @@ class NewFileUpload extends React.Component<Props, State> {
                   );
                   // Twitter conversion event.
                   window.twq('track', 'Upload');
+                  // Adwords conversion.
                   window.gtag_report_conversion('http://provendocs.com/Upload');
+                  // Facebook conversion.
+                  window.fbq('track', 'StartTrial', { value: '0.00', currency: 'USD', predicted_ltv: '0.00' });
                   if (res && res.data.filesSize && res.data.filesSize[0]) {
                     updateSpaceUsedCallback(res.data.filesSize[0].storageUsed, res.data.filesSize[0].documentsUsed);
                   } else if (res && res.data) {
