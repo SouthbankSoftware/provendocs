@@ -1,6 +1,7 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-// const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const commonPaths = require('./paths');
 
@@ -67,7 +68,10 @@ module.exports = {
       threshold: 10240,
     }),
     // Minimizing style for production
-    // new OptimizeCssAssetsPlugin(),
+    new OptimizeCssAssetsPlugin(),
+    new ImageminPlugin({
+      pngquant: { quality: '95-100' },
+    }),
   ],
   devtool: 'source-map',
 };
