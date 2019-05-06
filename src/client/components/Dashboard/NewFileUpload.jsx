@@ -449,6 +449,7 @@ class NewFileUpload extends React.Component<Props, State> {
                   );
                   // Twitter conversion event.
                   window.twq('track', 'Upload');
+                  window.gtag_report_conversion('http://provendocs.com/Upload');
                   if (res && res.data.filesSize && res.data.filesSize[0]) {
                     updateSpaceUsedCallback(res.data.filesSize[0].storageUsed, res.data.filesSize[0].documentsUsed);
                   } else if (res && res.data) {
