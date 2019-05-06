@@ -11,6 +11,11 @@ module.exports = {
     publicPath: '/',
     chunkFilename: '[name].js',
   },
+  optimization: {
+    splitChunks: {
+      chunks: 'async',
+    },
+  },
   module: {
     rules: [
       {

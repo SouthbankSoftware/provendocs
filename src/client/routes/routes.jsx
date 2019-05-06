@@ -24,19 +24,31 @@
 
 // eslint no-return-assign:0
 import React from 'react';
+import loadable from '@loadable/component';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import NotFound from '../components/Pages/Status/404';
-import MobilePage from '../components/Pages/Status/mobile';
-import {
-  SharedDocument,
-  Dashboard,
-  HomePage,
-  RegistrationPage,
-  LoginPage,
-  LandingPage,
-  Downloads,
-} from '../components/Pages';
+// import NotFound from '../components/Pages/Status/404';
+// import MobilePage from '../components/Pages/Status/mobile';
+// import {
+//   SharedDocument,
+//   Dashboard,
+//   HomePage,
+//   RegistrationPage,
+//   LoginPage,
+//   LandingPage,
+//   Downloads,
+// } from '../components/Pages';
+// $FlowFixMe
 import '../style/global_styles.scss';
+
+const LoginPage = loadable(() => import('../components/Pages/LoginPage.jsx'));
+const RegistrationPage = loadable(() => import('../components/Pages/RegistrationPage.jsx'));
+const HomePage = loadable(() => import('../components/Pages/HomePage.jsx'));
+const LandingPage = loadable(() => import('../components/Pages/Landing.jsx'));
+const NotFound = loadable(() => import('../components/Pages/Status/404.jsx'));
+const Downloads = loadable(() => import('../components/Pages/Downloads.jsx'));
+const Dashboard = loadable(() => import('../components/Pages/Dashboard.jsx'));
+const SharedDocument = loadable(() => import('../components/Pages/SharedDocument.jsx'));
+const MobilePage = loadable(() => import('../components/Pages/Status/mobile.jsx'));
 
 const Routes = () => (
   <BrowserRouter>
