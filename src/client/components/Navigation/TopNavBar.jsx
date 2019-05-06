@@ -484,6 +484,22 @@ We suggest you download a proof archive for each of your files before
               </a>
             )}
             {currentPage !== PAGES.HOME && currentPage !== PAGES.LANDING && <div className="vr" />}
+            {currentPage === PAGES.DOWNLOADS && (
+              <a
+                href="#home"
+                className="link aboutLink"
+                style={{ textDecoration: 'none' }}
+                onClick={() => {
+                  ReactGA.event({
+                    category: GA_CATEGORIES.TOPBAR,
+                    action: 'Click: #home',
+                    label: 'Button',
+                  });
+                }}
+              >
+                <span className="aboutLabel">Home</span>
+              </a>
+            )}
             <a
               href="https://provendocs.readme.io/discuss"
               className="link supportLink"
