@@ -414,12 +414,8 @@ class NewFileUpload extends React.Component<Props, State> {
     } = this.props;
     const { fileList, matchingFiles } = this.state;
     const dupeUploads = [];
-    console.log('File list: ', fileList);
-    console.log('matchingFiles: ', matchingFiles);
     const match = _.intersectionBy(fileList, matchingFiles, 'name');
     const nonDupeUploads = _.xorBy(fileList, matchingFiles, 'name');
-    console.log('Init Non Dupes: ', nonDupeUploads);
-    console.log('Init Dupes: ', match);
 
     match.forEach((val) => {
       if (!matchingFiles[_.findIndex(matchingFiles, { name: val.name })].isDupe) {
@@ -446,8 +442,13 @@ class NewFileUpload extends React.Component<Props, State> {
               api
                 .getFileSizeForUser()
                 .then((res) => {
-                  Log.info('File Size Result: ');
-                  Log.info(res);
+                  openNotificationWithIcon(
+                    'success',
+                    'Upload Complete',
+                    'Your files have been uploaded!',
+                  );
+                  // Twitter conversion event.
+                  window.twq('track', 'Upload');
                   if (res && res.data.filesSize && res.data.filesSize[0]) {
                     updateSpaceUsedCallback(res.data.filesSize[0].storageUsed, res.data.filesSize[0].documentsUsed);
                   } else if (res && res.data) {
@@ -486,6 +487,8 @@ class NewFileUpload extends React.Component<Props, State> {
                 'Upload Complete',
                 'Your files have been uploaded!',
               );
+              // Twitter conversion event.
+              window.twq('track', 'Upload');
               this.onClickCancel();
               swapTabCallback(true);
               api
