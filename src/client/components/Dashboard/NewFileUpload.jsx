@@ -493,6 +493,12 @@ class NewFileUpload extends React.Component<Props, State> {
               );
               // Twitter conversion event.
               window.twq('track', 'Upload');
+              // Adwords conversion.
+              window.gtag_report_conversion('http://provendocs.com/Upload');
+              // Facebook conversion.
+              window.fbq('track', 'StartTrial', {
+                value: '0.00', currency: 'USD', predicted_ltv: '0.00', service: 'provendocs_early_access',
+              });
               this.onClickCancel();
               swapTabCallback(true);
               api
