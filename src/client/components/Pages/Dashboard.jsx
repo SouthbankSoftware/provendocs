@@ -814,6 +814,7 @@ class Dashboard extends React.Component<Props, State> {
               onDropCallback={this._onDropFile}
               selectFileCallback={this._fileSelected}
               refreshFileSizeCallback={this._refreshFileSize}
+              onClickUploadCallback={this._swapLHSTab}
             />
           </div>
         ),

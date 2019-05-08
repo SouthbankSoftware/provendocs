@@ -88,6 +88,13 @@
           width: 125px;
           margin-right: 35px;
           border: none;
+
+          span {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
         }
       }
     }

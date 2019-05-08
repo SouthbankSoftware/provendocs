@@ -90,6 +90,7 @@ const openNotificationWithIcon = (type: string, title: string, message: string) 
 type Props = {
   selectFileCallback: any;
   onDropCallback: any;
+  onClickUploadCallback: any;
   refreshFileSizeCallback: Function;
 };
 type State = {
@@ -761,6 +762,9 @@ export default class ViewFiles extends React.Component<Props, State> {
       currentSort,
       currentFilter,
     } = this.state;
+    const {
+      onClickUploadCallback,
+    } = this.props;
     const tagElements = [];
     if (commentSelected && commentSelected.tags) {
       commentSelected.tags.forEach((tag, index) => tagElements.push(<Tag intent={INTENTS[index % INTENTS.length]}>{tag}</Tag>));
@@ -929,6 +933,12 @@ export default class ViewFiles extends React.Component<Props, State> {
                     <a href="mailto:uploads@upload.provendocs.com">Uploads@Upload.ProvenDocs.com</a>
                     {' '}
                   </span>
+                  <Button onClick={() => {
+                    onClickUploadCallback(false);
+                  }}
+                  >
+                    Upload
+                  </Button>
                 </div>
               </div>
             </Dropzone>

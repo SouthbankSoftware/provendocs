@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-12T14:44:22+10:00
+ * @Last modified time: 2019-05-06T16:19:19+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -678,6 +678,14 @@
     .panel {
       background-color: $dashboard_panel_background;
       border-radius: 0.5em;
+    }
+  }
+
+  #document-new-icon_svg__document-icon {
+    fill: white;
+
+    .document-new-icon_svg__cls-1 {
+      fill: white !important;
     }
   }
 }
