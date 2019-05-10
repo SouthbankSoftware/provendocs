@@ -189,12 +189,17 @@ class Dashboard extends React.Component<Props, State> {
               okText: 'Ok',
               okType: 'success',
               onOk() {
+                let count = 0;
+                if (count > 20) {
+                  clearInterval(newInterval);
+                }
                 const newInterval = setInterval(() => {
                   const elem = document.querySelector('body > div.grsf-global');
                   if (elem) {
                     elem.setAttribute('style', 'display: none');
                     clearInterval(newInterval);
                   }
+                  count++;
                 }, 3000);
 
                 ReactGA.event({
