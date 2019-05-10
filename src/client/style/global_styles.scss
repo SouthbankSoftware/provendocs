@@ -2280,7 +2280,7 @@ h3 {
           }
 
           svg {
-            fill: $tealish;
+            fill: $tealish !important;
             width: 61px;
             height: 61px;
           }
@@ -2357,6 +2357,10 @@ h3 {
             padding-right: 39px;
             padding-top: 37px;
 
+            .anticon-info-circle {
+              display: none;
+            }
+
             a {
               color: $dusk-blue;
               margin-left: 5px;
@@ -2384,11 +2388,17 @@ h3 {
                 align-items: center;
               }
 
+
+
               svg {
                 fill: $tealish;
                 width: 61px;
                 height: 61px;
                 margin-bottom: 24px;
+              }
+
+              svg.large {
+                width: 100%;
               }
 
               span {
@@ -2576,6 +2586,23 @@ h3 {
       order: 1;
       margin-left: 0px;
       margin-bottom: 13px;
+    }
+  }
+}
+
+.ant-modal-confirm-title,
+.ant-modal-title {
+  .downloadIcon {
+    g {
+      path {
+        fill: $tealish;
+      }
+    }
+  }
+
+  .emailIcon {
+    path {
+      fill: $tealish;
     }
   }
 }

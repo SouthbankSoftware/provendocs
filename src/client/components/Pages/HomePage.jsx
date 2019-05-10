@@ -51,20 +51,20 @@ import './HomePage.scss';
 const { Step } = Steps;
 
 type Props = {
-  privacyOpen: boolean;
-  location: any;
-  match: any;
-  history: any;
-  form: any;
-  subscribe: boolean;
+  privacyOpen: boolean,
+  location: any,
+  match: any,
+  history: any,
+  form: any,
+  subscribe: boolean,
 };
 type State = {
-  privacyOpen: boolean;
-  howDoesItWorkCurrentStep: number;
-  sectionHeight: number;
-  isAuthenticated: boolean;
-  dlgVisible: boolean;
-  dlgSuccess: boolean;
+  privacyOpen: boolean,
+  howDoesItWorkCurrentStep: number,
+  sectionHeight: number,
+  isAuthenticated: boolean,
+  dlgVisible: boolean,
+  dlgSuccess: boolean,
 };
 class HomePage extends React.Component<Props, State> {
   constructor() {
@@ -211,16 +211,6 @@ class HomePage extends React.Component<Props, State> {
                   on the Blockchain. The content of the documents can be private or shared.
                 </span>
                 <div className="heroButtons">
-                  <a
-                    className="watchVideoButton button"
-                    href="https://rebrand.ly/vw2nck"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <div className="button-text">
-                      <span>Watch Video</span>
-                    </div>
-                  </a>
                   <a className="findOutMoreButton button" href="/signup">
                     <div className="button-text">
                       <span>Get Proving!</span>
