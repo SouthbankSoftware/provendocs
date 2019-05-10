@@ -190,16 +190,16 @@ class Dashboard extends React.Component<Props, State> {
               okType: 'success',
               onOk() {
                 let count = 0;
-                if (count > 20) {
-                  clearInterval(newInterval);
-                }
                 const newInterval = setInterval(() => {
+                  if (count > 20) {
+                    clearInterval(newInterval);
+                  }
                   const elem = document.querySelector('body > div.grsf-global');
                   if (elem) {
                     elem.setAttribute('style', 'display: none');
                     clearInterval(newInterval);
                   }
-                  count++;
+                  count += 1;
                 }, 3000);
 
                 ReactGA.event({
@@ -776,6 +776,7 @@ class Dashboard extends React.Component<Props, State> {
     if (isMobile) {
       const elem = document.querySelector('#lowerGroup > div > div');
       if (elem) {
+        // $FlowFixMe
         document.querySelector('#lowerGroup > div > div').scrollLeft = Number.MAX_SAFE_INTEGER;
       }
     }
