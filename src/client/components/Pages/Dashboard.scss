@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-05-10T11:35:11+10:00
+ * @Last modified time: 2019-05-10T13:57:44+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -211,6 +211,10 @@
             opacity: 0.5;
           }
 
+          .emailProofButtonWrapper {
+            opacity: 1;
+          }
+
           .fileSizeInfo:hover {
             opacity: 1;
           }
@@ -326,12 +330,6 @@
           .rhsExtras {
             flex-grow: 1;
             justify-content: space-between;
-
-            .emailIcon {
-              path {
-                opacity: 0.5;
-              }
-            }
           }
 
           .vr {
@@ -459,6 +457,7 @@
         width: 100%;
 
         .extraTabContent {
+
           svg {
             opacity: 0.5;
             height: 15px;
