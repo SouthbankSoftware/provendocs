@@ -31,7 +31,7 @@ import { checkAuthentication } from '../../common/authentication';
 import { api } from '../../common';
 import Log from '../../common/log';
 import { GA_CATEGORIES } from '../../common/constants';
-import EmailIcon from '../../style/icons/pages/dashboard/share-icon.svg';
+import EmailProofIcon from '../../style/icons/pages/dashboard/email-proof-icon.svg';
 
 type Props = {
   fileName: string,
@@ -119,7 +119,7 @@ class EmailProofButton extends React.Component<Props, State> {
 
     return (
       <div className="emailProofButtonWrapper">
-        <EmailIcon
+        <EmailProofIcon
           className=" emailIcon"
           onClick={() => {
             ReactGA.event({
@@ -134,7 +134,7 @@ class EmailProofButton extends React.Component<Props, State> {
           className="emailProofModal confirmModal successModal"
           title={(
             <div className="titleWrapper">
-              <EmailIcon className="emailIcon large blue" />
+              <EmailProofIcon className="emailIcon large blue" />
               <span>Email Proof</span>
             </div>
 )}

@@ -56,7 +56,6 @@ import {
 import { checkAuthentication } from '../../common/authentication';
 import { Loading } from '../Common';
 import ViewDocsIcon from '../../style/icons/pages/dashboard/dashboard-icon.svg';
-import DocumentIcon from '../../style/icons/pages/dashboard/document-new-icon.svg';
 import UploadCompleteIcon from '../../style/icons/pages/dashboard/upload-prompt-icon.svg';
 import PlusIcon from '../../style/icons/pages/dashboard/upload-icon.svg';
 import ArrowIcon from '../../style/icons/pages/upload-file-folder-pages/arrow.svg';
@@ -65,8 +64,9 @@ import EmailIcon from '../../style/icons/pages/dashboard/email-icon.svg';
 import LinkIcon from '../../style/icons/pages/dashboard/link-icon.svg';
 import ViewProofIcon from '../../style/icons/pages/dashboard/proof-progress-icon.svg';
 import PreviewDocumentIcon from '../../style/icons/pages/dashboard/preview-icon.svg';
-import DownloadAltIcon from '../../style/icons/pages/dashboard/download-icon-alt.svg';
 import DownloadIcon from '../../style/icons/pages/dashboard/download-icon.svg';
+import DownloadArchiveIcon from '../../style/icons/pages/dashboard/download-archive-icon.svg';
+import ShareIcon from '../../style/icons/pages/dashboard/share-icon.svg';
 import CertificateIcon from '../../style/icons/pages/dashboard/certificate-icon.svg';
 import UserSadIcon from '../../style/icons/pages/status-pages/user-sad-404-icon.svg';
 import ViewDocument from '../ViewDocument/ViewDocument';
@@ -191,6 +191,9 @@ class Dashboard extends React.Component<Props, State> {
               onOk() {
                 let count = 0;
                 const newInterval = setInterval(() => {
+                  if (count > 20) {
+                    clearInterval(newInterval);
+                  }
                   const elem = document.querySelector('body > div.grsf-global');
                   if (elem) {
                     elem.setAttribute('style', 'display: none');
@@ -198,9 +201,6 @@ class Dashboard extends React.Component<Props, State> {
                   }
                   count += 1;
                 }, 3000);
-                if (count > 20) {
-                  clearInterval(newInterval);
-                }
 
                 ReactGA.event({
                   category: GA_CATEGORIES.DASHBOARD,
@@ -772,7 +772,6 @@ class Dashboard extends React.Component<Props, State> {
 
   updateRHSState = (state: string) => {
     const { isMobile } = this.state;
-    console.log(state);
     if (isMobile) {
       const elem = document.querySelector('#lowerGroup > div > div');
       if (elem) {
@@ -1012,7 +1011,7 @@ class Dashboard extends React.Component<Props, State> {
       <div className="rhsExtras">
         {proofReady && fileSelected && (
           <Tooltip content="Download an archive for this proof." position={Position.TOP}>
-            <DownloadAltIcon
+            <DownloadArchiveIcon
               className="downloadAltIcon"
               onClick={() => {
                 confirm({
@@ -1063,7 +1062,7 @@ class Dashboard extends React.Component<Props, State> {
         {proofReady && fileSelected && <div className="vr" />}
         {fileSelected && (
           <Tooltip content="Download a copy of this file." position={Position.TOP}>
-            <DocumentIcon
+            <DownloadIcon
               className="viewDocsIcon"
               onClick={() => {
                 confirm({
@@ -1099,7 +1098,7 @@ class Dashboard extends React.Component<Props, State> {
         {fileSelected && <div className="vr" />}
         {fileSelected && (
           <Tooltip content="Create a public link to this proof." position={Position.TOP}>
-            <LinkIcon className="linkIcon" onClick={this._createLinkRHS} />
+            <ShareIcon className="linkIcon" onClick={this._createLinkRHS} />
           </Tooltip>
         )}
       </div>
@@ -1196,7 +1195,17 @@ class Dashboard extends React.Component<Props, State> {
                 <div className="mobile lhs">
                   <div className="panels lowergroup">
                     <div className="panelLeft">
-                      <span className="message">{'Scroll right for Proof >'}</span>
+                      <span
+                        className="message"
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => {
+                          // $FlowFixMe
+                          document.querySelector('#lowerGroup > div > div').scrollLeft = Number.MAX_SAFE_INTEGER;
+                        }}
+                      >
+                        {'Scroll right for Proof >'}
+                      </span>
                       <TabbedPanel
                         className="lhsTabbedPanel"
                         tabs={lhsTabs}
@@ -1206,7 +1215,17 @@ class Dashboard extends React.Component<Props, State> {
                       />
                     </div>
                     <div className="panelRight rhs">
-                      <span className="message">{'< Scroll left for Docs'}</span>
+                      <span
+                        className="message"
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => {
+                          // $FlowFixMe
+                          document.querySelector('#lowerGroup > div > div').scrollLeft = 0;
+                        }}
+                      >
+                        {'< Scroll left for Docs'}
+                      </span>
                       {lhsTabSelected === LHS_TABS.VIEW_DOCUMENTS && (
                         <TabbedPanel
                           className="lhsTabbedPanel"
