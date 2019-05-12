@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /* @flow
  * provendocs
  * Copyright (C) 2019  Southbank Software Ltd.
@@ -22,10 +23,12 @@
  * @Last modified time: 2019-04-10T15:12:01+10:00
  */
 import React from 'react';
+import { Button } from 'antd';
 import { Loading } from '../Common';
 // $FlowFixMe
 import './ViewProofCertificate.scss';
-import { Button } from 'antd';
+
+import CertificateImage from '../../style/icons/pages/dashboard/certificate.png';
 
 type Props = {
   file: Object,
@@ -35,6 +38,7 @@ type State = {
   file: Object,
   fileVersion: number,
   loading: boolean,
+  isMobile: boolean,
 };
 
 class proofCertificate extends React.Component<Props, State> {
@@ -126,6 +130,7 @@ class proofCertificate extends React.Component<Props, State> {
                 style={{ display: 'flex', 'flex-direction': 'column' }}
                 className="finishedProofWrapper mobile"
               >
+                <img src={CertificateImage} alt="Certificate Placeholder." />
                 <span className="message">
                   Proof Certificate Preview is not currently supported on mobile browsers. Please
                   return on a desktop browser or download your Certificate below.
