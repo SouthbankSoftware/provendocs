@@ -175,12 +175,6 @@ class TopNavBar extends React.Component<Props, State> {
 
     const userMenu = (
       <Menu>
-        <Menu.Item key="logout">
-          <a href="/api/logout" style={{ textDecoration: 'none' }}>
-            <Icon type="logout" style={{ marginRight: '8px' }} />
-            Log Out
-          </a>
-        </Menu.Item>
         <Menu.Item key="gettingStarted">
           <a
             className="leftButton"
@@ -295,6 +289,12 @@ We suggest you download a proof archive for each of your files before
             <Icon type="delete" twoToneColor="#cc4f46" style={{ marginRight: '8px' }} />
             Delete Account
           </span>
+        </Menu.Item>
+        <Menu.Item key="logout">
+          <a href="/api/logout" style={{ textDecoration: 'none' }}>
+            <Icon type="logout" style={{ marginRight: '8px' }} />
+            Log Out
+          </a>
         </Menu.Item>
       </Menu>
     );
