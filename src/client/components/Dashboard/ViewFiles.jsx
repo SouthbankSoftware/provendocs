@@ -610,7 +610,7 @@ export default class ViewFiles extends React.Component<Props, State> {
   @autobind
   _selectFileWithName(fileName: string) {
     const { selectFileCallback } = this.props;
-    const { fileList, fileSelected } = this.state;
+    const { fileList, fileSelected, isMobile } = this.state;
     let newFileSelected;
     fileList.forEach((file) => {
       if (fileName === file.name) {
@@ -622,6 +622,10 @@ export default class ViewFiles extends React.Component<Props, State> {
         selectFileCallback(newFileSelected);
         // this.setState({ fileSelected: index });
         this.state.fileSelected = newFileSelected;
+        if (isMobile) {
+          // $FlowFixMe
+          document.querySelector('#lowerGroup > div > div').scrollLeft = Number.MAX_SAFE_INTEGER;
+        }
       }
     }
   }
