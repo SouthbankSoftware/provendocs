@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-05-10T13:57:44+10:00
+ * @Last modified time: 2019-05-12T20:35:09+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -311,7 +311,11 @@
           color: white;
           margin-bottom: 5px;
           float: right;
-          opacity: 0.6;
+          opacity: 0.4;
+        }
+
+        .message:hover {
+          opacity: 0.7;
         }
       }
 

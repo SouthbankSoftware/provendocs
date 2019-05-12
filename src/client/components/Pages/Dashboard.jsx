@@ -772,7 +772,6 @@ class Dashboard extends React.Component<Props, State> {
 
   updateRHSState = (state: string) => {
     const { isMobile } = this.state;
-    console.log(state);
     if (isMobile) {
       const elem = document.querySelector('#lowerGroup > div > div');
       if (elem) {
@@ -1196,7 +1195,16 @@ class Dashboard extends React.Component<Props, State> {
                 <div className="mobile lhs">
                   <div className="panels lowergroup">
                     <div className="panelLeft">
-                      <span className="message">{'Scroll right for Proof >'}</span>
+                      <span
+                        className="message"
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => {
+                          document.querySelector('#lowerGroup > div > div').scrollLeft = Number.MAX_SAFE_INTEGER;
+                        }}
+                      >
+                        {'Scroll right for Proof >'}
+                      </span>
                       <TabbedPanel
                         className="lhsTabbedPanel"
                         tabs={lhsTabs}
@@ -1206,7 +1214,11 @@ class Dashboard extends React.Component<Props, State> {
                       />
                     </div>
                     <div className="panelRight rhs">
-                      <span className="message">{'< Scroll left for Docs'}</span>
+                      <span className="message"                      role="button"
+                        tabIndex={0}
+                        onClick={() => {
+                          document.querySelector('#lowerGroup > div > div').scrollLeft = 0;
+                        }}>{'< Scroll left for Docs'}</span>
                       {lhsTabSelected === LHS_TABS.VIEW_DOCUMENTS && (
                         <TabbedPanel
                           className="lhsTabbedPanel"
