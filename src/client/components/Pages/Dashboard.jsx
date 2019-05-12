@@ -1200,6 +1200,7 @@ class Dashboard extends React.Component<Props, State> {
                         role="button"
                         tabIndex={0}
                         onClick={() => {
+                          // $FlowFixMe
                           document.querySelector('#lowerGroup > div > div').scrollLeft = Number.MAX_SAFE_INTEGER;
                         }}
                       >
@@ -1214,11 +1215,17 @@ class Dashboard extends React.Component<Props, State> {
                       />
                     </div>
                     <div className="panelRight rhs">
-                      <span className="message"                      role="button"
+                      <span
+                        className="message"
+                        role="button"
                         tabIndex={0}
                         onClick={() => {
+                          // $FlowFixMe
                           document.querySelector('#lowerGroup > div > div').scrollLeft = 0;
-                        }}>{'< Scroll left for Docs'}</span>
+                        }}
+                      >
+                        {'< Scroll left for Docs'}
+                      </span>
                       {lhsTabSelected === LHS_TABS.VIEW_DOCUMENTS && (
                         <TabbedPanel
                           className="lhsTabbedPanel"

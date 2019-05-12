@@ -73,9 +73,7 @@ class ViewDocument extends React.Component<Props, State> {
 
   componentDidMount() {
     const { file, fileVersion, history } = this.props;
-    let isMobile;
     if (this.detectMobile()) {
-      isMobile = true;
       this.setState({ isMobile: true });
     }
 
