@@ -131,12 +131,8 @@ class proofCertificate extends React.Component<Props, State> {
                 className="finishedProofWrapper mobile"
               >
                 <img src={CertificateImage} alt="Certificate Placeholder." />
-                <span className="message">
-                  Proof Certificate Preview is not currently supported on mobile browsers. Please
-                  return on a desktop browser or download your Certificate below.
-                </span>
                 <Button
-                  style={{ border: 'none', color: 'white', 'margin-top': '20px' }}
+                  style={{ border: 'none', color: 'white', 'margin-bottom': '10px' }}
                   onClick={() => {
                     if (file && file._id && !fileVersion) {
                       window.location.assign(
@@ -157,6 +153,10 @@ class proofCertificate extends React.Component<Props, State> {
                 >
                   Download
                 </Button>
+                <span className="message">
+                  Proof Certificate Preview is not currently supported on mobile browsers. Please
+                  return on a desktop browser or download your Certificate.
+                </span>
               </div>
             </div>
           </div>

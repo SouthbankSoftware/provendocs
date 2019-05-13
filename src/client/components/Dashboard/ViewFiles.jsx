@@ -570,7 +570,7 @@ export default class ViewFiles extends React.Component<Props, State> {
         <AutoSizer>
           {({ height, width }) => {
             if (isMobile) {
-              tileWidth = 112;
+              tileWidth = 128;
               newRowHeight = 220;
             }
             const itemsPerRow = Math.floor(width / tileWidth) || 1;

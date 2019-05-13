@@ -104,9 +104,6 @@ class ViewDocument extends React.Component<Props, State> {
               } else {
                 this.setState({ emailExtras: {} });
               }
-            } else if (file.mimetype === MIMETYPES.PDF && data) {
-              console.log(data);
-              file.content = data;
             }
             this.setState({ filePreviewHTML: data.data.content });
             this.setState({ currentState: STATES.FILE_PREVIEW });
@@ -201,14 +198,10 @@ class ViewDocument extends React.Component<Props, State> {
   _fetchFile() {
     return new Promise((resolve, reject) => {
       const { file, fileVersion, isMobile } = this.state;
-      console.log(isMobile);
-      console.log(file);
       if (isMobile && file.mimetype === MIMETYPES.PDF) {
         api
           .getFilePreviewForUser(file._id)
           .then((result) => {
-            console.log('PDF + mobile');
-            console.log(file.name, ' = ', result);
             resolve(result);
           })
           .catch((error) => {
@@ -293,11 +286,10 @@ class ViewDocument extends React.Component<Props, State> {
     switch (mimetype) {
       case MIMETYPES.PDF:
         if (isMobile) {
-          console.log('!!!: ', file.name);
           return (
             <div className="viewDocumentWrapper iframeHolder">
               <div className="htmlParsed">
-                <img src={file.content} alt={file.fileName} />
+                <img src={filePreviewHTML} alt={file.fileName} />
               </div>
             </div>
           );
