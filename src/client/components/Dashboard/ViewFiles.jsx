@@ -570,9 +570,11 @@ export default class ViewFiles extends React.Component<Props, State> {
         <AutoSizer>
           {({ height, width }) => {
             if (isMobile) {
-              tileWidth = 112;
+              tileWidth = 128;
               newRowHeight = 220;
             }
+            console.log('Width: ', width);
+            console.log('TileWidth: ', tileWidth);
             const itemsPerRow = Math.floor(width / tileWidth) || 1;
             const rowCount = Math.ceil(previewsList.length / itemsPerRow);
             return (

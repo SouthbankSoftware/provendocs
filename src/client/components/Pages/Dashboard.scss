@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-05-12T20:35:09+10:00
+ * @Last modified time: 2019-05-13T13:30:50+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -221,7 +221,7 @@
         }
 
         .bp3-tab-panel {
-          height: calc(100% - 38px);
+          height: calc(100% - 36px)
         }
 
         #bp3-tab-panel_undefined_uploadDoc {
@@ -264,6 +264,10 @@
       padding-right: 0px;
       display: flex;
       flex-direction: column;
+
+      .bp3-tab-panel {
+        height: calc(100% - 52px) !important;
+      }
 
       .panels {
         display: flex;
@@ -322,10 +326,17 @@
       .panelRight {
         padding-left: 5px;
         min-width: 100%;
+        overflow-y: auto;
 
         .message {
           color: white;
-          opacity: 0.6;
+          margin-bottom: 5px;
+          float: right;
+          opacity: 0.4;
+        }
+
+        .message:hover {
+          opacity: 0.7;
         }
 
         .extraTabContent {
@@ -358,15 +369,15 @@
         }
 
         #bp3-tab-panel_undefined_viewDoc {
-          height: calc(100% - 46px);
+          height: calc(100% - 42px) !important;
         }
 
         #bp3-tab-panel_undefined_viewProof {
-          height: calc(100% - 46px);
+          height: calc(100% - 42px) !important;
         }
 
         #bp3-tab-panel_undefined_viewCertificate {
-          height: calc(100% - 46px);
+          height: calc(100% - 42px) !important;
         }
       }
 
@@ -485,7 +496,7 @@
         }
 
         .bp3-tab-panel {
-          height: calc(100% - 38px);
+          height: calc(100% - 36px);
         }
 
         #bp3-tab-panel_undefined_viewDoc {
