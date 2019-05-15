@@ -137,3 +137,45 @@ jobs:
       put: slack
       params:
         alert_type: success
+
+  - name: test-on-stg
+    plan:
+      - aggregate:
+          - get: provendocs-tests
+          - get: seleniumhub
+            params: { save: true }
+      - aggregate:
+          - get: chromenode
+            params: { save: true }
+          - get: node
+            params: { save: true }
+      - task: update-env
+        file: provendocs-tests/ci/tasks/update-env.yml    
+      - task: runSelenium-tests
+        privileged: true
+        file: provendocs-tests/ci/tasks/runSelenium-tests.yml
+      - put: provendocs-test-reports
+        params:
+          file: output/result.tar.gz
+          content_type: application/octet-stream
+          outputs:
+            - results
+        on_success:
+          put: slack
+          params:
+            alert_type: success
+            text: Download result.tar.gz from here https://console.cloud.google.com/storage/browser/provendocs-tests?project=provendb              
+    on_failure:
+      put: slack
+      params:
+        alert_type: failed
+        text: ((slack.virender))
+    on_abort:
+      put: slack
+      params:
+        alert_type: failed
+        text: Aborted. ((slack.virender))
+    on_success:
+      put: slack
+      params:
+        alert_type: success
