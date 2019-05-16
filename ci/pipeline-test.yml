@@ -107,22 +107,9 @@ jobs:
             alert_type: success
             text: Download result.tar.gz from here https://console.cloud.google.com/storage/browser/provendocs-tests?project=provendb
       - task: update-build-status #Need this step to update build status
-        config:
-          inputs:
-            - name: results
-            - name: provendocs-tests
-          platform: linux
-          image_resource:
-            type: docker-image
-            source: { repository: alpine, tag: 3.9 }
-          run:
-            path: sh
-            args:
-              - -exc
-              - |
-                chmod a+x provendocs-tests/ci/decideBuildStatus.sh 
-                chmod a+r results/junit.xml
-                sh provendocs-tests/ci/decideBuildStatus.sh results/junit.xml
+        file: provendocs-tests/ci/tasks/update-build-status.yml
+        params:
+          max_allowed_failures: 3
     on_failure:
       put: slack
       params:
@@ -151,6 +138,8 @@ jobs:
             params: { save: true }
       - task: update-env
         file: provendocs-tests/ci/tasks/update-env.yml    
+        params:
+          env: stg
       - task: runSelenium-tests
         privileged: true
         file: provendocs-tests/ci/tasks/runSelenium-tests.yml
@@ -165,6 +154,10 @@ jobs:
           params:
             alert_type: success
             text: Download result.tar.gz from here https://console.cloud.google.com/storage/browser/provendocs-tests?project=provendb              
+      - task: update-build-status #Need this step to update build status
+        file: provendocs-tests/ci/tasks/update-build-status.yml
+        params:
+          max_allowed_failures: 0      
     on_failure:
       put: slack
       params:
