@@ -19,7 +19,7 @@
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
  * @Last modified by:   Michael Harrison
- * @Last modified time: 2019-04-10T15:33:54+10:00
+ * @Last modified time: 2019-05-13T12:43:24+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -119,6 +119,11 @@
         padding-left: 20px;
         padding-right: 20px;
         padding-bottom: 20px;
+
+        img {
+          width: 50%;
+          margin-bottom: 10px;
+        }
 
         .pdf {
           height: 100%;

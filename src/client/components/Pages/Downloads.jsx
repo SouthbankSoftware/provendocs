@@ -69,6 +69,20 @@ class Downloads extends React.Component<Props, State> {
         break;
     }
 
+    let appVersion = window && window.navigator && window.navigator.appVersion;
+    if (!appVersion) {
+      appVersion = window && window.navigator && window.navigator.platform;
+    }
+    if (appVersion) {
+      if (appVersion.toString().match(/mac/gi)) {
+        this.setState({ os: OS.MAC });
+      } else if (appVersion.toString().match(/win/gi)) {
+        this.setState({ os: OS.WINDOWS });
+      } else if (appVersion.toString().match(/linux/gi)) {
+        this.setState({ os: OS.LINUX });
+      }
+    }
+
     checkAuthentication().then((response: any) => {
       if (response.status === 200) {
         this.setState({ isAuthenticated: true });
@@ -87,7 +101,7 @@ class Downloads extends React.Component<Props, State> {
     return (
       <div className="App download">
         <TopNavBar
-          currentPage={PAGES.HOME}
+          currentPage={PAGES.DOWNLOADS}
           isAuthenticated={isAuthenticated}
           onEarlyAccess={null}
         />
@@ -106,7 +120,12 @@ class Downloads extends React.Component<Props, State> {
                 Please make sure to download the tool for your desired operating system.
               </span>
               <div className="downloadOSRadio">
-                <RadioGroup onChange={this._changeOSRadio} defaultValue={OS.WINDOWS} size="medium">
+                <RadioGroup
+                  onChange={this._changeOSRadio}
+                  defaultValue={OS.WINDOWS}
+                  value={os}
+                  size="medium"
+                >
                   <RadioButton value={OS.WINDOWS}>Windows</RadioButton>
                   <RadioButton value={OS.MAC}>Mac OS</RadioButton>
                   <RadioButton value={OS.LINUX}>Linux</RadioButton>

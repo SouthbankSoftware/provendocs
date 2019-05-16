@@ -55,6 +55,7 @@ export const PAGES = {
   LANDING: 'landing',
   SHARED: 'shared',
   IE_REDIRECT: 'ie_redirect',
+  DOWNLOADS: 'downloads',
 };
 
 export const ANTD_BUTTON_TYPES = {

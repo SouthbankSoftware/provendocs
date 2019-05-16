@@ -371,12 +371,32 @@
       .messageHeader {
         margin-bottom: 20px;
       }
+
+      .message {
+        margin-bottom: 40px;
+      }
     }
 
     svg {
       margin-bottom: 40px;
       width: 120px;
       height: 120px;
+    }
+
+    button {
+      outline: none;
+      border: none;
+      color: white;
+
+      span {
+        color: white;
+      }
+    }
+
+    button:hover {
+      span {
+        color: white;
+      }
     }
   }
 
