@@ -740,7 +740,7 @@ export const uploadAttachments = (
           // Insert document.
           collection.insertOne(
             {
-              name: fileName, // @ TODO -> Figure out a better scheme for naming email attachments.
+              name: `email_${now}_${fileName}`, // @ TODO -> Figure out a better scheme for naming email attachments.
               mimetype,
               encoding,
               binaryData: Binary(binaryData),
@@ -923,6 +923,7 @@ export const getOrCreateStorageUsage = (userId: string) => new Promise<Object>((
             documentsUsed: 0,
             storageLimit: STORAGE_LIMITS.DEFAULT_SIZE,
             documentsLimit: STORAGE_LIMITS.DEFAULT_DOCUMENTS,
+            emailsUploaded: 0,
           };
           collection.insertOne(newDocument, (insertError, insertResult) => {
             if (insertError) {
@@ -949,6 +950,67 @@ export const getOrCreateStorageUsage = (userId: string) => new Promise<Object>((
           resolve(result);
         }
       }
+    });
+  } else {
+    logger.log({
+      level: LOG_LEVELS.ERROR,
+      severity: STACKDRIVER_SEVERITY.ERROR,
+      message: 'Error getting collection.',
+    });
+    reject(new Error({ message: 'Error getting collection!' }));
+  }
+});
+
+export const updateEmailCounter = (userId: string) => new Promise<any>((resolve, reject) => {
+  logger.log({
+    level: LOG_LEVELS.DEBUG,
+    severity: STACKDRIVER_SEVERITY.DEBUG,
+    message: 'Driver Client Status:',
+    isConnected: dbObject && dbObject.serverConfig && dbObject.serverConfig.isConnected(),
+  });
+  // If the connection to ProvenDB has failed for some reason, try to reconnect it before failing.
+  if (!(dbObject && dbObject.serverConfig && dbObject.serverConfig.isConnected())) {
+    // Not connected, try reconnect.
+    connectToProvenDB()
+      .then(() => {
+        logger.log({
+          level: LOG_LEVELS.DEBUG,
+          severity: STACKDRIVER_SEVERITY.DEBUG,
+          message: 'Reconnected to ProvenDB:',
+          isConnected: dbObject.serverConfig.isConnected(),
+        });
+      })
+      .catch((err) => {
+        logger.log({
+          level: LOG_LEVELS.ERROR,
+          severity: STACKDRIVER_SEVERITY.ERROR,
+          message: 'Failed to reconnect to ProvenDB on second try.',
+          err,
+        });
+        reject(err);
+          return; //eslint-disable-line
+      });
+  }
+  const collection = dbObject.collection(COLLECTION_NAMES.USER_INFO);
+  const queryDoc = { _id: userId };
+  const updateDoc = { $inc: { emailsUploaded: 1 } };
+  if (collection) {
+    collection.findOneAndUpdate(queryDoc, updateDoc, { upsert: true }).then((result) => {
+      logger.log({
+        level: LOG_LEVELS.INFO,
+        seveiry: STACKDRIVER_SEVERITY.INFO,
+        message: 'FindOneAndUpdate result',
+        result,
+      });
+    }).catch((err) => {
+      logger.log({
+        level: LOG_LEVELS.ERROR,
+        severity: STACKDRIVER_SEVERITY.ERROR,
+        message: 'Error running findOneAndUpdate',
+        err,
+        errMsg: err.message,
+      });
+      reject(new Error({ message: 'Error running findOneAndUpdate!' }));
     });
   } else {
     logger.log({

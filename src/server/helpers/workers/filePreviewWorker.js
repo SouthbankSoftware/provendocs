@@ -29,6 +29,7 @@ const MIMETYPES = {
   HTML: 'text/html',
   JS: 'text/javascript',
   SHELL: 'text/x-sh',
+  PGP_SIGNATURE: 'application/pgp-signature',
 };
 
 const { path, fileInfo } = workerData;
@@ -85,9 +86,10 @@ try {
     || mimetype === MIMETYPES.JSON
     || mimetype === MIMETYPES.OCTET_STREAM
     || mimetype === MIMETYPES.SHELL
+    || mimetype === MIMETYPES.PGP_SIGNATURE
   ) {
     //
-    // ─── JS TEXT JSON OCTET-STREAM AND SHELL HANDLING ────────────────
+    // ─── JS TEXT JSON OCTET-STREAM PGP AND SHELL HANDLING ────────────────
     //
     fs.readFile(path, (err, buffer) => {
       if (err) {

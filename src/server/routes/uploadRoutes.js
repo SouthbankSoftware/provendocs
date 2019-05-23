@@ -41,6 +41,7 @@ import {
   createNewProofImmediately,
   getOrCreateStorageUsage,
   updateStorage,
+  updateEmailCounter,
 } from '../helpers/mongoAPI';
 import {
   sendEmailUploadFailedEmail,
@@ -712,121 +713,136 @@ module.exports = (app: any) => {
               logger.log(returnObj);
               res.status(403).send(returnObj);
             } else {
-              convertEmailToBinary({
-                subject,
-                to,
-                from,
-                cc,
-                html,
-                attachments,
-                headers,
-              })
-                .then(createEmailDocument)
-                .then((createEmailDocResult: Object) => {
-                  createEmailDocResult.userId = getUserResult.user_id;
-                  logger.log({
-                    level: LOG_LEVELS.INFO,
-                    severity: STACKDRIVER_SEVERITY.INFO,
-                    message: 'Result of creating email document',
-                    result: createEmailDocResult,
-                    reqId,
-                  });
-                  uploadAttachments(subject, attachments, getUserResult.user_id)
-                    .then((uploadAttachmentsResult) => {
-                      logger.log({
-                        level: LOG_LEVELS.DEBUG,
-                        message: 'Finished Uploading Attachments...',
-                        uploadAttachmentsResult,
-                        reqId,
-                      });
-                      uploadEmail(createEmailDocResult, getUserResult.user_id)
-                        .then(createNewProof)
-                        .then((createNewProofResult) => {
-                          sendEmailUploadPassedEmail(
-                            getUserResult.email,
-                            subject,
-                            attachments.length,
-                          )
-                            .then(() => {
-                              updateStorage(
-                                doesExceed.newStorageUsed,
-                                doesExceed.newDocumentsUsed,
-                                getUserResult.user_id,
-                              )
-                                .then(() => {
-                                  res.status(200).send(createNewProofResult);
-                                })
-                                .catch((updateStorageErr) => {
-                                  const returnObj = {
-                                    level: LOG_LEVELS.ERROR,
-                                    severity: STACKDRIVER_SEVERITY.ERROR,
-                                    message: 'Error updating storage usage:',
-                                    updateStorageErr,
-                                    errMsg: updateStorageErr.message,
-                                    reqId,
-                                  };
-                                  logger.log(returnObj);
-                                  res.status(400).send(returnObj);
-                                });
-                            })
-                            .catch((err) => {
-                              const returnObj = {
-                                level: LOG_LEVELS.ERROR,
-                                severity: STACKDRIVER_SEVERITY.ERROR,
-                                message: 'Failed to send outbound email.',
-                                err,
-                                errMsg: err.message,
-                                reqId,
-                              };
-                              logger.log(returnObj);
-                              res.status(200).send(createNewProofResult);
-                            });
-                        })
-                        .catch((uploadErr) => {
-                          const returnObj = {
-                            level: LOG_LEVELS.ERROR,
-                            severity: STACKDRIVER_SEVERITY.ERROR,
-                            message: 'Failed to upload email.',
-                            uploadErr,
-                            errMSg: uploadErr.message,
-                            reqId,
-                          };
-                          logger.log(returnObj);
-                          sendEmailUploadFailedEmail(
-                            getUserResult.email,
-                            subject,
-                            attachments.length,
-                          )
-                            .then(() => {
-                              res.status(404).send(returnObj);
-                            })
-                            .catch((sendErr) => {
-                              const returnObjEmail = {
-                                level: LOG_LEVELS.WARN,
-                                severity: STACKDRIVER_SEVERITY.WARNING,
-                                message: 'Failed to send email.',
-                                sendErr,
-                                errMsg: sendErr.message,
-                                reqId,
-                              };
-                              logger.log(returnObjEmail);
-                              res.status(404).send(returnObj);
-                            });
-                        });
-                    })
-                    .catch((uploadAttachmentsError) => {
-                      const returnObj = {
-                        level: LOG_LEVELS.ERROR,
-                        severity: STACKDRIVER_SEVERITY.ERROR,
-                        message: 'Failed to upload attachments.',
-                        uploadAttachmentsError,
-
-                        reqId,
-                      };
-                      sendEmailUploadFailedEmail(getUserResult.email, subject, attachments.length);
-                      res.status(404).send(returnObj);
+              updateEmailCounter(getUserResult.user_id).then((emailsUsed) => {
+                console.log('!!! EMAILS USED !!!:');
+                console.log(emailsUsed);
+                convertEmailToBinary({
+                  subject,
+                  to,
+                  from,
+                  cc,
+                  html,
+                  attachments,
+                  headers,
+                })
+                  .then(createEmailDocument)
+                  .then((createEmailDocResult: Object) => {
+                    createEmailDocResult.userId = getUserResult.user_id;
+                    logger.log({
+                      level: LOG_LEVELS.INFO,
+                      severity: STACKDRIVER_SEVERITY.INFO,
+                      message: 'Result of creating email document',
+                      result: createEmailDocResult,
+                      reqId,
                     });
-                });
+                    uploadAttachments(subject, attachments, getUserResult.user_id)
+                      .then((uploadAttachmentsResult) => {
+                        logger.log({
+                          level: LOG_LEVELS.DEBUG,
+                          message: 'Finished Uploading Attachments...',
+                          uploadAttachmentsResult,
+                          reqId,
+                        });
+                        uploadEmail(createEmailDocResult, getUserResult.user_id)
+                          .then(createNewProof)
+                          .then((createNewProofResult) => {
+                            sendEmailUploadPassedEmail(
+                              getUserResult.email,
+                              subject,
+                              attachments.length,
+                            )
+                              .then(() => {
+                                updateStorage(
+                                  doesExceed.newStorageUsed,
+                                  doesExceed.newDocumentsUsed,
+                                  getUserResult.user_id,
+                                )
+                                  .then(() => {
+                                    res.status(200).send(createNewProofResult);
+                                  })
+                                  .catch((updateStorageErr) => {
+                                    const returnObj = {
+                                      level: LOG_LEVELS.ERROR,
+                                      severity: STACKDRIVER_SEVERITY.ERROR,
+                                      message: 'Error updating storage usage:',
+                                      updateStorageErr,
+                                      errMsg: updateStorageErr.message,
+                                      reqId,
+                                    };
+                                    logger.log(returnObj);
+                                    res.status(400).send(returnObj);
+                                  });
+                              })
+                              .catch((err) => {
+                                const returnObj = {
+                                  level: LOG_LEVELS.ERROR,
+                                  severity: STACKDRIVER_SEVERITY.ERROR,
+                                  message: 'Failed to send outbound email.',
+                                  err,
+                                  errMsg: err.message,
+                                  reqId,
+                                };
+                                logger.log(returnObj);
+                                res.status(200).send(createNewProofResult);
+                              });
+                          })
+                          .catch((uploadErr) => {
+                            const returnObj = {
+                              level: LOG_LEVELS.ERROR,
+                              severity: STACKDRIVER_SEVERITY.ERROR,
+                              message: 'Failed to upload email.',
+                              uploadErr,
+                              errMSg: uploadErr.message,
+                              reqId,
+                            };
+                            logger.log(returnObj);
+                            sendEmailUploadFailedEmail(
+                              getUserResult.email,
+                              subject,
+                              attachments.length,
+                            )
+                              .then(() => {
+                                res.status(404).send(returnObj);
+                              })
+                              .catch((sendErr) => {
+                                const returnObjEmail = {
+                                  level: LOG_LEVELS.WARN,
+                                  severity: STACKDRIVER_SEVERITY.WARNING,
+                                  message: 'Failed to send email.',
+                                  sendErr,
+                                  errMsg: sendErr.message,
+                                  reqId,
+                                };
+                                logger.log(returnObjEmail);
+                                res.status(404).send(returnObj);
+                              });
+                          });
+                      })
+                      .catch((uploadAttachmentsError) => {
+                        const returnObj = {
+                          level: LOG_LEVELS.ERROR,
+                          severity: STACKDRIVER_SEVERITY.ERROR,
+                          message: 'Failed to upload attachments.',
+                          uploadAttachmentsError,
+
+                          reqId,
+                        };
+                        sendEmailUploadFailedEmail(getUserResult.email, subject, attachments.length);
+                        res.status(404).send(returnObj);
+                      });
+                  });
+              }).catch((getOrCreateEmailCounterErr) => {
+                const returnObj = {
+                  level: LOG_LEVELS.WARN,
+                  severity: STACKDRIVER_SEVERITY.WARNING,
+                  message: 'Failed to update email count for user.',
+                  err: getOrCreateEmailCounterErr,
+                  errMsg: getOrCreateEmailCounterErr.message,
+                };
+                logger.log(returnObj);
+                sendEmailUploadNoAccountEmail(from.split('<')[1].slice(0, -1), subject);
+                res.status(404).send(returnObj);
+              });
             }
           });
         });

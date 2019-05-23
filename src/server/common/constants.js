@@ -35,6 +35,7 @@ export const SUPPORTED_FILE_TYPES = [
   'application/msword',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'application/pgp-signature',
   'text/x-sh',
 ];
 
@@ -80,6 +81,7 @@ export const MIMETYPES = {
   HTML: 'text/html',
   JS: 'text/javascript',
   SHELL: 'text/x-sh',
+  PGP_SIGNATURE: 'application/pgp-signature',
 };
 
 export const LOG_LEVELS = {

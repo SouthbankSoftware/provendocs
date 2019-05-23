@@ -300,7 +300,7 @@ export const createEmailDocument = (document: Object) => new Promise<any>((resol
     const now = new Date(Date.now()).toISOString();
     const size = sizeOf(binaryData);
     resolve({
-      name: `${subject}_${now}`,
+      name: `email_${now}_${subject}`,
       mimetype: 'email',
       encoding: '7bit',
       binaryData,

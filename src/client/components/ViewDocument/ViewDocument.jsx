@@ -202,6 +202,7 @@ class ViewDocument extends React.Component<Props, State> {
         api
           .getFilePreviewForUser(file._id)
           .then((result) => {
+            console.log(result);
             resolve(result);
           })
           .catch((error) => {
