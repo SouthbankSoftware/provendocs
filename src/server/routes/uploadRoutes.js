@@ -667,7 +667,7 @@ module.exports = (app: any) => {
    */
   app.post('/api/uploadEmail', upload.any(), (req, res) => {
     const {
-      from, to, cc, subject, headers, html,
+      from, to, cc, subject, headers, html, text,
     } = req.body;
     const attachments = req.files;
     const reqId = uuidv4();
@@ -681,7 +681,8 @@ module.exports = (app: any) => {
       level: LOG_LEVELS.INFO,
       severity: STACKDRIVER_SEVERITY.INFO,
       message: 'Email Attributes',
-      html: '[REDACTED]',
+      html: html ? '[REDACTED]' : '[NULL]',
+      text: text ? '[REDACTED]' : '[NULL]',
       subject,
       to,
       cc,
@@ -700,7 +701,7 @@ module.exports = (app: any) => {
           reqId,
         });
         getOrCreateStorageUsage(getUserResult.user_id).then((storageResult) => {
-          doesUploadExceedRemainingStorage(storageResult, attachments, html).then((doesExceed) => {
+          doesUploadExceedRemainingStorage(storageResult, attachments, html || text).then((doesExceed) => {
             if (doesExceed.exceed) {
               const returnObj = {
                 level: LOG_LEVELS.INFO,
@@ -714,17 +715,15 @@ module.exports = (app: any) => {
               res.status(403).send(returnObj);
             } else {
               updateEmailCounter(getUserResult.user_id).then((emailsUsed) => {
-                console.log('!!! EMAILS USED !!!:');
-                console.log(emailsUsed);
                 convertEmailToBinary({
                   subject,
                   to,
                   from,
                   cc,
-                  html,
+                  html: html || text,
                   attachments,
                   headers,
-                })
+                }, emailsUsed)
                   .then(createEmailDocument)
                   .then((createEmailDocResult: Object) => {
                     createEmailDocResult.userId = getUserResult.user_id;
@@ -735,7 +734,7 @@ module.exports = (app: any) => {
                       result: createEmailDocResult,
                       reqId,
                     });
-                    uploadAttachments(subject, attachments, getUserResult.user_id)
+                    uploadAttachments(subject, attachments, getUserResult.user_id, emailsUsed)
                       .then((uploadAttachmentsResult) => {
                         logger.log({
                           level: LOG_LEVELS.DEBUG,

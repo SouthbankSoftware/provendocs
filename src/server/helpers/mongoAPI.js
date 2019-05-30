@@ -712,6 +712,7 @@ export const uploadAttachments = (
   emailSubject: string,
   attachmentArray: Array<Object>,
   userId: string,
+  emailsUsed: Number,
 ) => new Promise<any>((resolve, reject) => {
   const collection = dbObject.collection(`files_${userId}`);
   if (collection) {
@@ -740,7 +741,7 @@ export const uploadAttachments = (
           // Insert document.
           collection.insertOne(
             {
-              name: `email_${now}_${fileName}`, // @ TODO -> Figure out a better scheme for naming email attachments.
+              name: `E${emailsUsed.toString()}_${fileName}`, // @ TODO -> Figure out a better scheme for naming email attachments.
               mimetype,
               encoding,
               binaryData: Binary(binaryData),
@@ -998,10 +999,16 @@ export const updateEmailCounter = (userId: string) => new Promise<any>((resolve,
     collection.findOneAndUpdate(queryDoc, updateDoc, { upsert: true }).then((result) => {
       logger.log({
         level: LOG_LEVELS.INFO,
-        seveiry: STACKDRIVER_SEVERITY.INFO,
+        severity: STACKDRIVER_SEVERITY.INFO,
         message: 'FindOneAndUpdate result',
         result,
       });
+
+      if (result && result.value && result.value.emailsUploaded) {
+        resolve(result.value.emailsUploaded);
+      } else {
+       resolve(0);
+      }
     }).catch((err) => {
       logger.log({
         level: LOG_LEVELS.ERROR,
