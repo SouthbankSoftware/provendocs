@@ -628,6 +628,15 @@
         padding-top: 0px;
       }
 
+      .docPreview.signature {
+        svg {
+          g {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+
       .selected {
         opacity: 0.8;
       }
@@ -671,6 +680,11 @@
         opacity: 0.95;
       }
 
+
+      .fileTypeFooter.txt {
+        background-color: $preview_txt;
+      }
+
       .fileTypeFooter.pdf {
         background-color: $preview_pdf;
       }
@@ -699,6 +713,11 @@
       .fileTypeFooter.ppt {
         padding: 2px;
         background-color: $preview_ppt;
+      }
+
+      .fileTypeFooter.signature {
+        padding: 2px;
+        background-color: $preview_signature;
       }
 
       .loading_undefined {

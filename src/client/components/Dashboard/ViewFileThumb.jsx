@@ -40,6 +40,7 @@ import WordDocumentIcon from '../../style/icons/pages/dashboard/word-thumbnail-i
 import ExcelDocumentIcon from '../../style/icons/pages/dashboard/excel-thumbnail-icon.svg';
 import QuestionMarkIcon from '../../style/icons/pages/dashboard/question-mark-icon.svg';
 import PowerPointIcon from '../../style/icons/pages/dashboard/powerpoint-thumbnail-icon.svg';
+import KeyIcon from '../../style/icons/pages/dashboard/key-icon.svg';
 import { Loading } from '../Common';
 
 const openNotificationWithIcon = (type: string, title: string, message: string) => {
@@ -190,6 +191,9 @@ export default class ViewFileThumb extends React.Component<Props, State> {
       case MIMETYPES.SVG:
         className = 'svg';
         break;
+      case MIMETYPES.PGP_SIGNATURE:
+        className = 'signature';
+        break;
       case MIMETYPES.TEXT:
         className = 'txt';
         break;
@@ -234,19 +238,19 @@ export default class ViewFileThumb extends React.Component<Props, State> {
 
     return (
       <div readOnly disabled className={`docPreview ${className} loading_${loadingClass}`}>
-        {file.content !== '' && className !== 'email' && (
+        {file.content !== '' && className !== 'email' && className !== 'signature' && (
           <img src={file.content} alt={file.fileName} />
         )}
-        {file.content !== '' && className === 'email' && <EmailIcon className="docIcon" />}
+        { className === 'email' && <EmailIcon className="docIcon" />}
         {file.content === '' && className === 'pdf' && <PDFIcon className="pdfIcon" />}
         {file.content === ''
           && (className === 'jpeg' || className === 'png' || className === 'svg') && (
             <ImageIcon className="imgIcon" />
         )}
         {file.content === '' && className === 'doc' && <WordDocumentIcon className="wordIcon" />}
+        {className === 'signature' && <KeyIcon width="60px" height="40px" className="keyIcon" />}
         {file.content === ''
-          && (className === 'email'
-            || className === 'js txt'
+          && (className === 'js txt'
             || className === 'shell txt'
             || className === 'txt') && <DocumentIcon className="docIcon" />}
       </div>
@@ -305,7 +309,7 @@ export default class ViewFileThumb extends React.Component<Props, State> {
       || file.mimetype === MIMETYPES.OCTET_STREAM
       || file.mimetype === MIMETYPES.LOG
     ) {
-      return <div className="fileTypeFooter doc">TEXT</div>;
+      return <div className="fileTypeFooter txt">TEXT</div>;
     }
     if (file.mimetype === MIMETYPES.SHELL || file.mimetype === MIMETYPES.JS) {
       return <div className="fileTypeFooter code">CODE</div>;
@@ -334,6 +338,9 @@ export default class ViewFileThumb extends React.Component<Props, State> {
     }
     if (file.mimetype === MIMETYPES.PPTX) {
       return <div className="fileTypeFooter ppt">PPTX</div>;
+    }
+    if (file.mimetype === MIMETYPES.PGP_SIGNATURE) {
+      return <div className="fileTypeFooter signature">SIGNATURE</div>;
     }
 
     Log.warn('Unknown file type: ');

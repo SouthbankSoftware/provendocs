@@ -18,8 +18,8 @@
  *
  * @Author: Michael Harrison
  * @Date:   2019-03-29T10:46:51+11:00
- * @Last modified by:   wahaj
- * @Last modified time: 2019-05-01T16:49:59+10:00
+ * @Last modified by:   Michael Harrison
+ * @Last modified time: 2019-05-31T07:42:03+10:00
  */
 
 @import "../../style/global_colors.scss";
@@ -29,6 +29,12 @@
   // scroll-snap-points-y: repeat(3rem);
   // scroll-snap-type: y mandatory;
   background-color: $dusk-blue;
+  overflow-y: auto;
+
+  @media screen and (max-width: 560px) {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
 
   /* .snap {
     scroll-snap-align: start;

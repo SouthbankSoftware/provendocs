@@ -83,6 +83,7 @@ export const SUPPORTED_FILE_TYPES = [
   'image/svg+xml',
   'text/plain',
   'text/html',
+  'application/pgp-signature',
   'application/msword',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -106,6 +107,7 @@ export const MIMETYPES = {
   SHELL: 'text/x-sh',
   PPT: 'application/vnd.ms-powerpoint',
   PPTX: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  PGP_SIGNATURE: 'application/pgp-signature',
 };
 
 export const DOMAINS = {

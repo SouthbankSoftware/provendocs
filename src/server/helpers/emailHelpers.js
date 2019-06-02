@@ -248,7 +248,7 @@ export const convertEmailToHTML = (emailDoc: Object) => new Promise<string>((res
  * @param {*} document - An object with the email and it's metadata.
  * @returns {Object} Object with binaryData field added.
  */
-export const convertEmailToBinary = (document: Object) => new Promise<any>((resolve, reject) => {
+export const convertEmailToBinary = (document: Object, emailsUsed: Number) => new Promise<any>((resolve, reject) => {
   try {
     const {
       subject, to, from, headers, attachments,
@@ -272,7 +272,8 @@ export const convertEmailToBinary = (document: Object) => new Promise<any>((reso
         reject(zlibErr);
       } else {
         document.binaryData = Binary(compressedBuffer);
-        document.name = `email_${subject}.html`;
+        document.name = `E${emailsUsed.toString()}_${subject}.html`;
+        document.emailsUsed = emailsUsed;
         resolve(document);
       }
     });
@@ -288,7 +289,9 @@ export const convertEmailToBinary = (document: Object) => new Promise<any>((reso
  */
 export const createEmailDocument = (document: Object) => new Promise<any>((resolve, reject) => {
   try {
-    const { binaryData, subject, name } = document;
+    const {
+      binaryData, subject, name, emailsUsed,
+    } = document;
     logger.log({
       level: LOG_LEVELS.DEBUG,
       severity: STACKDRIVER_SEVERITY.DEBUG,
@@ -300,7 +303,7 @@ export const createEmailDocument = (document: Object) => new Promise<any>((resol
     const now = new Date(Date.now()).toISOString();
     const size = sizeOf(binaryData);
     resolve({
-      name: `${subject}_${now}`,
+      name: `E${emailsUsed.toString()}_${subject}`,
       mimetype: 'email',
       encoding: '7bit',
       binaryData,
