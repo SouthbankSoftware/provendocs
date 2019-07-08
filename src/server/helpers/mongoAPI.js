@@ -34,6 +34,7 @@ import {
 import { mongoAPIFormat } from '../modules/winston.config';
 import { generateNewFileName, convertSingleToBinary } from './fileHelpers';
 
+const ProvenDB = require('@southbanksoftware/provendb-node-driver').Database;
 const { MongoClient } = require('mongodb');
 const mongo = require('mongodb');
 
@@ -81,7 +82,8 @@ const connectToProvenDB = () => new Promise((resolve, reject) => {
     },
   })
     .then((client) => {
-      dbObject = client.db(provendocsDB);
+      dbObject = new ProvenDB(client.db(provendocsDB));
+
       resolve();
     })
     .catch((error) => {
@@ -124,36 +126,37 @@ const debouncedSubmitProof = _.debounce(
         message: 'No Database Object -> Connection to ProvenDB failed!',
       });
     }
-    dbObject.command({ getVersion: 1 }, (error, res) => {
-      if (error || !res || res.ok !== 1) {
-        logger.log({
-          level: LOG_LEVELS.ERROR,
-          severity: STACKDRIVER_SEVERITY.ERROR,
-          message: 'Failed to submitProof with error:',
-          error,
-        });
-      } else {
+    dbObject
+      .getVersion()
+      .then((res) => {
         const { version } = res;
-        const command = { submitProof: version, proofType: 'full' };
-        dbObject.command(command, {}, (commandError, commandRes) => {
-          if (commandError) {
-            logger.log({
-              level: LOG_LEVELS.ERROR,
-              severity: STACKDRIVER_SEVERITY.ERROR,
-              message: 'Failed to submitProof with error:',
-              commandError,
-            });
-          } else {
+        dbObject
+          .submitProof(version)
+          .then((commandRes) => {
             logger.log({
               level: LOG_LEVELS.INFO,
               severity: STACKDRIVER_SEVERITY.INFO,
               message: 'Submitted Proof!',
               commandRes,
             });
-          }
+          })
+          .catch((commandError) => {
+            logger.log({
+              level: LOG_LEVELS.ERROR,
+              severity: STACKDRIVER_SEVERITY.ERROR,
+              message: 'Failed to submitProof with error:',
+              commandError,
+            });
+          });
+      })
+      .catch((error) => {
+        logger.log({
+          level: LOG_LEVELS.ERROR,
+          severity: STACKDRIVER_SEVERITY.ERROR,
+          message: 'Failed to submitProof with error:',
+          error,
         });
-      }
-    });
+      });
   },
   process.env.PROVENDOCS_PROOF_DEBOUNCE || 300000,
   {
@@ -175,38 +178,27 @@ const submitProof = () => new Promise<boolean>((resolve, reject) => {
       message: 'No Database Object -> Connection to ProvenDB failed!',
     });
   }
-  dbObject.command({ getVersion: 1 }, (error, res) => {
-    if (error || !res || res.ok !== 1) {
+
+  dbObject
+    .submitProof()
+    .then((commandRes) => {
+      logger.log({
+        level: LOG_LEVELS.INFO,
+        severity: STACKDRIVER_SEVERITY.INFO,
+        message: 'Submitted Proof!',
+        commandRes,
+      });
+      resolve(commandRes);
+    })
+    .catch((commandErr) => {
       logger.log({
         level: LOG_LEVELS.ERROR,
         severity: STACKDRIVER_SEVERITY.ERROR,
         message: 'Failed to submitProof with error:',
-        error,
+        commandErr,
       });
-    } else {
-      const { version } = res;
-      const command = { submitProof: version, proofType: 'full' };
-      dbObject.command(command, {}, (commandError, commandRes) => {
-        if (commandError) {
-          logger.log({
-            level: LOG_LEVELS.ERROR,
-            severity: STACKDRIVER_SEVERITY.ERROR,
-            message: 'Failed to submitProof with error:',
-            commandError,
-          });
-          reject(commandError);
-        } else {
-          logger.log({
-            level: LOG_LEVELS.INFO,
-            severity: STACKDRIVER_SEVERITY.INFO,
-            message: 'Submitted Proof!',
-            commandRes,
-          });
-          resolve(commandRes);
-        }
-      });
-    }
-  });
+      reject(commandErr);
+    });
 });
 
 export const createNewProofIfDoesntExist = () => new Promise<boolean>((resolve, reject) => {
@@ -223,33 +215,14 @@ export const createNewProofIfDoesntExist = () => new Promise<boolean>((resolve, 
     });
     reject(new Error('No database object.'));
   } else {
-    // First get the current version.
-    dbObject.command({ getVersion: 1 }, (error, res) => {
-      if (error || !res || res.ok !== 1) {
-        logger.log({
-          level: LOG_LEVELS.ERROR,
-          severity: STACKDRIVER_SEVERITY.ERROR,
-          message: 'Failed to submitProof with error:',
-          error,
-          errMsg: error.message,
-        });
-        reject(new Error(error.message));
-      } else {
-        const { version } = res;
-        // Now see if a proof exists for that version (and hasn't failed)
-        const command = { getProof: version };
-        dbObject.command(command, {}, (commandError, commandRes) => {
-          if (commandError) {
-            logger.log({
-              level: LOG_LEVELS.ERROR,
-              severity: STACKDRIVER_SEVERITY.ERROR,
-              message: 'Failed to getProof with error:',
-              version,
-              commandError,
-              errMsg: commandError.message,
-            });
-            reject(new Error(commandError.message));
-          } else {
+    dbObject
+      .getVersion()
+      .then((versionRes) => {
+        const { version } = versionRes;
+        // Now see if a proof exists for that version (and hasn't failed).
+        dbObject
+          .getProof(version)
+          .then((commandRes) => {
             logger.log({
               level: LOG_LEVELS.DEBUG,
               severity: STACKDRIVER_SEVERITY.DEBUG,
@@ -278,16 +251,36 @@ export const createNewProofIfDoesntExist = () => new Promise<boolean>((resolve, 
               logger.log({
                 level: LOG_LEVELS.DEBUG,
                 severity: STACKDRIVER_SEVERITY.DEBUG,
-                message: 'No valid, pending or submitted proof exists for version, debouncing a new one.',
+                message:
+                    'No valid, pending or submitted proof exists for version, debouncing a new one.',
                 version,
               });
               debouncedSubmitProof();
               resolve(true);
             }
-          }
+          })
+          .catch((commandError) => {
+            logger.log({
+              level: LOG_LEVELS.ERROR,
+              severity: STACKDRIVER_SEVERITY.ERROR,
+              message: 'Failed to getProof with error:',
+              version,
+              commandError,
+              errMsg: commandError.message,
+            });
+            reject(new Error(commandError.message));
+          });
+      })
+      .catch((versionErr) => {
+        logger.log({
+          level: LOG_LEVELS.ERROR,
+          severity: STACKDRIVER_SEVERITY.ERROR,
+          message: 'Failed to submitProof with error (Couldnt get version):',
+          versionErr,
+          errMsg: versionErr,
         });
-      }
-    });
+        reject(new Error(versionErr.message));
+      });
   }
 });
 
@@ -368,16 +361,9 @@ export const showMetadata = () => new Promise<void>((resolve, reject) => {
     isConnected: dbObject.serverConfig.isConnected(),
   });
 
-  dbObject.command({ showMetadata: true }, (showMDErr, res) => {
-    if (showMDErr || !res || res.ok !== 1) {
-      logger.log({
-        level: LOG_LEVELS.ERROR,
-        severity: STACKDRIVER_SEVERITY.ERROR,
-        message: 'Error showing metadata',
-        showMDErr,
-      });
-      reject(showMDErr);
-    } else {
+  dbObject
+    .showMetadata()
+    .then((res) => {
       logger.log({
         level: LOG_LEVELS.DEBUG,
         severity: STACKDRIVER_SEVERITY.DEBUG,
@@ -385,8 +371,16 @@ export const showMetadata = () => new Promise<void>((resolve, reject) => {
         res,
       });
       resolve(res);
-    }
-  });
+    })
+    .catch((showMDErr) => {
+      logger.log({
+        level: LOG_LEVELS.ERROR,
+        severity: STACKDRIVER_SEVERITY.ERROR,
+        message: 'Error showing metadata',
+        showMDErr,
+      });
+      reject(showMDErr);
+    });
 });
 
 /**
@@ -942,7 +936,7 @@ export const getOrCreateStorageUsage = (userId: string) => new Promise<Object>((
                 message: 'Storage Documents Inserted',
                 insertResult,
               });
-              newDocument.new = true;
+              newDocument.new = true; // $FlowFixMe
               resolve(newDocument);
             }
           });
@@ -996,29 +990,32 @@ export const updateEmailCounter = (userId: string) => new Promise<any>((resolve,
   const queryDoc = { _id: userId };
   const updateDoc = { $inc: { emailsUploaded: 1 } };
   if (collection) {
-    collection.findOneAndUpdate(queryDoc, updateDoc, { upsert: true }).then((result) => {
-      logger.log({
-        level: LOG_LEVELS.INFO,
-        severity: STACKDRIVER_SEVERITY.INFO,
-        message: 'FindOneAndUpdate result',
-        result,
-      });
+    collection
+      .findOneAndUpdate(queryDoc, updateDoc, { upsert: true })
+      .then((result) => {
+        logger.log({
+          level: LOG_LEVELS.INFO,
+          severity: STACKDRIVER_SEVERITY.INFO,
+          message: 'FindOneAndUpdate result',
+          result,
+        });
 
-      if (result && result.value && result.value.emailsUploaded) {
-        resolve(result.value.emailsUploaded);
-      } else {
-       resolve(0);
-      }
-    }).catch((err) => {
-      logger.log({
-        level: LOG_LEVELS.ERROR,
-        severity: STACKDRIVER_SEVERITY.ERROR,
-        message: 'Error running findOneAndUpdate',
-        err,
-        errMsg: err.message,
+        if (result && result.value && result.value.emailsUploaded) {
+          resolve(result.value.emailsUploaded);
+        } else {
+          resolve(0);
+        }
+      })
+      .catch((err) => {
+        logger.log({
+          level: LOG_LEVELS.ERROR,
+          severity: STACKDRIVER_SEVERITY.ERROR,
+          message: 'Error running findOneAndUpdate',
+          err,
+          errMsg: err.message,
+        });
+        reject(new Error({ message: 'Error running findOneAndUpdate!' }));
       });
-      reject(new Error({ message: 'Error running findOneAndUpdate!' }));
-    });
   } else {
     logger.log({
       level: LOG_LEVELS.ERROR,
@@ -1637,18 +1634,9 @@ export const getFileHistory = (fileName: string, userId: string) => new Promise<
     message: 'Query for finding history is',
     command,
   });
-  dbObject.command(command, (error, result) => {
-    if (error) {
-      logger.log({
-        level: LOG_LEVELS.ERROR,
-        severity: STACKDRIVER_SEVERITY.ERROR,
-        message: 'Failed to run command!',
-        collection,
-        filter,
-        error,
-      });
-      reject(error);
-    } else {
+  dbObject
+    .docHistory(collection, filter, projection)
+    .then((result) => {
       // Got file history, now for each file get proofStatus.
       const returnObject = result.docHistory[0];
       logger.log({
@@ -1658,8 +1646,18 @@ export const getFileHistory = (fileName: string, userId: string) => new Promise<
         returnObject,
       });
       resolve({ docHistory: returnObject });
-    }
-  });
+    })
+    .catch((error) => {
+      logger.log({
+        level: LOG_LEVELS.ERROR,
+        severity: STACKDRIVER_SEVERITY.ERROR,
+        message: 'Failed to run command!',
+        collection,
+        filter,
+        error,
+      });
+      reject(error);
+    });
 });
 
 /**
@@ -1729,46 +1727,18 @@ export const getHistoricalFile = (
     collectionName,
     filter,
   });
-  dbObject.command({ showMetadata: true }, (error) => {
-    logger.log({
-      level: LOG_LEVELS.DEBUG,
-      severity: STACKDRIVER_SEVERITY.DEBUG,
-      message: 'Driver Client Status:',
-      isConnected: dbObject.serverConfig.isConnected(),
-    });
-    if (error) {
-      reject(error);
-    } else {
-      const collection = dbObject.collection(collectionName);
-      if (collection) {
-        collection
-          .find(filter, { promoteLongs: false }, projection)
-          .toArray((queryError, result) => {
-            if (queryError) {
-              logger.log({
-                level: LOG_LEVELS.ERROR,
-                severity: STACKDRIVER_SEVERITY.ERROR,
-                message: 'Failed to query files for historical file',
-                queryError,
-              });
-              reject(queryError);
-            } else if (result[0]) {
-              resolve(result);
-            } else {
-              logger.log({
-                level: LOG_LEVELS.ERROR,
-                severity: STACKDRIVER_SEVERITY.ERROR,
-                message: 'Found no matching files.',
-                queryError,
-              });
-              reject(new Error("Didn't find any file."));
-            }
-          });
-      } else {
-        reject(new Error('Couldnt get collection'));
-      }
-    }
+  logger.log({
+    level: LOG_LEVELS.DEBUG,
+    severity: STACKDRIVER_SEVERITY.DEBUG,
+    message: 'Driver Client Status:',
+    isConnected: dbObject.serverConfig.isConnected(),
   });
+  dbObject
+    .showMetadata()
+    .then(() => {})
+    .catch((err) => {
+      reject(err);
+    });
 });
 
 /**
@@ -1798,10 +1768,9 @@ export const getFileInformation = (
     projectionFilter = { binaryData: 0 };
   }
   if (collection) {
-    dbObject.command({ showMetadata: true }, (error, metaDataResult) => {
-      if (error) {
-        reject(error);
-      } else {
+    dbObject
+      .showMetadata()
+      .then((metaDataResult) => {
         logger.log({
           level: LOG_LEVELS.DEBUG,
           severity: STACKDRIVER_SEVERITY.DEBUG,
@@ -1873,8 +1842,10 @@ export const getFileInformation = (
               reject(result);
             }
           });
-      }
-    });
+      })
+      .catch((error) => {
+        reject(error);
+      });
   } else {
     logger.log({
       level: LOG_LEVELS.ERROR,
@@ -2003,16 +1974,9 @@ export const checkProofStatus = (version: number) => new Promise<void>((resolve,
     version,
   });
   // Get proof for a version.
-  dbObject.command({ getProof: version }, (getProofError, getProofResult) => {
-    if (getProofError) {
-      logger.log({
-        level: LOG_LEVELS.ERROR,
-        severity: STACKDRIVER_SEVERITY.ERROR,
-        message: 'Error getting proof',
-        getProofError,
-      });
-      reject(new Error({ message: 'Error getting proof: ', getProofError }));
-    } else {
+  dbObject
+    .getProof(version)
+    .then((getProofResult) => {
       logger.log({
         level: LOG_LEVELS.INFO,
         severity: STACKDRIVER_SEVERITY.INFO,
@@ -2027,8 +1991,16 @@ export const checkProofStatus = (version: number) => new Promise<void>((resolve,
         getProofResult,
       });
       resolve(getProofResult);
-    }
-  });
+    })
+    .catch((getProofError) => {
+      logger.log({
+        level: LOG_LEVELS.ERROR,
+        severity: STACKDRIVER_SEVERITY.ERROR,
+        message: 'Error getting proof',
+        getProofError,
+      });
+      reject(new Error({ message: 'Error getting proof: ', getProofError }));
+    });
 });
 
 export const getFileVersionCount = (fileId: string, userId: string) => new Promise<Object>((resolve, reject) => {
@@ -2084,16 +2056,9 @@ export const getVersionProofForFile = (fileInfo: Object, getJSON: boolean, proof
     format = 'json';
   }
 
-  dbObject.command({ getProof: proofID, format }, (getProofError, getProofResult) => {
-    if (getProofError) {
-      logger.log({
-        level: LOG_LEVELS.ERROR,
-        severity: STACKDRIVER_SEVERITY.ERROR,
-        message: 'Error getting proof',
-        getProofError,
-      });
-      reject(new Error({ message: 'Error getting proof: ', getProofError }));
-    } else {
+  dbObject
+    .getProof(proofID, format)
+    .then((getProofResult) => {
       logger.log({
         level: LOG_LEVELS.DEBUG,
         severity: STACKDRIVER_SEVERITY.DEBUG,
@@ -2103,8 +2068,16 @@ export const getVersionProofForFile = (fileInfo: Object, getJSON: boolean, proof
         status: getProofResult,
       });
       resolve(getProofResult);
-    }
-  });
+    })
+    .catch((getProofError) => {
+      logger.log({
+        level: LOG_LEVELS.ERROR,
+        severity: STACKDRIVER_SEVERITY.ERROR,
+        message: 'Error getting proof',
+        getProofError,
+      });
+      reject(new Error({ message: 'Error getting proof: ', getProofError }));
+    });
 });
 
 export const getDocumentProofForFile = (
@@ -2137,36 +2110,27 @@ export const getDocumentProofForFile = (
       },
     },
   });
-  dbObject.command(
-    {
-      getDocumentProof: {
-        collection: `files_${userId}`,
-        filter: { name },
-        version: minVersion,
-        format,
-      },
-    },
-    (getProofError, getProofResult) => {
-      if (getProofError) {
-        logger.log({
-          level: LOG_LEVELS.ERROR,
-          severity: STACKDRIVER_SEVERITY.ERROR,
-          message: 'Error getting proof',
-          getProofError,
-        });
-        reject(new Error({ message: 'Error getting proof: ', getProofError }));
-      } else {
-        logger.log({
-          level: LOG_LEVELS.DEBUG,
-          severity: STACKDRIVER_SEVERITY.DEBUG,
-          message: 'Proof Status for document',
-          minVersion,
-          status: getProofResult,
-        });
-        resolve(getProofResult);
-      }
-    },
-  );
+  dbObject
+    .getDocumentProof(`files_${userId}`, { name }, minVersion, format)
+    .then((getProofResult) => {
+      logger.log({
+        level: LOG_LEVELS.DEBUG,
+        severity: STACKDRIVER_SEVERITY.DEBUG,
+        message: 'Proof Status for document',
+        minVersion,
+        status: getProofResult,
+      });
+      resolve(getProofResult);
+    })
+    .catch((getProofError) => {
+      logger.log({
+        level: LOG_LEVELS.ERROR,
+        severity: STACKDRIVER_SEVERITY.ERROR,
+        message: 'Error getting proof',
+        getProofError,
+      });
+      reject(new Error({ message: 'Error getting proof: ', getProofError }));
+    });
 });
 
 /**
@@ -2266,6 +2230,7 @@ export const forgetFile = (fileId: string, userId: string) => new Promise<void>(
                 severity: STACKDRIVER_SEVERITY.ERROR,
                 message: 'Error Preparing Forget',
                 prepareError,
+                errMsg: prepareError.message,
               });
               reject(prepareError);
             } else {
@@ -2276,35 +2241,27 @@ export const forgetFile = (fileId: string, userId: string) => new Promise<void>(
                 prepareResult,
               });
               const { password, forgetId } = prepareResult;
-              dbObject.command(
-                {
-                  forget: {
-                    execute: {
-                      forgetId,
-                      password,
-                    },
-                  },
-                },
-                (executeError, executeResult) => {
-                  if (executeError) {
-                    logger.log({
-                      level: LOG_LEVELS.ERROR,
-                      severity: STACKDRIVER_SEVERITY.ERROR,
-                      message: 'Error executing Forget',
-                      executeError,
-                    });
-                    reject(executeError);
-                  } else {
-                    logger.log({
-                      level: LOG_LEVELS.DEBUG,
-                      severity: STACKDRIVER_SEVERITY.DEBUG,
-                      message: 'Result of executing forget',
-                      executeResult,
-                    });
-                    resolve(executeResult);
-                  }
-                },
-              );
+              dbObject
+                .executeForget(forgetId, password)
+                .then((executeResult) => {
+                  logger.log({
+                    level: LOG_LEVELS.DEBUG,
+                    severity: STACKDRIVER_SEVERITY.DEBUG,
+                    message: 'Result of executing forget',
+                    executeResult,
+                  });
+                  resolve(executeResult);
+                })
+                .catch((executeError) => {
+                  logger.log({
+                    level: LOG_LEVELS.ERROR,
+                    severity: STACKDRIVER_SEVERITY.ERROR,
+                    message: 'Error executing Forget',
+                    executeError,
+                    errMsg: executeError.message,
+                  });
+                  reject(executeError);
+                });
             }
           },
         );
@@ -2393,64 +2350,46 @@ export const forgetAllFilesForUser = (userId: string) => new Promise<void>((reso
         _deleteThumbnails();
 
         // Secondly, prepare a forget for the documents (to get the forget password).
-        dbObject.command(
-          {
-            forget: {
-              prepare: {
-                collection: `files_${userId}`,
-                filter,
-              },
-            },
-          },
-          (prepareError, prepareResult) => {
-            if (prepareError) {
-              logger.log({
-                level: LOG_LEVELS.ERROR,
-                severity: STACKDRIVER_SEVERITY.ERROR,
-                message: 'Error Preparing Forget',
-                prepareError,
+        dbObject
+          .prepareForget(`files_${userId}`, filter)
+          .then((prepareResult) => {
+            logger.log({
+              level: LOG_LEVELS.DEBUG,
+              severity: STACKDRIVER_SEVERITY.DEBUG,
+              message: 'Result of preparing document (for forget)',
+              prepareResult,
+            });
+            const { password, forgetId } = prepareResult;
+            dbObject
+              .executeForget(forgetId, password)
+              .then((executeResult) => {
+                logger.log({
+                  level: LOG_LEVELS.DEBUG,
+                  severity: STACKDRIVER_SEVERITY.DEBUG,
+                  message: 'Result of executing forget',
+                  executeResult,
+                });
+                resolve(executeResult);
+              })
+              .catch((executeError) => {
+                logger.log({
+                  level: LOG_LEVELS.ERROR,
+                  severity: STACKDRIVER_SEVERITY.ERROR,
+                  message: 'Error executing Forget',
+                  executeError,
+                });
+                reject(executeError);
               });
-              reject(prepareError);
-            } else {
-              logger.log({
-                level: LOG_LEVELS.DEBUG,
-                severity: STACKDRIVER_SEVERITY.DEBUG,
-                message: 'Result of preparing document (for forget)',
-                prepareResult,
-              });
-              const { password, forgetId } = prepareResult;
-              dbObject.command(
-                {
-                  forget: {
-                    execute: {
-                      forgetId,
-                      password,
-                    },
-                  },
-                },
-                (executeError, executeResult) => {
-                  if (executeError) {
-                    logger.log({
-                      level: LOG_LEVELS.ERROR,
-                      severity: STACKDRIVER_SEVERITY.ERROR,
-                      message: 'Error executing Forget',
-                      executeError,
-                    });
-                    reject(executeError);
-                  } else {
-                    logger.log({
-                      level: LOG_LEVELS.DEBUG,
-                      severity: STACKDRIVER_SEVERITY.DEBUG,
-                      message: 'Result of executing forget',
-                      executeResult,
-                    });
-                    resolve(executeResult);
-                  }
-                },
-              );
-            }
-          },
-        );
+          })
+          .catch((prepareError) => {
+            logger.log({
+              level: LOG_LEVELS.ERROR,
+              severity: STACKDRIVER_SEVERITY.ERROR,
+              message: 'Error Preparing Forget',
+              prepareError,
+            });
+            reject(prepareError);
+          });
       }
     });
   }
@@ -2503,7 +2442,7 @@ export const clearStorageForUser = (userId: string) => new Promise<Object>((reso
   }
 });
 
-export const setStorageForUser = (userId: string, newStorageLimit: number, newDocsLimit: number) => new Promise<Object>((resolve, reject) => {
+export const setStorageForUser = (userId: string, newStorageLimit: number, newDocsLimit: number) => new Promise<any>((resolve, reject) => {
   logger.log({
     level: LOG_LEVELS.DEBUG,
     severity: STACKDRIVER_SEVERITY.DEBUG,
