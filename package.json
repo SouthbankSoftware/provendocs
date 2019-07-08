@@ -67,6 +67,7 @@
     "@blueprintjs/core": "^3.5.1",
     "@loadable/component": "^5.9.0",
     "@loadable/webpack-plugin": "^5.7.1",
+    "@southbanksoftware/provendb-node-driver": "^0.1.11",
     "@storybook/addon-actions": "^3.4.11",
     "@storybook/addon-links": "^3.4.11",
     "@storybook/addon-notes": "^3.4.11",
