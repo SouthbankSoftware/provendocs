@@ -11,12 +11,6 @@
 [![Language Badge](https://img.shields.io/github/languages/top/SouthbankSoftware/provendocs.svg)](https://img.shields.io/github/languages/top/SouthbankSoftware/provendocs.svg) [![Languages Badge](https://img.shields.io/github/languages/count/SouthbankSoftware/provendocs.svg)](https://img.shields.io/github/languages/top/SouthbankSoftware/provendocs.svg) [![Dependencies](https://img.shields.io/david/SouthbankSoftware/provendocs.svg)](https://img.shields.io/david/SouthbankSoftware/ProvenDocs.svg) [![Open Issues](https://img.shields.io/github/issues-raw/SouthbankSoftware/provendocs.svg)](https://img.shields.io/github/issues-raw/SouthbankSoftware/provendocs.svg) [![Website Status](https://img.shields.io/website/https/provendocs.com.svg?down_color=red&down_message=down&up_color=blue&up_message=up)](https://img.shields.io/website/http/provendocs.com.svg?down_color=red&down_message=Down&up_color=green&up_message=Up) [![Last Commit](https://img.shields.io/github/last-commit/Southbanksoftware/provendocs.svg)](https://img.shields.io/github/last-commit/Southbanksoftware/provendocs.svg)
 </div>
 
-**CI / CD**
-
-_Test Nightly:_ [![provendocs-test-nightly](https://concourse.provendb.com/api/v1/pipelines/provendocs-test/jobs/test-nightly/badge)](https://concourse.provendb.com/teams/main/pipelines/provendocs-test/jobs/test-nightly)
-
-_Build and Deploy:_ [![provendocs-deploy-build](https://concourse.provendb.com/api/v1/pipelines/provendocs-deploy/jobs/build-and-deploy/badge)](https://concourse.provendb.com/teams/main/pipelines/provendocs-deploy/jobs/build-and-deploy)
-
 <div align="center">
 
 **NOTE** - ProvenDocs is still very much a work in progress, please be patient with us!
