@@ -68,6 +68,7 @@ module.exports = (app: any) => {
    * @returns {Resposne} 500 and the error object.
    */
   app.get('/api/checkStatus', (req, res) => {
+    if (process.env.PROVENDB_URL) res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
     const reqId = uuidv4();
     logger.log({
       level: LOG_LEVELS.DEBUG,
