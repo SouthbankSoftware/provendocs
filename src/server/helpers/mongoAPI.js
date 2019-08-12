@@ -1735,7 +1735,36 @@ export const getHistoricalFile = (
   });
   dbObject
     .showMetadata()
-    .then(() => {})
+    .then(() => {
+      const collection = dbObject.collection(collectionName);
+      if (collection) {
+        collection
+          .find(filter, { promoteLongs: false }, projection)
+          .toArray((queryError, result) => {
+            if (queryError) {
+              logger.log({
+                level: LOG_LEVELS.ERROR,
+                severity: STACKDRIVER_SEVERITY.ERROR,
+                message: 'Failed to query files for historical file',
+                queryError,
+              });
+              reject(queryError);
+            } else if (result[0]) {
+              resolve(result);
+            } else {
+              logger.log({
+                level: LOG_LEVELS.ERROR,
+                severity: STACKDRIVER_SEVERITY.ERROR,
+                message: 'Found no matching files.',
+                queryError,
+              });
+              reject(new Error("Didn't find any file."));
+            }
+          });
+      } else {
+        reject(new Error('Couldnt get collection'));
+      }
+    })
     .catch((err) => {
       reject(err);
     });
