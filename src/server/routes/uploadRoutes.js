@@ -72,6 +72,11 @@ module.exports = (app: any) => {
    * @returns {Resposne} 400 and an error if any error occurs during the process.
    */
   app.post('/api/upload/', upload.any(), (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token');
+
     const { files } = req;
     const { force, comment } = req.body;
     const reqId = uuidv4();
@@ -357,6 +362,10 @@ module.exports = (app: any) => {
    * @returns {Resposne} 400 and an error if any error occurs during the process.
    */
   app.post('/api/uploadNewVersion/', upload.any(), (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token');
     const { files } = req;
     const { comment } = req.body;
     const reqId = uuidv4();
@@ -603,7 +612,6 @@ module.exports = (app: any) => {
    * @returns {Resposne} 400 and an error if any error occurs during the process.
    */
   app.all('/api/getListOfDuplicates/', upload.any(), (req, res) => {
-    console.log('!!! ', process.env.PROVENDB_URL);
     res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
