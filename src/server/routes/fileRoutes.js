@@ -879,6 +879,8 @@ module.exports = (app: any) => {
    * @returns {Resposne} 400 and an error if any error occurs during the process.
    */
   app.get('/api/fileHistory/:fileName', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
     const { AuthToken } = req.cookies;
     const { fileName, type } = req.params;
     const reqId = uuidv4();
