@@ -213,6 +213,8 @@ module.exports = (app: any) => {
    * @returns {Response} 400 and an erorr if any errors occcured during the process.
    */
   app.get('/api/createShareLink/:fileId/:version', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
     const { fileId, version } = req.params;
     const reqId = uuidv4();
     logger.log({
@@ -412,6 +414,8 @@ module.exports = (app: any) => {
    * @returns {Response} 400 if unsuccessful in checking status or user does not have access.
    */
   app.get('/api/checkSharedAccess/:link', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
     let { link } = req.params;
     const reqId = uuidv4();
     const decryptedString = cryptr.decrypt(link).split('-');
@@ -450,18 +454,36 @@ module.exports = (app: any) => {
             decryptedUserId,
             reqId,
           });
-
-          if (false) {
-            // eslint-disable-line
-            // decryptedUserId === user._id @TODO -> Reenable condition to activate private proofs.
-            getHistoricalFile(null, decryptedUserId, decryptedVersion, decryptedFileId)
-              .then((fileInfo) => {
+          // Not the file owner, check share status.
+          // getSharedFile(decryptedFileId, decryptedUserId, decryptedVersion) Old version to get public/private files.
+          getPublicFile(decryptedFileId, decryptedUserId, decryptedVersion)
+            .then((fileInfo) => {
+              // Check if accessing private or public link.
+              logger.log({
+                level: LOG_LEVELS.DEBUG,
+                message: 'Found shared file for link',
+                link,
+                file: fileInfo[0],
+                reqId,
+              });
+              if (
+                // Original conditions for seeing a shared file.
+                // sharedDocument.public
+                // || (sharedDocument.emails && sharedDocument.emails.includes(user.email))
+                // || sharedDocument.author === user.email
+                // @TODO -> For version 0.1 all files are public if a link is valid, remove this line to enable private files.
+                true // eslint-disable-line
+              ) {
                 logger.log({
                   level: LOG_LEVELS.DEBUG,
                   message: 'Got historical file.',
                   name: fileInfo[0].name,
+                  version: fileInfo[0]._provendb_metadata,
                   reqId,
                 });
+                if (!fileInfo[0]._provendb_metadata) {
+                  fileInfo[0]._provendb_metadata = { minVersion: parseInt(decryptedVersion, 10) };
+                }
                 getDocumentProofForFile(fileInfo[0], decryptedUserId)
                   .then((documentProofs) => {
                     logger.log({
@@ -482,39 +504,32 @@ module.exports = (app: any) => {
                             severity: STACKDRIVER_SEVERITY.DEBUG,
                             message: 'Got historical proof.',
                             proof,
-                            documentProofs,
                             reqId,
                           });
                           res.status(200).send({
+                            comment: fileInfo[0].comment,
+                            tags: fileInfo[0].tags,
                             fileName: fileInfo[0].name,
                             fileId: fileInfo[0]._id,
                             metaData: fileInfo[0]._provendb_metadata,
                             mimetype: fileInfo[0].mimetype,
-                            documentProof: documentProofs.proofs[0],
                             proofDate: proof.proofs[0].submitted,
+                            documentProof: documentProofs.proofs[0],
                             size: fileInfo[0].size,
+                            uploadedAt: fileInfo[0].uploadedAt,
                           });
                         })
                         .catch((getProofErr) => {
                           const returnObject = {
                             level: LOG_LEVELS.ERROR,
                             severity: STACKDRIVER_SEVERITY.ERROR,
-                            message: 'Could not get version proof info for file, not yet proven?',
+                            message: 'Could not get version proof info for file.',
                             getProofErr,
-                            errMSg: getProofErr.message,
+                            errMsg: getProofErr.message,
                             reqId,
                           };
                           logger.log(returnObject);
-
-                          // We don't need this except for proofDate, send back without.
-                          res.status(200).send({
-                            fileName: fileInfo[0].name,
-                            fileId: fileInfo[0]._id,
-                            metaData: fileInfo[0]._provendb_metadata,
-                            mimetype: fileInfo[0].mimetype,
-                            documentProof: documentProofs.proofs[0],
-                            size: fileInfo[0].size,
-                          });
+                          res.status(400).send(returnObject);
                         });
                     } else {
                       const returnObject = {
@@ -540,139 +555,30 @@ module.exports = (app: any) => {
                     logger.log(returnObject);
                     res.status(400).send(returnObject);
                   });
-              })
-              .catch((getFileErr) => {
+              } else {
                 // Either file is not publicly shared or not privately shared with this user, reject.
                 const returnObject = {
-                  level: LOG_LEVELS.ERROR,
-                  severity: STACKDRIVER_SEVERITY.ERROR,
-                  message: 'Could not get file info for file.',
-                  getFileErr: getFileErr.message,
-                  reqId,
-                };
-                logger.log(returnObject);
-                res.status(400).send(returnObject);
-              });
-          } else {
-            // Not the file owner, check share status.
-            // getSharedFile(decryptedFileId, decryptedUserId, decryptedVersion) Old version to get public/private files.
-            getPublicFile(decryptedFileId, decryptedUserId, decryptedVersion)
-              .then((fileInfo) => {
-                // Check if accessing private or public link.
-                logger.log({
-                  level: LOG_LEVELS.DEBUG,
-                  message: 'Found shared file for link',
-                  link,
-                  file: fileInfo[0],
-                  reqId,
-                });
-                if (
-                  // Original conditions for seeing a shared file.
-                  // sharedDocument.public
-                  // || (sharedDocument.emails && sharedDocument.emails.includes(user.email))
-                  // || sharedDocument.author === user.email
-                  // @TODO -> For version 0.1 all files are public if a link is valid, remove this line to enable private files.
-                  true // eslint-disable-line
-                ) {
-                  logger.log({
-                    level: LOG_LEVELS.DEBUG,
-                    message: 'Got historical file.',
-                    name: fileInfo[0].name,
-                    reqId,
-                  });
-                  getDocumentProofForFile(fileInfo[0], decryptedUserId)
-                    .then((documentProofs) => {
-                      logger.log({
-                        level: LOG_LEVELS.DEBUG,
-                        message: 'Got document proof.',
-                        name: documentProofs,
-                        reqId,
-                      });
-                      if (documentProofs.proofs[0]) {
-                        getVersionProofForFile(
-                          fileInfo[0],
-                          false,
-                          documentProofs.proofs[0].versionProofId,
-                        )
-                          .then((proof) => {
-                            logger.log({
-                              level: LOG_LEVELS.DEBUG,
-                              severity: STACKDRIVER_SEVERITY.DEBUG,
-                              message: 'Got historical proof.',
-                              proof,
-                              reqId,
-                            });
-                            res.status(200).send({
-                              fileName: fileInfo[0].name,
-                              fileId: fileInfo[0]._id,
-                              metaData: fileInfo[0]._provendb_metadata,
-                              mimetype: fileInfo[0].mimetype,
-                              proofDate: proof.proofs[0].submitted,
-                              documentProof: documentProofs.proofs[0],
-                              size: fileInfo[0].size,
-                            });
-                          })
-                          .catch((getProofErr) => {
-                            const returnObject = {
-                              level: LOG_LEVELS.ERROR,
-                              severity: STACKDRIVER_SEVERITY.ERROR,
-                              message: 'Could not get version proof info for file.',
-                              getProofErr,
-                              errMsg: getProofErr.message,
-                              reqId,
-                            };
-                            logger.log(returnObject);
-                            res.status(400).send(returnObject);
-                          });
-                      } else {
-                        const returnObject = {
-                          level: LOG_LEVELS.ERROR,
-                          severity: STACKDRIVER_SEVERITY.ERROR,
-                          message: 'No proof for file.',
-                          reqId,
-                        };
-                        logger.log(returnObject);
-                        res.status(400).send(returnObject);
-                      }
-                    })
-                    .catch((getDocumentProofErr) => {
-                      // Either file is not publicly shared or not privately shared with this user, reject.
-                      const returnObject = {
-                        level: LOG_LEVELS.ERROR,
-                        severity: STACKDRIVER_SEVERITY.ERROR,
-                        message: 'Could not get document proof for file. ',
-                        getDocumentProofErr,
-                        errMsg: getDocumentProofErr.message,
-                        reqId,
-                      };
-                      logger.log(returnObject);
-                      res.status(400).send(returnObject);
-                    });
-                } else {
-                  // Either file is not publicly shared or not privately shared with this user, reject.
-                  const returnObject = {
-                    level: LOG_LEVELS.WARN,
-                    severity: STACKDRIVER_SEVERITY.WARNING,
-                    message: 'User does not have permission to view this page.',
-                    user,
-                    link,
-                    reqId,
-                  };
-                  res.status(400).send(returnObject);
-                }
-              })
-              .catch((getSharedFileErr) => {
-                const returnObj = {
                   level: LOG_LEVELS.WARN,
                   severity: STACKDRIVER_SEVERITY.WARNING,
-                  message: 'Unable to find matching file for link:',
-                  getSharedFileErr,
+                  message: 'User does not have permission to view this page.',
+                  user,
                   link,
                   reqId,
                 };
-                res.status(400).send(returnObj);
-              });
-          }
+                res.status(400).send(returnObject);
+              }
+            })
+            .catch((getSharedFileErr) => {
+              const returnObj = {
+                level: LOG_LEVELS.WARN,
+                severity: STACKDRIVER_SEVERITY.WARNING,
+                message: 'Unable to find matching file for link:',
+                getSharedFileErr,
+                link,
+                reqId,
+              };
+              res.status(400).send(returnObj);
+            });
         })
         .catch((getUserErr) => {
           const returnObj = {
@@ -691,6 +597,8 @@ module.exports = (app: any) => {
   });
 
   app.get('/api/getSharedFile/:link', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
     let { link } = req.params;
     const reqId = uuidv4();
     // First decode the link into fileId and userId
@@ -924,6 +832,8 @@ module.exports = (app: any) => {
   });
 
   app.get('/api/getSharedPDF/:link', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
     let { link } = req.params;
     const reqId = uuidv4();
     // First decode the link into fileId and userId
@@ -1067,6 +977,8 @@ module.exports = (app: any) => {
   });
 
   app.get('/api/getSharedProof/:link', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
     let { link } = req.params;
     const reqId = uuidv4();
     const decryptedString = cryptr.decrypt(link).split('-');
