@@ -68,6 +68,7 @@ module.exports = (app: any) => {
    * @returns {Resposne} 500 and the error object.
    */
   app.get('/api/checkStatus', (req, res) => {
+    if (process.env.PROVENDB_URL) res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
     const reqId = uuidv4();
     logger.log({
       level: LOG_LEVELS.DEBUG,
@@ -520,6 +521,8 @@ module.exports = (app: any) => {
   });
 
   app.get('/api/util/encryptLink/:fileId/:fileVersion', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
     const { fileId, fileVersion } = req.params;
     const reqId = uuidv4();
     logger.log({
@@ -556,6 +559,8 @@ module.exports = (app: any) => {
   });
 
   app.get('/api/util/decryptLink/:link', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
     const { link } = req.params;
     const reqId = uuidv4();
     logger.log({

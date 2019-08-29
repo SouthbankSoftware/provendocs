@@ -71,6 +71,8 @@ module.exports = (app: any) => {
    * @returns {Resposne} 400 and an error if any error occurs during the process.
    */
   app.get('/api/filePreview/:fileId', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
     const { fileId } = req.params;
     const { AuthToken } = req.cookies;
     const reqId = uuidv4();
@@ -481,6 +483,8 @@ module.exports = (app: any) => {
    * @returns {Resposne} 400 and an error if any error occurs during the process.
    */
   app.get('/api/fullFileFromHistory/:fileName/:version', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
     const { fileName, version } = req.params;
     const { AuthToken } = req.cookies;
     const reqId = uuidv4();
@@ -626,6 +630,8 @@ module.exports = (app: any) => {
    * @returns {Resposne} 400 and an error if any error occurs during the process.
    */
   app.get('/api/historicalFile/:type/:fileName/:version', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
     const { fileName, version, type } = req.params;
     const { AuthToken } = req.cookies;
     const reqId = uuidv4();
@@ -742,6 +748,8 @@ module.exports = (app: any) => {
    * @returns {Response} 400 and an error if any error occurs during the process.
    */
   app.get('/api/filesSize', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
     const { AuthToken } = req.cookies;
     const reqId = uuidv4();
     logger.log({
@@ -871,6 +879,8 @@ module.exports = (app: any) => {
    * @returns {Resposne} 400 and an error if any error occurs during the process.
    */
   app.get('/api/fileHistory/:fileName', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
     const { AuthToken } = req.cookies;
     const { fileName, type } = req.params;
     const reqId = uuidv4();
@@ -937,6 +947,10 @@ module.exports = (app: any) => {
    * @returns {Resposne} 400 and an error if any error occurs during the process.
    */
   app.get('/api/fileList', (req, res) => {
+    if (process.env.PROVENDB_URL) {
+      res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+      res.setHeader('Access-Control-Allow-Credentials', true);
+    }
     const { AuthToken } = req.cookies;
     const reqId = uuidv4();
     logger.log({
@@ -1001,6 +1015,8 @@ module.exports = (app: any) => {
    * @returns {Response} 401 and an error if an authentication error occurs.
    */
   app.get('/api/forgetFile/:fileId', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
     const { AuthToken } = req.cookies;
     const { fileId } = req.params;
     const reqId = uuidv4();

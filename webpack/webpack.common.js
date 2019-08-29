@@ -72,7 +72,7 @@ module.exports = {
     new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
       favicon: 'favicon.ico',
-      baseUrl: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/' : '/',
+      baseUrl: process.env.NODE_ENV === 'development' ? 'http://localhost:3001/' : '/',
       template: commonPaths.templatePath,
     }),
     new LoadablePlugin({ filename: 'stats.json', writeToDisk: true }),

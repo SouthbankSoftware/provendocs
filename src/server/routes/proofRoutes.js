@@ -58,6 +58,8 @@ module.exports = (app: any) => {
    * @returns {Resposne} 400 and an error if any error occurs during the process.
    */
   app.get('/api/proof/:fileId', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
     const { fileId } = req.params;
     const { AuthToken } = req.cookies;
     const reqId = uuidv4();
@@ -156,6 +158,8 @@ module.exports = (app: any) => {
    * @returns {Resposne} 400 and an error if any error occurs during the process.
    */
   app.get('/api/historicalProofInfo/:fileName/:version', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
     const { fileName, version } = req.params;
     const { AuthToken } = req.cookies;
     const reqId = uuidv4();

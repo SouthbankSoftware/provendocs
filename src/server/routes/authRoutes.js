@@ -62,7 +62,7 @@ module.exports = (app) => {
     const urls = {};
     urls.ID = process.env.USER_MODULE_URL || 'http://localhost:8000';
     urls.PROVENDOCS = process.env.DOCS_URL
-      || (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://localhost:8888');
+      || (process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : 'http://localhost:8888');
     urls.API = process.env.API_URL || 'http://localhost:8080';
     urls.INTERNAL_API = process.env.INTERNAL_API_URL || 'http://localhost:8080';
     urls.PROVENDOCS_ENV = process.env.PROVENDOCS_ENV || 'dev';

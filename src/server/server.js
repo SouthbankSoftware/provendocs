@@ -40,6 +40,13 @@ const swaggerDocument = require('./swagger.json');
 
 const app = express();
 app.use(helmet());
+app.use(
+  helmet.frameguard({
+    action: 'allow-from',
+    domain: process.env.PROVENDB_URL,
+  }),
+);
+
 const jwtSecret = process.env.JWT_SECRET || 'provendbjwtsecret';
 const logger = winston.createLogger({
   transports: [
