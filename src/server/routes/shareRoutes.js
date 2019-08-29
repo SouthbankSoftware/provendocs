@@ -1259,6 +1259,8 @@ module.exports = (app: any) => {
    * @returns {Response} 401 and an erorr if unable to authenticate user.
    */
   app.get('/api/sendEmailProof/:fileName/:version/:toEmail', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', process.env.PROVENDB_URL);
+    res.setHeader('Access-Control-Allow-Credentials', true);
     const { fileName, version, toEmail } = req.params;
     const reqId = uuidv4();
     logger.log({
