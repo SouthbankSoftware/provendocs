@@ -43,24 +43,10 @@ resources:
       username: ((common.git-username))
       password: ((common.git-password))
       disable_ci_skip: false
-  - name: version
-    type: semver
-    source:
-      driver: gcs
-      bucket: provendb-ci
-      json_key: ((common.service-account))
-      key: provendocs/version/version.txt
-      initial_version: 0.0.0
-  - name: docker-registry
-    type: docker-image
-    source:
-      repository: asia.gcr.io/provendb/provendocs
-      username: _json_key
-      password: ((common.service-account))
   - name: docker-registry-azure
     type: docker-image
     source:
-      repository: provendbdev.azurecr.io/provendb-provendocs
+      repository: provendbdev.azurecr.io/provendocs
       username: ((common.azure-registry-username))
       password: ((common.azure-registry-password))    
 jobs:
@@ -73,15 +59,6 @@ jobs:
         params:
           commit: provendocs
           state: pending
-      - get: version
-        params: { bump: patch }
-      - put: docker-registry
-        params:
-          additional_tags: provendocs/.git/short_ref
-          build: provendocs
-          tag_as_latest: true
-          tag_file: version/number
-        get_params: { skip_download: true }
       - put: docker-registry-azure
         params:
           additional_tags: provendocs/.git/short_ref
@@ -89,8 +66,6 @@ jobs:
           tag_as_latest: true
           tag_file: version/number
         get_params: { skip_download: true }  
-      - put: version
-        params: { file: version/number }
     on_failure:
       do:
         - put: slack
